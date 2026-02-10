@@ -414,30 +414,85 @@
    - Welcome email sent
    - Customer redirected to dashboard
    - Services provisioned via <code>provision_gateway</code> to ServiceNow/vendor systems
-   - First invoice generated (prorated if mid-cycle start)</p><h4>Technical Flow</h4><pre><code class="language-">UI (registration form)
-  ↓ GraphQL: processNewAccount
-service-transactional
-  ↓ calls AccountService.create()
-engine → customerHub → PGAccountService
-  ↓ creates Account entity
-  ↓ calls OrderProcessService.submitMultiSubscriptionOrder()
-engine → customerHub → PGOrderProcessService
-  ↓ creates Order, OrderLines, OrderServices
-  ↓ calls SubscriptionService.create()
-engine → customerHub → PGSubscriptionService
-  ↓ creates Subscription, PriceUnit, ServiceUnit
-  ↓ calls BillUnitService.create()
-engine → billingHub → PGBillUnitService
-  ↓ creates BillUnit
-  ↓ schedules first billing run
-  ↓ publishes to PROVISIONING queue
-crm_gateway
-  ↓ receives order from queue
-  ↓ calls provision_gateway.processProvisioning()
-provision_gateway
-  ↓ maps to vendor format
-  ↓ creates service in ServiceNow / telecom platform
-  ↓ returns provisioningId and status
+   - First invoice generated (prorated if mid-cycle start)</p><h4>Technical Flow</h4><pre><code class="language-">┌─────────────────────────────────────────────────────────────────────────┐
+│                        REGISTRATION WORKFLOW                             │
+└─────────────────────────────────────────────────────────────────────────┘</p><p>   ┌──────────────────┐
+   │   Customer UI    │
+   │ (selfcare/ui)    │
+   └────────┬─────────┘
+            │ GraphQL: processNewAccount
+            │ (account data, card token, package selection)
+            ▼
+   ┌─────────────────────────────────────┐
+   │  service-transactional              │ ◄─── GraphQL API Layer
+   │  └─&gt; AccountService.create()        │
+   └──────────────┬──────────────────────┘
+                  │
+                  ▼
+   ┌─────────────────────────────────────────────────────────────┐
+   │  engine → customerHub → PGAccountService                    │ ◄─── Business Logic
+   │  ┌───────────────────────────────────────────────────────┐  │
+   │  │  1. Creates Account entity                            │  │
+   │  │     • accountId, name, address, status               │  │
+   │  │  2. Creates Contact and BillingProfile               │  │
+   │  │  3. Calls OrderProcessService                        │  │
+   │  └───────────────────────────────────────────────────────┘  │
+   └──────────────┬──────────────────────────────────────────────┘
+                  │
+                  ▼
+   ┌─────────────────────────────────────────────────────────────┐
+   │  engine → customerHub → PGOrderProcessService               │
+   │  ┌───────────────────────────────────────────────────────┐  │
+   │  │  1. Creates Order entity                              │  │
+   │  │     • orderType: NEW_SERVICE                         │  │
+   │  │  2. Creates OrderLines (one per bundle)              │  │
+   │  │  3. Creates OrderServices (billable services)        │  │
+   │  │  4. Calls SubscriptionService.create()              │  │
+   │  └───────────────────────────────────────────────────────┘  │
+   └──────────────┬──────────────────────────────────────────────┘
+                  │
+                  ▼
+   ┌─────────────────────────────────────────────────────────────┐
+   │  engine → customerHub → PGSubscriptionService               │
+   │  ┌───────────────────────────────────────────────────────┐  │
+   │  │  1. Creates Subscription entity                       │  │
+   │  │     • status: PENDING, startDate, packageId          │  │
+   │  │  2. Creates PriceUnits (pricing rules)               │  │
+   │  │  3. Creates ServiceUnits (service details)           │  │
+   │  │  4. Calls BillUnitService.create()                  │  │
+   │  └───────────────────────────────────────────────────────┘  │
+   └──────────────┬──────────────────────────────────────────────┘
+                  │
+                  ▼
+   ┌─────────────────────────────────────────────────────────────┐
+   │  engine → billingHub → PGBillUnitService                    │
+   │  ┌───────────────────────────────────────────────────────┐  │
+   │  │  1. Creates BillUnit                                  │  │
+   │  │     • billingCycle, startDate, status               │  │
+   │  │  2. Schedules first billing run                      │  │
+   │  │  3. Publishes order to PROVISIONING queue           │  │
+   │  └───────────────────────────────────────────────────────┘  │
+   └──────────────┬──────────────────────────────────────────────┘
+                  │ ActiveMQ: PROVISIONING queue
+                  ▼
+   ┌────────────────────────────────────┐
+   │  crm_gateway                       │ ◄─── Order Router
+   │  └─&gt; OmsProcessor                  │
+   │      └─&gt; ProvisioningGateway       │
+   │          Service.processProvisioning()│
+   └──────────────┬─────────────────────┘
+                  │ REST API call
+                  ▼
+   ┌────────────────────────────────────────────────────────────┐
+   │  provision_gateway                                         │ ◄─── External Integration
+   │  ┌──────────────────────────────────────────────────────┐  │
+   │  │  1. Maps to vendor format (ServiceNow / Telecom)    │  │
+   │  │  2. Creates service request                          │  │
+   │  │  3. Provisions user accounts & DIDs                  │  │
+   │  │  4. Configures trunk & endpoints                     │  │
+   │  │  5. Returns provisioningId and status                │  │
+   │  └──────────────────────────────────────────────────────┘  │
+   └────────────────────────────────────────────────────────────┘</p><p>   Result: ✓ Account Created  ✓ Services Provisioned  ✓ Ready to Bill
 </code></pre><hr><h3>Scenario 2: Customer Pays Invoice with Stored Payment Method</h3><p><strong>Business Context</strong>: Monthly recurring invoice generated. Customer logs into self-care portal to pay.</p><h4>User Journey</h4><ol>
 <li><strong>Access Invoice</strong></li>
 </ol>
@@ -478,28 +533,57 @@ provision_gateway
        - <code>paymentProfileId</code> or <code>cardToken</code>
        - <code>invoiceIds[]</code> - invoices to apply to
      - Permission: <code>APPLY_PAYMENT</code></p><ol>
-<li><strong>Backend Processing</strong></li>
-</ol>
-   
-   <pre><code class="language-">   service-transactional (applyPayment mutation)
-     ↓
-   engine → arHub → PGPaymentService
-     ↓ validates payment details
-     ↓ calls payment-gateway
-   payment-gateway
-     ↓ maps canonical request
-     ↓ calls Braintree SDK: transaction.sale()
-     ↓ parameters: amount, paymentMethodToken, options
-     ↓ receives Braintree response
-     ↓ maps to canonical response
-     ↓ returns: transactionId, status, authCode
-   engine → arHub → PGPaymentService
-     ↓ creates Payment entity (transactionId, amount, date)
-     ↓ creates PaymentAllocation linking payment to invoices
-     ↓ updates Invoice status (e.g., PARTIALLY_PAID, PAID)
-     ↓ updates Account balance
-     ↓ if overpayment: creates credit balance
-     ↓ sends payment confirmation email
+<li><strong>Backend Processing Flow</strong></li>
+</ol><pre><code class="language-">   ┌─────────────────────────────────────────────────────────────────┐
+   │  Step 1: API Entry Point                                        │
+   ├─────────────────────────────────────────────────────────────────┤
+   │  service-transactional                                          │
+   │  └─&gt; applyPayment(GraphQL mutation)                            │
+   └──────────────────────────┬──────────────────────────────────────┘
+                              │
+                              ▼
+   ┌─────────────────────────────────────────────────────────────────┐
+   │  Step 2: Business Logic Layer                                   │
+   ├─────────────────────────────────────────────────────────────────┤
+   │  engine → arHub → PGPaymentService                              │
+   │  ├─&gt; Validates payment details                                  │
+   │  ├─&gt; Checks account status                                      │
+   │  └─&gt; Prepares canonical payment request                         │
+   └──────────────────────────┬──────────────────────────────────────┘
+                              │
+                              ▼
+   ┌─────────────────────────────────────────────────────────────────┐
+   │  Step 3: Payment Gateway                                        │
+   ├─────────────────────────────────────────────────────────────────┤
+   │  payment-gateway                                                │
+   │  ├─&gt; Maps canonical request to Braintree format                │
+   │  ├─&gt; Calls Braintree SDK: transaction.sale()                   │
+   │  │    • amount: $26,705.00                                      │
+   │  │    • paymentMethodToken: "card_xyz123"                       │
+   │  │    • options: { submitForSettlement: true }                 │
+   │  ├─&gt; Receives Braintree response                                │
+   │  └─&gt; Maps to canonical response                                 │
+   │       • transactionId: "brn_tx_abc123"                          │
+   │       • status: "SUCCESS"                                        │
+   │       • authCode: "AUTH123456"                                   │
+   └──────────────────────────┬──────────────────────────────────────┘
+                              │
+                              ▼
+   ┌─────────────────────────────────────────────────────────────────┐
+   │  Step 4: Post-Processing                                        │
+   ├─────────────────────────────────────────────────────────────────┤
+   │  engine → arHub → PGPaymentService                              │
+   │  ├─&gt; Creates Payment entity                                     │
+   │  │    • transactionId, amount, date                             │
+   │  ├─&gt; Creates PaymentAllocation                                  │
+   │  │    • Links payment to invoice(s)                             │
+   │  ├─&gt; Updates Invoice status                                     │
+   │  │    • OPEN → PARTIALLY_PAID or PAID                           │
+   │  ├─&gt; Updates Account balance                                    │
+   │  │    • arBalance -= paid amount                                │
+   │  ├─&gt; If overpayment: creates credit balance                     │
+   │  └─&gt; Sends payment confirmation email                           │
+   └─────────────────────────────────────────────────────────────────┘
    </code></pre><ol>
 <li><strong>Confirmation</strong></li>
 </ol>
@@ -725,41 +809,150 @@ provision_gateway
 </ol>
     - Sends invoice via email (Thymeleaf template)
     - Syncs to accounting system via finance-gateway
-    - GraphQL mutation: <code>createInvoice</code> to QuickBooks/NetSuite</p><h4>Phase 4: Revenue Recognition</h4><ol>
-<li><strong>Revenue Journal Creation</strong> (engine → revenueHub)</li>
-</ol>
-    - <strong>Triggered by</strong>: BillUnit status = BILLED
-    - <strong>Process</strong> (<code>PGBillUnitService.createRevenueJournal</code>):
-      - For each TransactionUnit:
-        - Determines revenue recognition type (from Item config)
-        - Type = <code>MONTHLY_STRAIGHT_LINE_AMORTIZATION</code> (annual contract)
-        - Creates ReferenceRevenueJournal:
-          - transactionId
-          - amount: $24,500
-          - revenueStartDate: 2026-03-01
-          - revenueEndDate: 2027-02-28 (12 months)
-          - amountRecognized: $0
-          - glAccount: 4000 (Revenue)
-          - deferredGlAccount: 2400 (Deferred Revenue)
-        - Creates monthly schedule:
-          - 12 × RevenueJournal entries
-          - Each: $2,041.67 (1/12 of total)
-          - accountingPeriod: 2026-03, 2026-04, ..., 2027-02</p><ol>
-<li><strong>Monthly Revenue Recognition</strong> (service-revenue)</li>
-</ol>
-    - <strong>Trigger</strong>: Monthly job on last day of month
-    - <strong>Process</strong> (<code>RecognizeRevenueService.recognizeRevenue</code>):
-      - Queries RevenueJournal where:
-        - accountingPeriod = current month
-        - status = PENDING
-      - For each journal:
-        - Creates GL entries:
-          - <strong>Debit</strong>: Deferred Revenue (2400) - $2,041.67
-          - <strong>Credit</strong>: Revenue (4000) - $2,041.67
-        - Updates amountRecognized
-        - Updates status: RECOGNIZED
-    - Syncs to finance system via finance-gateway
-    - GraphQL: <code>createJournal</code> to QuickBooks/NetSuite</p><h4>Phase 5: Collections & Payment</h4><ol>
+    - GraphQL mutation: <code>createInvoice</code> to QuickBooks/NetSuite</p><h4>Phase 4: Revenue Recognition</h4><p>##### 11. Revenue Journal Creation (engine → revenueHub)</p><p><strong>Trigger</strong>: BillUnit status = BILLED</p><p><strong>Service</strong>: <code>PGBillUnitService.createRevenueJournal()</code></p><p><strong>Process Flow</strong>:</p><pre><code class="language-">┌──────────────────────────────────────────────────────────────────┐
+│  Initial Journal Entry (Day 1)                                   │
+├──────────────────────────────────────────────────────────────────┤
+│  • Determines revenue recognition type from Item configuration   │
+│  • Type: MONTHLY_STRAIGHT_LINE_AMORTIZATION (annual contract)    │
+│                                                                   │
+│  Creates ReferenceRevenueJournal:                                │
+│  ┌────────────────────────────────────────────────────────────┐ │
+│  │  Transaction ID:     TXN-202602-12345                      │ │
+│  │  Amount:             $24,500.00                            │ │
+│  │  Revenue Period:     2026-03-01 to 2027-02-28 (12 months)  │ │
+│  │  Amount Recognized:  $0.00 (initially)                     │ │
+│  │  GL Accounts:                                              │ │
+│  │    • Revenue:         4000 (Service Revenue)               │ │
+│  │    • Deferred:        2400 (Deferred Revenue)              │ │
+│  └────────────────────────────────────────────────────────────┘ │
+└──────────────────────────────────────────────────────────────────┘
+</code></pre><p><strong>Monthly Schedule Created</strong>:</p><table>
+<thead><tr>
+<th>Month</th>
+<th>Accounting Period</th>
+<th>Recognition Amount</th>
+<th>Status</th>
+<th>GL Entries</th>
+</tr></thead><tbody>
+<tr>
+<td>-------</td>
+<td>-------------------</td>
+<td>-------------------</td>
+<td>--------</td>
+<td>------------</td>
+</tr>
+<tr>
+<td>Mar 2026</td>
+<td>2026-03</td>
+<td>$2,041.67</td>
+<td>PENDING</td>
+<td>Dr: 2400, Cr: 4000</td>
+</tr>
+<tr>
+<td>Apr 2026</td>
+<td>2026-04</td>
+<td>$2,041.67</td>
+<td>PENDING</td>
+<td>Dr: 2400, Cr: 4000</td>
+</tr>
+<tr>
+<td>May 2026</td>
+<td>2026-05</td>
+<td>$2,041.67</td>
+<td>PENDING</td>
+<td>Dr: 2400, Cr: 4000</td>
+</tr>
+<tr>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>PENDING</td>
+<td>...</td>
+</tr>
+<tr>
+<td>Feb 2027</td>
+<td>2027-02</td>
+<td>$2,041.67</td>
+<td>PENDING</td>
+<td>Dr: 2400, Cr: 4000</td>
+</tr>
+</tbody></table><p><strong>Total</strong>: 12 months × $2,041.67 = $24,500.00</p><hr><p>##### 12. Monthly Revenue Recognition (service-revenue)</p><p><strong>Trigger</strong>: Monthly job on last day of month</p><p><strong>Service</strong>: <code>RecognizeRevenueService.recognizeRevenue()</code></p><p><strong>Process Flow</strong>:</p><pre><code class="language-">┌──────────────────────────────────────────────────────────────────┐
+│  Month-End Processing                                            │
+├──────────────────────────────────────────────────────────────────┤
+│                                                                   │
+│  1. Query Pending Journals                                       │
+│     └─&gt; WHERE accountingPeriod = current month                   │
+│         AND status = PENDING                                     │
+│                                                                   │
+│  2. For Each Journal Entry:                                      │
+│     ┌──────────────────────────────────────────────────────┐    │
+│     │  Amount: $2,041.67                                   │    │
+│     │                                                       │    │
+│     │  GL Entry #1:                                        │    │
+│     │  ├─ Account:  2400 (Deferred Revenue)               │    │
+│     │  ├─ Debit:    $2,041.67                             │    │
+│     │  └─ Memo:     "Revenue recognition - Feb 2026"      │    │
+│     │                                                       │    │
+│     │  GL Entry #2:                                        │    │
+│     │  ├─ Account:  4000 (Service Revenue)                │    │
+│     │  ├─ Credit:   $2,041.67                             │    │
+│     │  └─ Memo:     "Revenue recognition - Feb 2026"      │    │
+│     │                                                       │    │
+│     │  Update Journal:                                     │    │
+│     │  ├─ amountRecognized += $2,041.67                   │    │
+│     │  ├─ status = RECOGNIZED                             │    │
+│     │  └─ recognizedDate = 2026-02-28                     │    │
+│     └──────────────────────────────────────────────────────┘    │
+│                                                                   │
+│  3. Sync to External Finance System                              │
+│     └─&gt; finance-gateway → createJournal()                        │
+│         └─&gt; QuickBooks / NetSuite                                │
+│                                                                   │
+└──────────────────────────────────────────────────────────────────┘
+</code></pre><p><strong>Balance Sheet Impact Over Time</strong>:</p><table>
+<thead><tr>
+<th>Month</th>
+<th>Deferred Revenue</th>
+<th>Recognized Revenue (YTD)</th>
+<th>Remaining</th>
+</tr></thead><tbody>
+<tr>
+<td>-------</td>
+<td>------------------</td>
+<td>--------------------------</td>
+<td>-----------</td>
+</tr>
+<tr>
+<td>Feb 2026 (Initial)</td>
+<td>$24,500.00</td>
+<td>$0</td>
+<td>$24,500.00</td>
+</tr>
+<tr>
+<td>Mar 2026</td>
+<td>$22,458.33</td>
+<td>$2,041.67</td>
+<td>$22,458.33</td>
+</tr>
+<tr>
+<td>Jun 2026</td>
+<td>$16,291.67</td>
+<td>$8,208.33</td>
+<td>$16,291.67</td>
+</tr>
+<tr>
+<td>Dec 2026</td>
+<td>$4,083.33</td>
+<td>$20,416.67</td>
+<td>$4,083.33</td>
+</tr>
+<tr>
+<td>Feb 2027 (Final)</td>
+<td>$0</td>
+<td>$24,500.00</td>
+<td>$0</td>
+</tr>
+</tbody></table><h4>Phase 5: Collections & Payment</h4><ol>
 <li><strong>Payment Application</strong> (service-payment)</li>
 </ol>
     - Customer pays invoice via:
@@ -838,68 +1031,142 @@ provision_gateway
      - expiryDate: end of month</p><ol>
 <li><strong>Notification</strong></li>
 </ol>
-   - SMS sent: "Your account has been recharged with $50. New balance: $75.50. Valid until 2026-05-10."</p><h4>Phase 2: Real-Time Usage Rating (Prepaid)</h4><p><strong>Scenario</strong>: Customer makes 10-minute voice call to another mobile number.</p><ol>
-<li><strong>Usage Event Capture</strong></li>
-</ol>
-   - Telecom switch (Soft switch / MSC) generates CDR
-   - CDR pushed to mediation platform
-   - Mediation platform publishes to ActiveMQ queue: <code>USAGE</code></p><ol>
-<li><strong>Usage Ingestion</strong> (service-mediation)</li>
-</ol>
-   - <code>MCMMediationService.processMCMMediationCdrs()</code>
-   - Receives CDR batch from queue
-   - Parses CDR file (CSV/XML/JSON)
-   - Creates DetailRecord entities:
-     - serviceType: VOICE
-     - callType: MOBILE_TO_MOBILE
-     - originNumber: customer MSISDN
-     - destNumber: called number
-     - startTime: 2026-02-10T14:32:15
-     - duration: 600 seconds (10 minutes)
-     - rawData: full CDR</p><ol>
-<li><strong>Usage Pre-Processing</strong> (engine → usageProcessHub)</li>
-</ol>
-   - <code>PreProcessingService.manageProcess()</code>
-   - <strong>Module chain</strong> (configured in UsageProcessMapConfig):
-     
-     <strong>a) Account Lookup</strong>
-     - Maps originNumber → accountId
-     - Queries ProvisioningId mapping table
-     - Enriches UsageContainer with account data
-     
-     <strong>b) Balance Lookup</strong>
-     - Fetches BalanceUnit for account
-     - Retrieves currency balance and grant balances
-     - Checks if sufficient balance
-     
-     <strong>c) Rating Route Determination</strong>
-     - UsageRecIndicator = PREPAID
-     - Routes to PrepaidRatingService
-     
-     <strong>d) Jurisdiction/Zone Lookup</strong>
-     - Determines call destination zone
-     - Looks up in ConfigRegionMap
-     - Zone = "MOBILE_ON_NET" (same network)</p><ol>
-<li><strong>Prepaid Rating</strong> (PrepaidRatingService)</li>
-</ol>
-   - <code>PrepaidRatingService.rateUsageRecord()</code>
-   - <strong>Rating Logic</strong>:
-     - Fetches applicable PriceOffer
-     - priceOfferType: USAGE_TIERED
-     - Rate: $0.10/minute for on-net calls
-     - Duration: 10 minutes
-     - <strong>Charge: $1.00</strong>
-   
-   - <strong>Balance Deduction</strong>:
-     - Current currency balance: $75.50
-     - Deduct: $1.00
-     - <strong>New balance: $74.50</strong>
-   
-   - <strong>Grant Deduction</strong> (if applicable):
-     - If customer has "Unlimited On-Net" grant:
-       - Deduct from grant instead of currency
-       - Voice grant: 450 mins → 440 mins
-       - Currency balance unchanged</p><ol>
+   - SMS sent: "Your account has been recharged with $50. New balance: $75.50. Valid until 2026-05-10."</p><h4>Phase 2: Real-Time Usage Rating (Prepaid)</h4><p><strong>Scenario</strong>: Customer makes 10-minute voice call to another mobile number.</p><p>##### Real-Time Rating Workflow</p><pre><code class="language-">┌──────────────────────────────────────────────────────────────────────────┐
+│                   REAL-TIME USAGE RATING PIPELINE                         │
+└──────────────────────────────────────────────────────────────────────────┘</p><p>Step 1: Usage Event Capture
+┌─────────────────────────────────────────────────────────────────┐
+│  Telecom Network (Soft switch / MSC)                            │
+│  ├─&gt; Call completed: +1234567890 → +9876543210                 │
+│  ├─&gt; Duration: 600 seconds (10 minutes)                         │
+│  └─&gt; Generates CDR (Call Detail Record)                         │
+└──────────────────────┬──────────────────────────────────────────┘
+                       │ Push to mediation platform
+                       ▼
+┌─────────────────────────────────────────────────────────────────┐
+│  Mediation Platform                                             │
+│  └─&gt; Publishes to ActiveMQ queue: USAGE                        │
+└──────────────────────┬──────────────────────────────────────────┘
+                       │
+                       ▼</p><p>Step 2: Usage Ingestion
+┌─────────────────────────────────────────────────────────────────┐
+│  service-mediation: MCMMediationService                         │
+│  ┌───────────────────────────────────────────────────────────┐  │
+│  │  • Consumes CDR batch from USAGE queue                   │  │
+│  │  • Parses file format (CSV/XML/JSON)                     │  │
+│  │  • Creates DetailRecord entity:                          │  │
+│  │    ┌─────────────────────────────────────────────────┐   │  │
+│  │    │  serviceType:     VOICE                         │   │  │
+│  │    │  callType:        MOBILE_TO_MOBILE              │   │  │
+│  │    │  originNumber:    +1234567890                   │   │  │
+│  │    │  destNumber:      +9876543210                   │   │  │
+│  │    │  startTime:       2026-02-10T14:32:15           │   │  │
+│  │    │  duration:        600 seconds                   │   │  │
+│  │    │  rawData:         [full CDR]                    │   │  │
+│  │    └─────────────────────────────────────────────────┘   │  │
+│  └───────────────────────────────────────────────────────────┘  │
+└──────────────────────┬──────────────────────────────────────────┘
+                       │
+                       ▼</p><p>Step 3: Pre-Processing Pipeline
+┌─────────────────────────────────────────────────────────────────┐
+│  engine → usageProcessHub → PreProcessingService                │
+│  ┌───────────────────────────────────────────────────────────┐  │
+│  │  Module Chain (configured in UsageProcessMapConfig):     │  │
+│  │                                                           │  │
+│  │  ┌─ Module A: Account Lookup ──────────────────────────┐ │  │
+│  │  │  • Maps originNumber → accountId                    │ │  │
+│  │  │  • Query: ProvisioningId mapping table              │ │  │
+│  │  │  • Result: accountId = ACC-12345                    │ │  │
+│  │  └─────────────────────────────────────────────────────┘ │  │
+│  │                                                           │  │
+│  │  ┌─ Module B: Balance Lookup ──────────────────────────┐ │  │
+│  │  │  • Fetches BalanceUnit for accountId                │ │  │
+│  │  │  • Currency balance: $75.50                         │ │  │
+│  │  │  • Voice grant: 450 minutes remaining               │ │  │
+│  │  │  • Sufficient balance: ✓ YES                        │ │  │
+│  │  └─────────────────────────────────────────────────────┘ │  │
+│  │                                                           │  │
+│  │  ┌─ Module C: Rating Route ────────────────────────────┐ │  │
+│  │  │  • UsageRecIndicator: PREPAID                       │ │  │
+│  │  │  • Routes to → PrepaidRatingService                 │ │  │
+│  │  └─────────────────────────────────────────────────────┘ │  │
+│  │                                                           │  │
+│  │  ┌─ Module D: Jurisdiction Lookup ─────────────────────┐ │  │
+│  │  │  • Destination zone lookup                          │ │  │
+│  │  │  • ConfigRegionMap query                            │ │  │
+│  │  │  • Result: "MOBILE_ON_NET" (same carrier)           │ │  │
+│  │  └─────────────────────────────────────────────────────┘ │  │
+│  └───────────────────────────────────────────────────────────┘  │
+└──────────────────────┬──────────────────────────────────────────┘
+                       │
+                       ▼</p><p>Step 4: Prepaid Rating
+┌─────────────────────────────────────────────────────────────────┐
+│  PrepaidRatingService.rateUsageRecord()                         │
+│  ┌───────────────────────────────────────────────────────────┐  │
+│  │  Rating Calculation:                                      │  │
+│  │  ┌─────────────────────────────────────────────────────┐  │  │
+│  │  │  Fetch PriceOffer:                                  │  │  │
+│  │  │  • Type: USAGE_TIERED                               │  │  │
+│  │  │  • Zone: MOBILE_ON_NET                              │  │  │
+│  │  │  • Rate: $0.10/minute                               │  │  │
+│  │  │                                                      │  │  │
+│  │  │  Calculate Charge:                                  │  │  │
+│  │  │  • Duration: 10 minutes                             │  │  │
+│  │  │  • Rate: $0.10/min                                  │  │  │
+│  │  │  • CHARGE: $1.00                                    │  │  │
+│  │  └─────────────────────────────────────────────────────┘  │  │
+│  │                                                           │  │
+│  │  Balance Deduction:                                       │  │
+│  │  ┌─────────────────────────────────────────────────────┐  │  │
+│  │  │  Option A: Deduct from Currency Balance            │  │  │
+│  │  │  • Before: $75.50                                   │  │  │
+│  │  │  • Deduct: $1.00                                    │  │  │
+│  │  │  • After:  $74.50  ✓                                │  │  │
+│  │  │                                                      │  │  │
+│  │  │  Option B: Deduct from Voice Grant (if available)  │  │  │
+│  │  │  • Before: 450 minutes                              │  │  │
+│  │  │  • Deduct: 10 minutes                               │  │  │
+│  │  │  • After:  440 minutes  ✓                           │  │  │
+│  │  │  • Currency balance: unchanged                      │  │  │
+│  │  └─────────────────────────────────────────────────────┘  │  │
+│  └───────────────────────────────────────────────────────────┘  │
+└─────────────────────────────────────────────────────────────────┘</p><p>Result: ✓ Call Rated  ✓ Balance Updated  ✓ Transaction Created
+</code></pre><p><strong>Balance After Rating</strong>:</p><table>
+<thead><tr>
+<th>Balance Type</th>
+<th>Before</th>
+<th>Charge</th>
+<th>After</th>
+<th>Status</th>
+</tr></thead><tbody>
+<tr>
+<td>--------------</td>
+<td>--------</td>
+<td>--------</td>
+<td>-------</td>
+<td>--------</td>
+</tr>
+<tr>
+<td>Currency (USD)</td>
+<td>$75.50</td>
+<td>-$1.00</td>
+<td>$74.50</td>
+<td>✓ Sufficient</td>
+</tr>
+<tr>
+<td>Voice Grant (min)</td>
+<td>450</td>
+<td>-10</td>
+<td>440</td>
+<td>✓ Available</td>
+</tr>
+<tr>
+<td>Data Grant (GB)</td>
+<td>5.2</td>
+<td>0</td>
+<td>5.2</td>
+<td>Unchanged</td>
+</tr>
+</tbody></table><ol>
 <li><strong>Transaction Creation</strong></li>
 </ol>
    - Creates TransactionUnit:
