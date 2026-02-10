@@ -639,46 +639,121 @@ This guide is split into 3 comprehensive parts to help you understand everything
 
 <h2>🎯 Recommended Reading Path</h2>
 
-<h3>For New Developers (Full Path):</h3>
-
-<pre><code class="language-">Day 1 Morning:  Part 1 (Business & Architecture)
-                └─→ Understand what you're building
-Day 1 Afternoon: Part 2 (Technical Deep Dive)
-                 └─→ Understand how it's built
-Day 2 Morning:   Part 3 Sections 1-2 (Services & Database)
-                 └─→ Understand the components
-Day 2 Afternoon: Part 3 Sections 3-4 (Flows & Setup)
-                 └─→ See it in action, set up locally
-Day 3:          Explore codebase with guide as reference
-                └─→ Navigate confidently with context
-</code></pre>
-<h3>For Business Analysts:</h3>
-
-<pre><code class="language-">Part 1: Full read (60 min)
-        └─→ Business use cases, capabilities
-Part 2: Sections 1-2 (Gateway Layer) (30 min)
-        └─→ External integrations
-Part 3: Section 3 (Business Flows) (45 min)
-        └─→ End-to-end scenarios
-</code></pre>
-<h3>For Technical Evaluators:</h3>
-
-<pre><code class="language-">Part 1: Sections 1, 4, 5, 6 (45 min)
-        └─→ Architecture, technology, multi-tenancy
-Part 2: Full read (90 min)
-        └─→ Technical implementation details
-Part 3: Section 2 (Database Architecture) (30 min)
-        └─→ Data model and performance
-</code></pre>
-<h3>For QA Engineers:</h3>
-
-<pre><code class="language-">Part 1: Sections 1, 2 (30 min)
-        └─→ Business use cases
-Part 3: Section 3 (Business Flows) (60 min)
-        └─→ Test scenarios
-Part 3: Section 4 (Development Setup) (45 min)
-        └─→ Test environment setup
-</code></pre>
+<strong>Choose your learning path based on your role:</strong>
+<table>
+<thead><tr>
+<th>Role</th>
+<th>Day/Phase</th>
+<th>Content</th>
+<th>Time</th>
+<th>Goal</th>
+</tr></thead><tbody>
+<tr>
+<td>------</td>
+<td>-----------</td>
+<td>---------</td>
+<td>------</td>
+<td>------</td>
+</tr>
+<tr>
+<td><strong>New Developer</strong></td>
+<td>Day 1 AM</td>
+<td>Part 1 (Business & Architecture)</td>
+<td>60 min</td>
+<td>Understand what you're building</td>
+</tr>
+<tr>
+<td></td>
+<td>Day 1 PM</td>
+<td>Part 2 (Technical Deep Dive)</td>
+<td>90 min</td>
+<td>Understand how it's built</td>
+</tr>
+<tr>
+<td></td>
+<td>Day 2 AM</td>
+<td>Part 3 Sections 1-2 (Services & DB)</td>
+<td>60 min</td>
+<td>Understand the components</td>
+</tr>
+<tr>
+<td></td>
+<td>Day 2 PM</td>
+<td>Part 3 Sections 3-4 (Flows & Setup)</td>
+<td>90 min</td>
+<td>See it in action, set up locally</td>
+</tr>
+<tr>
+<td></td>
+<td>Day 3</td>
+<td>Explore codebase with guide</td>
+<td>Full day</td>
+<td>Navigate confidently with context</td>
+</tr>
+<tr>
+<td><strong>Business Analyst</strong></td>
+<td>Phase 1</td>
+<td>Part 1 (Full)</td>
+<td>60 min</td>
+<td>Business use cases, capabilities</td>
+</tr>
+<tr>
+<td></td>
+<td>Phase 2</td>
+<td>Part 2 Sections 1-2 (Gateways)</td>
+<td>30 min</td>
+<td>External integrations</td>
+</tr>
+<tr>
+<td></td>
+<td>Phase 3</td>
+<td>Part 3 Section 3 (Business Flows)</td>
+<td>45 min</td>
+<td>End-to-end scenarios</td>
+</tr>
+<tr>
+<td><strong>Technical Evaluator</strong></td>
+<td>Phase 1</td>
+<td>Part 1 Sections 1, 4, 5, 6</td>
+<td>45 min</td>
+<td>Architecture, technology, multi-tenancy</td>
+</tr>
+<tr>
+<td></td>
+<td>Phase 2</td>
+<td>Part 2 (Full)</td>
+<td>90 min</td>
+<td>Technical implementation details</td>
+</tr>
+<tr>
+<td></td>
+<td>Phase 3</td>
+<td>Part 3 Section 2 (Database)</td>
+<td>30 min</td>
+<td>Data model and performance</td>
+</tr>
+<tr>
+<td><strong>QA Engineer</strong></td>
+<td>Phase 1</td>
+<td>Part 1 Sections 1-2</td>
+<td>30 min</td>
+<td>Business use cases</td>
+</tr>
+<tr>
+<td></td>
+<td>Phase 2</td>
+<td>Part 3 Section 3 (Business Flows)</td>
+<td>60 min</td>
+<td>Test scenarios</td>
+</tr>
+<tr>
+<td></td>
+<td>Phase 3</td>
+<td>Part 3 Section 4 (Development Setup)</td>
+<td>45 min</td>
+<td>Test environment setup</td>
+</tr>
+</tbody></table>
 
 <hr>
 
@@ -686,13 +761,43 @@ Part 3: Section 4 (Development Setup) (45 min)
 
 <h3>Business Use Cases Covered:</h3>
 
-<ol>
-<li><strong>New Customer Signup</strong> - Internet service order → provisioning → first invoice</li>
-<li><strong>Mobile Usage Processing</strong> - Phone calls → CDR mediation → rating → billing</li>
-<li><strong>Service Suspension/Resume</strong> - Overdue payment → suspension → payment → auto-resume</li>
-<li><strong>Payment Processing</strong> - Bank file upload → payment allocation → invoice updates</li>
-<li><strong>Tax Compliance</strong> - Invoice generation → CFDI XML → PAC stamping → delivery</li>
-</ol>
+<table>
+<thead><tr>
+<th>Use Case</th>
+<th>Flow</th>
+<th>Documentation</th>
+</tr></thead><tbody>
+<tr>
+<td>----------</td>
+<td>------</td>
+<td>---------------</td>
+</tr>
+<tr>
+<td><strong>New Customer Signup</strong></td>
+<td>Internet service order → provisioning → first invoice</td>
+<td>Part 3, Section 3.1</td>
+</tr>
+<tr>
+<td><strong>Mobile Usage Processing</strong></td>
+<td>Phone calls → CDR mediation → rating → billing</td>
+<td>Part 3, Section 3.2</td>
+</tr>
+<tr>
+<td><strong>Service Suspension/Resume</strong></td>
+<td>Overdue payment → suspension → payment → auto-resume</td>
+<td>Part 3, Section 3.3</td>
+</tr>
+<tr>
+<td><strong>Payment Processing</strong></td>
+<td>Bank file upload → payment allocation → invoice updates</td>
+<td>Part 2, Section 2.4</td>
+</tr>
+<tr>
+<td><strong>Tax Compliance</strong></td>
+<td>Invoice generation → CFDI XML → PAC stamping → delivery</td>
+<td>Part 2, Section 2.3</td>
+</tr>
+</tbody></table>
 <h3>Architecture Patterns Explained:</h3>
 
 <ul>
@@ -716,43 +821,189 @@ Part 3: Section 4 (Development Setup) (45 min)
 </ul>
 <h3>Hubs in Engine:</h3>
 
-<ol>
-<li><strong>arHub</strong> - Accounts Receivable (payments, collections)</li>
-<li><strong>billingHub</strong> - Billing Operations (cycles, proration, discounts)</li>
-<li><strong>customerHub</strong> - Customer Management (accounts, orders, subscriptions)</li>
-<li><strong>pricingHub</strong> - Product Catalog (products, pricing, bundles)</li>
-<li><strong>revenueHub</strong> - Revenue Recognition (IFRS 15, ASC 606)</li>
-<li><strong>usageProcessHub</strong> - Usage Rating (charge calculation)</li>
-<li><strong>mediationHub</strong> - Usage Mediation (CDR processing)</li>
-<li><strong>opsHub</strong> - Operations (users, jobs, notifications, tenants)</li>
-<li><strong>commonHub</strong> - Shared Services (documents, files, templates)</li>
-<li><strong>migrationHub</strong> - Data Migration</li>
-<li><strong>selfCareHub</strong> - Customer Self-Service</li>
-</ol>
+<table>
+<thead><tr>
+<th>Hub</th>
+<th>Purpose</th>
+<th>Key Responsibilities</th>
+</tr></thead><tbody>
+<tr>
+<td>-----</td>
+<td>---------</td>
+<td>---------------------</td>
+</tr>
+<tr>
+<td><strong>arHub</strong></td>
+<td>Accounts Receivable</td>
+<td>Payments, collections, payment allocation</td>
+</tr>
+<tr>
+<td><strong>billingHub</strong></td>
+<td>Billing Operations</td>
+<td>Billing cycles, proration, discounts, invoice generation</td>
+</tr>
+<tr>
+<td><strong>customerHub</strong></td>
+<td>Customer Management</td>
+<td>Accounts, orders, subscriptions, contacts</td>
+</tr>
+<tr>
+<td><strong>pricingHub</strong></td>
+<td>Product Catalog</td>
+<td>Products, pricing, bundles, promotions</td>
+</tr>
+<tr>
+<td><strong>revenueHub</strong></td>
+<td>Revenue Recognition</td>
+<td>IFRS 15, ASC 606, deferred revenue, schedules</td>
+</tr>
+<tr>
+<td><strong>usageProcessHub</strong></td>
+<td>Usage Rating</td>
+<td>Charge calculation, pricing plan application</td>
+</tr>
+<tr>
+<td><strong>mediationHub</strong></td>
+<td>Usage Mediation</td>
+<td>CDR processing, normalization, deduplication</td>
+</tr>
+<tr>
+<td><strong>opsHub</strong></td>
+<td>Operations</td>
+<td>Users, jobs, notifications, tenants, permissions</td>
+</tr>
+<tr>
+<td><strong>commonHub</strong></td>
+<td>Shared Services</td>
+<td>Documents, files, templates, utilities</td>
+</tr>
+<tr>
+<td><strong>migrationHub</strong></td>
+<td>Data Migration</td>
+<td>Legacy system migration, data import</td>
+</tr>
+<tr>
+<td><strong>selfCareHub</strong></td>
+<td>Customer Self-Service</td>
+<td>Self-care portal APIs, customer actions</td>
+</tr>
+</tbody></table>
 <h3>Core Services:</h3>
 
-<ol>
-<li><strong>service-billing</strong> - Billing cycle execution</li>
-<li><strong>service-invoice</strong> - Invoice document generation</li>
-<li><strong>service-usage</strong> - Usage data repository</li>
-<li><strong>service-mediation</strong> - CDR ingestion</li>
-<li><strong>service-payment</strong> - Payment processing</li>
-<li><strong>service-revenue</strong> - Revenue recognition</li>
-<li><strong>service-transactional</strong> - Real-time operations</li>
-<li><strong>service-sso</strong> - Single sign-on</li>
-<li><strong>service-proxy</strong> - API gateway</li>
-<li><strong>batch-process</strong> - Background jobs</li>
-</ol>
+<table>
+<thead><tr>
+<th>Service</th>
+<th>Purpose</th>
+<th>Key Features</th>
+</tr></thead><tbody>
+<tr>
+<td>---------</td>
+<td>---------</td>
+<td>--------------</td>
+</tr>
+<tr>
+<td><strong>service-billing</strong></td>
+<td>Billing cycle execution</td>
+<td>Invoice generation, proration, recurring charges</td>
+</tr>
+<tr>
+<td><strong>service-invoice</strong></td>
+<td>Invoice document generation</td>
+<td>PDF/HTML/XML creation, templates</td>
+</tr>
+<tr>
+<td><strong>service-usage</strong></td>
+<td>Usage data repository</td>
+<td>CDR storage, usage aggregation</td>
+</tr>
+<tr>
+<td><strong>service-mediation</strong></td>
+<td>CDR ingestion</td>
+<td>Usage import, normalization, deduplication</td>
+</tr>
+<tr>
+<td><strong>service-payment</strong></td>
+<td>Payment processing</td>
+<td>Payment application, reconciliation</td>
+</tr>
+<tr>
+<td><strong>service-revenue</strong></td>
+<td>Revenue recognition</td>
+<td>GAAP compliance, deferred revenue</td>
+</tr>
+<tr>
+<td><strong>service-transactional</strong></td>
+<td>Real-time operations</td>
+<td>GraphQL API, main business logic</td>
+</tr>
+<tr>
+<td><strong>service-sso</strong></td>
+<td>Single sign-on</td>
+<td>Authentication, authorization, JWT</td>
+</tr>
+<tr>
+<td><strong>service-proxy</strong></td>
+<td>API gateway</td>
+<td>Request routing, rate limiting</td>
+</tr>
+<tr>
+<td><strong>batch-process</strong></td>
+<td>Background jobs</td>
+<td>Scheduled jobs, billing runs, reports</td>
+</tr>
+</tbody></table>
 <h3>Gateways:</h3>
 
-<ol>
-<li><strong>crm_gateway</strong> - CRM integration (Salesforce)</li>
-<li><strong>provision_gateway</strong> - Network provisioning (Nokia, ServiceNow)</li>
-<li><strong>tax-gateway</strong> - Tax calculation</li>
-<li><strong>payment-gateway</strong> - Payment processors (Stripe, banks)</li>
-<li><strong>finance-gateway</strong> - ERP integration (QuickBooks, NetSuite)</li>
-<li><strong>diameter-gateway</strong> - Real-time charging</li>
-</ol>
+<table>
+<thead><tr>
+<th>Gateway</th>
+<th>Port</th>
+<th>Integration Target</th>
+<th>Purpose</th>
+</tr></thead><tbody>
+<tr>
+<td>---------</td>
+<td>------</td>
+<td>-------------------</td>
+<td>---------</td>
+</tr>
+<tr>
+<td><strong>crm_gateway</strong></td>
+<td>8080</td>
+<td>Salesforce, MS Dynamics</td>
+<td>CRM integration, order capture</td>
+</tr>
+<tr>
+<td><strong>provision_gateway</strong></td>
+<td>8081</td>
+<td>Nokia, ServiceNow, Cisco</td>
+<td>Network provisioning, equipment config</td>
+</tr>
+<tr>
+<td><strong>tax-gateway</strong></td>
+<td>8082</td>
+<td>Avalara, PAC providers</td>
+<td>Tax calculation, CFDI stamping</td>
+</tr>
+<tr>
+<td><strong>payment-gateway</strong></td>
+<td>8083</td>
+<td>Stripe, Braintree, banks</td>
+<td>Payment processing, bank files</td>
+</tr>
+<tr>
+<td><strong>finance-gateway</strong></td>
+<td>8084</td>
+<td>QuickBooks, NetSuite, SAP</td>
+<td>ERP integration, GL posting</td>
+</tr>
+<tr>
+<td><strong>diameter-gateway</strong></td>
+<td>8085</td>
+<td>Network elements</td>
+<td>Real-time charging, quota management</td>
+</tr>
+</tbody></table>
 
 <hr>
 

@@ -526,13 +526,43 @@ External: Salesforce, Nokia, Banks, PAC Providers, ERP
 </code></pre>
 <h3>Key Principles:</h3>
 
-<ul>
-<li><strong>Shared Engine</strong>: All business logic in <code>engine</code></li>
-<li><strong>Event-Driven</strong>: ActiveMQ for async processing</li>
-<li><strong>Gateway Pattern</strong>: Isolate external systems</li>
-<li><strong>GraphQL-First</strong>: Flexible API layer</li>
-<li><strong>Multi-Tenant</strong>: Database-per-tenant</li>
-</ul>
+<table>
+<thead><tr>
+<th>Principle</th>
+<th>Implementation</th>
+<th>Benefit</th>
+</tr></thead><tbody>
+<tr>
+<td>-----------</td>
+<td>---------------</td>
+<td>---------</td>
+</tr>
+<tr>
+<td><strong>Shared Engine</strong></td>
+<td>All business logic in <code>engine</code> library</td>
+<td>Single source of truth, consistency</td>
+</tr>
+<tr>
+<td><strong>Event-Driven</strong></td>
+<td>ActiveMQ for async processing</td>
+<td>Resilience, scalability, decoupling</td>
+</tr>
+<tr>
+<td><strong>Gateway Pattern</strong></td>
+<td>Isolate external systems</td>
+<td>Change APIs without breaking core</td>
+</tr>
+<tr>
+<td><strong>GraphQL-First</strong></td>
+<td>Flexible API layer</td>
+<td>Reduce over-fetching, strongly typed</td>
+</tr>
+<tr>
+<td><strong>Multi-Tenant</strong></td>
+<td>Database-per-tenant</td>
+<td>Data isolation, customization</td>
+</tr>
+</tbody></table>
 
 <hr>
 
@@ -655,15 +685,58 @@ External: Salesforce, Nokia, Banks, PAC Providers, ERP
 
 <h3>Schemas:</h3>
 
-<pre><code class="language-sql">core_engine      -- Shared entities (account, subscription, user)
-core_oms         -- Orders (order, service_line, order_activity)
-core_billing     -- Financial (charge, invoice, payment)
-core_pricing     -- Catalog (product, price_offer, discount)
-core_usage       -- Usage (usage_record - partitioned)
-core_revenue     -- Rev Rec (journal_entry, deferred_revenue)
-core_config      -- Config (tenant, tenant_merchants, oauth*)
-core_mediation   -- CDR processing
-</code></pre>
+<table>
+<thead><tr>
+<th>Schema</th>
+<th>Purpose</th>
+<th>Key Tables</th>
+</tr></thead><tbody>
+<tr>
+<td>--------</td>
+<td>---------</td>
+<td>------------</td>
+</tr>
+<tr>
+<td><code>core_engine</code></td>
+<td>Shared entities</td>
+<td>account, subscription, user, contact</td>
+</tr>
+<tr>
+<td><code>core_oms</code></td>
+<td>Orders</td>
+<td>order, service_line, order_activity</td>
+</tr>
+<tr>
+<td><code>core_billing</code></td>
+<td>Financial</td>
+<td>charge, invoice, payment, bill_unit</td>
+</tr>
+<tr>
+<td><code>core_pricing</code></td>
+<td>Catalog</td>
+<td>product, price_offer, discount, bundle</td>
+</tr>
+<tr>
+<td><code>core_usage</code></td>
+<td>Usage</td>
+<td>usage_record (partitioned by month)</td>
+</tr>
+<tr>
+<td><code>core_revenue</code></td>
+<td>Rev Rec</td>
+<td>journal_entry, deferred_revenue, schedule</td>
+</tr>
+<tr>
+<td><code>core_config</code></td>
+<td>Config</td>
+<td>tenant, tenant_merchants, oauth_client_details</td>
+</tr>
+<tr>
+<td><code>core_mediation</code></td>
+<td>CDR processing</td>
+<td>mediation_record, cdr_file, rating_result</td>
+</tr>
+</tbody></table>
 <h3>Key Tables:</h3>
 
 <pre><code class="language-sql">-- Account

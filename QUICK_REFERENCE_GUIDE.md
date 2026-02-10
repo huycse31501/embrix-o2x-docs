@@ -23,11 +23,14 @@ External: Salesforce, Nokia, Banks, PAC Providers, ERP
 ```
 
 ### Key Principles:
-- **Shared Engine**: All business logic in `engine`
-- **Event-Driven**: ActiveMQ for async processing
-- **Gateway Pattern**: Isolate external systems
-- **GraphQL-First**: Flexible API layer
-- **Multi-Tenant**: Database-per-tenant
+
+| Principle | Implementation | Benefit |
+|-----------|---------------|---------|
+| **Shared Engine** | All business logic in `engine` library | Single source of truth, consistency |
+| **Event-Driven** | ActiveMQ for async processing | Resilience, scalability, decoupling |
+| **Gateway Pattern** | Isolate external systems | Change APIs without breaking core |
+| **GraphQL-First** | Flexible API layer | Reduce over-fetching, strongly typed |
+| **Multi-Tenant** | Database-per-tenant | Data isolation, customization |
 
 ---
 
@@ -57,16 +60,17 @@ External: Salesforce, Nokia, Banks, PAC Providers, ERP
 ## 🗄️ Database Quick Reference
 
 ### Schemas:
-```sql
-core_engine      -- Shared entities (account, subscription, user)
-core_oms         -- Orders (order, service_line, order_activity)
-core_billing     -- Financial (charge, invoice, payment)
-core_pricing     -- Catalog (product, price_offer, discount)
-core_usage       -- Usage (usage_record - partitioned)
-core_revenue     -- Rev Rec (journal_entry, deferred_revenue)
-core_config      -- Config (tenant, tenant_merchants, oauth*)
-core_mediation   -- CDR processing
-```
+
+| Schema | Purpose | Key Tables |
+|--------|---------|------------|
+| `core_engine` | Shared entities | account, subscription, user, contact |
+| `core_oms` | Orders | order, service_line, order_activity |
+| `core_billing` | Financial | charge, invoice, payment, bill_unit |
+| `core_pricing` | Catalog | product, price_offer, discount, bundle |
+| `core_usage` | Usage | usage_record (partitioned by month) |
+| `core_revenue` | Rev Rec | journal_entry, deferred_revenue, schedule |
+| `core_config` | Config | tenant, tenant_merchants, oauth_client_details |
+| `core_mediation` | CDR processing | mediation_record, cdr_file, rating_result |
 
 ### Key Tables:
 ```sql

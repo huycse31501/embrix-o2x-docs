@@ -145,70 +145,38 @@ This guide is split into 3 comprehensive parts to help you understand everything
 
 ## 🎯 Recommended Reading Path
 
-### For New Developers (Full Path):
-```
-Day 1 Morning:  Part 1 (Business & Architecture)
-                └─→ Understand what you're building
+**Choose your learning path based on your role:**
 
-Day 1 Afternoon: Part 2 (Technical Deep Dive)
-                 └─→ Understand how it's built
-
-Day 2 Morning:   Part 3 Sections 1-2 (Services & Database)
-                 └─→ Understand the components
-
-Day 2 Afternoon: Part 3 Sections 3-4 (Flows & Setup)
-                 └─→ See it in action, set up locally
-
-Day 3:          Explore codebase with guide as reference
-                └─→ Navigate confidently with context
-```
-
-### For Business Analysts:
-```
-Part 1: Full read (60 min)
-        └─→ Business use cases, capabilities
-
-Part 2: Sections 1-2 (Gateway Layer) (30 min)
-        └─→ External integrations
-
-Part 3: Section 3 (Business Flows) (45 min)
-        └─→ End-to-end scenarios
-```
-
-### For Technical Evaluators:
-```
-Part 1: Sections 1, 4, 5, 6 (45 min)
-        └─→ Architecture, technology, multi-tenancy
-
-Part 2: Full read (90 min)
-        └─→ Technical implementation details
-
-Part 3: Section 2 (Database Architecture) (30 min)
-        └─→ Data model and performance
-```
-
-### For QA Engineers:
-```
-Part 1: Sections 1, 2 (30 min)
-        └─→ Business use cases
-
-Part 3: Section 3 (Business Flows) (60 min)
-        └─→ Test scenarios
-
-Part 3: Section 4 (Development Setup) (45 min)
-        └─→ Test environment setup
-```
+| Role | Day/Phase | Content | Time | Goal |
+|------|-----------|---------|------|------|
+| **New Developer** | Day 1 AM | Part 1 (Business & Architecture) | 60 min | Understand what you're building |
+| | Day 1 PM | Part 2 (Technical Deep Dive) | 90 min | Understand how it's built |
+| | Day 2 AM | Part 3 Sections 1-2 (Services & DB) | 60 min | Understand the components |
+| | Day 2 PM | Part 3 Sections 3-4 (Flows & Setup) | 90 min | See it in action, set up locally |
+| | Day 3 | Explore codebase with guide | Full day | Navigate confidently with context |
+| **Business Analyst** | Phase 1 | Part 1 (Full) | 60 min | Business use cases, capabilities |
+| | Phase 2 | Part 2 Sections 1-2 (Gateways) | 30 min | External integrations |
+| | Phase 3 | Part 3 Section 3 (Business Flows) | 45 min | End-to-end scenarios |
+| **Technical Evaluator** | Phase 1 | Part 1 Sections 1, 4, 5, 6 | 45 min | Architecture, technology, multi-tenancy |
+| | Phase 2 | Part 2 (Full) | 90 min | Technical implementation details |
+| | Phase 3 | Part 3 Section 2 (Database) | 30 min | Data model and performance |
+| **QA Engineer** | Phase 1 | Part 1 Sections 1-2 | 30 min | Business use cases |
+| | Phase 2 | Part 3 Section 3 (Business Flows) | 60 min | Test scenarios |
+| | Phase 3 | Part 3 Section 4 (Development Setup) | 45 min | Test environment setup |
 
 ---
 
 ## 📖 Quick Reference Guide
 
 ### Business Use Cases Covered:
-1. **New Customer Signup** - Internet service order → provisioning → first invoice
-2. **Mobile Usage Processing** - Phone calls → CDR mediation → rating → billing
-3. **Service Suspension/Resume** - Overdue payment → suspension → payment → auto-resume
-4. **Payment Processing** - Bank file upload → payment allocation → invoice updates
-5. **Tax Compliance** - Invoice generation → CFDI XML → PAC stamping → delivery
+
+| Use Case | Flow | Documentation |
+|----------|------|---------------|
+| **New Customer Signup** | Internet service order → provisioning → first invoice | Part 3, Section 3.1 |
+| **Mobile Usage Processing** | Phone calls → CDR mediation → rating → billing | Part 3, Section 3.2 |
+| **Service Suspension/Resume** | Overdue payment → suspension → payment → auto-resume | Part 3, Section 3.3 |
+| **Payment Processing** | Bank file upload → payment allocation → invoice updates | Part 2, Section 2.4 |
+| **Tax Compliance** | Invoice generation → CFDI XML → PAC stamping → delivery | Part 2, Section 2.3 |
 
 ### Architecture Patterns Explained:
 - **Shared Engine Pattern** - Centralized business logic in `engine`
@@ -228,37 +196,46 @@ Part 3: Section 4 (Development Setup) (45 min)
 - **Infrastructure**: Docker, Kubernetes, Helm
 
 ### Hubs in Engine:
-1. **arHub** - Accounts Receivable (payments, collections)
-2. **billingHub** - Billing Operations (cycles, proration, discounts)
-3. **customerHub** - Customer Management (accounts, orders, subscriptions)
-4. **pricingHub** - Product Catalog (products, pricing, bundles)
-5. **revenueHub** - Revenue Recognition (IFRS 15, ASC 606)
-6. **usageProcessHub** - Usage Rating (charge calculation)
-7. **mediationHub** - Usage Mediation (CDR processing)
-8. **opsHub** - Operations (users, jobs, notifications, tenants)
-9. **commonHub** - Shared Services (documents, files, templates)
-10. **migrationHub** - Data Migration
-11. **selfCareHub** - Customer Self-Service
+
+| Hub | Purpose | Key Responsibilities |
+|-----|---------|---------------------|
+| **arHub** | Accounts Receivable | Payments, collections, payment allocation |
+| **billingHub** | Billing Operations | Billing cycles, proration, discounts, invoice generation |
+| **customerHub** | Customer Management | Accounts, orders, subscriptions, contacts |
+| **pricingHub** | Product Catalog | Products, pricing, bundles, promotions |
+| **revenueHub** | Revenue Recognition | IFRS 15, ASC 606, deferred revenue, schedules |
+| **usageProcessHub** | Usage Rating | Charge calculation, pricing plan application |
+| **mediationHub** | Usage Mediation | CDR processing, normalization, deduplication |
+| **opsHub** | Operations | Users, jobs, notifications, tenants, permissions |
+| **commonHub** | Shared Services | Documents, files, templates, utilities |
+| **migrationHub** | Data Migration | Legacy system migration, data import |
+| **selfCareHub** | Customer Self-Service | Self-care portal APIs, customer actions |
 
 ### Core Services:
-1. **service-billing** - Billing cycle execution
-2. **service-invoice** - Invoice document generation
-3. **service-usage** - Usage data repository
-4. **service-mediation** - CDR ingestion
-5. **service-payment** - Payment processing
-6. **service-revenue** - Revenue recognition
-7. **service-transactional** - Real-time operations
-8. **service-sso** - Single sign-on
-9. **service-proxy** - API gateway
-10. **batch-process** - Background jobs
+
+| Service | Purpose | Key Features |
+|---------|---------|--------------|
+| **service-billing** | Billing cycle execution | Invoice generation, proration, recurring charges |
+| **service-invoice** | Invoice document generation | PDF/HTML/XML creation, templates |
+| **service-usage** | Usage data repository | CDR storage, usage aggregation |
+| **service-mediation** | CDR ingestion | Usage import, normalization, deduplication |
+| **service-payment** | Payment processing | Payment application, reconciliation |
+| **service-revenue** | Revenue recognition | GAAP compliance, deferred revenue |
+| **service-transactional** | Real-time operations | GraphQL API, main business logic |
+| **service-sso** | Single sign-on | Authentication, authorization, JWT |
+| **service-proxy** | API gateway | Request routing, rate limiting |
+| **batch-process** | Background jobs | Scheduled jobs, billing runs, reports |
 
 ### Gateways:
-1. **crm_gateway** - CRM integration (Salesforce)
-2. **provision_gateway** - Network provisioning (Nokia, ServiceNow)
-3. **tax-gateway** - Tax calculation
-4. **payment-gateway** - Payment processors (Stripe, banks)
-5. **finance-gateway** - ERP integration (QuickBooks, NetSuite)
-6. **diameter-gateway** - Real-time charging
+
+| Gateway | Port | Integration Target | Purpose |
+|---------|------|-------------------|---------|
+| **crm_gateway** | 8080 | Salesforce, MS Dynamics | CRM integration, order capture |
+| **provision_gateway** | 8081 | Nokia, ServiceNow, Cisco | Network provisioning, equipment config |
+| **tax-gateway** | 8082 | Avalara, PAC providers | Tax calculation, CFDI stamping |
+| **payment-gateway** | 8083 | Stripe, Braintree, banks | Payment processing, bank files |
+| **finance-gateway** | 8084 | QuickBooks, NetSuite, SAP | ERP integration, GL posting |
+| **diameter-gateway** | 8085 | Network elements | Real-time charging, quota management |
 
 ---
 

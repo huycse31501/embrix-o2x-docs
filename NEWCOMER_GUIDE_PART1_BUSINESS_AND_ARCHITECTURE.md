@@ -33,30 +33,28 @@
 ### 1.2 Target Market
 
 **Primary Market:** Telecommunications & Service Providers
-- Internet Service Providers (ISPs)
-- Mobile Network Operators (MNOs)
-- Cable Companies
-- VoIP Service Providers
-- Cloud Service Providers
-- Utility Companies (expanding market)
 
-### 1.3 Problem Statement
+| Industry Vertical | Business Model | Example Companies |
+|-------------------|----------------|-------------------|
+| **Internet Service Providers (ISPs)** | Broadband, fiber, wireless internet | Regional ISPs, fixed wireless operators |
+| **Mobile Network Operators (MNOs)** | Mobile voice, data, SMS services | Mobile carriers, MVNOs |
+| **Cable Companies** | Cable TV, internet, phone bundles | Cable MSOs, regional providers |
+| **VoIP Service Providers** | Business VoIP, UCaaS, CCaaS | Cloud communications platforms |
+| **Cloud Service Providers** | IaaS, SaaS with usage-based billing | API platforms, cloud infrastructure |
+| **Utility Companies** | Water, electricity, gas (expanding) | Multi-utility providers |
 
-Traditional telecom billing systems struggle with:
-- ❌ Complex pricing models (tiered, bundled, promotional)
-- ❌ High-volume usage data processing (millions of CDRs daily)
-- ❌ Multi-country tax compliance (especially LATAM)
-- ❌ Real-time service provisioning integration
-- ❌ Revenue recognition compliance (IFRS 15, ASC 606)
-- ❌ Integration with diverse external systems (CRM, ERP, payment gateways)
+### 1.3 Problem Statement & Solution
 
-**Embrix O2X Solution:**
-✅ Flexible product catalog and pricing engine  
-✅ High-performance usage mediation and rating  
-✅ Automated tax compliance (Mexican CFDI, etc.)  
-✅ Multi-vendor provisioning orchestration  
-✅ Built-in revenue recognition  
-✅ Gateway-based integration architecture
+Traditional telecom billing systems face significant challenges. Embrix O2X provides modern solutions:
+
+| Challenge | Legacy System Limitation | Embrix O2X Solution |
+|-----------|-------------------------|---------------------|
+| **Complex Pricing** | Rigid pricing rules, hard-coded logic | Flexible product catalog with tiered, bundled, volume, and promotional pricing engine |
+| **High-Volume Usage** | Batch processing delays, performance bottlenecks | High-performance mediation and rating (millions of CDRs daily in real-time) |
+| **Tax Compliance** | Manual tax calculation, compliance risk | Automated multi-country tax (Mexican CFDI, Avalara integration, jurisdiction mapping) |
+| **Provisioning** | Manual handoffs, vendor-specific code | Multi-vendor provisioning orchestration with canonical mapping |
+| **Revenue Recognition** | Manual accounting, compliance risk | Built-in GAAP-compliant recognition (IFRS 15, ASC 606, deferred revenue) |
+| **System Integration** | Point-to-point integrations, tight coupling | Gateway-based architecture (CRM, ERP, payment, tax gateways with canonical APIs) |
 
 ---
 
@@ -155,6 +153,21 @@ Customer receives "Service Restored" notification
 
 ### 2.2 Key Business Capabilities
 
+**Overview**: Embrix O2X delivers eight core business capabilities that power telecommunications and SaaS operations.
+
+| # | Capability | Primary Purpose | Key Benefit |
+|---|------------|-----------------|-------------|
+| 1 | Order Management | Accept and orchestrate service orders | 95% automation, real-time validation |
+| 2 | Service Provisioning | Network and equipment configuration | Minutes instead of days |
+| 3 | Usage Mediation & Rating | Process CDRs and calculate charges | Millions of records daily |
+| 4 | Billing & Invoicing | Generate customer invoices | Automated with proration |
+| 5 | Payment Processing | Multi-channel payment collection | Improved collection rates |
+| 6 | Tax Compliance | Regulatory compliance (CFDI, VAT) | Avoid penalties, audit-ready |
+| 7 | Revenue Recognition | GAAP-compliant accounting | IFRS 15 / ASC 606 compliant |
+| 8 | Financial Integration | ERP/accounting system sync | Eliminate manual GL entries |
+
+---
+
 #### 2.2.1 Order Management
 **What it does:**
 - Accepts orders from CRM systems (Salesforce, Dynamics)
@@ -168,6 +181,8 @@ Customer receives "Service Restored" notification
 - Real-time validation prevents invalid orders
 - Order tracking provides transparency to customers and support teams
 
+---
+
 #### 2.2.2 Service Provisioning
 **What it does:**
 - Integrates with network provisioning systems (Nokia, ServiceNow, Cisco)
@@ -180,6 +195,8 @@ Customer receives "Service Restored" notification
 - Reduces provisioning time from days to minutes
 - Eliminates manual configuration errors
 - Enables zero-touch provisioning for customers
+
+---
 
 #### 2.2.3 Usage Mediation & Rating
 **What it does:**
@@ -195,6 +212,8 @@ Customer receives "Service Restored" notification
 - Ensures accurate billing for usage-based services
 - Real-time quota monitoring prevents bill shock
 
+---
+
 #### 2.2.4 Billing & Invoicing
 **What it does:**
 - Generates recurring charges (monthly subscriptions)
@@ -209,6 +228,8 @@ Customer receives "Service Restored" notification
 - Multi-format invoices support diverse customer preferences
 - Tax compliance reduces audit risk
 
+---
+
 #### 2.2.5 Payment Processing
 **What it does:**
 - Integrates with payment gateways (Stripe, PayPal, bank transfers)
@@ -221,6 +242,8 @@ Customer receives "Service Restored" notification
 - Multiple payment options improve collection rates
 - Automated reconciliation reduces manual effort
 - Real-time payment processing improves cash flow
+
+---
 
 #### 2.2.6 Tax Compliance
 **What it does:**
@@ -236,6 +259,8 @@ Customer receives "Service Restored" notification
 - Complete audit trail for compliance verification
 - Supports multi-country expansion
 
+---
+
 #### 2.2.7 Revenue Recognition
 **What it does:**
 - **IFRS 15 / ASC 606 Compliance**: Follows international accounting standards
@@ -249,6 +274,8 @@ Customer receives "Service Restored" notification
 - Provides accurate financial reporting
 - Supports audits and SEC reporting (for public companies)
 - Automates complex revenue recognition rules
+
+---
 
 #### 2.2.8 Financial Integration
 **What it does:**
@@ -281,18 +308,10 @@ Based on Helm configurations and production deployments:
 
 ### 3.2 Scale Indicators
 
-**MCM Telecom (Mexico):**
-- Processes millions of CDRs monthly
-- Mexican CFDI compliance with PAC integration
-- Multi-bank payment processing (Banamex, Bancomer, Banorte, Santander)
-- Nokia provisioning integration
-- ServiceNow ticketing integration
-
-**CoopeG (Costa Rica):**
-- Multi-service provider (Internet, Voice, TV)
-- Complex bundled pricing
-- Customer self-service portal
-- High transaction volume
+| Tenant | Scale/Volume | Integrations | Complexity |
+|--------|--------------|--------------|------------|
+| **MCM Telecom** (Mexico) | • Millions of CDRs monthly<br>• Large subscriber base | • Nokia provisioning<br>• ServiceNow ticketing<br>• Multi-bank (Banamex, Bancomer, Banorte, Santander)<br>• PAC for CFDI stamping | • Mexican CFDI compliance<br>• Multi-channel payment<br>• High-volume mediation |
+| **CoopeG** (Costa Rica) | • High transaction volume<br>• Multi-service subscriptions | • Customer self-care portal<br>• Payment gateway<br>• Provisioning systems | • Multi-service bundling (Internet, Voice, TV)<br>• Complex pricing<br>• Cooperative model |
 
 ---
 
@@ -348,6 +367,18 @@ Based on Helm configurations and production deployments:
 
 ### 4.2 Architecture Principles
 
+**Core Architectural Decisions**: Five foundational principles guide all system design decisions.
+
+| Principle | Purpose | Key Benefit |
+|-----------|---------|-------------|
+| **Shared Engine Pattern** | Centralize business logic | Single source of truth, consistency |
+| **Event-Driven Architecture** | Async messaging via ActiveMQ | Resilience, scalability, decoupling |
+| **Gateway Pattern** | Isolate external systems | Change external APIs without breaking core |
+| **GraphQL-First API** | Flexible data fetching | Strongly typed, reduce over-fetching |
+| **Multi-Tenancy** | Shared infrastructure per tenant | Cost efficiency, isolation, customization |
+
+---
+
 #### 4.2.1 Shared Engine Pattern
 **Principle:** Centralize business logic in shared library (`engine`)
 
@@ -373,6 +404,8 @@ BillingEngine billingEngine
 def charge = billingEngine.calculateProration(subscription, ProrationModel.DAYS_IN_MONTH)
 ```
 
+---
+
 #### 4.2.2 Event-Driven Architecture
 **Principle:** Asynchronous communication via ActiveMQ
 
@@ -392,6 +425,8 @@ from("activemq://OMS")
     .process(provisioningProcessor)
 ```
 
+---
+
 #### 4.2.3 Gateway Pattern
 **Principle:** Gateways isolate core from external systems
 
@@ -407,6 +442,8 @@ service-billing → tax-gateway → [Avalara OR custom tax engine]
                       ↑
                       Changes here don't affect service-billing
 ```
+
+---
 
 #### 4.2.4 GraphQL-First API
 **Principle:** Core services expose GraphQL endpoints
@@ -432,6 +469,8 @@ query {
   }
 }
 ```
+
+---
 
 #### 4.2.5 Hub-Based Organization
 **Principle:** Business domains organized into "Hubs" in engine
