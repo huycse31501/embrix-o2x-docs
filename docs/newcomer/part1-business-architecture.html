@@ -1,0 +1,925 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Part 1: Business & Architecture - Embrix O2X</title>
+    
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+        line-height: 1.6;
+        color: #333;
+        background: #f5f5f5;
+        padding: 20px;
+    }
+
+    .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        background: white;
+        padding: 40px;
+        border-radius: 10px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+    }
+
+    .nav-header {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 20px;
+        border-radius: 8px;
+        margin-bottom: 30px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+    }
+
+    .nav-header h1 {
+        font-size: 1.5em;
+        margin-bottom: 5px;
+    }
+
+    .nav-links {
+        display: flex;
+        gap: 15px;
+        flex-wrap: wrap;
+    }
+
+    .nav-links a {
+        color: white;
+        text-decoration: none;
+        padding: 8px 16px;
+        background: rgba(255,255,255,0.2);
+        border-radius: 5px;
+        transition: background 0.3s;
+    }
+
+    .nav-links a:hover {
+        background: rgba(255,255,255,0.3);
+    }
+
+    h1 {
+        color: #667eea;
+        margin: 30px 0 20px 0;
+        padding-bottom: 10px;
+        border-bottom: 3px solid #667eea;
+        font-size: 2.5em;
+    }
+
+    h2 {
+        color: #764ba2;
+        margin: 25px 0 15px 0;
+        padding-bottom: 8px;
+        border-bottom: 2px solid #f0f0f0;
+        font-size: 2em;
+    }
+
+    h3 {
+        color: #667eea;
+        margin: 20px 0 10px 0;
+        font-size: 1.5em;
+    }
+
+    h4 {
+        color: #764ba2;
+        margin: 15px 0 10px 0;
+        font-size: 1.2em;
+    }
+
+    p {
+        margin: 15px 0;
+        line-height: 1.8;
+    }
+
+    ul, ol {
+        margin: 15px 0;
+        padding-left: 30px;
+    }
+
+    li {
+        margin: 8px 0;
+        line-height: 1.6;
+    }
+
+    code {
+        background: #f4f4f4;
+        padding: 2px 6px;
+        border-radius: 3px;
+        font-family: 'Courier New', Courier, monospace;
+        font-size: 0.9em;
+        color: #e83e8c;
+    }
+
+    pre {
+        background: #2d2d2d;
+        color: #f8f8f2;
+        padding: 20px;
+        border-radius: 8px;
+        overflow-x: auto;
+        margin: 20px 0;
+        border-left: 4px solid #667eea;
+    }
+
+    pre code {
+        background: none;
+        color: #f8f8f2;
+        padding: 0;
+    }
+
+    blockquote {
+        border-left: 4px solid #667eea;
+        padding-left: 20px;
+        margin: 20px 0;
+        color: #666;
+        font-style: italic;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 20px 0;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    th {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 12px;
+        text-align: left;
+        font-weight: 600;
+    }
+
+    td {
+        padding: 12px;
+        border-bottom: 1px solid #f0f0f0;
+    }
+
+    tr:hover {
+        background: #f8f9fa;
+    }
+
+    .info-box {
+        background: #e3f2fd;
+        border-left: 4px solid #2196f3;
+        padding: 15px;
+        margin: 20px 0;
+        border-radius: 5px;
+    }
+
+    .warning-box {
+        background: #fff3e0;
+        border-left: 4px solid #ff9800;
+        padding: 15px;
+        margin: 20px 0;
+        border-radius: 5px;
+    }
+
+    .success-box {
+        background: #e8f5e9;
+        border-left: 4px solid #4caf50;
+        padding: 15px;
+        margin: 20px 0;
+        border-radius: 5px;
+    }
+
+    .toc {
+        background: #f8f9fa;
+        padding: 20px;
+        border-radius: 8px;
+        margin: 20px 0;
+        border-left: 4px solid #667eea;
+    }
+
+    .toc h2 {
+        color: #667eea;
+        border-bottom: none;
+        margin-bottom: 15px;
+    }
+
+    .toc ul {
+        list-style: none;
+        padding-left: 0;
+    }
+
+    .toc li {
+        margin: 8px 0;
+    }
+
+    .toc a {
+        color: #667eea;
+        text-decoration: none;
+        transition: color 0.3s;
+    }
+
+    .toc a:hover {
+        color: #764ba2;
+    }
+
+    hr {
+        border: none;
+        border-top: 2px solid #f0f0f0;
+        margin: 30px 0;
+    }
+
+    .badge {
+        display: inline-block;
+        background: #667eea;
+        color: white;
+        padding: 4px 10px;
+        border-radius: 12px;
+        font-size: 0.85em;
+        margin-left: 10px;
+    }
+
+    a {
+        color: #667eea;
+        text-decoration: none;
+        transition: color 0.3s;
+    }
+
+    a:hover {
+        color: #764ba2;
+        text-decoration: underline;
+    }
+
+    footer {
+        margin-top: 50px;
+        padding-top: 30px;
+        border-top: 2px solid #f0f0f0;
+        text-align: center;
+        color: #888;
+    }
+
+    @media print {
+        body {
+            background: white;
+        }
+        .nav-header, .nav-links {
+            display: none;
+        }
+        pre {
+            break-inside: avoid;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .container {
+            padding: 20px;
+        }
+        .nav-header {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+        .nav-links {
+            margin-top: 15px;
+        }
+        h1 {
+            font-size: 2em;
+        }
+        h2 {
+            font-size: 1.5em;
+        }
+    }
+</style>
+
+</head>
+<body>
+    <div class="container">
+        <div class="nav-header"><div><h1>Embrix O2X Documentation</h1><small>Navigate between guides</small></div><div class="nav-links"><a href="index.html">Home</a><a href="guide-index.html">Guide Index</a><a href="part1-business-architecture.html">Part 1</a><a href="part2-technical-deep-dive.html">Part 2</a><a href="part3-services-development.html">Part 3</a><a href="multi-tenant-complete-guide.html">Multi-Tenant</a><a href="quick-reference.html">Quick Ref</a></div></div>
+        <h1>Embrix O2X Platform - Newcomer's Guide (Part 1)</h1>
+<h2>Business Overview & System Architecture</h2><p><strong>Version</strong>: 3.1.9-SNAPSHOT  
+<strong>Last Updated</strong>: February 2026  
+<strong>Target Audience</strong>: New developers, business analysts, and technical stakeholders</p><hr><h2>Table of Contents - Part 1</h2><ol>
+<li><a href="#1-what-is-embrix-o2x">What is Embrix O2X?</a></li>
+<li><a href="#2-business-purpose--use-cases">Business Purpose & Use Cases</a></li>
+<li><a href="#3-current-production-deployments">Current Production Deployments</a></li>
+<li><a href="#4-system-architecture-overview">System Architecture Overview</a></li>
+<li><a href="#5-technology-stack">Technology Stack</a></li>
+<li><a href="#6-multi-tenant-architecture">Multi-Tenant Architecture</a></li>
+<li><a href="#7-key-business-capabilities">Key Business Capabilities</a></li>
+</ol><hr><h2>1. What is Embrix O2X?</h2><h3>1.1 Platform Definition</h3><p><strong>Embrix O2X (Order-to-X)</strong> is an enterprise-grade <strong>telecommunications billing and order management platform</strong> designed for service providers. The platform handles the complete customer lifecycle from order entry through provisioning, usage tracking, billing, invoicing, payment processing, and revenue recognition.</p><p><strong>"Order-to-X" means:</strong>
+<ul>
+<li><strong>Order-to-Cash</strong>: Order → Provisioning → Billing → Payment</li>
+<li><strong>Order-to-Revenue</strong>: Revenue recognition and financial compliance</li>
+<li><strong>Order-to-Service</strong>: Service activation and lifecycle management</li>
+</ul><h3>1.2 Target Market</h3><p><strong>Primary Market:</strong> Telecommunications & Service Providers
+<ul>
+<li>Internet Service Providers (ISPs)</li>
+<li>Mobile Network Operators (MNOs)</li>
+<li>Cable Companies</li>
+<li>VoIP Service Providers</li>
+<li>Cloud Service Providers</li>
+<li>Utility Companies (expanding market)</li>
+</ul><h3>1.3 Problem Statement</h3><p>Traditional telecom billing systems struggle with:
+<ul>
+<li>❌ Complex pricing models (tiered, bundled, promotional)</li>
+<li>❌ High-volume usage data processing (millions of CDRs daily)</li>
+<li>❌ Multi-country tax compliance (especially LATAM)</li>
+<li>❌ Real-time service provisioning integration</li>
+<li>❌ Revenue recognition compliance (IFRS 15, ASC 606)</li>
+<li>❌ Integration with diverse external systems (CRM, ERP, payment gateways)</li>
+</ul><p><strong>Embrix O2X Solution:</strong>
+✅ Flexible product catalog and pricing engine  
+✅ High-performance usage mediation and rating  
+✅ Automated tax compliance (Mexican CFDI, etc.)  
+✅ Multi-vendor provisioning orchestration  
+✅ Built-in revenue recognition  
+✅ Gateway-based integration architecture</p><hr><h2>2. Business Purpose & Use Cases</h2><h3>2.1 Real-World Business Scenarios</h3><h4>Scenario 1: New Customer Signs Up for Internet Service</h4><p><strong>Business Flow:</strong>
+<pre><code class="language-">Customer submits order via web portal
+    ↓
+Order validated (address serviceable, credit check)
+    ↓
+Service provisioned (ONT configured, VLAN assigned)
+    ↓
+Billing cycle started (prorated first month)
+    ↓
+Invoice generated with taxes
+    ↓
+Customer receives email with invoice PDF
+    ↓
+Payment processed (bank transfer)
+    ↓
+Payment allocated to invoice
+    ↓
+Revenue recognized over service period
+</code></pre><p><strong>Embrix O2X Components Involved:</strong>
+<ul>
+<li><code>crm_gateway</code> - Order intake from Salesforce</li>
+<li><code>provision_gateway</code> - Nokia/ServiceNow provisioning</li>
+<li><code>service-billing</code> - Charge generation</li>
+<li><code>tax-gateway</code> - Tax calculation</li>
+<li><code>service-invoice</code> - PDF generation</li>
+<li><code>service-payment</code> - Payment processing</li>
+<li><code>service-revenue</code> - Revenue recognition</li>
+</ul><h4>Scenario 2: Mobile Customer Makes 100 Phone Calls</h4><p><strong>Business Flow:</strong>
+<pre><code class="language-">Network switches generate 100 CDR records
+    ↓
+CDR file placed on SFTP server
+    ↓
+Mediation system ingests and normalizes CDRs
+    ↓
+Rating engine calculates charges (minutes used vs plan quota)
+    ↓
+Charges accumulated for monthly invoice
+    ↓
+End of month: Invoice includes usage charges
+    ↓
+Customer pays invoice
+    ↓
+Revenue recognized
+</code></pre><p><strong>Embrix O2X Components Involved:</strong>
+<ul>
+<li><code>service-mediation</code> - CDR ingestion and normalization</li>
+<li><code>service-usage</code> - Rating and charge calculation</li>
+<li><code>service-billing</code> - Monthly billing cycle</li>
+<li><code>service-invoice</code> - Invoice generation</li>
+<li><code>service-payment</code> - Payment processing</li>
+</ul><h4>Scenario 3: Customer Payment Restores Suspended Service</h4><p><strong>Business Flow:</strong>
+<pre><code class="language-">Customer account has negative balance (overdue invoices)
+    ↓
+Service automatically suspended (EP-5480 auto-suspend)
+    ↓
+Customer makes payment via bank transfer
+    ↓
+Payment file uploaded by bank daily
+    ↓
+Payment allocated to outstanding invoices
+    ↓
+Account balance becomes positive
+    ↓
+System auto-generates RESUME order (EP-5480 enhancement)
+    ↓
+Service restored on network
+    ↓
+Customer receives "Service Restored" notification
+</code></pre><p><strong>Embrix O2X Components Involved:</strong>
+<ul>
+<li><code>service-payment</code> - Bank file processing</li>
+<li><code>crm_gateway</code> - Auto-resume order generation</li>
+<li><code>provision_gateway</code> - Service restoration</li>
+<li>Notification service - Customer communication</li>
+</ul><h3>2.2 Key Business Capabilities</h3><h4>2.2.1 Order Management</h4>
+<strong>What it does:</strong>
+<ul>
+<li>Accepts orders from CRM systems (Salesforce, Dynamics)</li>
+<li>Validates order feasibility (service availability, credit limits)</li>
+<li>Orchestrates complex fulfillment workflows</li>
+<li>Tracks order status through lifecycle</li>
+<li>Handles order modifications and cancellations</li>
+</ul><p><strong>Business Value:</strong>
+<ul>
+<li>Automated order processing reduces manual errors</li>
+<li>Real-time validation prevents invalid orders</li>
+<li>Order tracking provides transparency to customers and support teams</li>
+</ul><h4>2.2.2 Service Provisioning</h4>
+<strong>What it does:</strong>
+<ul>
+<li>Integrates with network provisioning systems (Nokia, ServiceNow, Cisco)</li>
+<li>Assigns network resources (IP addresses, DIDs, VLANs)</li>
+<li>Configures customer equipment (ONTs, STBs, routers)</li>
+<li>Handles asynchronous provisioning workflows</li>
+<li>Manages equipment inventory</li>
+</ul><p><strong>Business Value:</strong>
+<ul>
+<li>Reduces provisioning time from days to minutes</li>
+<li>Eliminates manual configuration errors</li>
+<li>Enables zero-touch provisioning for customers</li>
+</ul><h4>2.2.3 Usage Mediation & Rating</h4>
+<strong>What it does:</strong>
+<ul>
+<li>Collects usage data from network elements (voice, SMS, data)</li>
+<li>Normalizes diverse CDR formats to canonical format</li>
+<li>Deduplicates records to prevent double-billing</li>
+<li>Rates usage according to customer pricing plans</li>
+<li>Tracks quotas and triggers overage charges</li>
+</ul><p><strong>Business Value:</strong>
+<ul>
+<li>Processes millions of CDRs daily</li>
+<li>Supports complex pricing (tiered, bundled, time-of-day)</li>
+<li>Ensures accurate billing for usage-based services</li>
+<li>Real-time quota monitoring prevents bill shock</li>
+</ul><h4>2.2.4 Billing & Invoicing</h4>
+<strong>What it does:</strong>
+<ul>
+<li>Generates recurring charges (monthly subscriptions)</li>
+<li>Calculates prorated charges for mid-cycle changes</li>
+<li>Aggregates usage charges</li>
+<li>Calculates taxes (VAT, sales tax, telecom-specific taxes)</li>
+<li>Generates customer-facing invoices (PDF, HTML, XML)</li>
+</ul><p><strong>Business Value:</strong>
+<ul>
+<li>Automated billing reduces manual effort</li>
+<li>Accurate proration ensures fair charging</li>
+<li>Multi-format invoices support diverse customer preferences</li>
+<li>Tax compliance reduces audit risk</li>
+</ul><h4>2.2.5 Payment Processing</h4>
+<strong>What it does:</strong>
+<ul>
+<li>Integrates with payment gateways (Stripe, PayPal, bank transfers)</li>
+<li>Processes automated bank file uploads (Banamex, Bancomer, Santander)</li>
+<li>Allocates payments to outstanding invoices</li>
+<li>Manages payment methods (credit cards, ACH, wire transfer)</li>
+<li>Handles payment failures and retries</li>
+</ul><p><strong>Business Value:</strong>
+<ul>
+<li>Multiple payment options improve collection rates</li>
+<li>Automated reconciliation reduces manual effort</li>
+<li>Real-time payment processing improves cash flow</li>
+</ul><h4>2.2.6 Tax Compliance</h4>
+<strong>What it does:</strong>
+<ul>
+<li><strong>Mexican CFDI Compliance</strong>: Generates digital invoices (Comprobante Fiscal Digital por Internet)</li>
+<li><strong>PAC Integration</strong>: Submits invoices to authorized stamping providers</li>
+<li><strong>UUID Tracking</strong>: Tracks digital stamp IDs for audit purposes</li>
+<li><strong>SFTP Automation</strong>: Automated file exchange with PAC providers</li>
+<li><strong>Audit Trail</strong>: Complete compliance documentation</li>
+</ul><p><strong>Business Value:</strong>
+<ul>
+<li>Avoids penalties from Mexican tax authority (SAT)</li>
+<li>Automated stamping reduces manual effort</li>
+<li>Complete audit trail for compliance verification</li>
+<li>Supports multi-country expansion</li>
+</ul><h4>2.2.7 Revenue Recognition</h4>
+<strong>What it does:</strong>
+<ul>
+<li><strong>IFRS 15 / ASC 606 Compliance</strong>: Follows international accounting standards</li>
+<li><strong>Deferred Revenue</strong>: Tracks prepaid services</li>
+<li><strong>Performance Obligations</strong>: Manages revenue recognition schedules</li>
+<li><strong>Journal Entry Generation</strong>: Exports to ERP systems</li>
+<li><strong>Revenue Reporting</strong>: Financial dashboards and reports</li>
+</ul><p><strong>Business Value:</strong>
+<ul>
+<li>Ensures compliance with accounting standards</li>
+<li>Provides accurate financial reporting</li>
+<li>Supports audits and SEC reporting (for public companies)</li>
+<li>Automates complex revenue recognition rules</li>
+</ul><h4>2.2.8 Financial Integration</h4>
+<strong>What it does:</strong>
+<ul>
+<li><strong>ERP Integration</strong>: QuickBooks, NetSuite, Oracle EBS, SAP</li>
+<li><strong>GL Posting</strong>: Automated general ledger entries</li>
+<li><strong>Reconciliation</strong>: Matches billing to financial records</li>
+<li><strong>OAuth2 Authentication</strong>: Secure integration with financial systems</li>
+</ul><p><strong>Business Value:</strong>
+<ul>
+<li>Eliminates manual data entry in accounting systems</li>
+<li>Ensures consistency between billing and financial data</li>
+<li>Reduces month-end close time</li>
+<li>Improves financial reporting accuracy</li>
+</ul><hr><h2>3. Current Production Deployments</h2><h3>3.1 Live Tenants</h3><p>Based on Helm configurations and production deployments:</p><p>| Tenant | Country | Industry | Services | Status |
+|--------|---------|----------|----------|--------|
+| <strong>MCM Telecom</strong> | Mexico | Fixed-line ISP | Internet, Voice | Production |
+| <strong>CoopeG</strong> | Costa Rica | Cooperative Telecom | Internet, Voice, TV | Production |
+| <strong>CoopeG Energy</strong> | Costa Rica | Energy Utility | Electricity Billing | Production |
+| <strong>Urbanos</strong> | (TBD) | (TBD) | (TBD) | Development |
+| <strong>SHM</strong> | (TBD) | (TBD) | (TBD) | Production |</p><h3>3.2 Scale Indicators</h3><p><strong>MCM Telecom (Mexico):</strong>
+<ul>
+<li>Processes millions of CDRs monthly</li>
+<li>Mexican CFDI compliance with PAC integration</li>
+<li>Multi-bank payment processing (Banamex, Bancomer, Banorte, Santander)</li>
+<li>Nokia provisioning integration</li>
+<li>ServiceNow ticketing integration</li>
+</ul><p><strong>CoopeG (Costa Rica):</strong>
+<ul>
+<li>Multi-service provider (Internet, Voice, TV)</li>
+<li>Complex bundled pricing</li>
+<li>Customer self-service portal</li>
+<li>High transaction volume</li>
+</ul><hr><h2>4. System Architecture Overview</h2><h3>4.1 Layered Architecture</h3><pre><code class="language-">┌─────────────────────────────────────────────────────────────────────┐
+│                        EXTERNAL SYSTEMS                              │
+│  Salesforce CRM | Nokia Provisioning | Banks | PAC Providers | ERP  │
+└────────────┬────────────────────────────────────┬────────────────────┘
+             │                                    │
+             ▼                                    ▼
+┌─────────────────────────────────────────────────────────────────────┐
+│                         GATEWAY LAYER                                │
+│  crm_gateway (8080) | provision_gateway (8081) | tax-gateway        │
+│  payment-gateway | finance-gateway | diameter-gateway               │
+│  Purpose: Normalize external data, protect core from changes        │
+└────────────┬────────────────────────────────────┬────────────────────┘
+             │                                    │
+             ▼                                    ▼
+┌─────────────────────────────────────────────────────────────────────┐
+│              MESSAGING & ORCHESTRATION LAYER                         │
+│         ActiveMQ Broker (tcp://localhost:61616)                      │
+│  Queues: OMS | PROVISIONING_RESPONSE | MEDIATION | USAGE | BULK     │
+│  Purpose: Async processing, decoupling, resilience                  │
+└────────────┬────────────────────────────────────┬────────────────────┘
+             │                                    │
+             ▼                                    ▼
+┌─────────────────────────────────────────────────────────────────────┐
+│                      CORE SERVICES LAYER                             │
+│  service-billing | service-invoice | service-usage | service-payment│
+│  service-mediation | service-revenue | batch-process                │
+│  Purpose: Exposes business capabilities via GraphQL APIs            │
+└────────────┬────────────────────────────────────┬────────────────────┘
+             │                                    │
+             ▼                                    ▼
+┌─────────────────────────────────────────────────────────────────────┐
+│                   SHARED FOUNDATION LAYER                            │
+│  ENGINE (Business Logic Hubs) | COMMON (DTOs/Enums)                 │
+│  oms-component | gateway-common | jobs-common                        │
+│  Purpose: Centralized business rules, shared libraries              │
+└────────────┬────────────────────────────────────┬────────────────────┘
+             │                                    │
+             ▼                                    ▼
+┌─────────────────────────────────────────────────────────────────────┐
+│                    INFRASTRUCTURE LAYER                              │
+│  PostgreSQL 10.5 | Redis | ActiveMQ 5.15.9 | Vault | AWS S3         │
+│  Purpose: Data persistence, caching, secrets, storage               │
+└─────────────────────────────────────────────────────────────────────┘
+</code></pre><h3>4.2 Architecture Principles</h3><h4>4.2.1 Shared Engine Pattern</h4>
+<strong>Principle:</strong> Centralize business logic in shared library (<code>engine</code>)</p><p><strong>Why:</strong>
+<ul>
+<li>Single source of truth for business rules</li>
+<li>Consistency across all services</li>
+<li>Easier maintenance and testing</li>
+<li>Reduced code duplication</li>
+</ul><p><strong>Example:</strong>
+<pre><code class="language-groovy">// In engine/src/main/groovy/com/embrix/core/engine/billingHub/
+class BillingEngine {
+    Charge calculateProration(Subscription sub, ProrationModel model) {
+        // Complex proration logic used by ALL services
+    }
+}</p><p>// In service-billing (uses engine)
+@Autowired
+BillingEngine billingEngine</p><p>def charge = billingEngine.calculateProration(subscription, ProrationModel.DAYS_IN_MONTH)
+</code></pre><h4>4.2.2 Event-Driven Architecture</h4>
+<strong>Principle:</strong> Asynchronous communication via ActiveMQ</p><p><strong>Why:</strong>
+<ul>
+<li>Resilience: Services can be down without losing messages</li>
+<li>Scalability: Queue consumers can scale independently</li>
+<li>Decoupling: Services don't need direct dependencies</li>
+<li>Retry: Automatic retry with exponential backoff</li>
+</ul><p><strong>Example:</strong>
+<pre><code class="language-groovy">// crm_gateway publishes order
+activemqTemplate.send("OMS", orderMessage)</p><p>// provisioning orchestrator consumes
+from("activemq://OMS")
+    .process(provisioningProcessor)
+</code></pre><h4>4.2.3 Gateway Pattern</h4>
+<strong>Principle:</strong> Gateways isolate core from external systems</p><p><strong>Why:</strong>
+<ul>
+<li>Core services don't know about external system details</li>
+<li>External API changes don't break core logic</li>
+<li>Easier to swap providers (e.g., change tax provider)</li>
+<li>Simplified testing with mocked gateways</li>
+</ul><p><strong>Example:</strong>
+<pre><code class="language-">service-billing → tax-gateway → [Avalara OR custom tax engine]
+                      ↑
+                      Changes here don't affect service-billing
+</code></pre><h4>4.2.4 GraphQL-First API</h4>
+<strong>Principle:</strong> Core services expose GraphQL endpoints</p><p><strong>Why:</strong>
+<ul>
+<li>Flexible data fetching (clients request exactly what they need)</li>
+<li>Strongly typed schema</li>
+<li>Single endpoint for all operations</li>
+<li>Built-in documentation (GraphiQL)</li>
+<li>Reduces over-fetching and under-fetching</li>
+</ul><p><strong>Example:</strong>
+<pre><code class="language-graphql"># Client can request only needed fields
+query {
+  getAccount(id: "ACC-001") {
+    id
+    balance
+    subscriptions {
+      priceOfferId
+      status
+    }
+  }
+}
+</code></pre><h4>4.2.5 Hub-Based Organization</h4>
+<strong>Principle:</strong> Business domains organized into "Hubs" in engine</p><p><strong>Why:</strong>
+<ul>
+<li>Clear separation of concerns</li>
+<li>Team ownership by business domain</li>
+<li>Easier navigation of large codebase</li>
+<li>Logical grouping of related functionality</li>
+</ul><p><strong>Hubs:</strong>
+<ul>
+<li><code>arHub</code> - Accounts Receivable</li>
+<li><code>billingHub</code> - Billing Operations</li>
+<li><code>customerHub</code> - Customer Management</li>
+<li><code>pricingHub</code> - Product Catalog & Pricing</li>
+<li><code>revenueHub</code> - Revenue Recognition</li>
+<li><code>usageProcessHub</code> - Usage Rating</li>
+<li><code>mediationHub</code> - Usage Data Mediation</li>
+<li><code>opsHub</code> - Operations & Admin</li>
+</ul><hr><h2>5. Technology Stack</h2><h3>5.1 Backend Technologies</h3><p>| Technology | Version | Purpose |
+|------------|---------|---------|
+| <strong>Java</strong> | 8 | Core language |
+| <strong>Groovy</strong> | 2.4.15 | Business logic (more concise than Java) |
+| <strong>Spring Boot</strong> | 2.1.4 | Microservice framework |
+| <strong>Apache Camel</strong> | 2.22.0 - 2.23.1 | Integration and routing |
+| <strong>GraphQL Java</strong> | 5.0.2 | API layer |
+| <strong>JOOQ</strong> | 3.11.10 | Type-safe SQL generation |
+| <strong>Flyway</strong> | 5.2.4 | Database migrations |
+| <strong>Maven</strong> | 3.6+ | Build and dependency management |</p><p><strong>Why Groovy?</strong>
+<ul>
+<li>Less boilerplate than Java</li>
+<li>Native JSON/XML support</li>
+<li>Dynamic typing when needed</li>
+<li>Seamless Java interoperability</li>
+<li>Concise collection operations</li>
+</ul><p><strong>Example:</strong>
+<pre><code class="language-groovy">// Groovy (concise)
+def activeSubscriptions = subscriptions.findAll { it.status == 'ACTIVE' }
+def totalRevenue = activeSubscriptions.sum { it.monthlyCharge }</p><p>// Equivalent Java (verbose)
+List&lt;Subscription&gt; activeSubscriptions = subscriptions.stream()
+    .filter(s -&gt; "ACTIVE".equals(s.getStatus()))
+    .collect(Collectors.toList());
+BigDecimal totalRevenue = activeSubscriptions.stream()
+    .map(Subscription::getMonthlyCharge)
+    .reduce(BigDecimal.ZERO, BigDecimal::add);
+</code></pre><h3>5.2 Data Layer</h3><p>| Technology | Version | Purpose |
+|------------|---------|---------|
+| <strong>PostgreSQL</strong> | 10.5+ | Primary relational database |
+| <strong>JOOQ</strong> | 3.11.10 | Type-safe SQL queries |
+| <strong>Flyway</strong> | 5.2.4 | Schema version control |
+| <strong>HikariCP</strong> | (via Spring Boot) | Connection pooling |</p><p><strong>Why JOOQ over JPA/Hibernate?</strong>
+<ul>
+<li>✅ Type-safe SQL checked at compile time</li>
+<li>✅ Full SQL power (complex joins, CTEs, window functions)</li>
+<li>✅ Near-native performance (no ORM overhead)</li>
+<li>✅ Excellent for read-heavy workloads</li>
+<li>✅ Generated code from schema</li>
+</ul><p><strong>Example:</strong>
+<pre><code class="language-groovy">// JOOQ query (type-safe)
+def invoices = dsl
+    .select()
+    .from(INVOICE)
+    .where(INVOICE.ACCOUNT_ID.eq(accountId))
+    .and(INVOICE.STATUS.eq("PENDING"))
+    .orderBy(INVOICE.DUE_DATE.asc())
+    .fetch()
+// Compile error if INVOICE.STATUS doesn't exist!
+</code></pre><h3>5.3 Messaging & Integration</h3><p>| Technology | Version | Purpose |
+|------------|---------|---------|
+| <strong>ActiveMQ</strong> | 5.15.9 | Message broker |
+| <strong>Apache Camel</strong> | 2.22.0 - 2.23.1 | Integration framework |</p><p><strong>ActiveMQ Queues:</strong>
+<ul>
+<li><code>OMS</code> - Order intake</li>
+<li><code>PROVISIONING_RESPONSE</code> - Provisioning callbacks</li>
+<li><code>MEDIATION</code> - CDR file processing</li>
+<li><code>USAGE</code> - Usage rating</li>
+<li><code>BULK</code> - Bulk operations</li>
+</ul><p><strong>Retry Policy:</strong>
+<pre><code class="language-yaml">maxRetries: 7
+initialDelay: 250ms
+backoffMultiplier: 1.5x
+<h1>Retry delays: 250ms, 375ms, 562ms, 843ms, 1.26s, 1.9s, 2.85s</h1>
+</code></pre><h3>5.4 Security & Configuration</h3><p>| Technology | Version | Purpose |
+|------------|---------|---------|
+| <strong>HashiCorp Vault</strong> | 2.0.2 | Secrets management |
+| <strong>OAuth2</strong> | (Spring Security) | Authorization |
+| <strong>JWT</strong> | (Spring Security) | Token-based auth |</p><p><strong>Vault Secrets:</strong>
+<ul>
+<li>Database credentials</li>
+<li>ActiveMQ credentials</li>
+<li>External API keys (QuickBooks, Stripe, etc.)</li>
+<li>JWT signing keys</li>
+<li>Slack webhook URLs</li>
+</ul><h3>5.5 Document Generation</h3><p>| Technology | Version | Purpose |
+|------------|---------|---------|
+| <strong>iText</strong> | 7.1.5 | PDF generation |
+| <strong>Apache FOP</strong> | 2.3 | XSL-FO to PDF |
+| <strong>Thymeleaf</strong> | 3.0.11 | HTML templates |</p><h3>5.6 Caching & Performance</h3><p>| Technology | Version | Purpose |
+|------------|---------|---------|
+| <strong>Redis</strong> | 6.2+ | Caching, real-time counters |
+| <strong>Jedis</strong> | (via Spring Data Redis) | Redis client |</p><p><strong>Redis Use Cases:</strong>
+<ul>
+<li>Pricing catalog cache (fast lookup)</li>
+<li>Real-time usage quotas (prepaid balance checks)</li>
+<li>Session data</li>
+<li>Temporary computation results</li>
+</ul><h3>5.7 Testing</h3><p>| Technology | Version | Purpose |
+|------------|---------|---------|
+| <strong>Spock Framework</strong> | 1.1-groovy-2.4 | BDD testing (Groovy) |
+| <strong>JUnit</strong> | 4.12 | Unit testing (Java) |
+| <strong>Embedded PostgreSQL</strong> | 2.9 | Integration tests |
+| <strong>Embedded Redis</strong> | 0.7.3 | Cache tests |</p><p><strong>Why Spock?</strong>
+<ul>
+<li>Readable BDD-style tests</li>
+<li>Built-in mocking</li>
+<li>Data-driven testing</li>
+<li>Groovy's expressiveness</li>
+</ul><p><strong>Example:</strong>
+<pre><code class="language-groovy">def "should calculate correct proration for mid-cycle activation"() {
+    given: "a subscription starting mid-month"
+    def subscription = new Subscription(
+        monthlyPrice: 30.0,
+        startDate: LocalDate.of(2024, 1, 16)
+    )
+    
+    when: "proration is calculated"
+    def charge = billingEngine.calculateProration(
+        subscription, 
+        ProrationModel.DAYS_IN_MONTH
+    )
+    
+    then: "charge should be prorated for 16 days"
+    charge.amount == 15.48  // (30.00 / 31) * 16
+    charge.chargeType == ChargeType.RECURRING
+}
+</code></pre><h3>5.8 DevOps & Infrastructure</h3><p>| Technology | Purpose |
+|------------|---------|
+| <strong>Docker</strong> | Containerization |
+| <strong>Kubernetes</strong> | Container orchestration |
+| <strong>Helm</strong> | Deployment configuration |
+| <strong>AWS S3</strong> | Document storage |
+| <strong>GitLab CI</strong> | CI/CD pipeline |</p><hr><h2>6. Multi-Tenant Architecture</h2><h3>6.1 Deployment-Level Multi-Tenancy</h3><p><strong>Architecture Pattern:</strong> Each tenant gets:
+<ul>
+<li>✅ Dedicated Kubernetes deployment</li>
+<li>✅ Dedicated database (<code>coredb-{tenant-name}</code>)</li>
+<li>✅ Dedicated service instances</li>
+<li>✅ Shared infrastructure (Kubernetes cluster, RDS instance)</li>
+</ul><p><strong>NOT shared-database multi-tenancy with <code>tenant_id</code> columns.</strong></p><h3>6.2 Database Architecture</h3><pre><code class="language-">PostgreSQL RDS: embrix-rds-dev-db.chg5bgdk4yyp.us-east-1.rds.amazonaws.com
+├── coredb-urbanos (TIDLT-100005)
+│   ├── account (no tenant_id column)
+│   ├── subscription
+│   ├── order
+│   ├── invoice
+│   └── ...
+├── coredb-coopeg-sbx (TIDLT-100001)
+│   ├── account (separate data)
+│   ├── subscription
+│   └── ...
+└── coredb-coopegenergy (TIDLT-100007)
+    ├── account (separate data)
+    └── ...
+</code></pre><p><strong>Shared Configuration Schema:</strong>
+<pre><code class="language-sql">-- Exists in all tenant databases
+core_config.tenant
+  ├── id (VARCHAR) - e.g., TIDLT-100005
+  ├── name (VARCHAR) - e.g., urbanos
+  ├── vaulturi - Vault URL
+  └── licensekey</p><p>core_config.tenant_merchants
+  ├── tenant_id - References tenant.id
+  ├── name - QUICKBOOKS, STRIPE, AVALARA, etc.
+  ├── type - FINANCE_GATEWAY, PAYMENT_GATEWAY, TAX_GATEWAY
+  └── authtype - OAUTH1, OAUTH2, API_KEY
+</code></pre><h3>6.3 Service Naming Convention</h3><pre><code class="language-">Kubernetes Services: {tenant-name}-{service-name}</p><p>Examples:
+  urbanos-service-transactional
+  urbanos-service-billing
+  urbanos-payment-gateway
+  coopeg-prd-service-transactional
+  coopeg-prd-tax-gateway
+</code></pre><h3>6.4 Tenant Context Injection</h3><p><strong>Via Helm Values:</strong>
+<pre><code class="language-yaml">app:
+  tenantId: TIDLT-100005
+  tenantName: urbanos
+  postgres:
+    url: jdbc:postgresql://.../coredb-urbanos
+  vault:
+    api: http://urbanos-vault-interface/
+</code></pre><p><strong>In Application Code:</strong>
+<pre><code class="language-groovy">@Value('${tenant.id}')
+private String tenantId</p><p>@Value('${TENANT_ID}')
+private String tenant_id
+</code></pre><h3>6.5 Advantages of This Architecture</h3><p><strong>✅ Strong Data Isolation</strong>
+<ul>
+<li>Complete database separation</li>
+<li>No risk of cross-tenant data leaks</li>
+<li>Simplified compliance/auditing</li>
+</ul><p><strong>✅ Performance Isolation</strong>
+<ul>
+<li>One tenant's load doesn't impact others</li>
+<li>Dedicated resources per tenant</li>
+<li>Independent scaling</li>
+</ul><p><strong>✅ Customization Flexibility</strong>
+<ul>
+<li>Can deploy different versions per tenant</li>
+<li>Tenant-specific configuration</li>
+<li>Easy A/B testing</li>
+</ul><p><strong>✅ Simplified Development</strong>
+<ul>
+<li>No <code>tenant_id</code> filtering in business logic</li>
+<li>No complex query interceptors</li>
+<li>Easier testing</li>
+</ul><p><strong>✅ Independent Operations</strong>
+<ul>
+<li>Deploy/upgrade tenants independently</li>
+<li>Rollback single tenant without affecting others</li>
+<li>Different maintenance windows</li>
+</ul><h3>6.6 Trade-offs</h3><p><strong>⚠️ Infrastructure Cost</strong>
+<ul>
+<li>Higher resource usage (one deployment per tenant)</li>
+<li>More Kubernetes pods</li>
+<li>Database licensing</li>
+</ul><p><strong>⚠️ Operational Complexity</strong>
+<ul>
+<li>More deployments to monitor</li>
+<li>More CI/CD pipelines</li>
+<li>Helm chart management per tenant</li>
+</ul><p><strong>⚠️ Shared Resources</strong>
+<ul>
+<li>Single RDS instance (potential bottleneck)</li>
+<li>Shared Kubernetes cluster</li>
+<li>Shared Redis/ActiveMQ</li>
+</ul><hr><h2>7. Key Business Capabilities</h2><h3>7.1 Platform Capabilities Matrix</h3><p>| Capability | Maturity | Complexity | Business Value |
+|------------|----------|------------|----------------|
+| Order Management | Production | Medium | High |
+| Service Provisioning | Production | High | High |
+| Usage Mediation | Production | High | Critical |
+| Usage Rating | Production | High | Critical |
+| Billing | Production | High | Critical |
+| Invoicing | Production | Medium | High |
+| Payment Processing | Production | Medium | High |
+| Tax Compliance (CFDI) | Production | High | Critical (Mexico) |
+| Revenue Recognition | Production | Medium | Medium |
+| Financial Integration | Production | Medium | Medium |
+| Multi-Tenant | Production | High | High |</p><h3>7.2 Integration Capabilities</h3><p><strong>Supported Integrations:</strong></p><p>| Category | Systems | Status |
+|----------|---------|--------|
+| <strong>CRM</strong> | Salesforce | Production |
+| <strong>Provisioning</strong> | Nokia, ServiceNow | Production |
+| <strong>Tax</strong> | PAC Providers (Mexico) | Production |
+| <strong>Tax</strong> | Avalara | Design Phase |
+| <strong>Payment</strong> | Stripe, PayPal | Production |
+| <strong>Payment</strong> | Mexican Banks | Production |
+| <strong>ERP</strong> | QuickBooks | Production |
+| <strong>ERP</strong> | NetSuite | Design Phase |
+| <strong>ERP</strong> | Oracle EBS | Design Phase |
+| <strong>Notifications</strong> | Slack | Production |</p><h3>7.3 Business KPIs Supported</h3><p><strong>Operational Metrics:</strong>
+<ul>
+<li>Orders processed per day</li>
+<li>Provisioning success rate</li>
+<li>Average provisioning time</li>
+<li>CDR processing throughput</li>
+<li>Invoice generation time</li>
+</ul><p><strong>Financial Metrics:</strong>
+<ul>
+<li>Monthly recurring revenue (MRR)</li>
+<li>Annual recurring revenue (ARR)</li>
+<li>Churn rate</li>
+<li>Average revenue per user (ARPU)</li>
+<li>Collection efficiency</li>
+<li>Days sales outstanding (DSO)</li>
+</ul><p><strong>Compliance Metrics:</strong>
+<ul>
+<li>Tax stamping success rate (CFDI)</li>
+<li>Revenue recognition accuracy</li>
+<li>Billing accuracy</li>
+<li>Payment reconciliation rate</li>
+</ul><hr><h2>Summary of Part 1</h2><p>You've learned:
+<ol>
+<li>✅ What Embrix O2X is and why it exists</li>
+<li>✅ Real-world business use cases</li>
+<li>✅ Current production deployments</li>
+<li>✅ High-level system architecture</li>
+<li>✅ Technology stack and rationale</li>
+<li>✅ Multi-tenant architecture model</li>
+<li>✅ Key business capabilities</li>
+</ol><p><strong>Next:</strong> Part 2 covers detailed technical architecture, component interactions, and business flows.</p><p><strong>Next:</strong> Part 3 covers development workflows, testing strategies, and operational procedures.</p>
+        <footer>
+            <p><strong>Embrix O2X Platform Documentation</strong></p>
+            <p>Version 3.1.9-SNAPSHOT • Last Updated: February 2026</p>
+        </footer>
+    </div>
+</body>
+</html>

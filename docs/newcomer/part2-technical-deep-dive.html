@@ -1,0 +1,1374 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Part 2: Technical Deep Dive - Embrix O2X</title>
+    
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+        line-height: 1.6;
+        color: #333;
+        background: #f5f5f5;
+        padding: 20px;
+    }
+
+    .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        background: white;
+        padding: 40px;
+        border-radius: 10px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+    }
+
+    .nav-header {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 20px;
+        border-radius: 8px;
+        margin-bottom: 30px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+    }
+
+    .nav-header h1 {
+        font-size: 1.5em;
+        margin-bottom: 5px;
+    }
+
+    .nav-links {
+        display: flex;
+        gap: 15px;
+        flex-wrap: wrap;
+    }
+
+    .nav-links a {
+        color: white;
+        text-decoration: none;
+        padding: 8px 16px;
+        background: rgba(255,255,255,0.2);
+        border-radius: 5px;
+        transition: background 0.3s;
+    }
+
+    .nav-links a:hover {
+        background: rgba(255,255,255,0.3);
+    }
+
+    h1 {
+        color: #667eea;
+        margin: 30px 0 20px 0;
+        padding-bottom: 10px;
+        border-bottom: 3px solid #667eea;
+        font-size: 2.5em;
+    }
+
+    h2 {
+        color: #764ba2;
+        margin: 25px 0 15px 0;
+        padding-bottom: 8px;
+        border-bottom: 2px solid #f0f0f0;
+        font-size: 2em;
+    }
+
+    h3 {
+        color: #667eea;
+        margin: 20px 0 10px 0;
+        font-size: 1.5em;
+    }
+
+    h4 {
+        color: #764ba2;
+        margin: 15px 0 10px 0;
+        font-size: 1.2em;
+    }
+
+    p {
+        margin: 15px 0;
+        line-height: 1.8;
+    }
+
+    ul, ol {
+        margin: 15px 0;
+        padding-left: 30px;
+    }
+
+    li {
+        margin: 8px 0;
+        line-height: 1.6;
+    }
+
+    code {
+        background: #f4f4f4;
+        padding: 2px 6px;
+        border-radius: 3px;
+        font-family: 'Courier New', Courier, monospace;
+        font-size: 0.9em;
+        color: #e83e8c;
+    }
+
+    pre {
+        background: #2d2d2d;
+        color: #f8f8f2;
+        padding: 20px;
+        border-radius: 8px;
+        overflow-x: auto;
+        margin: 20px 0;
+        border-left: 4px solid #667eea;
+    }
+
+    pre code {
+        background: none;
+        color: #f8f8f2;
+        padding: 0;
+    }
+
+    blockquote {
+        border-left: 4px solid #667eea;
+        padding-left: 20px;
+        margin: 20px 0;
+        color: #666;
+        font-style: italic;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 20px 0;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    th {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 12px;
+        text-align: left;
+        font-weight: 600;
+    }
+
+    td {
+        padding: 12px;
+        border-bottom: 1px solid #f0f0f0;
+    }
+
+    tr:hover {
+        background: #f8f9fa;
+    }
+
+    .info-box {
+        background: #e3f2fd;
+        border-left: 4px solid #2196f3;
+        padding: 15px;
+        margin: 20px 0;
+        border-radius: 5px;
+    }
+
+    .warning-box {
+        background: #fff3e0;
+        border-left: 4px solid #ff9800;
+        padding: 15px;
+        margin: 20px 0;
+        border-radius: 5px;
+    }
+
+    .success-box {
+        background: #e8f5e9;
+        border-left: 4px solid #4caf50;
+        padding: 15px;
+        margin: 20px 0;
+        border-radius: 5px;
+    }
+
+    .toc {
+        background: #f8f9fa;
+        padding: 20px;
+        border-radius: 8px;
+        margin: 20px 0;
+        border-left: 4px solid #667eea;
+    }
+
+    .toc h2 {
+        color: #667eea;
+        border-bottom: none;
+        margin-bottom: 15px;
+    }
+
+    .toc ul {
+        list-style: none;
+        padding-left: 0;
+    }
+
+    .toc li {
+        margin: 8px 0;
+    }
+
+    .toc a {
+        color: #667eea;
+        text-decoration: none;
+        transition: color 0.3s;
+    }
+
+    .toc a:hover {
+        color: #764ba2;
+    }
+
+    hr {
+        border: none;
+        border-top: 2px solid #f0f0f0;
+        margin: 30px 0;
+    }
+
+    .badge {
+        display: inline-block;
+        background: #667eea;
+        color: white;
+        padding: 4px 10px;
+        border-radius: 12px;
+        font-size: 0.85em;
+        margin-left: 10px;
+    }
+
+    a {
+        color: #667eea;
+        text-decoration: none;
+        transition: color 0.3s;
+    }
+
+    a:hover {
+        color: #764ba2;
+        text-decoration: underline;
+    }
+
+    footer {
+        margin-top: 50px;
+        padding-top: 30px;
+        border-top: 2px solid #f0f0f0;
+        text-align: center;
+        color: #888;
+    }
+
+    @media print {
+        body {
+            background: white;
+        }
+        .nav-header, .nav-links {
+            display: none;
+        }
+        pre {
+            break-inside: avoid;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .container {
+            padding: 20px;
+        }
+        .nav-header {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+        .nav-links {
+            margin-top: 15px;
+        }
+        h1 {
+            font-size: 2em;
+        }
+        h2 {
+            font-size: 1.5em;
+        }
+    }
+</style>
+
+</head>
+<body>
+    <div class="container">
+        <div class="nav-header"><div><h1>Embrix O2X Documentation</h1><small>Navigate between guides</small></div><div class="nav-links"><a href="index.html">Home</a><a href="guide-index.html">Guide Index</a><a href="part1-business-architecture.html">Part 1</a><a href="part2-technical-deep-dive.html">Part 2</a><a href="part3-services-development.html">Part 3</a><a href="multi-tenant-complete-guide.html">Multi-Tenant</a><a href="quick-reference.html">Quick Ref</a></div></div>
+        <h1>Embrix O2X Platform - Newcomer's Guide (Part 2)</h1>
+<h2>Technical Deep Dive & Component Architecture</h2><p><strong>Version</strong>: 3.1.9-SNAPSHOT  
+<strong>Last Updated</strong>: February 2026  
+<strong>Prerequisites</strong>: Read Part 1 first</p><hr><h2>Table of Contents - Part 2</h2><ol>
+<li><a href="#1-foundation-layer---shared-libraries">Foundation Layer - Shared Libraries</a></li>
+<li><a href="#2-gateway-layer">Gateway Layer</a></li>
+<li><a href="#3-core-services-layer">Core Services Layer</a></li>
+<li><a href="#4-message-queue-architecture">Message Queue Architecture</a></li>
+<li><a href="#5-database-architecture">Database Architecture</a></li>
+<li><a href="#6-complete-business-flows">Complete Business Flows</a></li>
+</ol><hr><h2>1. Foundation Layer - Shared Libraries</h2><h3>1.1 The <code>engine</code> Module - Heart of the System</h3><p><strong>Location:</strong> <code>/engine</code>  
+<strong>Artifact:</strong> <code>com.embrix.core:engine:3.1.9-SNAPSHOT</code>  
+<strong>Purpose:</strong> Centralized business logic for entire platform</p><p><strong>Why Critical:</strong>
+<ul>
+<li>✅ Every microservice depends on it</li>
+<li>✅ Single source of truth for business rules</li>
+<li>✅ Contains all data access logic (JOOQ)</li>
+<li>✅ Manages database migrations (Flyway)</li>
+</ul><h4>1.1.1 Hub-Based Organization</h4><p>The engine is organized into "Hubs" - each representing a major business domain:</p><pre><code class="language-">engine/src/main/groovy/com/embrix/core/engine/
+├── arHub/                    # Accounts Receivable
+│   ├── payment/              # Payment processing
+│   ├── collection/           # Collections and aging
+│   ├── creditDebitNotes/     # Credit/debit notes
+│   └── arOps/                # AR operations
+├── billingHub/               # Billing Operations
+│   ├── billing/              # Billing cycles
+│   ├── invoicing/            # Invoice generation
+│   ├── rating/               # Charge calculation
+│   └── taxation/             # Tax integration
+├── customerHub/              # Customer Management
+│   ├── customerManagement/   # Account CRUD
+│   ├── orderManagement/      # Order processing
+│   ├── subscriptionManagement/ # Subscription lifecycle
+│   ├── quoteManagement/      # Quote generation
+│   └── customizedPricingManagement/ # Custom pricing
+├── pricingHub/               # Product Catalog
+│   ├── pricingManagement/    # Price offers
+│   └── bundleManagement/     # Bundles and packages
+├── revenueHub/               # Revenue Recognition
+│   ├── service/              # Revenue logic
+│   └── entities/             # Revenue entities
+├── usageProcessHub/          # Usage Rating
+│   ├── service/              # Rating engine
+│   └── entities/             # Usage entities
+├── mediationHub/             # Usage Mediation
+│   ├── service/              # Mediation logic
+│   └── entities/             # Mediation entities
+├── opsHub/                   # Operations
+│   ├── userManagement/       # Users and roles
+│   ├── jobManagement/        # Job scheduling
+│   ├── correspondence/       # Notifications
+│   ├── tenantOnboarding/     # Multi-tenant setup
+│   └── singleSignOn/         # SSO integration
+└── commonHub/                # Shared Services
+    ├── document/             # Document generation
+    ├── fileManagement/       # File operations
+    ├── customAttributes/     # Custom fields
+    └── oms/                  # Order management
+</code></pre><h4>1.1.2 Real-World Hub Example: billingHub</h4><p><strong>Location:</strong> <code>engine/src/main/groovy/com/embrix/core/engine/billingHub/</code></p><p><strong>Key Services:</strong></p><p><strong>1. ProrationEngine</strong>
+<pre><code class="language-groovy">class ProrationEngine {
+    /<em></em>
+     * Calculate prorated charge for mid-cycle activation/termination
+     * 
+     * Business Rule: 
+     *   If customer activates on day 16 of 30-day month
+     *   and monthly charge is $30.00
+     <em>   then prorated charge = (30.00 / 30) </em> 15 = $15.00
+     */
+    Charge calculateProration(
+        Subscription subscription,
+        ProrationModel model,
+        LocalDate startDate,
+        LocalDate endDate
+    ) {
+        switch (model) {
+            case ProrationModel.DAYS_IN_MONTH:
+                return calculateDailyProration(subscription, startDate, endDate)
+            case ProrationModel.FULL_DAY:
+                return calculateFullDayProration(subscription, startDate, endDate)
+            case ProrationModel.NO_PRORATION:
+                return subscription.monthlyCharge
+        }
+    }
+}
+</code></pre><p><strong>2. BillingCycleEngine</strong>
+<pre><code class="language-groovy">class BillingCycleEngine {
+    /<em></em>
+     * Execute billing cycle for all accounts on specific bill day
+     * 
+     * Process:
+     * 1. Find all accounts with bill_cycle_day = today
+     * 2. For each account:
+     *    - Generate recurring charges
+     *    - Aggregate usage charges
+     *    - Calculate taxes
+     *    - Create invoice
+     *    - Update account balance
+     */
+    void executeBillingCycle(Integer billCycleDay) {
+        List&lt;Account&gt; accounts = findAccountsByBillCycleDay(billCycleDay)
+        
+        accounts.each { account -&gt;
+            try {
+                // Generate charges
+                List&lt;Charge&gt; charges = generateChargesForAccount(account)
+                
+                // Calculate taxes
+                TaxCalculation taxes = taxGateway.calculateTax(charges)
+                
+                // Create invoice
+                Invoice invoice = createInvoice(account, charges, taxes)
+                
+                // Update balance
+                updateAccountBalance(account, invoice.totalAmount)
+                
+                log.info("Billing complete for account ${account.id}")
+            } catch (Exception e) {
+                log.error("Billing failed for account ${account.id}", e)
+                // Continue with next account
+            }
+        }
+    }
+}
+</code></pre><p><strong>3. DiscountEngine</strong>
+<pre><code class="language-groovy">class DiscountEngine {
+    /<em></em>
+     * Apply discounts to charges
+     * 
+     * Supports:
+     * - Percentage discounts (e.g., 20% off)
+     * - Fixed amount discounts (e.g., $10 off)
+     * - Conditional discounts (e.g., first 3 months)
+     * - Tiered discounts (e.g., volume discounts)
+     */
+    BigDecimal applyDiscount(Charge charge, Discount discount) {
+        if (!discount.isApplicable(charge)) {
+            return charge.amount
+        }
+        
+        switch (discount.type) {
+            case DiscountType.PERCENTAGE:
+                return charge.amount * (1 - discount.value / 100)
+            case DiscountType.FIXED_AMOUNT:
+                return Math.max(charge.amount - discount.value, 0)
+            default:
+                return charge.amount
+        }
+    }
+}
+</code></pre><h4>1.1.3 Data Access with JOOQ</h4><p><strong>Why JOOQ in Engine:</strong>
+<ul>
+<li>Type-safe queries checked at compile time</li>
+<li>Full SQL power (complex joins, CTEs, window functions)</li>
+<li>Near-native performance</li>
+<li>Generated code from database schema</li>
+</ul><p><strong>Example: Account Lookup</strong>
+<pre><code class="language-groovy">import static com.embrix.engine.jooq.Tables.*</p><p>class AccountRepository {
+    @Autowired
+    DSLContext dsl
+    
+    Account findById(String accountId) {
+        return dsl
+            .select()
+            .from(ACCOUNT)
+            .where(ACCOUNT.ID.eq(accountId))
+            .fetchOneInto(Account.class)
+    }
+    
+    List&lt;Account&gt; findOverdueAccounts() {
+        return dsl
+            .select()
+            .from(ACCOUNT)
+            .where(ACCOUNT.BALANCE.lt(BigDecimal.ZERO))
+            .and(ACCOUNT.STATUS.eq("ACTIVE"))
+            .orderBy(ACCOUNT.BALANCE.asc())
+            .fetchInto(Account.class)
+    }
+    
+    List&lt;Invoice&gt; findUnpaidInvoices(String accountId) {
+        return dsl
+            .select()
+            .from(INVOICE)
+            .join(ACCOUNT).on(INVOICE.ACCOUNT_ID.eq(ACCOUNT.ID))
+            .where(ACCOUNT.ID.eq(accountId))
+            .and(INVOICE.STATUS.in("PENDING", "OVERDUE"))
+            .orderBy(INVOICE.DUE_DATE.asc())
+            .fetchInto(Invoice.class)
+    }
+}
+</code></pre><p><strong>JOOQ Code Generation:</strong>
+<pre><code class="language-bash"># Migrations are run
+mvn flyway:migrate</p><h1>JOOQ generates Java classes from schema</h1>
+mvn generate-sources</p><h1>Result: target/generated-sources/jooq-postgres/</h1>
+<h1>Contains type-safe table definitions</h1>
+</code></pre><h4>1.1.4 Database Migrations with Flyway</h4><p><strong>Location:</strong> <code>engine/src/main/resources/db/migration/</code></p><p><strong>Migration Structure:</strong>
+<pre><code class="language-">db/migration/
+├── V1__Create_Schema.sql              # Core schemas
+├── V2__Create_Enum_Types.sql          # Enum definitions
+├── V3__Create_Config_Tables.sql       # Config schema
+├── V4__Create_Domain_Tables.sql       # Business tables
+├── V5__Create_Indexes.sql             # Performance indexes
+├── V6__Create_Constraints.sql         # Foreign keys
+├── V7__Create_Views.sql               # Database views
+├── V8__Create_Functions.sql           # Stored procedures
+├── V9__Create_Triggers.sql            # Database triggers
+└── V10__Initial_Config_Data.sql       # Seed data
+</code></pre><p><strong>Example Migration:</strong>
+<pre><code class="language-sql">-- V4.1__Create_Account_Table.sql
+CREATE TABLE IF NOT EXISTS account (
+    id VARCHAR(50) PRIMARY KEY,
+    parent_account_id VARCHAR(50),
+    account_type VARCHAR(20) NOT NULL,
+    status VARCHAR(20) NOT NULL,
+    currency_code VARCHAR(3) DEFAULT 'USD',
+    balance NUMERIC(19,4) DEFAULT 0,
+    credit_limit NUMERIC(19,4),
+    bill_cycle_day INTEGER,
+    created_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    modified_date TIMESTAMP,
+    CONSTRAINT fk_parent_account FOREIGN KEY (parent_account_id) 
+        REFERENCES account(id)
+);</p><p>CREATE INDEX idx_account_status ON account(status);
+CREATE INDEX idx_account_bill_cycle ON account(bill_cycle_day);
+</code></pre><p><strong>Running Migrations:</strong>
+<pre><code class="language-bash">cd engine
+mvn flyway:migrate -Dspring.profiles.active=dev</p><h1>Output:</h1>
+<h1>Flyway 5.2.4 by Boxfuse</h1>
+<h1>Database: jdbc:postgresql://localhost:5432/coredb-urbanos</h1>
+<h1>Successfully validated 10 migrations</h1>
+<h1>Current version: V10</h1>
+<h1>Schema is up to date</h1>
+</code></pre><h3>1.2 The <code>common</code> Module - Shared Data Model</h3><p><strong>Location:</strong> <code>/common</code>  
+<strong>Artifact:</strong> <code>com.embrix.core:common:3.1.9-SNAPSHOT</code>  
+<strong>Purpose:</strong> Consistent DTOs, enums, and utilities across all services</p><p><strong>Why Important:</strong>
+<ul>
+<li>Ensures all services use same data structures</li>
+<li>Prevents version skew between services</li>
+<li>Central location for domain enums</li>
+</ul><h4>1.2.1 Domain Enums</h4><p><strong>Order Management:</strong>
+<pre><code class="language-groovy">enum OrderType {
+    NEW,                    // New service order
+    ADD_PRODUCT,            // Add service to existing account
+    MODIFY_PRODUCT,         // Change service parameters
+    TERMINATE_SERVICE,      // Cancel service
+    SUSPEND,                // Suspend due to non-payment
+    RESUME,                 // Resume after payment
+    CHANGE                  // General change order
+}</p><p>enum OrderStatus {
+    CREATED,                // Initial state
+    VALIDATED,              // Passed validation
+    PROVISIONING_INITIATED, // Sent to provisioning
+    PROVISIONING,           // In progress
+    PROVISIONED,            // Network activated
+    COMPLETED,              // Fully fulfilled
+    FAILED,                 // Provisioning failed
+    CANCELLED               // Cancelled by customer/system
+}</p><p>enum ServiceLineAction {
+    ADD,                    // Add new service
+    MODIFY,                 // Change existing service
+    CANCEL,                 // Remove service
+    SUSPEND,                // Temporary suspension
+    RESUME                  // Reactivate service
+}
+</code></pre><p><strong>Billing:</strong>
+<pre><code class="language-groovy">enum ChargeType {
+    RECURRING,              // Monthly/annual subscription
+    ONE_TIME,               // Installation fee, device purchase
+    USAGE,                  // Based on consumption
+    ADHOC,                  // Manual adjustment
+    ADJUSTMENT              // Correction
+}</p><p>enum InvoiceStatus {
+    PENDING,                // Generated, not sent
+    SENT,                   // Emailed to customer
+    PAID,                   // Fully paid
+    PARTIALLY_PAID,         // Partial payment received
+    OVERDUE,                // Past due date
+    CANCELLED,              // Voided
+    REFUNDED                // Refunded
+}</p><p>enum ProrationModel {
+    FULL_DAY,               // Charge for any partial day
+    DAYS_IN_MONTH,          // Daily rate * days active
+    NO_PRORATION            // Full charge regardless
+}
+</code></pre><p><strong>Accounts Receivable:</strong>
+<pre><code class="language-groovy">enum PaymentMethodType {
+    CREDIT_CARD,
+    DEBIT_CARD,
+    ACH,                    // Bank transfer (US)
+    WIRE_TRANSFER,
+    CHECK,
+    CASH,
+    PAYPAL,
+    STRIPE
+}</p><p>enum PaymentStatus {
+    PENDING,                // Submitted, not processed
+    PROCESSING,             // In progress
+    COMPLETED,              // Successfully processed
+    FAILED,                 // Payment failed
+    REFUNDED,               // Refunded to customer
+    CANCELLED               // Cancelled before processing
+}
+</code></pre><h4>1.2.2 Shared DTOs</h4><p><strong>OrderDTO:</strong>
+<pre><code class="language-groovy">class OrderDTO {
+    String id                           // ORD-2024-001
+    String accountId                    // ACC-1001
+    String userId                       // User who created
+    OrderType type                      // NEW, MODIFY, etc.
+    OrderStatus status                  // CREATED, COMPLETED, etc.
+    Boolean allowedPartialFulfillment   // Can partially fulfill?
+    LocalDateTime createdDate
+    LocalDateTime completedDate
+    
+    List&lt;ServiceDTO&gt; services           // Nested services
+    Map&lt;String, Object&gt; extendedData    // Flexible attributes
+}</p><p>class ServiceDTO {
+    Integer index                       // Line number
+    String type                         // /service/mobile/5g
+    String provisioningId               // External network ID
+    ServiceLineStatus status
+    List&lt;ServiceLineDTO&gt; lines          // Service line items
+}</p><p>class ServiceLineDTO {
+    Integer index
+    String priceOfferId                 // PLAN-5G-UNLIMITED
+    ServiceLineAction action            // ADD, MODIFY, CANCEL
+    ServiceLineStatus status
+    Integer quantity
+    String assetId                      // Device/equipment ID
+    Map&lt;String, Object&gt; extendedData    // {IMEI: "...", SIM: "..."}
+}
+</code></pre><p><strong>InvoiceDTO:</strong>
+<pre><code class="language-groovy">class InvoiceDTO {
+    String id                           // INV-2024-001
+    String accountId
+    LocalDate invoiceDate
+    LocalDate dueDate
+    LocalDate billingPeriodStart
+    LocalDate billingPeriodEnd
+    
+    BigDecimal subtotal                 // Charges before tax
+    BigDecimal taxTotal                 // Total tax
+    BigDecimal totalAmount              // subtotal + taxTotal
+    BigDecimal amountPaid               // Payments applied
+    BigDecimal balance                  // totalAmount - amountPaid
+    
+    InvoiceStatus status
+    String pdfUrl                       // S3 URL
+    
+    List&lt;ChargeDTO&gt; charges             // Line items
+    List&lt;TaxBreakdownDTO&gt; taxBreakdown  // Tax details
+}
+</code></pre><p><strong>UsageRecordDTO:</strong>
+<pre><code class="language-groovy">class UsageRecordDTO {
+    String id
+    String accountId
+    String subscriptionId
+    String sourceId                     // IMSI, IP, device ID
+    LocalDateTime startTime
+    LocalDateTime endTime
+    Integer duration                    // Seconds
+    Long volume                         // Bytes
+    String destination                  // Called number, URL
+    String serviceType                  // VOICE_CALL, SMS, DATA
+    BigDecimal ratedAmount              // Calculated charge
+    String ratingPlanId
+    UsageStatus status                  // UNRATED, RATED, BILLED
+    Boolean billed
+}
+</code></pre><h3>1.3 The <code>oms-component</code> Module - Orchestration Framework</h3><p><strong>Location:</strong> <code>/oms-component</code>  
+<strong>Artifact:</strong> <code>com.congerotechnology:ctg-oms-component:0.0.1-SNAPSHOT</code>  
+<strong>Purpose:</strong> Standardized framework for building order orchestrators</p><p><strong>What is an Orchestrator?</strong>
+An orchestrator is a workflow processor that:
+<ol>
+<li>Receives an order from ActiveMQ</li>
+<li>Validates the order</li>
+<li>Performs business logic (provisioning, billing, etc.)</li>
+<li>Updates the order status</li>
+<li>Routes to next orchestrator if needed</li>
+</ol><h4>1.3.1 Standard Orchestration Pipeline</h4><pre><code class="language-">Order Message (ActiveMQ)
+    ↓
+[1] OrderLoader
+    ├─→ Fetch order from database via REST API
+    ├─→ Set order in Camel exchange body
+    └─→ Pass to next processor
+    ↓
+[2] OrderValidator
+    ├─→ Execute validate() method (implemented by subclass)
+    ├─→ Check required fields, business rules
+    ├─→ If validation fails: throw NonRetryableException
+    └─→ If transient issue: throw RetryableException
+    ↓
+[3] OrderProcessor
+    ├─→ Execute process() method (implemented by subclass)
+    ├─→ Main business logic
+    ├─→ Call external gateways
+    └─→ Update order data
+    ↓
+[4] OrderUpdater
+    ├─→ Save order changes to database via REST API
+    ├─→ Update status, timestamps
+    └─→ Persist all modifications
+    ↓
+[5] RouteHandler
+    ├─→ Check if next orchestrator configured
+    ├─→ Forward to next queue if needed
+    └─→ Order processing complete for this orchestrator
+</code></pre><h4>1.3.2 Exception Handling Strategy</h4><p><strong>NonRetryableException:</strong>
+<ul>
+<li>Validation errors (missing required field)</li>
+<li>Business rule violations (credit limit exceeded)</li>
+<li>Data integrity issues</li>
+<li><strong>Action:</strong> Mark order as FAILED, execute <code>processError()</code>, no retry</li>
+</ul><p><strong>RetryableException:</strong>
+<ul>
+<li>Network timeouts</li>
+<li>External system unavailable</li>
+<li>Database deadlock</li>
+<li><strong>Action:</strong> Retry with exponential backoff (7 retries max)</li>
+</ul><p><strong>Configuration:</strong>
+<pre><code class="language-yaml">application:
+  queues:
+    redeliveryPolicy:
+      maxRetries: 7
+      multiplier: 1.5
+      delay: 250
+<h1>Retry delays: 250ms, 375ms, 562ms, 843ms, 1.26s, 1.9s, 2.85s</h1>
+</code></pre><p><strong>Slack Alerting:</strong>
+<pre><code class="language-groovy">// Automatic Slack notification on critical failure
+camel:
+  component:
+    slack:
+      webhook-url: "https://hooks.slack.com/services/..."
+<h1>Posts to #camel-devops channel with order ID and error details</h1>
+</code></pre><h4>1.3.3 Creating a Custom Orchestrator</h4><p><strong>Example: Mobile Provisioning Orchestrator</strong></p><pre><code class="language-groovy">package com.embrix.orchestrator.mobile</p><p>import com.congerotechnology.ctgomscomponent.OmsComponent
+import org.apache.camel.Exchange
+import org.springframework.stereotype.Component</p><p>@Component
+class MobileProvisioningOrchestrator extends OmsComponent {
+    
+    @Autowired
+    ProvisioningGatewayClient provisioningGateway
+    
+    @Autowired
+    TaxGatewayClient taxGateway
+    
+    /<em></em>
+     * Validate order data
+     * Throw ValidationException if invalid
+     */
+    @Override
+    void validate(Exchange exchange) {
+        Order order = exchange.in.getBody(Order)
+        
+        // Validate account
+        if (!order.accountId) {
+            throw new ValidationException("Account ID required")
+        }
+        
+        // Validate service line
+        def serviceLine = order.services[0]?.lines[0]
+        if (!serviceLine) {
+            throw new ValidationException("At least one service line required")
+        }
+        
+        // Validate mobile-specific attributes
+        def extendedData = serviceLine.extendedData
+        if (!extendedData.IMEI) {
+            throw new ValidationException("IMEI required for mobile provisioning")
+        }
+        if (!extendedData.SIM_ID) {
+            throw new ValidationException("SIM ID required")
+        }
+        
+        log.info("Validation passed for order: ${order.id}")
+    }
+    
+    /<em></em>
+     * Main business logic
+     * Call external systems, update order data
+     */
+    @Override
+    void process(Exchange exchange) {
+        Order order = exchange.in.getBody(Order)
+        log.info("Processing mobile provisioning for order: ${order.id}")
+        
+        try {
+            // Step 1: Calculate taxes
+            def taxRequest = buildTaxRequest(order)
+            def taxResponse = taxGateway.calculateTax(taxRequest)
+            order.estimatedTax = taxResponse.totalTax
+            log.info("Tax calculated: ${taxResponse.totalTax}")
+            
+            // Step 2: Provision service on network
+            def provisionRequest = buildProvisionRequest(order)
+            def provisionResponse = provisioningGateway.activateMobileService(provisionRequest)
+            
+            if (provisionResponse.status == 'SUCCESS') {
+                // Update service line with network ID
+                def serviceLine = order.services[0].lines[0]
+                serviceLine.provisioningId = provisionResponse.networkId
+                serviceLine.status = ServiceLineStatus.PROVISIONED
+                
+                log.info("Mobile service provisioned: ${provisionResponse.networkId}")
+            } else {
+                // Transient failure - will retry
+                throw new RetryableException(
+                    "Provisioning failed: ${provisionResponse.errorMessage}"
+                )
+            }
+            
+            // Step 3: Update order status
+            order.status = OrderStatus.COMPLETED
+            log.info("Order ${order.id} completed successfully")
+            
+        } catch (RetryableException e) {
+            throw e  // Let framework handle retry
+        } catch (Exception e) {
+            log.error("Unexpected error processing order ${order.id}", e)
+            throw new NonRetryableException("Processing failed: ${e.message}")
+        }
+    }
+    
+    /<em></em>
+     * Error cleanup logic
+     * Called when order fails permanently
+     */
+    @Override
+    void processError(Exchange exchange) {
+        Order order = exchange.in.getBody(Order)
+        log.error("Order ${order.id} failed permanently")
+        
+        // Cleanup logic
+        // - Rollback any partial provisioning
+        // - Send notification to customer
+        // - Create support ticket
+        
+        order.status = OrderStatus.FAILED
+        order.services[0].lines[0].status = ServiceLineStatus.FAILED
+    }
+    
+    private TaxRequest buildTaxRequest(Order order) {
+        return new TaxRequest(
+            accountId: order.accountId,
+            serviceAddress: order.serviceAddress,
+            lineItems: order.services.collect { service -&gt;
+                new TaxLineItem(
+                    description: service.type,
+                    amount: service.lines[0].estimatedPrice
+                )
+            }
+        )
+    }
+    
+    private ProvisionRequest buildProvisionRequest(Order order) {
+        def serviceLine = order.services[0].lines[0]
+        return new ProvisionRequest(
+            serviceType: 'MOBILE_5G',
+            imei: serviceLine.extendedData.IMEI,
+            simId: serviceLine.extendedData.SIM_ID,
+            plan: serviceLine.priceOfferId,
+            accountId: order.accountId
+        )
+    }
+}
+</code></pre><p><strong>Queue Auto-Creation:</strong>
+When this orchestrator starts, OMS Component framework automatically:
+<ol>
+<li>Creates ActiveMQ queue: <code>MobileProvisioningOrchestrator</code></li>
+<li>Sets up consumer with retry policy</li>
+<li>Wires validation → processing → update → routing pipeline</li>
+</ol><p><strong>To trigger this orchestrator from another service:</strong>
+<pre><code class="language-groovy">activemqTemplate.send("MobileProvisioningOrchestrator", orderMessage)
+</code></pre><h3>1.4 The <code>gateway-common</code> Module</h3><p><strong>Location:</strong> <code>/gateway-common</code>  
+<strong>Artifact:</strong> <code>com.embrix.core:gateway-common:3.1.9-SNAPSHOT</code>  
+<strong>Purpose:</strong> Shared logic for external system integration</p><p><strong>Features:</strong>
+<ul>
+<li>Generic Request/Response envelopes</li>
+<li>Error mapping and handling</li>
+<li>Retry policies for external API calls</li>
+<li>Authentication patterns (OAuth1, OAuth2, API key)</li>
+<li>Tenant configuration lookup</li>
+</ul><p><strong>Key Service: TenantRepositoryService</strong>
+<pre><code class="language-groovy">class TenantRepositoryServiceImpl {
+    /<em></em>
+     * Lookup tenant-specific gateway configuration
+     * 
+     * Example: Find QuickBooks OAuth credentials for tenant TIDLT-100005
+     */
+    Tenant findByTenantId(String tenantId, MerchantType gatewayType) {
+        return jdbcTemplate.query(
+            """
+            SELECT * FROM core_config.tenant_merchants 
+            WHERE id = ? 
+            AND type = ? 
+            AND status = 'ACTIVE'
+            """,
+            new TenantMerchantsRowMapper(),
+            tenantId,
+            gatewayType.name()
+        )
+    }
+    
+    /<em></em>
+     * Get OAuth2 attributes for tenant
+     */
+    OAuth2Attributes getOAuth2Attributes(String tenantId, String merchantName) {
+        // Query core_config.oauth2_attributes table
+        // Returns: clientId, clientSecret, tokenUrl, scope, etc.
+    }
+}
+</code></pre><hr><h2>2. Gateway Layer</h2><p>Gateways are the <strong>entry and exit points</strong> of the platform. They normalize external data and protect core services from external system changes.</p><h3>2.1 <code>crm_gateway</code> - The Front Door</h3><p><strong>Location:</strong> <code>/crm_gateway</code>  
+<strong>Internal Name:</strong> <code>ctg-oms</code>  
+<strong>Port:</strong> 8080 (default)  
+<strong>Purpose:</strong> Main entry point for external systems (CRM, portals)</p><h4>2.1.1 Key Responsibilities</h4><ol>
+<li><strong>GraphQL API</strong> - Expose order and account management endpoints</li>
+<li><strong>OAuth2 Authorization Server</strong> - Issue JWT tokens</li>
+<li><strong>Order Intake</strong> - Receive orders from Salesforce</li>
+<li><strong>Message Dispatch</strong> - Push orders to ActiveMQ</li>
+<li><strong>Order Status Queries</strong> - Track order progress</li>
+</ol><h4>2.1.2 GraphQL Schema</h4><p><strong>Create Order Mutation:</strong>
+<pre><code class="language-graphql">mutation CreateOrder {
+  createOrder(input: {
+    accountId: "ACC-1001"
+    type: NEW
+    status: CREATED
+    userId: "user@example.com"
+    allowedPartialFulfillment: false
+    createdDate: "2024-01-15T10:30:00.000Z"
+    services: [{
+      index: 1
+      type: "/service/internet/fiber"
+      provisioningId: null
+      status: CREATED
+      lines: [{
+        index: 1
+        priceOfferId: "FIBER-100M-UNLIMITED"
+        action: ADD
+        status: SUBMITTED
+        quantity: 1
+        assetId: "ONT-12345"
+        extendedData: {
+          INSTALLATION_ADDRESS: "123 Main St, Apt 4B"
+          INSTALLATION_DATE: "2024-01-20"
+          SERVICE_SPEED: "100Mbps"
+        }
+      }]
+    }]
+  }) {
+    id
+    status
+    createdDate
+    services {
+      lines {
+        status
+        provisioningId
+      }
+    }
+  }
+}
+</code></pre><p><strong>Query Orders:</strong>
+<pre><code class="language-graphql">query GetOrders {
+  searchOrders(filter: {
+    accountId: "ACC-1001"
+    status: PROVISIONING
+    dateFrom: "2024-01-01"
+    dateTo: "2024-01-31"
+  }) {
+    id
+    type
+    status
+    createdDate
+    services {
+      type
+      status
+      lines {
+        priceOfferId
+        action
+        status
+        provisioningId
+      }
+    }
+  }
+}
+</code></pre><h4>2.1.3 OAuth2 Flow</h4><p><strong>Token Request:</strong>
+<pre><code class="language-bash">curl -X POST http://localhost:8080/oauth/token \
+  -H "Authorization: Basic $(echo -n 'congero:ctg-secret' | base64)" \
+  -d "grant_type=client_credentials" \
+  -d "scope=all"
+</code></pre><p><strong>Token Response:</strong>
+<pre><code class="language-json">{
+  "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+  "token_type": "Bearer",
+  "expires_in": 3600,
+  "scope": "all"
+}
+</code></pre><p><strong>Using Token:</strong>
+<pre><code class="language-bash">curl -X POST http://localhost:8080/graphql \
+  -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..." \
+  -H "Content-Type: application/json" \
+  -d '{"query": "mutation { createOrder(...) { id } }"}'
+</code></pre><h4>2.1.4 Order Processing Flow in CRM Gateway</h4><pre><code class="language-">GraphQL Request
+    ↓
+[1] Authentication Interceptor
+    ├─→ Validate JWT token
+    ├─→ Check authorization scopes
+    └─→ Extract tenant context
+    ↓
+[2] GraphQL Resolver: createOrder()
+    ├─→ Validate input schema
+    ├─→ Map GraphQL input to Order DTO
+    └─→ Call OMS service
+    ↓
+[3] PGOmsService.processOrder()
+    ├─→ Check if order already exists
+    ├─→ If new: create order in database (status: CREATED)
+    ├─→ Create activity log
+    └─→ Return order to resolver
+    ↓
+[4] OmsProcessor (Apache Camel route)
+    ├─→ Archive message to OMS_ARCHIVE queue (compliance)
+    ├─→ Push message to OMS queue for processing
+    └─→ Push success response to OMS_RESPONSE queue
+    ↓
+[5] Response to Client
+    └─→ Return order ID and status
+</code></pre><h3>2.2 <code>provision_gateway</code> - Service Activation</h3><p><strong>Location:</strong> <code>/provision_gateway</code>  
+<strong>Port:</strong> 8081 (default)  
+<strong>Purpose:</strong> Bridge to network provisioning systems</p><h4>2.2.1 Supported Provisioning Systems</h4><p><strong>1. Nokia ESB (MCM Telecom)</strong>
+<ul>
+<li>Internet service provisioning</li>
+<li>Equipment configuration (ONT, CPE)</li>
+<li>VLAN assignment</li>
+<li>IP address management</li>
+</ul><p><strong>2. ServiceNow</strong>
+<ul>
+<li>Ticket creation for manual provisioning</li>
+<li>Workflow orchestration</li>
+<li>Status tracking</li>
+</ul><p><strong>3. Generic REST/SOAP</strong>
+<ul>
+<li>Customizable adapters for any vendor</li>
+</ul><h4>2.2.2 Provisioning Flow</h4><pre><code class="language-">Order from crm_gateway
+    ↓
+[1] PGProvisioningGatewayService.processProvisioning()
+    ├─→ Analyze order requirements
+    │   - Service type (internet, voice, TV)
+    │   - Equipment needed (ONT, STB, router)
+    │   - Network resources (IP, VLAN, bandwidth)
+    ├─→ Assign resources from inventory
+    │   - Equipment: ONT-12345
+    │   - IP address: 10.5.123.45
+    │   - VLAN: 100
+    │   - Speed: 100Mbps
+    └─→ Configure parameters in order
+    ↓
+[2] createProvisioningOrder()
+    ├─→ Map order to vendor-specific format
+    │   (Nokia ESB format for MCM)
+    ├─→ Send SOAP/REST request to Nokia
+    └─→ Return provisioning request ID
+    ↓
+[3] Wait for callback
+    └─→ External system processes provisioning
+        (can take minutes to hours)
+    ↓
+[4] Provisioning Complete Callback
+    └─→ Message arrives on MCM_BILLING_OMS_RESPONSE queue
+    ↓
+[5] ProvisioningResponseProcessor
+    ├─→ Parse callback message
+    ├─→ Extract network ID and status
+    ├─→ Update order.services[<em>].lines[</em>].provisioningId
+    ├─→ Update status to PROVISIONED
+    └─→ Trigger billing
+</code></pre><h4>2.2.3 Resource Management</h4><p><strong>Equipment Assignment:</strong>
+<pre><code class="language-groovy">class EquipmentService {
+    /<em></em>
+     * Assign equipment from inventory
+     */
+    String assignEquipment(String equipmentType, String serviceType) {
+        // Query available equipment
+        Equipment equipment = findAvailableEquipment(equipmentType)
+        
+        if (equipment == null) {
+            throw new ResourceUnavailableException(
+                "No ${equipmentType} available for ${serviceType}"
+            )
+        }
+        
+        // Mark as assigned
+        equipment.status = "ASSIGNED"
+        equipment.assignedDate = LocalDateTime.now()
+        save(equipment)
+        
+        return equipment.id
+    }
+}
+</code></pre><p><strong>DID/Phone Number Assignment:</strong>
+<pre><code class="language-groovy">class DidService {
+    /<em></em>
+     * Assign phone number from pool
+     */
+    String assignDid(String countryCode, String areaCode) {
+        // Query available DIDs
+        Did did = dsl
+            .select()
+            .from(DID)
+            .where(DID.COUNTRY_CODE.eq(countryCode))
+            .and(DID.AREA_CODE.eq(areaCode))
+            .and(DID.STATUS.eq("AVAILABLE"))
+            .limit(1)
+            .fetchOneInto(Did.class)
+        
+        if (did == null) {
+            throw new ResourceUnavailableException(
+                "No DID available for ${countryCode}-${areaCode}"
+            )
+        }
+        
+        // Mark as assigned
+        did.status = "ASSIGNED"
+        did.assignedDate = LocalDateTime.now()
+        save(did)
+        
+        return did.phoneNumber
+    }
+}
+</code></pre><h3>2.3 <code>tax-gateway</code> & <code>tax-engine</code> - Tax Compliance</h3><p><strong>Location:</strong> <code>/tax-gateway</code>, <code>/tax-engine</code>  
+<strong>Purpose:</strong> Unified tax calculation interface</p><h4>2.3.1 Tax Calculation API</h4><p><strong>Request:</strong>
+<pre><code class="language-json">POST /api/tax/calculate
+{
+  "tenantId": "TIDLT-100005",
+  "accountId": "ACC-1001",
+  "billingAddress": {
+    "street1": "Av. Insurgentes Sur 1234",
+    "street2": "Col. Del Valle",
+    "city": "Ciudad de México",
+    "state": "CDMX",
+    "postalCode": "03100",
+    "country": "MX"
+  },
+  "lineItems": [
+    {
+      "description": "Internet 100Mbps",
+      "amount": 599.00,
+      "taxable": true,
+      "productCode": "INTERNET"
+    },
+    {
+      "description": "Equipment Rental",
+      "amount": 50.00,
+      "taxable": true,
+      "productCode": "EQUIPMENT"
+    }
+  ]
+}
+</code></pre><p><strong>Response:</strong>
+<pre><code class="language-json">{
+  "totalTax": 103.84,
+  "taxBreakdown": [
+    {
+      "jurisdiction": "Federal (IVA)",
+      "rate": 0.16,
+      "taxableAmount": 649.00,
+      "taxAmount": 103.84
+    }
+  ],
+  "lineItemTaxes": [
+    {
+      "lineItemIndex": 0,
+      "taxAmount": 95.84
+    },
+    {
+      "lineItemIndex": 1,
+      "taxAmount": 8.00
+    }
+  ]
+}
+</code></pre><h4>2.3.2 Mexican CFDI Compliance Flow</h4><pre><code class="language-">Invoice Generated in service-invoice
+    ↓
+[1] Generate CFDI XML (Comprobante Fiscal Digital por Internet)
+    ├─→ XML version 3.3 (SAT specification)
+    ├─→ Include all required fields:
+    │   - RFC (tax ID)
+    │   - Folio (invoice number)
+    │   - Fecha (issue date)
+    │   - Subtotal, Total
+    │   - Receptor (customer RFC)
+    │   - Conceptos (line items)
+    │   - Impuestos (taxes)
+    └─→ Save to local directory:
+        /data/{tenant}/pac_interface/upload/invoice/{INVOICE_ID}.xml
+    ↓
+[2] CRON Job (every 2 minutes)
+    └─→ /data/{tenant}/pac_interface/script/process_pac_invoice_upload.sh
+    ↓
+[3] SFTP Upload to PAC Provider
+    ├─→ Connect: sftp pac-provider-host
+    ├─→ Upload XML file
+    └─→ Move local file to processed folder
+    ↓
+[4] PAC Provider Processes
+    ├─→ Validate XML schema
+    ├─→ Validate business rules
+    ├─→ Generate digital stamp (UUID)
+    └─→ Place stamped files on SFTP server:
+        - {INVOICE_ID}_stamped.pdf
+        - {INVOICE_ID}_stamped.xml
+        - {INVOICE_ID}_status.txt
+    ↓
+[5] CRON Job (every 2 minutes)
+    └─→ /data/{tenant}/pac_interface/script/process_pac_invoice_download.sh
+    ↓
+[6] SFTP Download from PAC Provider
+    ├─→ Download stamped files
+    └─→ Save to local directory:
+        /data/{tenant}/pac_interface/download/invoice/
+    ↓
+[7] service-invoice processes stamped files
+    ├─→ Extract UUID from stamped XML
+    ├─→ Upload PDF to S3:
+        s3://{tenant}-invoices/2024/01/{INVOICE_ID}_stamped.pdf
+    ├─→ Update invoice record:
+        invoice.uuid = "ABC123..."
+        invoice.stampedDate = now()
+        invoice.pdfUrl = "s3://..."
+    └─→ Send email to customer with stamped PDF
+</code></pre><p><strong>CFDI XML Example:</strong>
+<pre><code class="language-xml">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;cfdi:Comprobante
+    xmlns:cfdi="http://www.sat.gob.mx/cfd/3"
+    Version="3.3"
+    Folio="INV-2024-001"
+    Fecha="2024-01-15T10:30:00"
+    SubTotal="649.00"
+    Total="752.84"
+    TipoDeComprobante="I"
+    MetodoPago="PUE"
+    LugarExpedicion="03100"&gt;
+    
+    &lt;cfdi:Emisor Rfc="MCM123456789" Nombre="MCM Telecom SA de CV"/&gt;
+    
+    &lt;cfdi:Receptor 
+        Rfc="XAXX010101000" 
+        Nombre="Juan Perez" 
+        UsoCFDI="G03"/&gt;
+    
+    &lt;cfdi:Conceptos&gt;
+        &lt;cfdi:Concepto 
+            ClaveProdServ="81112200"
+            Cantidad="1"
+            ClaveUnidad="E48"
+            Descripcion="Internet 100Mbps"
+            ValorUnitario="599.00"
+            Importe="599.00"/&gt;
+    &lt;/cfdi:Conceptos&gt;
+    
+    &lt;cfdi:Impuestos TotalImpuestosTrasladados="103.84"&gt;
+        &lt;cfdi:Traslados&gt;
+            &lt;cfdi:Traslado Impuesto="002" TipoFactor="Tasa" TasaOCuota="0.160000" Importe="103.84"/&gt;
+        &lt;/cfdi:Traslados&gt;
+    &lt;/cfdi:Impuestos&gt;
+&lt;/cfdi:Comprobante&gt;
+</code></pre><h3>2.4 <code>payment-gateway</code> - Payment Processing</h3><p><strong>Location:</strong> <code>/payment-gateway</code>  
+<strong>Purpose:</strong> Payment processor integration</p><h4>2.4.1 Supported Payment Methods</h4><p><strong>1. Credit/Debit Cards (Stripe, PayPal)</strong>
+<ul>
+<li>Real-time authorization</li>
+<li>Tokenized card storage</li>
+<li>PCI compliance</li>
+</ul><p><strong>2. Bank Transfers (Mexican Banks)</strong>
+<ul>
+<li>Banamex</li>
+<li>Bancomer (BBVA)</li>
+<li>Banorte</li>
+<li>Santander</li>
+<li>Scotiabank</li>
+</ul><p><strong>3. Bank File Processing Flow</strong></p><pre><code class="language-">Bank generates daily payment file
+    ↓
+[1] Bank uploads file to S3 or SFTP
+    └─→ s3://{tenant}-payments/{BANK}/input/payments_20240115.csv
+    ↓
+[2] CRON job detects file
+    └─→ /data/{tenant}/batch_payment/script/load_payment_by_type.sh
+    ↓
+[3] Download and load to database
+    ├─→ pgloader --type csv {FILE} postgresql://...
+    └─→ Insert into {bank}_payment table
+    ↓
+[4] service-payment: processBatchPayment()
+    └─→ Query: SELECT * FROM {bank}_payment WHERE processed = false
+    ↓
+[5] For each payment record:
+    ├─→ Parse account reference
+    │   (e.g., "INV-2024-001" or "ACC-1001")
+    ├─→ Find account by reference
+    ├─→ Find pending invoices for account
+    ├─→ Create payment record
+    ├─→ Allocate payment to invoices (oldest first)
+    ├─→ Update invoice status (PAID if fully paid)
+    ├─→ Update account balance
+    └─→ Mark bank record as processed = true
+    ↓
+[6] If account was suspended due to non-payment:
+    └─→ Auto-generate RESUME order (EP-5480 enhancement)
+</code></pre><p><strong>Bank File Format (CSV):</strong>
+<pre><code class="language-csv">Date,Reference,Amount,BankTransactionId
+2024-01-15,INV-2024-001,752.84,BNX123456789
+2024-01-15,ACC-1001,1500.00,BNX123456790
+2024-01-15,INV-2024-002,399.00,BNX123456791
+</code></pre><h3>2.5 <code>finance-gateway</code> - ERP Integration</h3><p><strong>Location:</strong> <code>/finance-gateway</code>  
+<strong>Purpose:</strong> Sync billing data to ERP systems</p><h4>2.5.1 Supported ERP Systems</h4><p><strong>1. QuickBooks Online</strong>
+<ul>
+<li>OAuth2 authentication</li>
+<li>Real-time invoice sync</li>
+<li>Payment matching</li>
+<li>Customer sync</li>
+</ul><p><strong>2. NetSuite (Planned)</strong>
+<ul>
+<li>RESTlet integration</li>
+<li>Journal entry export</li>
+<li>Revenue recognition</li>
+</ul><p><strong>3. Oracle EBS (Planned)</strong>
+<ul>
+<li>API integration</li>
+<li>GL posting</li>
+</ul><h4>2.5.2 QuickBooks Integration Flow</h4><pre><code class="language-">Invoice finalized in service-invoice
+    ↓
+[1] Trigger finance sync event
+    └─→ Push to finance-gateway queue
+    ↓
+[2] finance-gateway: QuickBooksService
+    ├─→ Lookup tenant's QuickBooks OAuth tokens from Vault
+    ├─→ Refresh access token if expired
+    └─→ Authenticate with QuickBooks API
+    ↓
+[3] Map Embrix invoice to QuickBooks format
+    ├─→ Customer mapping (Embrix Account → QB Customer)
+    ├─→ Product mapping (Embrix Price Offer → QB Item)
+    ├─→ Tax mapping (Embrix Tax → QB Tax Code)
+    └─→ Build QB invoice JSON
+    ↓
+[4] POST /v3/company/{companyId}/invoice
+    ├─→ Send invoice to QuickBooks
+    └─→ Receive QB invoice ID
+    ↓
+[5] Update Embrix invoice
+    ├─→ invoice.externalId = QB invoice ID
+    ├─→ invoice.syncStatus = "SYNCED"
+    └─→ invoice.syncDate = now()
+</code></pre><p><strong>QuickBooks API Request:</strong>
+<pre><code class="language-json">POST https://quickbooks.api.intuit.com/v3/company/123456789/invoice
+Authorization: Bearer {access_token}
+Accept: application/json
+Content-Type: application/json</p><p>{
+  "CustomerRef": {"value": "67"},
+  "TxnDate": "2024-01-15",
+  "DueDate": "2024-02-15",
+  "Line": [
+    {
+      "DetailType": "SalesItemLineDetail",
+      "Amount": 599.00,
+      "SalesItemLineDetail": {
+        "ItemRef": {"value": "12"},
+        "Qty": 1,
+        "UnitPrice": 599.00
+      },
+      "Description": "Internet 100Mbps"
+    }
+  ],
+  "TxnTaxDetail": {
+    "TotalTax": 103.84
+  }
+}
+</code></pre><hr><p><strong>Continue to Part 2B for Core Services Layer and Business Flows...</strong></p>
+        <footer>
+            <p><strong>Embrix O2X Platform Documentation</strong></p>
+            <p>Version 3.1.9-SNAPSHOT • Last Updated: February 2026</p>
+        </footer>
+    </div>
+</body>
+</html>

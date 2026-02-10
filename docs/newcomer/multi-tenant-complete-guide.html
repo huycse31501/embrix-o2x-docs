@@ -1,0 +1,2026 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Multi-Tenant Architecture - Complete Guide - Embrix O2X</title>
+    
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+        line-height: 1.6;
+        color: #333;
+        background: #f5f5f5;
+        padding: 20px;
+    }
+
+    .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        background: white;
+        padding: 40px;
+        border-radius: 10px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+    }
+
+    .nav-header {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 20px;
+        border-radius: 8px;
+        margin-bottom: 30px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+    }
+
+    .nav-header h1 {
+        font-size: 1.5em;
+        margin-bottom: 5px;
+    }
+
+    .nav-links {
+        display: flex;
+        gap: 15px;
+        flex-wrap: wrap;
+    }
+
+    .nav-links a {
+        color: white;
+        text-decoration: none;
+        padding: 8px 16px;
+        background: rgba(255,255,255,0.2);
+        border-radius: 5px;
+        transition: background 0.3s;
+    }
+
+    .nav-links a:hover {
+        background: rgba(255,255,255,0.3);
+    }
+
+    h1 {
+        color: #667eea;
+        margin: 30px 0 20px 0;
+        padding-bottom: 10px;
+        border-bottom: 3px solid #667eea;
+        font-size: 2.5em;
+    }
+
+    h2 {
+        color: #764ba2;
+        margin: 25px 0 15px 0;
+        padding-bottom: 8px;
+        border-bottom: 2px solid #f0f0f0;
+        font-size: 2em;
+    }
+
+    h3 {
+        color: #667eea;
+        margin: 20px 0 10px 0;
+        font-size: 1.5em;
+    }
+
+    h4 {
+        color: #764ba2;
+        margin: 15px 0 10px 0;
+        font-size: 1.2em;
+    }
+
+    p {
+        margin: 15px 0;
+        line-height: 1.8;
+    }
+
+    ul, ol {
+        margin: 15px 0;
+        padding-left: 30px;
+    }
+
+    li {
+        margin: 8px 0;
+        line-height: 1.6;
+    }
+
+    code {
+        background: #f4f4f4;
+        padding: 2px 6px;
+        border-radius: 3px;
+        font-family: 'Courier New', Courier, monospace;
+        font-size: 0.9em;
+        color: #e83e8c;
+    }
+
+    pre {
+        background: #2d2d2d;
+        color: #f8f8f2;
+        padding: 20px;
+        border-radius: 8px;
+        overflow-x: auto;
+        margin: 20px 0;
+        border-left: 4px solid #667eea;
+    }
+
+    pre code {
+        background: none;
+        color: #f8f8f2;
+        padding: 0;
+    }
+
+    blockquote {
+        border-left: 4px solid #667eea;
+        padding-left: 20px;
+        margin: 20px 0;
+        color: #666;
+        font-style: italic;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 20px 0;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    th {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 12px;
+        text-align: left;
+        font-weight: 600;
+    }
+
+    td {
+        padding: 12px;
+        border-bottom: 1px solid #f0f0f0;
+    }
+
+    tr:hover {
+        background: #f8f9fa;
+    }
+
+    .info-box {
+        background: #e3f2fd;
+        border-left: 4px solid #2196f3;
+        padding: 15px;
+        margin: 20px 0;
+        border-radius: 5px;
+    }
+
+    .warning-box {
+        background: #fff3e0;
+        border-left: 4px solid #ff9800;
+        padding: 15px;
+        margin: 20px 0;
+        border-radius: 5px;
+    }
+
+    .success-box {
+        background: #e8f5e9;
+        border-left: 4px solid #4caf50;
+        padding: 15px;
+        margin: 20px 0;
+        border-radius: 5px;
+    }
+
+    .toc {
+        background: #f8f9fa;
+        padding: 20px;
+        border-radius: 8px;
+        margin: 20px 0;
+        border-left: 4px solid #667eea;
+    }
+
+    .toc h2 {
+        color: #667eea;
+        border-bottom: none;
+        margin-bottom: 15px;
+    }
+
+    .toc ul {
+        list-style: none;
+        padding-left: 0;
+    }
+
+    .toc li {
+        margin: 8px 0;
+    }
+
+    .toc a {
+        color: #667eea;
+        text-decoration: none;
+        transition: color 0.3s;
+    }
+
+    .toc a:hover {
+        color: #764ba2;
+    }
+
+    hr {
+        border: none;
+        border-top: 2px solid #f0f0f0;
+        margin: 30px 0;
+    }
+
+    .badge {
+        display: inline-block;
+        background: #667eea;
+        color: white;
+        padding: 4px 10px;
+        border-radius: 12px;
+        font-size: 0.85em;
+        margin-left: 10px;
+    }
+
+    a {
+        color: #667eea;
+        text-decoration: none;
+        transition: color 0.3s;
+    }
+
+    a:hover {
+        color: #764ba2;
+        text-decoration: underline;
+    }
+
+    footer {
+        margin-top: 50px;
+        padding-top: 30px;
+        border-top: 2px solid #f0f0f0;
+        text-align: center;
+        color: #888;
+    }
+
+    @media print {
+        body {
+            background: white;
+        }
+        .nav-header, .nav-links {
+            display: none;
+        }
+        pre {
+            break-inside: avoid;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .container {
+            padding: 20px;
+        }
+        .nav-header {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+        .nav-links {
+            margin-top: 15px;
+        }
+        h1 {
+            font-size: 2em;
+        }
+        h2 {
+            font-size: 1.5em;
+        }
+    }
+</style>
+
+</head>
+<body>
+    <div class="container">
+        <div class="nav-header"><div><h1>Embrix O2X Documentation</h1><small>Navigate between guides</small></div><div class="nav-links"><a href="index.html">Home</a><a href="guide-index.html">Guide Index</a><a href="part1-business-architecture.html">Part 1</a><a href="part2-technical-deep-dive.html">Part 2</a><a href="part3-services-development.html">Part 3</a><a href="multi-tenant-complete-guide.html">Multi-Tenant</a><a href="quick-reference.html">Quick Ref</a></div></div>
+        <h1>Embrix O2X Multi-Tenant Architecture & Onboarding Guide</h1><h2>Document Information</h2><ul>
+<li><strong>Last Updated:</strong> February 10, 2026</li>
+<li><strong>Version:</strong> 1.0</li>
+<li><strong>Audience:</strong> DevOps Engineers, Solutions Architects, Technical Account Managers</li>
+<li><strong>Purpose:</strong> Complete reference for understanding and managing multi-tenant infrastructure</li>
+</ul><hr><h2>Table of Contents</h2><ol>
+<li><a href="#architecture-overview">Architecture Overview</a></li>
+<li><a href="#current-tenant-inventory">Current Tenant Inventory</a></li>
+<li><a href="#infrastructure-components">Infrastructure Components</a></li>
+<li><a href="#tenant-onboarding-process">Tenant Onboarding Process</a></li>
+<li><a href="#configuration-management">Configuration Management</a></li>
+<li><a href="#feature-customization">Feature Customization</a></li>
+<li><a href="#monitoring--observability">Monitoring & Observability</a></li>
+<li><a href="#troubleshooting">Troubleshooting</a></li>
+<li><a href="#best-practices">Best Practices</a></li>
+<li><a href="#appendices">Appendices</a></li>
+</ol><hr><h2>Architecture Overview</h2><h3>Multi-Tenancy Model</h3><p>Embrix O2X implements <strong>Deployment-Level Multi-Tenancy</strong> (also known as "Instance-per-Tenant" or "Silo Model"), where each tenant receives dedicated application-layer resources while sharing underlying infrastructure.</p><h3>Key Characteristics</h3><pre><code class="language-">┌─────────────────────────────────────────────────────────────────────────┐
+│ TENANT ISOLATION LAYER                                                   │
+│                                                                           │
+│  ┌─────────────────────┐  ┌─────────────────────┐  ┌──────────────────┐ │
+│  │ Tenant A            │  │ Tenant B            │  │ Tenant C         │ │
+│  │ (urbanos)           │  │ (coopeg-prd)        │  │ (demo)           │ │
+│  │                     │  │                     │  │                  │ │
+│  │ ┌─────────────────┐ │  │ ┌─────────────────┐ │  │ ┌──────────────┐ │ │
+│  │ │ Service Stack   │ │  │ │ Service Stack   │ │  │ │ Service Stack│ │ │
+│  │ │ • Transactional │ │  │ │ • Transactional │ │  │ │ • ...        │ │ │
+│  │ │ • Billing       │ │  │ │ • Billing       │ │  │ │              │ │ │
+│  │ │ • Invoice       │ │  │ │ • Invoice       │ │  │ │              │ │ │
+│  │ │ • Payment       │ │  │ │ • Payment       │ │  │ │              │ │ │
+│  │ │ • Revenue       │ │  │ │ • Revenue       │ │  │ │              │ │ │
+│  │ │ • Usage         │ │  │ │ • Usage         │ │  │ │              │ │ │
+│  │ └─────────────────┘ │  │ └─────────────────┘ │  │ └──────────────┘ │ │
+│  │                     │  │                     │  │                  │ │
+│  │ ┌─────────────────┐ │  │ ┌─────────────────┐ │  │ ┌──────────────┐ │ │
+│  │ │ Gateway Stack   │ │  │ │ Gateway Stack   │ │  │ │ Gateway Stack│ │ │
+│  │ │ • Payment GW    │ │  │ │ • Payment GW    │ │  │ │ • ...        │ │ │
+│  │ │ • Tax GW        │ │  │ │ • Tax GW        │ │  │ │              │ │ │
+│  │ │ • Finance GW    │ │  │ │ • Finance GW    │ │  │ │              │ │ │
+│  │ │ • Provision GW  │ │  │ │ • Provision GW  │ │  │ │              │ │ │
+│  │ │ • CRM GW        │ │  │ │ • CRM GW        │ │  │ │              │ │ │
+│  │ └─────────────────┘ │  │ └─────────────────┘ │  │ └──────────────┘ │ │
+│  │         │           │  │         │           │  │         │        │ │
+│  │         ▼           │  │         ▼           │  │         ▼        │ │
+│  │  DB: coredb-urbanos│  │  DB: coredb-coopeg  │  │  DB: coredb-demo │ │
+│  └─────────────────────┘  └─────────────────────┘  └──────────────────┘ │
+│           │                         │                         │          │
+└───────────┼─────────────────────────┼─────────────────────────┼──────────┘
+            │                         │                         │
+            ▼                         ▼                         ▼
+┌─────────────────────────────────────────────────────────────────────────┐
+│ SHARED INFRASTRUCTURE LAYER                                              │
+│                                                                           │
+│  ┌────────────────────────────────────────────────────────────────────┐  │
+│  │ PostgreSQL RDS Instance                                             │  │
+│  │ embrix-rds-dev-db.chg5bgdk4yyp.us-east-1.rds.amazonaws.com         │  │
+│  │                                                                      │  │
+│  │ ┌──────────────┐ ┌──────────────┐ ┌──────────────┐ ┌─────────────┐ │  │
+│  │ │coredb-urbanos│ │coredb-coopeg │ │coredb-demo   │ │core_config  │ │  │
+│  │ │(Full Schema) │ │(Full Schema) │ │(Full Schema) │ │(Shared Meta)│ │  │
+│  │ └──────────────┘ └──────────────┘ └──────────────┘ └─────────────┘ │  │
+│  └────────────────────────────────────────────────────────────────────┘  │
+│                                                                           │
+│  ┌──────────────────┐  ┌──────────────────┐  ┌──────────────────────┐  │
+│  │ Kubernetes       │  │ Redis/ElastiCache│  │ ActiveMQ             │  │
+│  │ EKS Cluster      │  │ Session/Cache    │  │ Message Broker       │  │
+│  └──────────────────┘  └──────────────────┘  └──────────────────────┘  │
+│                                                                           │
+│  ┌──────────────────┐  ┌──────────────────┐  ┌──────────────────────┐  │
+│  │ HashiCorp Vault  │  │ AWS S3           │  │ Monitoring Stack     │  │
+│  │ Secrets Mgmt     │  │ Object Storage   │  │ Prometheus/Grafana   │  │
+│  └──────────────────┘  └──────────────────┘  └──────────────────────┘  │
+└─────────────────────────────────────────────────────────────────────────┘
+</code></pre><h3>Isolation Boundaries</h3><p>| Component | Isolation Level | Notes |
+|-----------|----------------|-------|
+| <strong>Business Data</strong> | ✅ Complete | Separate database per tenant |
+| <strong>Application Pods</strong> | ✅ Complete | Dedicated K8s deployments |
+| <strong>Compute Resources</strong> | ✅ Quota-based | K8s resource limits per namespace |
+| <strong>Network</strong> | ✅ Logical | Service mesh + ingress rules |
+| <strong>Secrets/Credentials</strong> | ✅ Logical | Vault namespaces per tenant |
+| <strong>Configuration</strong> | ✅ Logical | Tenant-specific Helm values |
+| <strong>Database Server</strong> | 🔄 Shared | Multi-database RDS instance |
+| <strong>Kubernetes Cluster</strong> | 🔄 Shared | Shared control plane & nodes |
+| <strong>Cache Layer</strong> | 🔄 Shared | Redis with key prefixing |
+| <strong>Message Queue</strong> | 🔄 Shared | ActiveMQ with queue isolation |
+| <strong>Monitoring</strong> | 🔄 Shared | Tenant labels for filtering |</p><hr><h2>Current Tenant Inventory</h2><h3>Active Tenants (as of Feb 2026)</h3><p>| Tenant ID | Tenant Name | Environment | Database | Primary Region | Status |
+|-----------|-------------|-------------|----------|----------------|--------|
+| TIDLT-100001 | coopeg-sbx | Sandbox | coredb-coopeg-sbx | us-east-1 | Active |
+| TIDLT-100002 | demo | Demo | coredb-demo | us-east-1 | Active |
+| TIDLT-100003 | dev | Development | enginedevdb | us-east-1 | Active |
+| TIDLT-100004 | shm | Production | coredb-shm | us-east-1 | Active |
+| TIDLT-100005 | urbanos | Development | coredb-urbanos | us-east-1 | Active |
+| TIDLT-100006 | coopeg-prd | Production | coredb-coopeg-prd | us-east-1 | Active |
+| TIDLT-100007 | coopegenergy | Production | coredb-coopegenergy | us-east-1 | Active |</p><h3>Tenant Naming Conventions</h3><p><strong>Tenant ID Format:</strong> <code>TIDLT-{6-digit-number}</code>
+<ul>
+<li><code>TIDLT</code> = Tenant ID Prefix (Tenant Identifier)</li>
+<li>Sequential numbering starting from 100001</li>
+</ul><p><strong>Tenant Name Format:</strong> <code>{company-name}[-environment]</code>
+<ul>
+<li>Use lowercase</li>
+<li>Hyphenate multi-word names</li>
+<li>Append environment suffix for non-production (e.g., <code>-sbx</code>, <code>-dev</code>)</li>
+</ul><p><strong>Database Name Format:</strong> <code>coredb-{tenant-name}</code> or <code>{legacy-name}db</code>
+<ul>
+<li>Prefer: <code>coredb-{tenant-name}</code> for new tenants</li>
+<li>Legacy: <code>enginedevdb</code> (kept for backwards compatibility)</li>
+</ul><p><strong>Kubernetes Resource Naming:</strong> <code>{tenant-name}-{service-name}</code>
+<ul>
+<li>Examples: <code>urbanos-service-transactional</code>, <code>coopeg-prd-payment-gateway</code></li>
+</ul><hr><h2>Infrastructure Components</h2><h3>AWS Resources</h3><h4>RDS PostgreSQL Instance</h4><p><strong>Primary Instance:</strong>
+<ul>
+<li><strong>Endpoint:</strong> <code>embrix-rds-dev-db.chg5bgdk4yyp.us-east-1.rds.amazonaws.com</code></li>
+<li><strong>Port:</strong> 5432</li>
+<li><strong>Engine:</strong> PostgreSQL 13.x</li>
+<li><strong>Instance Class:</strong> db.r5.xlarge (or higher)</li>
+<li><strong>Multi-AZ:</strong> Yes</li>
+<li><strong>Backup Retention:</strong> 7 days</li>
+<li><strong>Storage:</strong> gp3 SSD, auto-scaling enabled</li>
+</ul><p><strong>Database Layout:</strong>
+<pre><code class="language-">embrix-rds-dev-db
+├── coredb-urbanos       (Tenant: urbanos)
+├── coredb-coopeg-sbx    (Tenant: coopeg-sbx)
+├── coredb-coopeg-prd    (Tenant: coopeg-prd)
+├── coredb-demo          (Tenant: demo)
+├── coredb-shm           (Tenant: shm)
+├── coredb-coopegenergy  (Tenant: coopegenergy)
+├── enginedevdb          (Tenant: dev - legacy name)
+└── [Each database contains:]
+    ├── public schema (business data)
+    └── core_config schema (tenant metadata - shared across all DBs)
+</code></pre><h4>ElastiCache Redis</h4><p><strong>Cluster:</strong>
+<ul>
+<li><strong>Endpoint:</strong> <code>master.{env}-cache-rg.8fxuvv.use1.cache.amazonaws.com</code></li>
+<li><strong>Port:</strong> 6379</li>
+<li><strong>Engine:</strong> Redis 6.x</li>
+<li><strong>Node Type:</strong> cache.r5.large</li>
+<li><strong>Cluster Mode:</strong> Disabled</li>
+<li><strong>Usage:</strong> Session storage, caching, rate limiting</li>
+</ul><p><strong>Key Prefixing Pattern:</strong>
+<pre><code class="language-">{tenant-id}:session:{session-id}
+{tenant-id}:cache:{cache-key}
+{tenant-id}:rate-limit:{user-id}
+</code></pre><h4>Amazon MQ (ActiveMQ)</h4><p><strong>Broker:</strong>
+<ul>
+<li><strong>Endpoint:</strong> <code>b-{broker-id}.mq.us-east-1.amazonaws.com</code></li>
+<li><strong>Port:</strong> 61617 (SSL)</li>
+<li><strong>Engine:</strong> ActiveMQ 5.16.x</li>
+<li><strong>Instance Type:</strong> mq.m5.large</li>
+<li><strong>Deployment:</strong> Active/Standby</li>
+</ul><p><strong>Queue Naming:</strong>
+<pre><code class="language-">{tenant-id}.billing.invoice
+{tenant-id}.payment.processing
+{tenant-id}.usage.rating
+{tenant-id}.jobs.{job-type}
+</code></pre><h4>S3 Buckets</h4><p><strong>Static Assets:</strong>
+<ul>
+<li><strong>Bucket:</strong> <code>embrix-static-files</code></li>
+<li><strong>URL:</strong> <code>https://embrix-static-files.s3.amazonaws.com</code></li>
+<li><strong>Usage:</strong> Invoice templates, report templates, static resources</li>
+</ul><p><strong>Data Storage:</strong>
+<ul>
+<li><strong>Bucket:</strong> <code>embrix-{env}-data</code></li>
+<li><strong>Structure:</strong></li>
+</ul>
+  <pre><code class="language-">  embrix-dev-data/
+  ├── {tenant-id}/
+  │   ├── invoices/
+  │   ├── reports/
+  │   ├── exports/
+  │   └── imports/
+  </code></pre><h4>HashiCorp Vault</h4><p><strong>Service:</strong>
+<ul>
+<li><strong>Endpoint:</strong> <code>http://{tenant-name}-vault-interface/</code></li>
+<li><strong>Authentication:</strong> Kubernetes Service Account</li>
+<li><strong>Usage:</strong> Secrets management, merchant credentials</li>
+</ul><p><strong>Secret Paths:</strong>
+<pre><code class="language-">secret/tenant/{tenant-name}/license/
+secret/tenant/{tenant-name}/quickbooks/{client_id,client_secret,tokens}
+secret/tenant/{tenant-name}/netsuite/{account,consumer_key,token_id}
+secret/tenant/{tenant-name}/stripe/{api_key,webhook_secret}
+secret/tenant/{tenant-name}/avalara/{account_id,license_key}
+</code></pre><h3>Kubernetes (EKS) Architecture</h3><h4>Cluster Configuration</h4><p><strong>EKS Cluster:</strong>
+<ul>
+<li><strong>Name:</strong> <code>embrix-eks-{env}</code></li>
+<li><strong>Version:</strong> 1.28+</li>
+<li><strong>Region:</strong> us-east-1</li>
+<li><strong>Networking:</strong> VPC with private subnets</li>
+<li><strong>Node Groups:</strong> Mixed (on-demand + spot)</li>
+</ul><h4>Namespace Strategy</h4><p><strong>Per-Tenant Namespace (Optional):</strong>
+While services are named per-tenant, namespaces can be:
+<ol>
+<li><strong>Shared namespace approach</strong> (current): All tenant services in same namespace with unique names</li>
+<li><strong>Per-tenant namespace</strong> (alternative): Each tenant gets dedicated namespace</li>
+</ol><p><strong>Current Implementation:</strong> Services deployed in shared namespaces with tenant-prefixed names.</p><h4>Service Architecture per Tenant</h4><p>Each tenant deployment includes:</p><p><strong>Core Services (service-*):</strong>
+<ol>
+<li><strong>service-transactional</strong> - Customer, Order, Subscription management</li>
+</ol>
+   - Replicas: 2-4
+   - Resources: 2 CPU, 4Gi memory
+   - Port: 8080</p><ol>
+<li><strong>service-billing</strong> - Billing cycle, bill generation</li>
+</ol>
+   - Replicas: 2-3
+   - Resources: 2 CPU, 4Gi memory
+   - Port: 8080</p><ol>
+<li><strong>service-invoice</strong> - Invoice generation, PDF rendering</li>
+</ol>
+   - Replicas: 2-3
+   - Resources: 2 CPU, 4Gi memory
+   - Port: 8080</p><ol>
+<li><strong>service-payment</strong> - Payment processing, allocation</li>
+</ol>
+   - Replicas: 2-4
+   - Resources: 2 CPU, 4Gi memory
+   - Port: 8080</p><ol>
+<li><strong>service-revenue</strong> - Revenue recognition, accounting</li>
+</ol>
+   - Replicas: 2
+   - Resources: 1 CPU, 2Gi memory
+   - Port: 8080</p><ol>
+<li><strong>service-usage</strong> - Usage rating, mediation</li>
+</ol>
+   - Replicas: 2-4
+   - Resources: 4 CPU, 8Gi memory (high compute)
+   - Port: 8080</p><ol>
+<li><strong>service-mediation</strong> - CDR processing, normalization</li>
+</ol>
+   - Replicas: 2-3
+   - Resources: 2 CPU, 4Gi memory
+   - Port: 8080</p><ol>
+<li><strong>service-sso</strong> - Authentication, authorization</li>
+</ol>
+   - Replicas: 2
+   - Resources: 1 CPU, 2Gi memory
+   - Port: 8080</p><ol>
+<li><strong>service-proxy</strong> - API Gateway, GraphQL endpoint</li>
+</ol>
+   - Replicas: 3-5
+   - Resources: 2 CPU, 4Gi memory
+   - Port: 8080</p><p><strong>Gateway Services (*-gateway):</strong>
+<ol>
+<li><strong>payment-gateway</strong> - Payment processor integrations</li>
+<li><strong>tax-gateway</strong> - Tax calculation integrations</li>
+<li><strong>finance-gateway</strong> - ERP/accounting integrations</li>
+<li><strong>provision-gateway</strong> - Service provisioning integrations</li>
+<li><strong>crm-gateway</strong> - CRM system integrations</li>
+</ol><p><strong>Batch Processing:</strong>
+<ol>
+<li><strong>batch-process</strong> - Scheduled data processing</li>
+<li><strong>jobs-common</strong> - Job execution framework</li>
+</ol><hr><h2>Tenant Onboarding Process</h2><h3>Prerequisites Checklist</h3><p>Before starting tenant onboarding, ensure you have:</p><ul>
+<li>[ ] Tenant business information (company name, contact, region)</li>
+<li>[ ] License agreement and key</li>
+<li>[ ] Merchant account details (QuickBooks, NetSuite, Stripe, etc.)</li>
+<li>[ ] AWS credentials with appropriate permissions</li>
+<li>[ ] kubectl access to EKS cluster</li>
+<li>[ ] Helm 3.x installed</li>
+<li>[ ] Database admin credentials</li>
+<li>[ ] Vault admin token</li>
+<li>[ ] DNS management access (if custom domain needed)</li>
+</ul><h3>Step 1: Generate Tenant ID</h3><p><strong>Generate next available Tenant ID:</strong></p><pre><code class="language-bash"># Query existing tenants to find highest ID
+psql -h embrix-rds-dev-db.chg5bgdk4yyp.us-east-1.rds.amazonaws.com \
+     -U admin -d enginedevdb \
+     -c "SELECT id FROM core_config.tenant ORDER BY id DESC LIMIT 1;"</p><h1>Result example: TIDLT-100007</h1>
+<h1>Next ID: TIDLT-100008</h1>
+</code></pre><p><strong>Assign Tenant Name:</strong>
+<pre><code class="language-bash"># Format: {company-name}[-env]
+<h1>Examples:</h1>
+TENANT_NAME="newclient"          # Production tenant
+TENANT_NAME="newclient-sbx"      # Sandbox tenant
+TENANT_NAME="newclient-dev"      # Development tenant</p><h1>Generate Tenant ID</h1>
+TENANT_ID="TIDLT-100008"  # Use next sequential ID
+</code></pre><h3>Step 2: Database Provisioning</h3><h4>2.1 Create Database</h4><pre><code class="language-bash"># Connect to RDS
+psql -h embrix-rds-dev-db.chg5bgdk4yyp.us-east-1.rds.amazonaws.com \
+     -U admin -d postgres</p><h1>Create database</h1>
+CREATE DATABASE "coredb-${TENANT_NAME}"
+    WITH 
+    OWNER = admin
+    ENCODING = 'UTF8'
+    LC_COLLATE = 'en_US.UTF-8'
+    LC_CTYPE = 'en_US.UTF-8'
+    TABLESPACE = pg_default
+    CONNECTION LIMIT = 100;</p><h1>Grant privileges</h1>
+GRANT ALL PRIVILEGES ON DATABASE "coredb-${TENANT_NAME}" TO admin;
+GRANT CONNECT ON DATABASE "coredb-${TENANT_NAME}" TO appuser;</p><h1>Exit psql</h1>
+\q
+</code></pre><h4>2.2 Run Database Migrations</h4><pre><code class="language-bash"># Set database connection
+export DB_URL="jdbc:postgresql://embrix-rds-dev-db.chg5bgdk4yyp.us-east-1.rds.amazonaws.com:5432/coredb-${TENANT_NAME}?stringtype=unspecified&sslmode=require"
+export DB_USER="admin"
+export DB_PASSWORD="&lt;password-from-secrets&gt;"</p><h1>Option A: Using Flyway (if available)</h1>
+cd engine/
+flyway migrate \
+  -url="${DB_URL}" \
+  -user="${DB_USER}" \
+  -password="${DB_PASSWORD}" \
+  -locations="filesystem:./db/migration" \
+  -schemas=public,core_config</p><h1>Option B: Using Spring Boot application</h1>
+cd engine/
+./mvnw spring-boot:run \
+  -Dspring-boot.run.arguments=--spring.flyway.enabled=true \
+  -Dspring.datasource.url="${DB_URL}" \
+  -Dspring.datasource.username="${DB_USER}" \
+  -Dspring.datasource.password="${DB_PASSWORD}"
+</code></pre><p><strong>Verify migrations:</strong>
+<pre><code class="language-bash">psql -h embrix-rds-dev-db.chg5bgdk4yyp.us-east-1.rds.amazonaws.com \
+     -U admin -d "coredb-${TENANT_NAME}" \
+     -c "\dt public.*" \
+     -c "\dt core_config.*"</p><h1>Expected output: List of all application tables</h1>
+</code></pre><h4>2.3 Insert Tenant Metadata</h4><pre><code class="language-sql">-- Connect to database
+psql -h embrix-rds-dev-db.chg5bgdk4yyp.us-east-1.rds.amazonaws.com \
+     -U admin -d "coredb-${TENANT_NAME}"</p><p>-- Insert tenant record
+INSERT INTO core_config.tenant (
+    id,
+    name,
+    vaulturi,
+    vaultpath,
+    licensekey,
+    status
+) VALUES (
+    'TIDLT-100008',
+    'newclient',
+    'http://newclient-vault-interface/',
+    'tenant/newclient/production',
+    'LICENSE-KEY-PROVIDED-BY-BUSINESS',
+    'ACTIVE'
+);</p><p>-- Insert tenant profile (optional - for additional metadata)
+INSERT INTO core_config.tenant_profile (
+    tenantid,
+    companyname,
+    address,
+    city,
+    state,
+    country,
+    timezone,
+    currency
+) VALUES (
+    'TIDLT-100008',
+    'New Client Inc.',
+    '123 Main Street',
+    'New York',
+    'NY',
+    'USA',
+    'America/New_York',
+    'USD'
+);</p><p>-- Verify
+SELECT * FROM core_config.tenant WHERE id = 'TIDLT-100008';
+</code></pre><h3>Step 3: Configure Merchant Integrations</h3><h4>3.1 Create Merchant Accounts in Database</h4><pre><code class="language-sql">-- Continue in same psql session</p><p>-- Example: QuickBooks Finance Gateway
+INSERT INTO core_config.tenant_merchants (
+    id,
+    tenant_id,
+    index,
+    name,
+    type,
+    status,
+    authtype,
+    apitype,
+    baseurl
+) VALUES (
+    'TIDLT-100008',
+    'TIDLT-100008',
+    0,
+    'QUICKBOOKS',
+    'FINANCE_GATEWAY',
+    'ACTIVE',
+    'OAUTH2',
+    'REST',
+    'https://quickbooks.api.intuit.com'
+);</p><p>-- Insert OAuth2 attributes for QuickBooks
+INSERT INTO core_config.oauth2_attributes (
+    id,
+    index,
+    realmid,
+    environment,
+    redirecturi,
+    state
+) VALUES (
+    'TIDLT-100008',
+    0,
+    '123456789',  -- QuickBooks Company ID
+    'PRODUCTION', -- or 'SANDBOX'
+    'https://newclient.embrix.com/oauth2/callback',
+    'random-state-string'
+);</p><p>-- Insert finance gateway specific attributes
+INSERT INTO core_config.finance_gateway_attributes (
+    id,
+    index,
+    subsidiary,
+    accountingmethod,
+    fiscalyearstart
+) VALUES (
+    'TIDLT-100008',
+    0,
+    'PRIMARY',
+    'ACCRUAL',
+    '01-01'
+);</p><p>-- Repeat for other gateways (Payment, Tax, CRM, etc.)
+</code></pre><h4>3.2 Store Credentials in Vault</h4><pre><code class="language-bash"># Authenticate to Vault
+export VAULT_ADDR="http://vault-interface/"
+export VAULT_TOKEN="&lt;vault-admin-token&gt;"</p><h1>Create tenant namespace</h1>
+vault kv put secret/tenant/newclient/info \
+  tenant_id=TIDLT-100008 \
+  tenant_name=newclient \
+  environment=production</p><h1>Store QuickBooks credentials</h1>
+vault kv put secret/tenant/newclient/quickbooks \
+  client_id="&lt;quickbooks-client-id&gt;" \
+  client_secret="&lt;quickbooks-client-secret&gt;" \
+  access_token="&lt;initial-access-token&gt;" \
+  refresh_token="&lt;initial-refresh-token&gt;" \
+  realm_id="123456789" \
+  token_expiry="&lt;expiry-timestamp&gt;"</p><h1>Store Stripe credentials (if applicable)</h1>
+vault kv put secret/tenant/newclient/stripe \
+  api_key="sk_live_..." \
+  webhook_secret="whsec_..." \
+  publishable_key="pk_live_..."</p><h1>Store Avalara credentials (if applicable)</h1>
+vault kv put secret/tenant/newclient/avalara \
+  account_id="&lt;avalara-account-id&gt;" \
+  license_key="&lt;avalara-license-key&gt;" \
+  company_code="&lt;company-code&gt;"</p><h1>Store license key</h1>
+vault kv put secret/tenant/newclient/license/onboarding \
+  license_key="LICENSE-KEY-PROVIDED-BY-BUSINESS" \
+  decrypt_key="&lt;generated-decrypt-key&gt;"</p><h1>Verify</h1>
+vault kv get secret/tenant/newclient/quickbooks
+</code></pre><h3>Step 4: Create Helm Configurations</h3><h4>4.1 Directory Structure Setup</h4><pre><code class="language-bash"># Navigate to repository root
+cd /path/to/embrix-o2x</p><h1>Create Helm values directories for new tenant</h1>
+mkdir -p core/helm_values/newclient
+mkdir -p payment-gateway/helm_values/newclient
+mkdir -p tax-gateway/helm_values/newclient
+mkdir -p finance-gateway/helm_values/newclient
+mkdir -p provision_gateway/helm_values/newclient
+mkdir -p crm_gateway/helm_values/newclient</p><p>echo "Created Helm values directories for tenant: newclient"
+</code></pre><h4>4.2 Core Service Helm Values</h4><p><strong>Create: <code>core/helm_values/newclient/service-transactional.yaml</code></strong></p><pre><code class="language-yaml">app:
+  env: production
+  envMap:
+  - name: LOGS_DIR
+    value: /logs
+  - name: LOG_LEVEL
+    value: INFO
+  - name: REDIS_HOST
+    value: master.production-cache-rg.8fxuvv.use1.cache.amazonaws.com
+  - name: REDIS_PORT
+    value: "6379"
+  - name: AWS_S3_PUBLICURL
+    value: https://embrix-static-files.s3.amazonaws.com
+  - name: AMQ_BROKER_URL
+    value: ssl://b-xxxxx.mq.us-east-1.amazonaws.com:61617
+  - name: TAX_GATEWAY_URL
+    value: http://newclient-tax-gateway
+  - name: PAYMENT_GATEWAY_URL
+    value: http://newclient-payment-gateway
+  - name: FINANCE_GATEWAY_URL
+    value: http://newclient-finance-gateway
+  - name: PROVISIONING_GATEWAY_URL
+    value: http://newclient-provision-gateway
+  - name: CRM_GATEWAY_URL
+    value: http://newclient-crm-gateway
+  - name: VAULT_API
+    value: http://newclient-vault-interface/
+  postgres:
+    secret: pg-secret
+    url: jdbc:postgresql://embrix-rds-dev-db.chg5bgdk4yyp.us-east-1.rds.amazonaws.com:5432/coredb-newclient?stringtype=unspecified&sslmode=require
+  spring:
+    port: 8080
+    profile: pg
+  tenantId: TIDLT-100008
+  tenantName: newclient
+  vault:
+    secret: app-vault-token
+  volumes:
+    dataPvc: newclient-data-pvc
+fullnameOverride: newclient-service-transactional
+image:
+  pullPolicy: Always
+  tag: v2.5.0  # Use appropriate version
+replicaCount: 2
+resources:
+  limits:
+    cpu: 2000m
+    memory: 4Gi
+  requests:
+    cpu: 1000m
+    memory: 2Gi
+</code></pre><p><strong>Repeat for other core services:</strong>
+<ul>
+<li><code>service-billing.yaml</code></li>
+<li><code>service-invoice.yaml</code></li>
+<li><code>service-payment.yaml</code></li>
+<li><code>service-revenue.yaml</code></li>
+<li><code>service-usage.yaml</code></li>
+<li><code>service-mediation.yaml</code></li>
+<li><code>service-sso.yaml</code></li>
+<li><code>service-proxy.yaml</code></li>
+<li><code>batch-process.yaml</code></li>
+<li><code>jobs-common.yaml</code></li>
+</ul><p><strong>Template for other services:</strong> Copy from existing tenant (e.g., <code>urbanos/</code>) and update:
+<ul>
+<li><code>tenantId: TIDLT-100008</code></li>
+<li><code>tenantName: newclient</code></li>
+<li><code>postgres.url</code> with <code>coredb-newclient</code></li>
+<li><code>fullnameOverride: newclient-{service-name}</code></li>
+<li>All gateway URLs: <code>http://newclient-{gateway-name}</code></li>
+<li><code>volumes.dataPvc: newclient-data-pvc</code></li>
+</ul><h4>4.3 Gateway Service Helm Values</h4><p><strong>Create: <code>finance-gateway/helm_values/newclient/finance-gateway.yaml</code></strong></p><pre><code class="language-yaml">app:
+  envMap:
+  - name: REDIS_HOST
+    value: master.production-cache-rg.8fxuvv.use1.cache.amazonaws.com
+  - name: REDIS_PORT
+    value: "6379"
+  - name: LOGS_DIR
+    value: /logs
+  - name: DATA_DIR
+    value: /data
+  license:
+    decryptKey: &lt;generated-decrypt-key-for-tenant&gt;
+    vault:
+      api: http://newclient-vault-interface/read/license/onboarding/
+      path: tenant/newclient/production
+  postgres:
+    secret: pg-secret
+    url: jdbc:postgresql://embrix-rds-dev-db.chg5bgdk4yyp.us-east-1.rds.amazonaws.com:5432/coredb-newclient?stringtype=unspecified&sslmode=require
+  tenantId: TIDLT-100008
+  vault:
+    api: http://newclient-vault-interface/
+    secret: app-vault-token
+  volumes:
+    dataPvc: newclient-data-pvc
+fullnameOverride: newclient-finance-gateway
+image:
+  pullPolicy: Always
+  tag: v2.5.0
+replicaCount: 2
+resources:
+  limits:
+    cpu: 1000m
+    memory: 2Gi
+  requests:
+    cpu: 500m
+    memory: 1Gi
+</code></pre><p><strong>Repeat for:</strong>
+<ul>
+<li><code>payment-gateway/helm_values/newclient/payment-gateway.yaml</code></li>
+<li><code>tax-gateway/helm_values/newclient/tax-gateway.yaml</code></li>
+<li><code>provision_gateway/helm_values/newclient/provision-gateway.yaml</code></li>
+<li><code>crm_gateway/helm_values/newclient/crm-gateway.yaml</code></li>
+</ul><h3>Step 5: Kubernetes Deployment</h3><h4>5.1 Create Persistent Volume Claims</h4><pre><code class="language-bash"># Create data PVC for tenant
+cat &lt;&lt;EOF | kubectl apply -f -
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: newclient-data-pvc
+  namespace: default  # or tenant-specific namespace
+spec:
+  accessModes:
+    - ReadWriteMany
+  storageClassName: efs-sc  # or appropriate storage class
+  resources:
+    requests:
+      storage: 100Gi
+EOF</p><h1>Verify</h1>
+kubectl get pvc newclient-data-pvc
+</code></pre><h4>5.2 Create Kubernetes Secrets</h4><pre><code class="language-bash"># PostgreSQL credentials (if not using existing secret)
+kubectl create secret generic pg-secret \
+  --from-literal=username=appuser \
+  --from-literal=password='&lt;db-password&gt;' \
+  --namespace=default</p><h1>Vault token (if not using existing secret)</h1>
+kubectl create secret generic app-vault-token \
+  --from-literal=token='&lt;vault-token&gt;' \
+  --namespace=default</p><h1>Verify</h1>
+kubectl get secrets | grep -E "pg-secret|app-vault-token"
+</code></pre><h4>5.3 Deploy Core Services</h4><pre><code class="language-bash"># Set working directory
+cd /path/to/embrix-o2x</p><h1>Deploy services in order (respecting dependencies)</h1><h1>1. Deploy SSO (authentication service first)</h1>
+helm upgrade --install newclient-service-sso ./core/charts/service-sso \
+  -f core/helm_values/newclient/service-sso.yaml \
+  --namespace default \
+  --create-namespace \
+  --wait \
+  --timeout 10m</p><h1>2. Deploy transactional service</h1>
+helm upgrade --install newclient-service-transactional ./core/charts/service-transactional \
+  -f core/helm_values/newclient/service-transactional.yaml \
+  --namespace default \
+  --wait \
+  --timeout 10m</p><h1>3. Deploy billing service</h1>
+helm upgrade --install newclient-service-billing ./core/charts/service-billing \
+  -f core/helm_values/newclient/service-billing.yaml \
+  --namespace default \
+  --wait \
+  --timeout 10m</p><h1>4. Deploy invoice service</h1>
+helm upgrade --install newclient-service-invoice ./core/charts/service-invoice \
+  -f core/helm_values/newclient/service-invoice.yaml \
+  --namespace default \
+  --wait \
+  --timeout 10m</p><h1>5. Deploy payment service</h1>
+helm upgrade --install newclient-service-payment ./core/charts/service-payment \
+  -f core/helm_values/newclient/service-payment.yaml \
+  --namespace default \
+  --wait \
+  --timeout 10m</p><h1>6. Deploy revenue service</h1>
+helm upgrade --install newclient-service-revenue ./core/charts/service-revenue \
+  -f core/helm_values/newclient/service-revenue.yaml \
+  --namespace default \
+  --wait \
+  --timeout 10m</p><h1>7. Deploy usage/mediation services</h1>
+helm upgrade --install newclient-service-usage ./core/charts/service-usage \
+  -f core/helm_values/newclient/service-usage.yaml \
+  --namespace default \
+  --wait \
+  --timeout 10m</p><p>helm upgrade --install newclient-service-mediation ./core/charts/service-mediation \
+  -f core/helm_values/newclient/service-mediation.yaml \
+  --namespace default \
+  --wait \
+  --timeout 10m</p><h1>8. Deploy batch/jobs services</h1>
+helm upgrade --install newclient-batch-process ./core/charts/batch-process \
+  -f core/helm_values/newclient/batch-process.yaml \
+  --namespace default \
+  --wait \
+  --timeout 10m</p><p>helm upgrade --install newclient-jobs-common ./core/charts/jobs-common \
+  -f core/helm_values/newclient/jobs-common.yaml \
+  --namespace default \
+  --wait \
+  --timeout 10m</p><h1>9. Deploy API proxy (last, after all services are up)</h1>
+helm upgrade --install newclient-service-proxy ./core/charts/service-proxy \
+  -f core/helm_values/newclient/service-proxy.yaml \
+  --namespace default \
+  --wait \
+  --timeout 10m
+</code></pre><p><strong>Verify core services:</strong>
+<pre><code class="language-bash">kubectl get pods -l tenant=newclient
+kubectl get services -l tenant=newclient</p><h1>Check pod logs for startup</h1>
+kubectl logs -l app=newclient-service-transactional --tail=100
+</code></pre><h4>5.4 Deploy Gateway Services</h4><pre><code class="language-bash"># Deploy gateways (can be done in parallel)</p><h1>Finance Gateway</h1>
+helm upgrade --install newclient-finance-gateway ./finance-gateway/charts/finance-gateway \
+  -f finance-gateway/helm_values/newclient/finance-gateway.yaml \
+  --namespace default \
+  --wait \
+  --timeout 10m</p><h1>Payment Gateway</h1>
+helm upgrade --install newclient-payment-gateway ./payment-gateway/charts/payment-gateway \
+  -f payment-gateway/helm_values/newclient/payment-gateway.yaml \
+  --namespace default \
+  --wait \
+  --timeout 10m</p><h1>Tax Gateway</h1>
+helm upgrade --install newclient-tax-gateway ./tax-gateway/charts/tax-gateway \
+  -f tax-gateway/helm_values/newclient/tax-gateway.yaml \
+  --namespace default \
+  --wait \
+  --timeout 10m</p><h1>Provision Gateway</h1>
+helm upgrade --install newclient-provision-gateway ./provision_gateway/charts/provision-gateway \
+  -f provision_gateway/helm_values/newclient/provision-gateway.yaml \
+  --namespace default \
+  --wait \
+  --timeout 10m</p><h1>CRM Gateway</h1>
+helm upgrade --install newclient-crm-gateway ./crm_gateway/charts/crm-gateway \
+  -f crm_gateway/helm_values/newclient/crm-gateway.yaml \
+  --namespace default \
+  --wait \
+  --timeout 10m
+</code></pre><p><strong>Verify gateway services:</strong>
+<pre><code class="language-bash">kubectl get pods | grep newclient-.*-gateway
+kubectl get services | grep newclient-.*-gateway</p><h1>Test gateway health endpoints</h1>
+kubectl port-forward svc/newclient-finance-gateway 8080:8080
+curl http://localhost:8080/actuator/health
+</code></pre><h3>Step 6: DNS & Ingress Configuration</h3><h4>6.1 Create Ingress Resources</h4><pre><code class="language-yaml"># Create: k8s/ingress/newclient-ingress.yaml
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: newclient-ingress
+  namespace: default
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/proxy-body-size: "50m"
+    nginx.ingress.kubernetes.io/proxy-connect-timeout: "300"
+    nginx.ingress.kubernetes.io/proxy-send-timeout: "300"
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "300"
+spec:
+  tls:
+  - hosts:
+    - newclient.embrix.com
+    - api.newclient.embrix.com
+    secretName: newclient-tls-cert
+  rules:
+  - host: newclient.embrix.com
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: newclient-service-proxy
+            port:
+              number: 8080
+  - host: api.newclient.embrix.com
+    http:
+      paths:
+      - path: /graphql
+        pathType: Prefix
+        backend:
+          service:
+            name: newclient-service-proxy
+            port:
+              number: 8080
+      - path: /api
+        pathType: Prefix
+        backend:
+          service:
+            name: newclient-service-proxy
+            port:
+              number: 8080
+</code></pre><pre><code class="language-bash"># Apply ingress
+kubectl apply -f k8s/ingress/newclient-ingress.yaml</p><h1>Verify ingress created</h1>
+kubectl get ingress newclient-ingress
+kubectl describe ingress newclient-ingress</p><h1>Check certificate issuance (if using cert-manager)</h1>
+kubectl get certificate newclient-tls-cert
+</code></pre><h4>6.2 Configure DNS Records</h4><p><strong>In AWS Route 53 (or DNS provider):</strong></p><pre><code class="language-bash"># Get LoadBalancer external IP/hostname
+kubectl get svc -n ingress-nginx ingress-nginx-controller</p><h1>Create DNS records</h1>
+<h1>A/CNAME records pointing to LoadBalancer:</h1>
+<h1>newclient.embrix.com -&gt; &lt;LoadBalancer-DNS&gt;</h1>
+<h1>api.newclient.embrix.com -&gt; &lt;LoadBalancer-DNS&gt;</h1>
+<h1>*.newclient.embrix.com -&gt; &lt;LoadBalancer-DNS&gt; (optional wildcard)</h1>
+</code></pre><p><strong>AWS CLI example:</strong>
+<pre><code class="language-bash"># Get hosted zone ID
+HOSTED_ZONE_ID=$(aws route53 list-hosted-zones \
+  --query "HostedZones[?Name=='embrix.com.'].Id" \
+  --output text | cut -d'/' -f3)</p><h1>Get LoadBalancer DNS</h1>
+LB_DNS=$(kubectl get svc -n ingress-nginx ingress-nginx-controller \
+  -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')</p><h1>Create DNS record</h1>
+aws route53 change-resource-record-sets \
+  --hosted-zone-id ${HOSTED_ZONE_ID} \
+  --change-batch '{
+    "Changes": [{
+      "Action": "CREATE",
+      "ResourceRecordSet": {
+        "Name": "newclient.embrix.com",
+        "Type": "CNAME",
+        "TTL": 300,
+        "ResourceRecords": [{"Value": "'${LB_DNS}'"}]
+      }
+    }]
+  }'</p><h1>Repeat for api.newclient.embrix.com</h1>
+</code></pre><p><strong>Verify DNS propagation:</strong>
+<pre><code class="language-bash"># Test DNS resolution
+dig newclient.embrix.com +short
+nslookup newclient.embrix.com</p><h1>Test HTTPS endpoint</h1>
+curl -I https://newclient.embrix.com
+curl -I https://api.newclient.embrix.com/graphql
+</code></pre><h3>Step 7: Initial Configuration & Testing</h3><h4>7.1 Create Admin User</h4><pre><code class="language-bash"># Port-forward to service-sso
+kubectl port-forward svc/newclient-service-sso 8080:8080</p><h1>Create admin user via API (adjust based on your API)</h1>
+curl -X POST http://localhost:8080/api/users/create \
+  -H "Content-Type: application/json" \
+  -d '{
+    "username": "admin@newclient.com",
+    "password": "ChangeMe123!",
+    "email": "admin@newclient.com",
+    "firstName": "Admin",
+    "lastName": "User",
+    "roleId": "ADMIN_ROLE_ID",
+    "status": "ACTIVE"
+  }'
+</code></pre><p>Or via database:
+<pre><code class="language-sql">-- Connect to tenant database
+psql -h embrix-rds-dev-db.chg5bgdk4yyp.us-east-1.rds.amazonaws.com \
+     -U admin -d "coredb-newclient"</p><p>-- Insert admin user (adjust schema based on your user table structure)
+INSERT INTO core_config.users (
+    id,
+    userid,
+    password,  -- use bcrypt hash
+    email,
+    firstname,
+    lastname,
+    type,
+    status,
+    category
+) VALUES (
+    gen_random_uuid()::text,
+    'admin@newclient.com',
+    '$2a$10$...',  -- bcrypt hash of password
+    'admin@newclient.com',
+    'Admin',
+    'User',
+    'INTERNAL',
+    'ACTIVE',
+    'SYSTEM_ADMIN'
+);
+</code></pre><h4>7.2 Integration Testing</h4><p><strong>Test Core Services:</strong>
+<pre><code class="language-bash"># Health checks
+for service in transactional billing invoice payment revenue usage; do
+  echo "Testing newclient-service-${service}..."
+  kubectl exec -it deployment/newclient-service-${service} -- \
+    curl -s http://localhost:8080/actuator/health | jq .
+done
+</code></pre><p><strong>Test Gateway Integrations:</strong>
+<pre><code class="language-bash"># Test Finance Gateway - QuickBooks connection
+kubectl port-forward svc/newclient-finance-gateway 8080:8080</p><p>curl -X POST http://localhost:8080/api/quickbooks/test-connection \
+  -H "Content-Type: application/json" \
+  -H "X-Tenant-ID: TIDLT-100008" \
+  -d '{}'</p><h1>Test Payment Gateway - Stripe connection</h1>
+kubectl port-forward svc/newclient-payment-gateway 8080:8080</p><p>curl -X POST http://localhost:8080/api/stripe/validate \
+  -H "Content-Type: application/json" \
+  -H "X-Tenant-ID: TIDLT-100008" \
+  -d '{}'</p><h1>Test Tax Gateway - Avalara connection</h1>
+kubectl port-forward svc/newclient-tax-gateway 8080:8080</p><p>curl -X POST http://localhost:8080/api/avalara/ping \
+  -H "Content-Type: application/json" \
+  -H "X-Tenant-ID: TIDLT-100008" \
+  -d '{}'
+</code></pre><p><strong>Test GraphQL API:</strong>
+<pre><code class="language-bash"># Test via ingress
+curl -X POST https://api.newclient.embrix.com/graphql \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer &lt;token&gt;" \
+  -d '{
+    "query": "query { getTenantConfig(input: {id: \"TIDLT-100008\"}) { tenantId tenantName status } }"
+  }'
+</code></pre><p><strong>Test End-to-End Workflow:</strong>
+<pre><code class="language-bash"># Create customer -&gt; Create order -&gt; Generate bill -&gt; Generate invoice
+<h1>(Use your actual API endpoints and payloads)</h1><h1>1. Create customer</h1>
+curl -X POST https://api.newclient.embrix.com/graphql \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer &lt;token&gt;" \
+  -d '{
+    "query": "mutation { createCustomer(input: { firstName: \"Test\", lastName: \"User\", email: \"test@example.com\" }) { id accountNumber } }"
+  }'</p><h1>2. Create subscription/order</h1>
+<h1>3. Trigger billing cycle</h1>
+<h1>4. Verify invoice generation</h1>
+<h1>5. Process payment</h1>
+</code></pre><h4>7.3 Smoke Test Checklist</h4><ul>
+<li>[ ] All pods are running and healthy</li>
+<li>[ ] Database connectivity verified</li>
+<li>[ ] Vault secrets accessible</li>
+<li>[ ] Redis connection working</li>
+<li>[ ] ActiveMQ queue creation successful</li>
+<li>[ ] Admin user can log in</li>
+<li>[ ] GraphQL endpoint responding</li>
+<li>[ ] Gateway integrations authenticated</li>
+<li>[ ] Can create test customer</li>
+<li>[ ] Can create test order</li>
+<li>[ ] Billing cycle can be triggered</li>
+<li>[ ] Invoice PDF generation works</li>
+<li>[ ] Payment processing functional</li>
+<li>[ ] Reports can be generated</li>
+</ul><h3>Step 8: Monitoring & Alerting Setup</h3><h4>8.1 Configure Prometheus Monitoring</h4><pre><code class="language-yaml"># Create: monitoring/servicemonitor-newclient.yaml
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: newclient-services
+  namespace: monitoring
+  labels:
+    tenant: newclient
+spec:
+  selector:
+    matchLabels:
+      tenant: newclient
+  endpoints:
+  - port: metrics
+    interval: 30s
+    path: /actuator/prometheus
+</code></pre><pre><code class="language-bash">kubectl apply -f monitoring/servicemonitor-newclient.yaml
+</code></pre><h4>8.2 Create Grafana Dashboards</h4><pre><code class="language-bash"># Import tenant-specific dashboard
+<h1>Dashboard ID or JSON with tenant filter: tenant="newclient"</h1><h1>Key metrics to monitor:</h1>
+<h1>- Pod CPU/Memory usage</h1>
+<h1>- Request rate & latency</h1>
+<h1>- Database connection pool</h1>
+<h1>- Cache hit rate</h1>
+<h1>- Queue depth (ActiveMQ)</h1>
+<h1>- Error rate per service</h1>
+<h1>- Gateway API call success rate</h1>
+</code></pre><h4>8.3 Configure Alerts</h4><pre><code class="language-yaml"># Create: alerts/newclient-alerts.yaml
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: newclient-alerts
+  namespace: monitoring
+spec:
+  groups:
+  - name: newclient
+    interval: 30s
+    rules:
+    - alert: NewClientServiceDown
+      expr: up{tenant="newclient"} == 0
+      for: 2m
+      labels:
+        severity: critical
+        tenant: newclient
+      annotations:
+        summary: "Service {{ $labels.service }} is down for tenant newclient"
+        description: "Service has been down for more than 2 minutes"
+    
+    - alert: NewClientHighErrorRate
+      expr: rate(http_server_requests_seconds_count{tenant="newclient",status=~"5.."}[5m]) &gt; 0.05
+      for: 5m
+      labels:
+        severity: warning
+        tenant: newclient
+      annotations:
+        summary: "High error rate for tenant newclient"
+        description: "Error rate is {{ $value }} errors/sec"
+    
+    - alert: NewClientDatabaseConnectionPoolExhausted
+      expr: hikaricp_connections_active{tenant="newclient"} &gt;= hikaricp_connections_max{tenant="newclient"} * 0.9
+      for: 5m
+      labels:
+        severity: warning
+        tenant: newclient
+      annotations:
+        summary: "Database connection pool near capacity"
+        description: "Active connections: {{ $value }}"
+</code></pre><pre><code class="language-bash">kubectl apply -f alerts/newclient-alerts.yaml
+</code></pre><h3>Step 9: Documentation & Handoff</h3><h4>9.1 Create Tenant Runbook</h4><p>Create: <code>docs/runbooks/TENANT_newclient.md</code></p><pre><code class="language-markdown"># Tenant: newclient (TIDLT-100008)</p><h2>Overview</h2>
+<ul>
+<li><strong>Tenant Name:</strong> newclient</li>
+<li><strong>Tenant ID:</strong> TIDLT-100008</li>
+<li><strong>Environment:</strong> Production</li>
+<li><strong>Region:</strong> us-east-1</li>
+<li><strong>Database:</strong> coredb-newclient</li>
+<li><strong>Onboarding Date:</strong> 2026-02-10</li>
+<li><strong>Primary Contact:</strong> contact@newclient.com</li>
+</ul><h2>Access Information</h2>
+<ul>
+<li><strong>GraphQL API:</strong> https://api.newclient.embrix.com/graphql</li>
+<li><strong>Admin Portal:</strong> https://newclient.embrix.com</li>
+<li><strong>Monitoring Dashboard:</strong> https://grafana.embrix.com/d/tenant-newclient</li>
+</ul><h2>Service Endpoints</h2>
+<ul>
+<li>service-proxy: http://newclient-service-proxy:8080</li>
+<li>service-transactional: http://newclient-service-transactional:8080</li>
+<li>finance-gateway: http://newclient-finance-gateway:8080</li>
+<li>payment-gateway: http://newclient-payment-gateway:8080</li>
+<li>tax-gateway: http://newclient-tax-gateway:8080</li>
+</ul><h2>Integrations</h2>
+<ul>
+<li><strong>Finance:</strong> QuickBooks (Production)</li>
+<li><strong>Payment:</strong> Stripe (Live)</li>
+<li><strong>Tax:</strong> Avalara (Production)</li>
+<li><strong>CRM:</strong> None</li>
+</ul><h2>Credentials Locations</h2>
+<ul>
+<li>Database: AWS Secrets Manager - <code>embrix/rds/appuser</code></li>
+<li>Vault Token: Kubernetes Secret - <code>app-vault-token</code></li>
+<li>QuickBooks: Vault - <code>secret/tenant/newclient/quickbooks</code></li>
+<li>Stripe: Vault - <code>secret/tenant/newclient/stripe</code></li>
+<li>Avalara: Vault - <code>secret/tenant/newclient/avalara</code></li>
+</ul><h2>Operational Procedures</h2><h3>Restart Services</h3>
+</code></pre>bash
+kubectl rollout restart deployment newclient-service-transactional
+kubectl rollout restart deployment newclient-finance-gateway
+<pre><code class="language-">
+<h3>View Logs</h3>
+</code></pre>bash
+kubectl logs -l tenant=newclient -f --tail=100
+kubectl logs deployment/newclient-service-billing -f
+<pre><code class="language-">
+<h3>Scale Services</h3>
+</code></pre>bash
+kubectl scale deployment newclient-service-transactional --replicas=4
+<pre><code class="language-">
+<h3>Database Backup</h3>
+</code></pre>bash
+<h1>RDS automated backups: 7-day retention</h1>
+<h1>Manual snapshot:</h1>
+aws rds create-db-snapshot \
+  --db-instance-identifier embrix-rds-dev-db \
+  --db-snapshot-identifier newclient-manual-$(date +%Y%m%d-%H%M%S)
+<pre><code class="language-">
+<h2>Troubleshooting</h2><h3>Common Issues</h3>
+<ol>
+<li><strong>Service won't start:</strong> Check database connectivity, verify Vault secrets</li>
+<li><strong>Gateway authentication fails:</strong> Verify OAuth tokens in Vault, check token expiry</li>
+<li><strong>High latency:</strong> Check database connection pool, Redis cache hit rate</li>
+</ol><h3>Emergency Contacts</h3>
+<ul>
+<li><strong>DevOps On-Call:</strong> devops-oncall@embrix.com</li>
+<li><strong>Tenant Account Manager:</strong> account-manager@embrix.com</li>
+<li><strong>Client Technical Contact:</strong> tech@newclient.com</li>
+</ul>
+</code></pre><h4>9.2 Update Tenant Inventory</h4><p>Add to <code>docs/TENANT_INVENTORY.md</code>:</p><pre><code class="language-markdown">## newclient (TIDLT-100008)
+<ul>
+<li><strong>Status:</strong> Active</li>
+<li><strong>Environment:</strong> Production</li>
+<li><strong>Onboarded:</strong> 2026-02-10</li>
+<li><strong>Version:</strong> v2.5.0</li>
+<li><strong>Database:</strong> coredb-newclient</li>
+<li><strong>Integrations:</strong> QuickBooks, Stripe, Avalara</li>
+<li><strong>Special Notes:</strong> Standard configuration, no customizations</li>
+</ul>
+</code></pre><hr><h2>Configuration Management</h2><h3>Environment Variables Reference</h3><p><strong>Common Environment Variables (All Services):</strong></p><p>| Variable | Purpose | Example |
+|----------|---------|---------|
+| <code>TENANT_ID</code> | Unique tenant identifier | <code>TIDLT-100008</code> |
+| <code>LOGS_DIR</code> | Log file directory | <code>/logs</code> |
+| <code>LOG_LEVEL</code> | Logging verbosity | <code>INFO</code>, <code>DEBUG</code>, <code>WARN</code> |
+| <code>REDIS_HOST</code> | Redis cache endpoint | <code>master.cache-rg.us-east-1.cache.amazonaws.com</code> |
+| <code>REDIS_PORT</code> | Redis port | <code>6379</code> |
+| <code>AWS_S3_PUBLICURL</code> | S3 static assets URL | <code>https://embrix-static-files.s3.amazonaws.com</code> |
+| <code>AMQ_BROKER_URL</code> | ActiveMQ broker URL | <code>ssl://broker.mq.us-east-1.amazonaws.com:61617</code> |
+| <code>VAULT_API</code> | Vault interface URL | <code>http://tenant-vault-interface/</code> |</p><p><strong>Service-Specific Variables:</strong></p><p>| Service | Variable | Purpose |
+|---------|----------|---------|
+| All Core | <code>TAX_GATEWAY_URL</code> | Tax calculation service |
+| All Core | <code>PAYMENT_GATEWAY_URL</code> | Payment processing service |
+| All Core | <code>FINANCE_GATEWAY_URL</code> | Finance/ERP integration |
+| All Core | <code>PROVISIONING_GATEWAY_URL</code> | Service provisioning |
+| All Core | <code>CRM_GATEWAY_URL</code> | CRM integration |
+| Gateways | <code>DATA_DIR</code> | Data file storage | <code>/data</code> |</p><h3>Database Connection Configuration</h3><p><strong>JDBC URL Format:</strong>
+<pre><code class="language-">jdbc:postgresql://&lt;host&gt;:&lt;port&gt;/&lt;database&gt;?stringtype=unspecified&sslmode=require
+</code></pre><p><strong>Connection Pool Settings (HikariCP):</strong>
+<pre><code class="language-yaml">spring:
+  datasource:
+    hikari:
+      maximum-pool-size: 20
+      minimum-idle: 5
+      connection-timeout: 30000
+      idle-timeout: 600000
+      max-lifetime: 1800000
+      leak-detection-threshold: 60000
+</code></pre><h3>Vault Configuration Patterns</h3><p><strong>Path Structure:</strong>
+<pre><code class="language-">secret/
+└── tenant/
+    └── {tenant-name}/
+        ├── info                    # Tenant metadata
+        ├── license/
+        │   └── onboarding          # License keys
+        ├── quickbooks/             # QuickBooks credentials
+        ├── netsuite/               # NetSuite credentials
+        ├── stripe/                 # Stripe API keys
+        ├── avalara/                # Avalara credentials
+        ├── authorize-net/          # Authorize.Net credentials
+        └── custom/                 # Custom integrations
+</code></pre><p><strong>Secret Format Examples:</strong></p><p><strong>QuickBooks OAuth2:</strong>
+<pre><code class="language-json">{
+  "client_id": "AB...",
+  "client_secret": "xyz...",
+  "access_token": "eyJh...",
+  "refresh_token": "AB11...",
+  "realm_id": "123456789",
+  "token_expiry": "2026-02-11T10:00:00Z"
+}
+</code></pre><p><strong>Stripe:</strong>
+<pre><code class="language-json">{
+  "api_key": "sk_live_...",
+  "publishable_key": "pk_live_...",
+  "webhook_secret": "whsec_..."
+}
+</code></pre><p><strong>NetSuite OAuth1:</strong>
+<pre><code class="language-json">{
+  "account": "1234567",
+  "consumer_key": "abc...",
+  "consumer_secret": "def...",
+  "token_id": "ghi...",
+  "token_secret": "jkl..."
+}
+</code></pre><h3>Feature Flags</h3><p><strong>Database-Driven Feature Flags:</strong>
+<pre><code class="language-sql">-- Table: core_config.feature_flags
+CREATE TABLE core_config.feature_flags (
+    tenant_id VARCHAR(255),
+    feature_key VARCHAR(255),
+    enabled BOOLEAN DEFAULT false,
+    config JSONB,
+    created_at TIMESTAMP DEFAULT NOW(),
+    updated_at TIMESTAMP DEFAULT NOW(),
+    PRIMARY KEY (tenant_id, feature_key)
+);</p><p>-- Example: Enable advanced reporting for tenant
+INSERT INTO core_config.feature_flags (tenant_id, feature_key, enabled, config)
+VALUES ('TIDLT-100008', 'ADVANCED_REPORTING', true, '{"export_formats": ["PDF", "EXCEL", "CSV"]}');
+</code></pre><p><strong>Application Usage:</strong>
+<pre><code class="language-groovy">@Service
+class FeatureFlagService {
+    
+    @Autowired
+    JdbcTemplate jdbcTemplate
+    
+    boolean isEnabled(String tenantId, String featureKey) {
+        String sql = "SELECT enabled FROM core_config.feature_flags WHERE tenant_id = ? AND feature_key = ?"
+        try {
+            return jdbcTemplate.queryForObject(sql, Boolean.class, tenantId, featureKey)
+        } catch (EmptyResultDataAccessException e) {
+            return false // Feature not configured = disabled
+        }
+    }
+    
+    Map&lt;String, Object&gt; getFeatureConfig(String tenantId, String featureKey) {
+        String sql = "SELECT config FROM core_config.feature_flags WHERE tenant_id = ? AND feature_key = ?"
+        String json = jdbcTemplate.queryForObject(sql, String.class, tenantId, featureKey)
+        return new ObjectMapper().readValue(json, Map.class)
+    }
+}
+</code></pre><hr><h2>Feature Customization</h2><h3>Customization Levels</h3><h4>Level 1: Configuration-Only (Recommended)</h4>
+<strong>Effort:</strong> Low | <strong>Maintenance:</strong> Low | <strong>Risk:</strong> Low</p><p><strong>Examples:</strong>
+<ul>
+<li>Enable/disable features via feature flags</li>
+<li>Configure business rules (payment terms, tax rules)</li>
+<li>Customize invoice/report templates</li>
+<li>Set integration endpoints</li>
+<li>Configure merchant accounts</li>
+</ul><p><strong>Implementation:</strong>
+<pre><code class="language-yaml"># Helm values
+app:
+  features:
+    advancedReporting: true
+    customWorkflows: true
+    bulkOperations: false
+</code></pre><pre><code class="language-sql">-- Database configuration
+INSERT INTO core_config.tenant_property_defaults (tenant_id, property_key, property_value)
+VALUES 
+  ('TIDLT-100008', 'invoice.due_days', '30'),
+  ('TIDLT-100008', 'payment.auto_retry', 'true'),
+  ('TIDLT-100008', 'billing.cycle_day', '1');
+</code></pre><h4>Level 2: Template/UI Customization</h4>
+<strong>Effort:</strong> Medium | <strong>Maintenance:</strong> Medium | <strong>Risk:</strong> Low</p><p><strong>Examples:</strong>
+<ul>
+<li>Custom invoice templates</li>
+<li>Branded self-care portal</li>
+<li>Custom email templates</li>
+<li>Report layouts</li>
+<li>Dashboard widgets</li>
+</ul><p><strong>Implementation:</strong>
+<pre><code class="language-sql">-- Store custom template
+INSERT INTO core_config.invoice_template (tenant_id, template_name, template_html, template_css)
+VALUES ('TIDLT-100008', 'DEFAULT', '&lt;html&gt;...&lt;/html&gt;', 'body { color: #333; }');</p><p>-- Store branding
+INSERT INTO core_config.selfcare_config (tenantid, logo_url, primary_color, secondary_color)
+VALUES ('TIDLT-100008', 'https://s3.../logo.png', '#0066cc', '#ff6600');
+</code></pre><h4>Level 3: Integration Customization</h4>
+<strong>Effort:</strong> Medium-High | <strong>Maintenance:</strong> Medium | <strong>Risk:</strong> Medium</p><p><strong>Examples:</strong>
+<ul>
+<li>Custom field mappings for ERP</li>
+<li>Specific payment provider not in standard list</li>
+<li>Custom tax calculation rules</li>
+<li>Unique provisioning workflows</li>
+</ul><p><strong>Implementation:</strong>
+<pre><code class="language-json">// Store in core_config.finance_gateway_attributes.custom_mappings (JSONB)
+{
+  "customer_mapping": {
+    "embrix_field": "netsuite_field",
+    "accountNumber": "customer_id",
+    "taxId": "federal_tax_id",
+    "customField1": "netsuite_custom_field_123"
+  },
+  "invoice_mapping": {
+    "invoiceNumber": "tranid",
+    "amount": "total",
+    "customTaxCode": "taxcode"
+  }
+}
+</code></pre><pre><code class="language-groovy">// Gateway code reads custom mappings
+@Service
+class NetSuiteIntegrationService {
+    
+    Map&lt;String, String&gt; getCustomerFieldMapping(String tenantId) {
+        String sql = """
+            SELECT custom_mappings-&gt;'customer_mapping' 
+            FROM core_config.finance_gateway_attributes 
+            WHERE id = ?
+        """
+        String json = jdbcTemplate.queryForObject(sql, String.class, tenantId)
+        return objectMapper.readValue(json, Map.class)
+    }
+    
+    NetSuiteCustomer mapCustomer(Customer embrixCustomer, String tenantId) {
+        Map&lt;String, String&gt; mapping = getCustomerFieldMapping(tenantId)
+        NetSuiteCustomer netsuiteCustomer = new NetSuiteCustomer()
+        
+        mapping.each { embrixField, netsuiteField -&gt;
+            def value = embrixCustomer."${embrixField}"
+            netsuiteCustomer."${netsuiteField}" = value
+        }
+        
+        return netsuiteCustomer
+    }
+}
+</code></pre><h4>Level 4: Version-Based Customization (Use Sparingly)</h4>
+<strong>Effort:</strong> High | <strong>Maintenance:</strong> High | <strong>Risk:</strong> High</p><p><strong>When to use:</strong>
+<ul>
+<li>Tenant willing to pay premium for custom development</li>
+<li>Feature genuinely unique (won't benefit other tenants)</li>
+<li>Willing to accept slower upgrade cycle</li>
+<li>Feature is non-core (won't conflict with future platform changes)</li>
+</ul><p><strong>Implementation:</strong>
+<pre><code class="language-bash"># Deploy different version to specific tenant
+helm upgrade --install newclient-service-transactional ./core/charts/service-transactional \
+  -f core/helm_values/newclient/service-transactional.yaml \
+  --set image.tag=v2.5.0-newclient-custom \
+  --namespace default
+</code></pre><p><strong>⚠️ Warning:</strong> Avoid code forking. Instead:
+<ol>
+<li>Build feature in main codebase with feature flag</li>
+<li>Deploy to tenant with flag enabled</li>
+<li>Keep codebase unified but behavior configurable</li>
+</ol><h3>Adding New Integrations</h3><p><strong>Process for adding new merchant/integration:</strong></p><ol>
+<li><strong>Database Configuration:</strong></li>
+</ol>
+<pre><code class="language-sql">-- Add merchant to tenant
+INSERT INTO core_config.tenant_merchants (
+    id, tenant_id, index, name, type, status, authtype, apitype, baseurl
+) VALUES (
+    'TIDLT-100008',
+    'TIDLT-100008',
+    1,  -- Index for multiple merchants of same type
+    'NEW_MERCHANT',
+    'FINANCE_GATEWAY',
+    'ACTIVE',
+    'OAUTH2',
+    'REST',
+    'https://api.newmerchant.com'
+);</p><p>-- Add auth attributes (if OAuth2)
+INSERT INTO core_config.oauth2_attributes (
+    id, index, environment, redirecturi
+) VALUES (
+    'TIDLT-100008',
+    1,
+    'PRODUCTION',
+    'https://newclient.embrix.com/oauth2/callback'
+);</p><p>-- Add gateway-specific attributes
+INSERT INTO core_config.finance_gateway_attributes (
+    id, index, custom_config
+) VALUES (
+    'TIDLT-100008',
+    1,
+    '{"api_version": "v2", "webhook_url": "https://api.newclient.embrix.com/webhooks/newmerchant"}'::jsonb
+);
+</code></pre><ol>
+<li><strong>Store Credentials in Vault:</strong></li>
+</ol>
+<pre><code class="language-bash">vault kv put secret/tenant/newclient/newmerchant \
+  client_id="..." \
+  client_secret="..." \
+  api_key="..."
+</code></pre><ol>
+<li><strong>Gateway Code (if new merchant type):</strong></li>
+</ol>
+<pre><code class="language-groovy">@Service
+class NewMerchantService {
+    
+    @Autowired
+    TenantRepositoryService tenantRepo
+    
+    @Autowired
+    VaultService vaultService
+    
+    def authenticate(String tenantId) {
+        // Get tenant merchant config
+        Tenant tenant = tenantRepo.findByTenantIdAndMerchant(
+            tenantId, 
+            MerchantType.FINANCE_GATEWAY, 
+            "NEW_MERCHANT"
+        )
+        
+        // Get credentials from Vault
+        Map&lt;String, String&gt; creds = vaultService.getSecret(
+            "secret/tenant/${tenant.name}/newmerchant"
+        )
+        
+        // Authenticate with merchant API
+        // ...
+    }
+}
+</code></pre><ol>
+<li><strong>Test Integration:</strong></li>
+</ol>
+<pre><code class="language-bash"># Port-forward to gateway
+kubectl port-forward svc/newclient-finance-gateway 8080:8080</p><h1>Test authentication</h1>
+curl -X POST http://localhost:8080/api/newmerchant/authenticate \
+  -H "X-Tenant-ID: TIDLT-100008"
+</code></pre><hr><h2>Monitoring & Observability</h2><h3>Key Metrics to Monitor</h3><p><strong>Application Metrics:</strong>
+| Metric | Threshold | Alert Level |
+|--------|-----------|-------------|
+| Pod CPU usage | > 80% for 5min | Warning |
+| Pod Memory usage | > 85% for 5min | Warning |
+| Pod restart count | > 3 in 1hr | Critical |
+| HTTP error rate (5xx) | > 5% for 5min | Critical |
+| HTTP latency (p95) | > 2s | Warning |
+| HTTP latency (p99) | > 5s | Critical |
+| Database connection pool | > 90% capacity | Warning |
+| Cache hit rate | < 70% | Warning |
+| Queue depth (ActiveMQ) | > 1000 msgs | Warning |
+| Disk usage | > 85% | Warning |</p><p><strong>Business Metrics:</strong>
+| Metric | Monitoring |
+|--------|-----------|
+| Orders created/hour | Track trends |
+| Bills generated/day | Track against expected |
+| Invoices sent/day | Track delivery rate |
+| Payments processed/hour | Track success rate |
+| Failed API calls | Track per endpoint |
+| Gateway integration failures | Alert on > 5% |</p><h3>Logging Standards</h3><p><strong>Log Levels:</strong>
+<ul>
+<li><strong>ERROR:</strong> System errors, exceptions, integration failures</li>
+<li><strong>WARN:</strong> Deprecated API usage, slow queries, retry attempts</li>
+<li><strong>INFO:</strong> Business events (order created, bill generated, payment processed)</li>
+<li><strong>DEBUG:</strong> Detailed flow, variable values (not in production)</li>
+</ul><p><strong>Log Format (JSON):</strong>
+<pre><code class="language-json">{
+  "timestamp": "2026-02-10T15:30:00.123Z",
+  "level": "INFO",
+  "service": "service-billing",
+  "tenant_id": "TIDLT-100008",
+  "correlation_id": "abc-123-def",
+  "message": "Bill generated successfully",
+  "context": {
+    "bill_id": "BILL-12345",
+    "customer_id": "CUST-67890",
+    "amount": 150.00,
+    "currency": "USD"
+  }
+}
+</code></pre><p><strong>Correlation ID Pattern:</strong>
+Request tracking across services using <code>X-Correlation-ID</code> header.</p><h3>Dashboards</h3><p><strong>Tenant Overview Dashboard:</strong>
+<ul>
+<li>Service health status (green/yellow/red per service)</li>
+<li>Request rate & latency (per service)</li>
+<li>Error rate (per service)</li>
+<li>Database connections (active vs max)</li>
+<li>Cache hit rate</li>
+<li>Queue depth</li>
+<li>Recent errors (last 100)</li>
+<li>Recent deployments</li>
+</ul><p><strong>Business Metrics Dashboard:</strong>
+<ul>
+<li>Daily orders/bills/invoices</li>
+<li>Payment success rate</li>
+<li>Revenue processed (last 7 days)</li>
+<li>Top API consumers</li>
+<li>Gateway integration health</li>
+<li>Customer growth</li>
+</ul><p><strong>Infrastructure Dashboard:</strong>
+<ul>
+<li>Pod CPU/Memory usage</li>
+<li>Node capacity</li>
+<li>PVC usage</li>
+<li>Network traffic</li>
+<li>Database performance (queries/sec, slow queries)</li>
+<li>Cache performance</li>
+</ul><h3>Log Aggregation</h3><p><strong>ELK Stack (Elasticsearch, Logstash, Kibana):</strong>
+<pre><code class="language-bash"># Query logs for specific tenant
+GET /logs-*/_search
+{
+  "query": {
+    "bool": {
+      "must": [
+        { "term": { "tenant_id": "TIDLT-100008" } },
+        { "range": { "timestamp": { "gte": "now-1h" } } }
+      ]
+    }
+  }
+}</p><h1>Query errors for tenant</h1>
+GET /logs-*/_search
+{
+  "query": {
+    "bool": {
+      "must": [
+        { "term": { "tenant_id": "TIDLT-100008" } },
+        { "term": { "level": "ERROR" } },
+        { "range": { "timestamp": { "gte": "now-24h" } } }
+      ]
+    }
+  },
+  "sort": [ { "timestamp": "desc" } ]
+}
+</code></pre><h3>Alerting Rules</h3><p><strong>Critical Alerts (Page immediately):</strong>
+<ul>
+<li>All pods down for a tenant</li>
+<li>Database connection failure</li>
+<li>Payment gateway complete failure</li>
+<li>Security breach detected</li>
+<li>Data loss detected</li>
+</ul><p><strong>Warning Alerts (Email/Slack):</strong>
+<ul>
+<li>High error rate (> 5%)</li>
+<li>High latency (> 2s p95)</li>
+<li>Resource usage high (> 80%)</li>
+<li>Integration intermittent failures</li>
+<li>Queue backlog growing</li>
+<li>Certificate expiring soon (< 7 days)</li>
+</ul><p><strong>Alert Routing:</strong>
+<pre><code class="language-yaml"># Prometheus AlertManager config
+route:
+  receiver: 'default'
+  group_by: ['tenant', 'severity']
+  routes:
+  - match:
+      severity: critical
+      tenant: newclient
+    receiver: 'newclient-oncall-pagerduty'
+  - match:
+      severity: warning
+      tenant: newclient
+    receiver: 'newclient-slack-channel'
+</code></pre><hr><h2>Troubleshooting</h2><h3>Common Issues & Resolutions</h3><h4>1. Service Won't Start</h4><p><strong>Symptoms:</strong>
+<ul>
+<li>Pod in <code>CrashLoopBackOff</code> state</li>
+<li>Container exits immediately after start</li>
+</ul><p><strong>Diagnosis:</strong>
+<pre><code class="language-bash"># Check pod status
+kubectl get pods -l tenant=newclient</p><h1>Check pod events</h1>
+kubectl describe pod &lt;pod-name&gt;</p><h1>Check container logs</h1>
+kubectl logs &lt;pod-name&gt; --previous</p><h1>Check if config is correct</h1>
+kubectl get configmap &lt;configmap-name&gt; -o yaml
+kubectl get secret &lt;secret-name&gt; -o yaml
+</code></pre><p><strong>Common Causes & Fixes:</strong></p><p><strong>Database connection failure:</strong>
+<pre><code class="language-bash"># Verify database exists
+psql -h embrix-rds-dev-db... -U admin -l | grep newclient</p><h1>Test connection from pod</h1>
+kubectl exec -it &lt;pod-name&gt; -- psql "${DB_URL}"</p><h1>Check security group allows connection</h1>
+aws ec2 describe-security-groups --group-ids &lt;sg-id&gt;
+</code></pre><p><strong>Missing environment variables:</strong>
+<pre><code class="language-bash"># Check pod env vars
+kubectl exec &lt;pod-name&gt; -- env | grep TENANT</p><h1>Fix: Update Helm values and redeploy</h1>
+helm upgrade newclient-service-transactional ./charts/service-transactional \
+  -f helm_values/newclient/service-transactional.yaml
+</code></pre><p><strong>Vault secrets not accessible:</strong>
+<pre><code class="language-bash"># Check if vault token is valid
+kubectl get secret app-vault-token -o json | jq -r '.data.token' | base64 -d</p><h1>Test vault access from pod</h1>
+kubectl exec -it &lt;pod-name&gt; -- \
+  curl -H "X-Vault-Token: &lt;token&gt;" http://vault-interface/v1/secret/tenant/newclient/info
+</code></pre><h4>2. Gateway Authentication Failing</h4><p><strong>Symptoms:</strong>
+<ul>
+<li>Gateway returns 401 Unauthorized</li>
+<li>Logs show "Invalid credentials" or "Token expired"</li>
+</ul><p><strong>Diagnosis:</strong>
+<pre><code class="language-bash"># Check gateway logs
+kubectl logs deployment/newclient-finance-gateway | grep -i auth</p><h1>Check merchant configuration in database</h1>
+psql -h embrix-rds-dev-db... -U admin -d coredb-newclient \
+  -c "SELECT * FROM core_config.tenant_merchants WHERE tenant_id='TIDLT-100008';"</p><h1>Check OAuth2 token expiry</h1>
+psql -h embrix-rds-dev-db... -U admin -d coredb-newclient \
+  -c "SELECT * FROM core_config.oauth2_attributes WHERE id='TIDLT-100008';"
+</code></pre><p><strong>Common Causes & Fixes:</strong></p><p><strong>OAuth token expired:</strong>
+<pre><code class="language-bash"># Get current tokens from Vault
+vault kv get secret/tenant/newclient/quickbooks</p><h1>Use refresh token to get new access token (QuickBooks example)</h1>
+curl -X POST https://oauth.platform.intuit.com/oauth2/v1/tokens/bearer \
+  -H "Accept: application/json" \
+  -H "Content-Type: application/x-www-form-urlencoded" \
+  -H "Authorization: Basic $(echo -n "${CLIENT_ID}:${CLIENT_SECRET}" | base64)" \
+  -d "grant_type=refresh_token&refresh_token=${REFRESH_TOKEN}"</p><h1>Store new tokens in Vault</h1>
+vault kv put secret/tenant/newclient/quickbooks \
+  access_token="&lt;new-access-token&gt;" \
+  refresh_token="&lt;new-refresh-token&gt;" \
+  token_expiry="&lt;new-expiry&gt;"</p><h1>Restart gateway to pick up new tokens</h1>
+kubectl rollout restart deployment/newclient-finance-gateway
+</code></pre><p><strong>Wrong credentials stored:</strong>
+<pre><code class="language-bash"># Re-verify credentials with merchant
+<h1>Update Vault with correct credentials</h1>
+vault kv put secret/tenant/newclient/quickbooks \
+  client_id="&lt;correct-client-id&gt;" \
+  client_secret="&lt;correct-client-secret&gt;"
+</code></pre><h4>3. High Latency / Slow Responses</h4><p><strong>Symptoms:</strong>
+<ul>
+<li>API responses taking > 5 seconds</li>
+<li>Timeouts occurring</li>
+<li>Users reporting slow performance</li>
+</ul><p><strong>Diagnosis:</strong>
+<pre><code class="language-bash"># Check pod resource usage
+kubectl top pods -l tenant=newclient</p><h1>Check database query performance</h1>
+psql -h embrix-rds-dev-db... -U admin -d coredb-newclient \
+  -c "SELECT query, calls, total_time, mean_time FROM pg_stat_statements ORDER BY mean_time DESC LIMIT 10;"</p><h1>Check cache hit rate</h1>
+redis-cli -h &lt;redis-host&gt; INFO stats | grep -E "keyspace_hits|keyspace_misses"</p><h1>Check network latency between services</h1>
+kubectl exec -it deployment/newclient-service-billing -- \
+  curl -w "@curl-format.txt" -o /dev/null -s http://newclient-service-transactional:8080/actuator/health
+</code></pre><p><strong>Common Causes & Fixes:</strong></p><p><strong>Database connection pool exhausted:</strong>
+<pre><code class="language-bash"># Check active connections
+kubectl logs deployment/newclient-service-billing | grep -i "HikariPool"</p><h1>Increase pool size in application config</h1>
+<h1>Update Helm values:</h1>
+<h1>spring.datasource.hikari.maximum-pool-size: 30</h1><p>helm upgrade newclient-service-billing ...
+</code></pre><p><strong>Missing database indexes:</strong>
+<pre><code class="language-sql">-- Find slow queries
+SELECT query, calls, total_time, mean_time 
+FROM pg_stat_statements 
+WHERE mean_time &gt; 1000 
+ORDER BY mean_time DESC;</p><p>-- Add missing indexes
+CREATE INDEX idx_account_tenant_email ON account(tenant_id, email);
+CREATE INDEX idx_invoice_customer_date ON invoice(customer_id, invoice_date);
+</code></pre><p><strong>Cache not configured:</strong>
+<pre><code class="language-groovy">// Ensure cache is enabled in application code
+@Cacheable(value = "customers", key = "#customerId")
+Customer getCustomer(String customerId) {
+    // ...
+}
+</code></pre><p><strong>Need to scale up:</strong>
+<pre><code class="language-bash"># Increase replicas for high-load service
+kubectl scale deployment newclient-service-transactional --replicas=4</p><h1>Or update Helm values for permanent change</h1>
+<h1>replicaCount: 4</h1>
+</code></pre><h4>4. Payment Processing Failures</h4><p><strong>Symptoms:</strong>
+<ul>
+<li>Payments failing with errors</li>
+<li>Payment gateway returning errors</li>
+<li>Payments stuck in "PENDING" state</li>
+</ul><p><strong>Diagnosis:</strong>
+<pre><code class="language-bash"># Check payment service logs
+kubectl logs deployment/newclient-service-payment | grep -i "payment.*fail"</p><h1>Check payment gateway logs</h1>
+kubectl logs deployment/newclient-payment-gateway | grep -i error</p><h1>Check payment records in database</h1>
+psql -h embrix-rds-dev-db... -U admin -d coredb-newclient \
+  -c "SELECT * FROM payment WHERE status='FAILED' ORDER BY created_date DESC LIMIT 10;"
+</code></pre><p><strong>Common Causes & Fixes:</strong></p><p><strong>Gateway API credentials invalid:</strong>
+<pre><code class="language-bash"># Test Stripe API directly
+curl https://api.stripe.com/v1/charges \
+  -u sk_test_...: \
+  -d amount=100 \
+  -d currency=usd \
+  -d source=tok_visa</p><h1>If fails, update credentials in Vault</h1>
+vault kv put secret/tenant/newclient/stripe api_key="&lt;correct-key&gt;"
+</code></pre><p><strong>Webhook not configured:</strong>
+<pre><code class="language-bash"># Verify webhook endpoint is reachable
+curl -X POST https://api.newclient.embrix.com/webhooks/stripe \
+  -H "Content-Type: application/json" \
+  -H "Stripe-Signature: &lt;test-signature&gt;" \
+  -d '{"type": "payment_intent.succeeded", "data": {...}}'</p><h1>Configure webhook in Stripe dashboard</h1>
+<h1>URL: https://api.newclient.embrix.com/webhooks/stripe</h1>
+<h1>Events: payment_intent.succeeded, payment_intent.failed, charge.refunded</h1>
+</code></pre><p><strong>Payment method expired:</strong>
+<pre><code class="language-sql">-- Check customer payment methods
+SELECT customer_id, payment_method_type, expiry_date, status 
+FROM payment_profile 
+WHERE tenant_id='TIDLT-100008' AND customer_id='&lt;customer-id&gt;';</p><p>-- Customer needs to update payment method via self-care portal
+</code></pre><h4>5. Billing/Invoice Generation Issues</h4><p><strong>Symptoms:</strong>
+<ul>
+<li>Bills not generating on schedule</li>
+<li>Invoices missing data</li>
+<li>PDF generation failing</li>
+</ul><p><strong>Diagnosis:</strong>
+<pre><code class="language-bash"># Check billing job logs
+kubectl logs deployment/newclient-jobs-common | grep -i "billing"</p><h1>Check invoice service logs</h1>
+kubectl logs deployment/newclient-service-invoice | grep -i error</p><h1>Check billing records</h1>
+psql -h embrix-rds-dev-db... -U admin -d coredb-newclient \
+  -c "SELECT * FROM bill WHERE status IN ('FAILED', 'PENDING') ORDER BY created_date DESC LIMIT 10;"
+</code></pre><p><strong>Common Causes & Fixes:</strong></p><p><strong>Job scheduler not running:</strong>
+<pre><code class="language-bash"># Check if job scheduler pod is running
+kubectl get pods -l app=newclient-jobs-common</p><h1>Check job schedule configuration</h1>
+psql -h embrix-rds-dev-db... -U admin -d coredb-newclient \
+  -c "SELECT * FROM job_schedule WHERE tenant_id='TIDLT-100008' AND status='ACTIVE';"</p><h1>Manually trigger billing job</h1>
+curl -X POST http://newclient-jobs-common:8080/api/jobs/billing/trigger \
+  -H "X-Tenant-ID: TIDLT-100008"
+</code></pre><p><strong>Template missing:</strong>
+<pre><code class="language-sql">-- Check if invoice template exists
+SELECT * FROM core_config.invoice_template WHERE tenant_id='TIDLT-100008';</p><p>-- If missing, create default template
+INSERT INTO core_config.invoice_template (tenant_id, template_name, template_html)
+VALUES ('TIDLT-100008', 'DEFAULT', '&lt;html&gt;...&lt;/html&gt;');
+</code></pre><p><strong>S3 upload failing:</strong>
+<pre><code class="language-bash"># Check S3 bucket permissions
+aws s3 ls s3://embrix-dev-data/TIDLT-100008/invoices/</p><h1>Test upload from pod</h1>
+kubectl exec -it deployment/newclient-service-invoice -- \
+  aws s3 cp test.txt s3://embrix-dev-data/TIDLT-100008/invoices/</p><h1>Fix IAM role permissions if needed</h1>
+</code></pre><h3>Emergency Procedures</h3><h4>Rollback Deployment</h4><pre><code class="language-bash"># View deployment history
+helm history newclient-service-transactional</p><h1>Rollback to previous version</h1>
+helm rollback newclient-service-transactional &lt;revision&gt;</p><h1>Or rollback all services</h1>
+for service in transactional billing invoice payment revenue; do
+  helm rollback newclient-service-${service} &lt;revision&gt;
+done
+</code></pre><h4>Scale Down (Maintenance Mode)</h4><pre><code class="language-bash"># Scale all services to 0 (emergency maintenance)
+kubectl scale deployment -l tenant=newclient --replicas=0</p><h1>Scale back up</h1>
+kubectl scale deployment -l tenant=newclient --replicas=2
+</code></pre><h4>Database Restore</h4><pre><code class="language-bash"># List available snapshots
+aws rds describe-db-snapshots \
+  --db-instance-identifier embrix-rds-dev-db \
+  --query "DBSnapshots[?contains(DBSnapshotIdentifier, 'newclient')].DBSnapshotIdentifier"</p><h1>Restore from snapshot (creates new instance)</h1>
+aws rds restore-db-instance-from-db-snapshot \
+  --db-instance-identifier embrix-rds-dev-db-restore \
+  --db-snapshot-identifier &lt;snapshot-id&gt;</p><h1>Update connection strings to point to restored instance</h1>
+<h1>(Update Helm values and redeploy services)</h1>
+</code></pre><h4>Clear Cache</h4><pre><code class="language-bash"># Clear Redis cache for tenant
+redis-cli -h &lt;redis-host&gt; KEYS "TIDLT-100008:*" | xargs redis-cli -h &lt;redis-host&gt; DEL</p><h1>Or flush specific pattern</h1>
+redis-cli -h &lt;redis-host&gt; --scan --pattern "TIDLT-100008:session:*" | xargs redis-cli -h &lt;redis-host&gt; DEL
+</code></pre><hr><h2>Best Practices</h2><h3>Development Best Practices</h3><ol>
+<li><strong>Configuration Over Code</strong></li>
+</ol>
+   - Use feature flags for new features
+   - Store configurations in database (core_config schema)
+   - Avoid hard-coding tenant-specific logic</p><ol>
+<li><strong>Backward Compatibility</strong></li>
+</ol>
+   - Database migrations must be backward compatible
+   - Support multiple API versions if breaking changes needed
+   - Gradual rollout of new features</p><ol>
+<li><strong>Tenant Isolation</strong></li>
+</ol>
+   - Always filter by tenant_id in database queries (even with separate DBs for defense in depth)
+   - Log tenant_id in all log messages
+   - Include tenant_id in all async messages</p><ol>
+<li><strong>Testing</strong></li>
+</ol>
+   - Integration tests must use test tenant (TIDLT-000000)
+   - Load testing against dev tenant before production rollout
+   - Smoke test all critical paths after deployment</p><h3>Operational Best Practices</h3><ol>
+<li><strong>Deployment Strategy</strong></li>
+</ol>
+   - Deploy to dev tenant first
+   - Deploy to sandbox tenants second
+   - Deploy to production tenants last (staggered)
+   - Monitor for 24 hours after each production deployment</p><ol>
+<li><strong>Version Management</strong></li>
+</ol>
+   - Tag all releases with semantic versioning
+   - Document breaking changes in CHANGELOG
+   - Maintain version compatibility matrix</p><ol>
+<li><strong>Monitoring</strong></li>
+</ol>
+   - Set up alerts before tenant goes live
+   - Review metrics weekly
+   - Perform monthly capacity planning</p><ol>
+<li><strong>Security</strong></li>
+</ol>
+   - Rotate Vault tokens quarterly
+   - Rotate database passwords semi-annually
+   - Review IAM permissions quarterly
+   - Update dependencies monthly (security patches)</p><ol>
+<li><strong>Documentation</strong></li>
+</ol>
+   - Update tenant runbook after any major configuration change
+   - Document all customizations
+   - Keep integration credentials inventory up to date</p><h3>Cost Optimization</h3><ol>
+<li><strong>Right-Size Resources</strong></li>
+</ol>
+   - Monitor actual CPU/memory usage
+   - Adjust resource requests/limits quarterly
+   - Use horizontal pod autoscaling (HPA) for variable load</p><ol>
+<li><strong>Database Optimization</strong></li>
+</ol>
+   - Regular VACUUM and ANALYZE
+   - Archive old data (> 2 years)
+   - Consider read replicas for reporting</p><ol>
+<li><strong>Cache Effectively</strong></li>
+</ol>
+   - Identify frequently accessed data
+   - Implement multi-level caching
+   - Monitor cache hit rates</p><ol>
+<li><strong>Scheduled Jobs</strong></li>
+</ol>
+   - Run resource-intensive jobs during off-peak hours
+   - Use spot instances for batch processing
+   - Implement job throttling</p><hr><h2>Appendices</h2><h3>Appendix A: Service Dependency Matrix</h3><p>| Service | Depends On |
+|---------|-----------|
+| service-sso | Database, Redis, Vault |
+| service-transactional | Database, Redis, service-sso, all gateways |
+| service-billing | Database, Redis, service-transactional, service-usage |
+| service-invoice | Database, Redis, S3, service-billing, finance-gateway |
+| service-payment | Database, Redis, service-billing, payment-gateway, finance-gateway |
+| service-revenue | Database, Redis, service-invoice, finance-gateway |
+| service-usage | Database, Redis, service-transactional |
+| service-mediation | Database, Redis, ActiveMQ, service-usage |
+| service-proxy | All core services |
+| finance-gateway | Database, Vault, External APIs (QuickBooks, NetSuite) |
+| payment-gateway | Database, Vault, External APIs (Stripe, Authorize.Net) |
+| tax-gateway | Database, Vault, External APIs (Avalara, TaxJar) |
+| provision-gateway | Database, Vault, External APIs (Broadsoft, etc.) |
+| crm-gateway | Database, Vault, External APIs (Salesforce, etc.) |</p><h3>Appendix B: Port Reference</h3><p>| Service | Port | Protocol | Purpose |
+|---------|------|----------|---------|
+| service-* | 8080 | HTTP | Application/API |
+| service-* | 8081 | HTTP | Actuator/Metrics |
+| *-gateway | 8080 | HTTP | Application/API |
+| PostgreSQL | 5432 | TCP | Database |
+| Redis | 6379 | TCP | Cache |
+| ActiveMQ | 61617 | TCP (SSL) | Message Queue |
+| ActiveMQ | 8161 | HTTP | Admin Console |
+| Vault | 8200 | HTTP | Secrets API |</p><h3>Appendix C: Helm Chart Repository Structure</h3><pre><code class="language-">embrix-o2x/
+├── core/
+│   ├── charts/
+│   │   ├── service-transactional/
+│   │   │   ├── Chart.yaml
+│   │   │   ├── values.yaml
+│   │   │   └── templates/
+│   │   ├── service-billing/
+│   │   ├── service-invoice/
+│   │   └── ... (other core services)
+│   └── helm_values/
+│       ├── urbanos/
+│       │   ├── service-transactional.yaml
+│       │   ├── service-billing.yaml
+│       │   └── ...
+│       ├── newclient/
+│       │   └── ... (tenant-specific values)
+│       └── ... (other tenants)
+├── finance-gateway/
+│   ├── charts/finance-gateway/
+│   └── helm_values/
+├── payment-gateway/
+│   ├── charts/payment-gateway/
+│   └── helm_values/
+└── ... (other gateways)
+</code></pre><h3>Appendix D: Database Schema Overview</h3><p><strong>Business Data Schemas (per tenant database):</strong>
+<ul>
+<li><code>public.account</code> - Customer accounts</li>
+<li><code>public.subscription</code> - Active subscriptions</li>
+<li><code>public.order</code> - Order history</li>
+<li><code>public.bill</code> - Bills generated</li>
+<li><code>public.invoice</code> - Invoices generated</li>
+<li><code>public.payment</code> - Payment transactions</li>
+<li><code>public.transaction</code> - Usage transactions</li>
+<li><code>public.service_unit</code> - Service instances</li>
+<li><code>public.price_unit</code> - Pricing instances</li>
+</ul><p><strong>Configuration Schema (shared core_config):</strong>
+<ul>
+<li><code>core_config.tenant</code> - Tenant master data</li>
+<li><code>core_config.tenant_merchants</code> - Gateway configurations</li>
+<li><code>core_config.oauth1_attributes</code> - OAuth1 credentials</li>
+<li><code>core_config.oauth2_attributes</code> - OAuth2 credentials</li>
+<li><code>core_config.*_gateway_attributes</code> - Gateway-specific configs</li>
+<li><code>core_config.users</code> - User accounts</li>
+<li><code>core_config.roles</code> - Role definitions</li>
+<li><code>core_config.feature_flags</code> - Feature toggles</li>
+</ul><h3>Appendix E: API Endpoint Reference</h3><p><strong>GraphQL API:</strong>
+<ul>
+<li><strong>Endpoint:</strong> <code>https://api.{tenant}.embrix.com/graphql</code></li>
+<li><strong>Authentication:</strong> Bearer token (JWT)</li>
+<li><strong>Rate Limit:</strong> 1000 requests/minute per tenant</li>
+</ul><p><strong>Core Operations:</strong>
+<ul>
+<li>Customer Management: <code>createCustomer</code>, <code>updateCustomer</code>, <code>getCustomer</code></li>
+<li>Order Management: <code>createOrder</code>, <code>submitOrder</code>, <code>getOrder</code></li>
+<li>Billing: <code>triggerBilling</code>, <code>getBills</code>, <code>getInvoices</code></li>
+<li>Payments: <code>processPayment</code>, <code>getPaymentHistory</code></li>
+<li>Reports: <code>generateReport</code>, <code>getReportData</code></li>
+</ul><p><strong>REST API (Legacy):</strong>
+<ul>
+<li><strong>Base URL:</strong> <code>https://api.{tenant}.embrix.com/api/v1</code></li>
+<li><strong>Authentication:</strong> API Key or OAuth2</li>
+</ul><h3>Appendix F: Contact Information</h3><p><strong>Internal Teams:</strong>
+<ul>
+<li><strong>DevOps/SRE:</strong> devops@embrix.com, Slack: #devops-support</li>
+<li><strong>Engineering:</strong> engineering@embrix.com, Slack: #engineering</li>
+<li><strong>Product:</strong> product@embrix.com</li>
+<li><strong>Customer Success:</strong> success@embrix.com</li>
+</ul><p><strong>On-Call Rotation:</strong>
+<ul>
+<li><strong>PagerDuty:</strong> https://embrix.pagerduty.com</li>
+<li><strong>Escalation Policy:</strong> L1 DevOps → L2 Engineering → L3 Principal Engineer</li>
+</ul><p><strong>Vendor Support:</strong>
+<ul>
+<li><strong>AWS Support:</strong> Premium Support (Case Portal)</li>
+<li><strong>HashiCorp Vault:</strong> Enterprise Support</li>
+<li><strong>QuickBooks API:</strong> Intuit Developer Support</li>
+<li><strong>Stripe:</strong> Stripe Support Portal</li>
+</ul><hr><h2>Document Change Log</h2><p>| Date | Version | Changes | Author |
+|------|---------|---------|--------|
+| 2026-02-10 | 1.0 | Initial comprehensive guide created | DevOps Team |</p><hr><p><strong>End of Document</strong>
+</p>
+        <footer>
+            <p><strong>Embrix O2X Platform Documentation</strong></p>
+            <p>Version 3.1.9-SNAPSHOT • Last Updated: February 2026</p>
+        </footer>
+    </div>
+</body>
+</html>
