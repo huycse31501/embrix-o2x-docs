@@ -492,6 +492,7 @@ def main():
         ("Part 1", "part1-business-architecture.html"),
         ("Part 2", "part2-technical-deep-dive.html"),
         ("Part 3", "part3-services-development.html"),
+        ("Scenarios", "business-scenarios.html"),
         ("Multi-Tenant", "multi-tenant-complete-guide.html"),
         ("Quick Ref", "quick-reference.html")
     ]
@@ -502,6 +503,7 @@ def main():
         ("NEWCOMER_GUIDE_PART1_BUSINESS_AND_ARCHITECTURE.md", "part1-business-architecture.html", "Part 1: Business & Architecture"),
         ("NEWCOMER_GUIDE_PART2_TECHNICAL_DEEP_DIVE.md", "part2-technical-deep-dive.html", "Part 2: Technical Deep Dive"),
         ("NEWCOMER_GUIDE_PART3_SERVICES_AND_DEVELOPMENT.md", "part3-services-development.html", "Part 3: Services & Development"),
+        ("BUSINESS_SCENARIOS_AND_WORKFLOWS.md", "business-scenarios.html", "Business Scenarios & Workflows"),
         ("QUICK_REFERENCE_GUIDE.md", "quick-reference.html", "Quick Reference Guide"),
         ("docs/MULTI_TENANT_COMPLETE_GUIDE.md", "multi-tenant-complete-guide.html", "Multi-Tenant Architecture - Complete Guide")
     ]
