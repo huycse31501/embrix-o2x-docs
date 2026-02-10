@@ -57,49 +57,135 @@ Embrix O2X is an **enterprise-grade billing and order management platform** desi
    - Clicks "Start Free Trial" or "Sign Up"
 
 2. **Registration Flow** (`selfcare` module)
-   
-   **Step 1: Account Details**
-   - Company name, industry, size
-   - Billing address (country, state, city, postal code, street)
-   - Primary contact (name, email, phone)
-   - GraphQL: `processNewAccount` with account data
-   
-   **Step 2: Payment Setup**
-   - Credit card information collected
-   - Tokenization via Braintree Vault (PCI-compliant)
-   - API: `BrainTreeVaultController` → Braintree SDK → returns payment token
-   - GraphQL: `ADD_CREDIT_CARD` permission, `manageAccount` mutation with payment profile
-   
-   **Step 3: Package Selection**
-   - Lists available packages via `searchPackages` query
-   - Shows package details, recurring price, included bundles
-   - Customer selects Professional package + optional add-ons
-   
-   **Step 4: Service Configuration**
-   - Selects bundles (e.g., 100 users, 5,000 minutes, video conferencing)
-   - GraphQL: `getBundleIdByPackageId`, `searchBundles`
-   - Configures service start date and billing cycle preference
-   
-   **Step 5: Order Creation**
-   - Backend creates:
-     - Account entity
-     - Order with OrderLines for each bundle
-     - Subscription linked to selected package
-     - Bill Unit with billing cycle configuration
-     - Initial invoice (if first month charge)
-   - GraphQL: `processNewAccount` triggers:
-     - `AccountService.create()`
-     - `OrderProcessService.submitMultiSubscriptionOrder()`
-     - `SubscriptionService.create()`
-     - `BillUnitService.create()`
 
-3. **Post-Registration**
-   - Welcome email sent
-   - Customer redirected to dashboard
-   - Services provisioned via `provision_gateway` to ServiceNow/vendor systems
-   - First invoice generated (prorated if mid-cycle start)
+---
 
-#### Technical Flow
+##### Step 1: Account Details
+
+**Company Information**:
+- Company name, industry, size
+- Billing address (country, state, city, postal code, street)
+- Primary contact (name, email, phone)
+
+**API Call**: GraphQL `processNewAccount` with account data
+
+---
+
+##### Step 2: Payment Setup
+
+**Payment Collection**:
+- Credit card information collected securely
+- Tokenization via Braintree Vault (PCI-compliant)
+- No card data stored on Embrix servers
+
+**Process**:
+1. `BrainTreeVaultController` receives card data
+2. Calls Braintree SDK
+3. Returns secure payment token
+
+**API Call**: 
+- GraphQL permission: `ADD_CREDIT_CARD`
+- Mutation: `manageAccount` with payment profile
+
+---
+
+##### Step 3: Package Selection
+
+**Package Discovery**:
+- Lists available packages via `searchPackages` query
+- Shows package details:
+  - Recurring price
+  - Included bundles
+  - Feature comparison
+
+**Selection**:
+- Customer selects **Professional package** + optional add-ons
+
+---
+
+##### Step 4: Service Configuration
+
+**Bundle Selection**:
+
+| Bundle Type | Example Selection |
+|-------------|-------------------|
+| Users | 100 users |
+| Voice Minutes | 5,000 minutes/month |
+| Features | Video conferencing enabled |
+
+**API Calls**:
+- `getBundleIdByPackageId` - Get available bundles
+- `searchBundles` - Bundle details
+
+**Configuration**:
+- Service start date selection
+- Billing cycle preference (e.g., 1st of month)
+
+---
+
+##### Step 5: Order Creation
+
+**Backend Entities Created**:
+
+1. **Account entity**
+   - Account ID, name, status
+   
+2. **Order with OrderLines**
+   - One OrderLine per bundle
+   
+3. **Subscription**
+   - Linked to selected package
+   - Status: PENDING
+   
+4. **Bill Unit**
+   - Billing cycle configuration
+   - First bill date
+   
+5. **Initial Invoice** (if applicable)
+   - Prorated first month charge
+
+**GraphQL Trigger Chain**:
+
+```
+processNewAccount mutation
+  ↓
+AccountService.create()
+  ↓
+OrderProcessService.submitMultiSubscriptionOrder()
+  ↓
+SubscriptionService.create()
+  ↓
+BillUnitService.create()
+```
+
+---
+
+##### Step 6: Post-Registration Activities
+
+**Automated Actions**:
+
+1. **Welcome Email** sent to customer with:
+   - Account credentials
+   - Quick start guide
+   - Support contact information
+
+2. **Dashboard Redirect**:
+   - Customer auto-logged into portal
+   - First-time setup wizard displayed
+
+3. **Service Provisioning**:
+   - Order published to `provision_gateway`
+   - ServiceNow work order created
+   - Vendor systems configured
+
+4. **Invoice Generation**:
+   - First invoice created (prorated if mid-cycle)
+   - Payment auto-charged if card on file
+   - Billing cycle starts
+
+---
+
+#### Technical Flow: Complete Backend Architecture
 
 ```
 ┌─────────────────────────────────────────────────────────────────────────┐
@@ -193,50 +279,82 @@ Embrix O2X is an **enterprise-grade billing and order management platform** desi
 
 **Business Context**: Monthly recurring invoice generated. Customer logs into self-care portal to pay.
 
-#### User Journey
+#### User Journey: Step-by-Step Payment Flow
 
-1. **Access Invoice**
-   - Customer logs in to selfcare portal
-   - Navigates to "Billing Data" → "View Bills"
-   - Permission check: `VIEW_BILLS`, `VIEW_INVOICE`
-   - GraphQL: `searchBillInvoice` returns pending invoices
+##### Step 1: Access Invoice
 
-2. **Invoice Review**
-   - Views invoice details:
-     - Invoice number, date, due date
-     - Recurring charges (subscriptions)
-     - Usage charges (if applicable)
-     - Taxes
-     - Total amount due
-   - GraphQL: `getInvoiceById`, `searchInvoiceUnits`
+**Action**: Navigate to invoice dashboard
 
-3. **Make Payment**
-   - Clicks "Pay Now" button
-   - Navigates to "Activity" → "Make Payment"
-   - Selects invoice(s) to pay
-   - Chooses payment method:
-     - **Option A**: Use stored credit card (masked last 4 digits shown)
-     - **Option B**: Add new credit card
-   - GraphQL: `searchPayment` to get payment profiles
+- Customer logs in to selfcare portal
+- Navigates to **"Billing Data" → "View Bills"**
+- **Permission check**: `VIEW_BILLS`, `VIEW_INVOICE`
+- **API Call**: GraphQL query `searchBillInvoice` returns pending invoices
 
-4. **Payment Processing**
-   - If new card:
-     - Tokenize via Braintree Vault
-     - API: POST to `payment-gateway` `/braintreevault/creditcard`
-     - Receives payment token
-   - Apply payment:
-     - GraphQL mutation: `applyPayment`
-     - Parameters:
-       - `accountId`
-       - `amount`
-       - `currencyCode`
-       - `paymentProfileId` or `cardToken`
-       - `invoiceIds[]` - invoices to apply to
-     - Permission: `APPLY_PAYMENT`
+---
 
-5. **Backend Processing Flow**
+##### Step 2: Invoice Review
 
-   ```
+**Action**: Review invoice details before payment
+
+**Invoice Information Displayed**:
+- Invoice number, date, due date
+- Recurring charges (subscriptions)
+- Usage charges (if applicable)
+- Taxes
+- **Total amount due**
+
+**API Call**: `getInvoiceById`, `searchInvoiceUnits`
+
+---
+
+##### Step 3: Make Payment
+
+**Action**: Initiate payment process
+
+1. Click **"Pay Now"** button
+2. Navigate to **"Activity" → "Make Payment"**
+3. Select invoice(s) to pay
+4. Choose payment method:
+   
+   | Option | Description |
+   |--------|-------------|
+   | **Option A** | Use stored credit card (last 4 digits shown: •••• 1234) |
+   | **Option B** | Add new credit card (requires tokenization) |
+
+5. **API Call**: `searchPayment` to retrieve payment profiles
+
+---
+
+##### Step 4: Payment Processing
+
+**Action**: Process payment securely
+
+**If using new card**:
+1. Tokenize card via Braintree Vault
+2. **API**: POST to `payment-gateway/braintreevault/creditcard`
+3. Receive secure payment token
+
+**Apply payment**:
+- **GraphQL mutation**: `applyPayment`
+- **Parameters**:
+  ```
+  {
+    accountId: "ACC-12345"
+    amount: 26705.00
+    currencyCode: "USD"
+    paymentProfileId: "profile_xyz" OR cardToken: "tok_abc123"
+    invoiceIds: ["INV-202602-00123"]
+  }
+  ```
+- **Required Permission**: `APPLY_PAYMENT`
+
+---
+
+##### Step 5: Backend Processing Flow
+
+**Complete Payment Processing Architecture**:
+
+```
    ┌─────────────────────────────────────────────────────────────────┐
    │  Step 1: API Entry Point                                        │
    ├─────────────────────────────────────────────────────────────────┤
@@ -287,13 +405,31 @@ Embrix O2X is an **enterprise-grade billing and order management platform** desi
    │  ├─> If overpayment: creates credit balance                     │
    │  └─> Sends payment confirmation email                           │
    └─────────────────────────────────────────────────────────────────┘
-   ```
+```
 
-6. **Confirmation**
-   - Success message displayed
-   - Receipt available for download (PDF)
-   - GraphQL: `getObjectFileById` for receipt
-   - Email confirmation sent to customer
+---
+
+##### Step 6: Payment Confirmation
+
+**Customer Experience**:
+
+1. **Success Message** displayed:
+   - "Payment of $26,705.00 successfully processed"
+   - Transaction ID shown
+   - Updated balance displayed
+
+2. **Receipt Generation**:
+   - PDF receipt created via iText
+   - Available for immediate download
+   - **API**: `getObjectFileById` retrieves receipt
+
+3. **Email Confirmation**:
+   - Sent to account email address
+   - Includes:
+     - Payment amount and date
+     - Invoice(s) paid
+     - Remaining balance (if any)
+     - Receipt attachment
 
 ---
 
@@ -301,32 +437,48 @@ Embrix O2X is an **enterprise-grade billing and order management platform** desi
 
 **Business Context**: A mobile MVNO customer wants to see their data, voice, and SMS usage for the current billing cycle.
 
-#### User Journey
+#### User Journey: Usage & Transaction Monitoring
 
-1. **Access Usage Dashboard**
-   - Customer logs in to selfcare
-   - Navigates to "Billing Data" → "View Transactions"
-   - Permission: `VIEW_TRANSACTIONS`
+##### Step 1: Access Usage Dashboard
 
-2. **View Balances**
-   - Navigates to "Billing Data" → "Manage Balances"
-   - Permission: `VIEW_BALANCES`
-   - GraphQL: `getBalanceUnitByAccountId`
-   
-   **Displays:**
-   - **Currency Balances**:
-     - Prepaid balance: $25.00 USD
-     - Monthly allowance balance: $50.00 USD
-   - **Grant Balances** (allowances):
-     - Data: 5.2 GB of 10 GB remaining
-     - Voice: 450 minutes of 1,000 remaining
-     - SMS: 890 of 1,000 remaining
-   - **Accumulators** (usage counters):
-     - Data this cycle: 4.8 GB
-     - Voice this cycle: 550 minutes
-     - International calls: 25 minutes
+**Navigation**:
+- Customer logs in to selfcare portal
+- Navigates to **"Billing Data" → "View Transactions"**
 
-3. **View Transaction History**
+**Required Permission**: `VIEW_TRANSACTIONS`
+
+---
+
+##### Step 2: View Current Balances
+
+**Navigation**:
+- Go to **"Billing Data" → "Manage Balances"**
+
+**Required Permission**: `VIEW_BALANCES`
+
+**API Call**: GraphQL `getBalanceUnitByAccountId`
+
+**Balance Dashboard Displays**:
+
+| Balance Type | Current | Limit/Allowance | % Used |
+|--------------|---------|-----------------|--------|
+| **Prepaid Balance** | $25.00 USD | N/A | - |
+| **Monthly Allowance** | $50.00 USD | N/A | - |
+| **Data Grant** | 5.2 GB | 10 GB | 48% |
+| **Voice Grant** | 450 min | 1,000 min | 55% |
+| **SMS Grant** | 890 msgs | 1,000 msgs | 11% |
+
+**Usage Accumulators (This Billing Cycle)**:
+
+| Metric | Usage This Cycle |
+|--------|------------------|
+| Total Data | 4.8 GB |
+| Total Voice | 550 minutes |
+| International Calls | 25 minutes |
+
+---
+
+##### Step 3: View Transaction History
    - GraphQL: `getTransactionUnit` with filters:
      - `accountId`
      - `fromDate`, `toDate` (current billing cycle)

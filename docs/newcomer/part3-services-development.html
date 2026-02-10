@@ -5,6 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Part 3: Services & Development - Embrix O2X</title>
     
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
 <style>
     * {
         margin: 0;
@@ -13,10 +17,11 @@
     }
 
     body {
-        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-        line-height: 1.6;
-        color: #333;
-        background: #f5f5f5;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+        line-height: 1.7;
+        color: #2d3748;
+        background: linear-gradient(135deg, #f5f7fa 0%, #e9ecef 100%);
+        background-attachment: fixed;
         padding: 20px;
     }
 
@@ -24,9 +29,21 @@
         max-width: 1200px;
         margin: 0 auto;
         background: white;
-        padding: 40px;
-        border-radius: 10px;
-        box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+        padding: 50px;
+        border-radius: 16px;
+        box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .container::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 5px;
+        background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
     }
 
     .nav-header {
@@ -67,30 +84,65 @@
 
     h1 {
         color: #667eea;
-        margin: 30px 0 20px 0;
-        padding-bottom: 10px;
+        margin: 40px 0 25px 0;
+        padding: 15px 0 15px 20px;
+        border-left: 6px solid #667eea;
         border-bottom: 3px solid #667eea;
+        background: linear-gradient(90deg, rgba(102, 126, 234, 0.05) 0%, rgba(255,255,255,0) 100%);
         font-size: 2.5em;
+        border-radius: 0 8px 0 0;
     }
 
     h2 {
         color: #764ba2;
-        margin: 25px 0 15px 0;
-        padding-bottom: 8px;
+        margin: 35px 0 20px 0;
+        padding: 12px 0 12px 15px;
+        border-left: 5px solid #764ba2;
         border-bottom: 2px solid #f0f0f0;
+        background: linear-gradient(90deg, rgba(118, 75, 162, 0.03) 0%, rgba(255,255,255,0) 100%);
         font-size: 2em;
+        border-radius: 0 6px 0 0;
     }
 
     h3 {
         color: #667eea;
-        margin: 20px 0 10px 0;
+        margin: 30px 0 18px 0;
+        padding: 10px 0 10px 15px;
+        border-left: 4px solid #667eea;
+        background: linear-gradient(90deg, rgba(102, 126, 234, 0.04) 0%, transparent 100%);
         font-size: 1.5em;
+        border-radius: 0 6px 6px 0;
     }
 
     h4 {
         color: #764ba2;
-        margin: 15px 0 10px 0;
+        margin: 25px 0 15px 0;
+        padding: 8px 0 8px 12px;
+        border-left: 3px solid #764ba2;
+        background: linear-gradient(90deg, rgba(118, 75, 162, 0.03) 0%, transparent 100%);
         font-size: 1.2em;
+        font-weight: 600;
+        border-radius: 0 4px 4px 0;
+    }
+
+    h5 {
+        color: #667eea;
+        margin: 20px 0 12px 0;
+        padding: 6px 0 6px 10px;
+        border-left: 2px solid #667eea;
+        font-size: 1.05em;
+        font-weight: 600;
+        background: linear-gradient(90deg, rgba(102, 126, 234, 0.02) 0%, transparent 100%);
+        border-radius: 0 3px 3px 0;
+    }
+
+    h6 {
+        color: #764ba2;
+        margin: 15px 0 10px 0;
+        font-size: 1em;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
     }
 
     p {
@@ -99,46 +151,163 @@
     }
 
     ul, ol {
-        margin: 15px 0;
-        padding-left: 30px;
+        margin: 20px 0;
+        padding-left: 35px;
     }
 
     li {
-        margin: 8px 0;
-        line-height: 1.6;
+        margin: 12px 0;
+        line-height: 1.8;
+        position: relative;
+        padding-left: 8px;
+    }
+
+    ul li::marker {
+        color: #667eea;
+        font-weight: bold;
+        font-size: 1.1em;
+    }
+
+    ol li::marker {
+        color: #764ba2;
+        font-weight: bold;
+        font-size: 1em;
+    }
+
+    /* Better list item styling */
+    li {
+        background: linear-gradient(90deg, rgba(102, 126, 234, 0.02) 0%, transparent 100%);
+        border-left: 2px solid transparent;
+        padding: 8px 8px 8px 12px;
+        border-radius: 0 4px 4px 0;
+        transition: all 0.2s ease;
+    }
+
+    li:hover {
+        background: linear-gradient(90deg, rgba(102, 126, 234, 0.05) 0%, transparent 100%);
+        border-left-color: #667eea;
+        padding-left: 16px;
+    }
+
+    /* Nested lists */
+    li ul, li ol {
+        margin: 8px 0 8px 10px;
+    }
+
+    /* Nested list items - smaller styling */
+    li li {
+        font-size: 0.95em;
+        margin: 6px 0;
+        background: linear-gradient(90deg, rgba(118, 75, 162, 0.02) 0%, transparent 100%);
+    }
+
+    li li:hover {
+        background: linear-gradient(90deg, rgba(118, 75, 162, 0.05) 0%, transparent 100%);
+        border-left-color: #764ba2;
     }
 
     code {
-        background: #f4f4f4;
-        padding: 2px 6px;
-        border-radius: 3px;
-        font-family: 'Courier New', Courier, monospace;
-        font-size: 0.9em;
-        color: #e83e8c;
+        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        padding: 3px 8px;
+        border-radius: 5px;
+        font-family: 'Fira Code', 'Courier New', Consolas, monospace;
+        font-size: 0.88em;
+        color: #d63384;
+        border: 1px solid #dee2e6;
+        font-weight: 500;
+    }
+
+    /* Inline code with special highlighting */
+    p code, li code, td code {
+        position: relative;
+    }
+
+    p code::before, li code::before, td code::before {
+        content: '';
+        position: absolute;
+        inset: -2px;
+        border-radius: 5px;
+        background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+        z-index: -1;
+        opacity: 0;
+        transition: opacity 0.2s;
+    }
+
+    p code:hover::before, li code:hover::before, td code:hover::before {
+        opacity: 1;
     }
 
     pre {
-        background: #2d2d2d;
-        color: #f8f8f2;
-        padding: 20px;
-        border-radius: 8px;
+        background: #1e293b;
+        color: #e2e8f0;
+        padding: 24px;
+        border-radius: 10px;
         overflow-x: auto;
-        margin: 20px 0;
-        border-left: 4px solid #667eea;
+        margin: 25px 0;
+        border: 2px solid #334155;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1), 0 0 0 1px rgba(102, 126, 234, 0.1);
+        font-family: 'Cascadia Code', 'Fira Code', 'SF Mono', 'Consolas', 'Liberation Mono', monospace;
+        font-size: 0.875em;
+        line-height: 1.7;
+        position: relative;
     }
 
     pre code {
         background: none;
-        color: #f8f8f2;
+        color: inherit;
         padding: 0;
+        border: none;
+        font-family: inherit;
+        font-weight: normal;
+    }
+
+    /* Better rendering for box-drawing characters */
+    pre {
+        font-feature-settings: "liga" 0;
+        text-rendering: optimizeLegibility;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+    }
+
+    /* Hover effect */
+    pre:hover {
+        border-color: #667eea;
+        box-shadow: 0 6px 12px rgba(0,0,0,0.15), 0 0 0 2px rgba(102, 126, 234, 0.3);
+        transition: all 0.3s ease;
+    }
+
+    /* Code block header indicator */
+    pre::after {
+        content: 'CODE';
+        position: absolute;
+        top: 8px;
+        right: 12px;
+        font-size: 0.65em;
+        color: #64748b;
+        font-weight: 600;
+        letter-spacing: 0.05em;
+        opacity: 0.5;
     }
 
     blockquote {
-        border-left: 4px solid #667eea;
-        padding-left: 20px;
-        margin: 20px 0;
-        color: #666;
+        border-left: 5px solid #667eea;
+        padding: 15px 20px;
+        margin: 25px 0;
+        color: #555;
         font-style: italic;
+        background: linear-gradient(90deg, rgba(102, 126, 234, 0.05) 0%, rgba(255,255,255,0) 100%);
+        border-radius: 0 8px 8px 0;
+        position: relative;
+    }
+
+    blockquote::before {
+        content: '"';
+        position: absolute;
+        left: -10px;
+        top: -10px;
+        font-size: 4em;
+        color: rgba(102, 126, 234, 0.1);
+        font-family: Georgia, serif;
     }
 
     table {
@@ -189,27 +358,42 @@
     }
 
     .info-box {
-        background: #e3f2fd;
-        border-left: 4px solid #2196f3;
-        padding: 15px;
-        margin: 20px 0;
-        border-radius: 5px;
+        background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+        border-left: 5px solid #2196f3;
+        padding: 20px;
+        margin: 25px 0;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(33, 150, 243, 0.2);
     }
 
     .warning-box {
-        background: #fff3e0;
-        border-left: 4px solid #ff9800;
-        padding: 15px;
-        margin: 20px 0;
-        border-radius: 5px;
+        background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%);
+        border-left: 5px solid #ff9800;
+        padding: 20px;
+        margin: 25px 0;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(255, 152, 0, 0.2);
     }
 
     .success-box {
-        background: #e8f5e9;
-        border-left: 4px solid #4caf50;
-        padding: 15px;
-        margin: 20px 0;
-        border-radius: 5px;
+        background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+        border-left: 5px solid #4caf50;
+        padding: 20px;
+        margin: 25px 0;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(76, 175, 80, 0.2);
+    }
+
+    /* Better colors for syntax in diagrams */
+    pre {
+        /* Box drawing characters in nice blue */
+        color: #93c5fd;
+    }
+
+    /* JSON/code syntax in pre blocks */
+    pre {
+        white-space: pre;
+        word-wrap: normal;
     }
 
     .toc {
@@ -316,10 +500,20 @@
 <body>
     <div class="container">
         <div class="nav-header"><div><h1>Embrix O2X Documentation</h1><small>Navigate between guides</small></div><div class="nav-links"><a href="index.html">Home</a><a href="guide-index.html">Guide Index</a><a href="part1-business-architecture.html">Part 1</a><a href="part2-technical-deep-dive.html">Part 2</a><a href="part3-services-development.html">Part 3</a><a href="business-scenarios.html">Scenarios</a><a href="multi-tenant-complete-guide.html">Multi-Tenant</a><a href="quick-reference.html">Quick Ref</a></div></div>
-        <h1>Embrix O2X Platform - Newcomer's Guide (Part 3)</h1>
-<h2>Core Services, Business Flows & Development Guide</h2><p><strong>Version</strong>: 3.1.9-SNAPSHOT  
+        
+<h1>Embrix O2X Platform - Newcomer's Guide (Part 3)</h1>
+
+<h2>Core Services, Business Flows & Development Guide</h2>
+
+<strong>Version</strong>: 3.1.9-SNAPSHOT  
 <strong>Last Updated</strong>: February 2026  
-<strong>Prerequisites</strong>: Read Parts 1 and 2 first</p><hr><h2>Table of Contents - Part 3</h2><ol>
+<strong>Prerequisites</strong>: Read Parts 1 and 2 first
+
+<hr>
+
+<h2>Table of Contents - Part 3</h2>
+
+<ol>
 <li><a href="#1-core-services-layer">Core Services Layer</a></li>
 <li><a href="#2-database-architecture">Database Architecture</a></li>
 <li><a href="#3-complete-end-to-end-business-flows">Complete End-to-End Business Flows</a></li>
@@ -328,8 +522,19 @@
 <li><a href="#6-testing-strategy">Testing Strategy</a></li>
 <li><a href="#7-troubleshooting--debugging">Troubleshooting & Debugging</a></li>
 <li><a href="#8-best-practices">Best Practices</a></li>
-</ol><hr><h2>1. Core Services Layer</h2><p>Core services are <strong>thin wrappers</strong> that expose business logic from <code>engine</code> via GraphQL APIs.</p><h3>1.1 <code>service-billing</code> - Billing Operations</h3><p><strong>Location:</strong> <code>/core/service-billing</code>  
-<strong>Purpose:</strong> Execute billing runs and charge generation</p><p><strong>Key Operations:</strong></p><p><strong>1. Billing Cycle Execution</strong>
+</ol>
+
+<hr>
+
+<h2>1. Core Services Layer</h2>
+
+Core services are <strong>thin wrappers</strong> that expose business logic from <code>engine</code> via GraphQL APIs.
+<h3>1.1 <code>service-billing</code> - Billing Operations</h3>
+
+<strong>Location:</strong> <code>/core/service-billing</code>  
+<strong>Purpose:</strong> Execute billing runs and charge generation
+<strong>Key Operations:</strong>
+<strong>1. Billing Cycle Execution</strong>
 <pre><code class="language-graphql">mutation ExecuteBillingCycle {
   runBillingCycle(input: {
     billCycleDay: 1
@@ -345,7 +550,8 @@
     }
   }
 }
-</code></pre><p><strong>2. Proration Calculation</strong>
+</code></pre>
+<strong>2. Proration Calculation</strong>
 <pre><code class="language-graphql">mutation CalculateProration {
   calculateProration(input: {
     subscriptionId: "SUB-123"
@@ -360,7 +566,9 @@
   }
 }
 <h1>Result: {proratedAmount: 15.48, daysActive: 16, daysInPeriod: 31}</h1>
-</code></pre><p><strong>3. Ad-Hoc Charge Creation</strong>
+
+</code></pre>
+<strong>3. Ad-Hoc Charge Creation</strong>
 <pre><code class="language-graphql">mutation CreateAdhocCharge {
   createCharge(input: {
     accountId: "ACC-1001"
@@ -373,8 +581,13 @@
     status
   }
 }
-</code></pre><h3>1.2 <code>service-invoice</code> - Invoice Generation</h3><p><strong>Location:</strong> <code>/core/service-invoice</code>  
-<strong>Purpose:</strong> Generate customer-facing invoice documents</p><p><strong>Key Operations:</strong></p><p><strong>1. Generate Invoice</strong>
+</code></pre>
+<h3>1.2 <code>service-invoice</code> - Invoice Generation</h3>
+
+<strong>Location:</strong> <code>/core/service-invoice</code>  
+<strong>Purpose:</strong> Generate customer-facing invoice documents
+<strong>Key Operations:</strong>
+<strong>1. Generate Invoice</strong>
 <pre><code class="language-graphql">mutation GenerateInvoice {
   generateInvoice(input: {
     accountId: "ACC-1001"
@@ -388,25 +601,32 @@
     totalAmount
   }
 }
-</code></pre><p><strong>Invoice Generation Process:</strong>
+</code></pre>
+<strong>Invoice Generation Process:</strong>
 <pre><code class="language-">[1] Retrieve Data
     ├─→ Account details
     ├─→ All charges for period
     ├─→ Tax calculations
-    └─→ Payment history</p><p>[2] Apply Template
+    └─→ Payment history
+[2] Apply Template
     ├─→ Select Thymeleaf template
     ├─→ Inject data into template
-    └─→ Generate HTML</p><p>[3] Convert to PDF
+    └─→ Generate HTML
+[3] Convert to PDF
     ├─→ iText processes HTML
     ├─→ Apply styling
-    └─→ Generate PDF bytes</p><p>[4] Upload to S3
+    └─→ Generate PDF bytes
+[4] Upload to S3
     ├─→ Bucket: {tenant}-invoices
     ├─→ Key: invoices/2024/01/ACC-1001/INV-2024-001.pdf
-    └─→ Get public URL</p><p>[5] Update Database
+    └─→ Get public URL
+[5] Update Database
     ├─→ invoice.pdfUrl = S3 URL
-    └─→ invoice.status = SENT</p><p>[6] Send Notification
+    └─→ invoice.status = SENT
+[6] Send Notification
     └─→ Email to customer with download link
-</code></pre><p><strong>2. Regenerate Invoice (Corrections)</strong>
+</code></pre>
+<strong>2. Regenerate Invoice (Corrections)</strong>
 <pre><code class="language-graphql">mutation RegenerateInvoice {
   regenerateInvoice(input: {
     invoiceId: "INV-2024-001"
@@ -416,8 +636,13 @@
     pdfUrl
   }
 }
-</code></pre><h3>1.3 <code>service-usage</code> - Usage Data Repository</h3><p><strong>Location:</strong> <code>/core/service-usage</code>  
-<strong>Purpose:</strong> High-performance usage data storage and query layer</p><p><strong>Key Operations:</strong></p><p><strong>1. Query Usage Records</strong>
+</code></pre>
+<h3>1.3 <code>service-usage</code> - Usage Data Repository</h3>
+
+<strong>Location:</strong> <code>/core/service-usage</code>  
+<strong>Purpose:</strong> High-performance usage data storage and query layer
+<strong>Key Operations:</strong>
+<strong>1. Query Usage Records</strong>
 <pre><code class="language-graphql">query GetUsage {
   searchUsageRecords(filter: {
     accountId: "ACC-1001"
@@ -436,7 +661,8 @@
     totalAmount
   }
 }
-</code></pre><p><strong>2. Usage Summary</strong>
+</code></pre>
+<strong>2. Usage Summary</strong>
 <pre><code class="language-graphql">query UsageSummary {
   getUsageSummary(input: {
     accountId: "ACC-1001"
@@ -454,7 +680,8 @@
     }
   }
 }
-</code></pre><p><strong>3. Re-Rating (Corrections)</strong>
+</code></pre>
+<strong>3. Re-Rating (Corrections)</strong>
 <pre><code class="language-graphql">mutation ReRateUsage {
   reRateUsageRecords(input: {
     usageRecordIds: ["USAGE-001", "USAGE-002"]
@@ -465,13 +692,20 @@
     totalAdjustment
   }
 }
-</code></pre><h3>1.4 <code>service-mediation</code> - Usage Data Ingestion</h3><p><strong>Location:</strong> <code>/core/service-mediation</code>  
-<strong>Purpose:</strong> Ingest and normalize raw usage data from network elements</p><p><strong>Mediation Process:</strong></p><pre><code class="language-">[1] CDR File Detection
+</code></pre>
+<h3>1.4 <code>service-mediation</code> - Usage Data Ingestion</h3>
+
+<strong>Location:</strong> <code>/core/service-mediation</code>  
+<strong>Purpose:</strong> Ingest and normalize raw usage data from network elements
+<strong>Mediation Process:</strong>
+<pre><code class="language-">[1] CDR File Detection
     ├─→ Network element places file on SFTP
-    └─→ File: mcm_voice_20240115_001.csv</p><p>[2] File Ingestion
+    └─→ File: mcm_voice_20240115_001.csv
+[2] File Ingestion
     ├─→ Download from SFTP
     ├─→ Parse file format
-    └─→ Extract CDR records</p><p>[3] Normalization
+    └─→ Extract CDR records
+[3] Normalization
     ├─→ Map vendor-specific fields to canonical format
     │   Network Field → Canonical Field
     │   ├─→ calling_number → sourceId
@@ -479,20 +713,27 @@
     │   ├─→ call_start → startTime
     │   ├─→ call_duration → duration
     │   └─→ call_type → serviceType
-    └─→ Validate data quality</p><p>[4] Enrichment
+    └─→ Validate data quality
+[4] Enrichment
     ├─→ Lookup account by sourceId (IMSI, phone number, IP)
     ├─→ Lookup subscription
     ├─→ Classify call type (local, long distance, international)
-    └─→ Add metadata</p><p>[5] Deduplication
+    └─→ Add metadata
+[5] Deduplication
     ├─→ Check if CDR already processed (by unique ID)
-    └─→ Skip duplicates</p><p>[6] Storage
+    └─→ Skip duplicates
+[6] Storage
     ├─→ Insert into usage_record table
-    └─→ Status: UNRATED</p><p>[7] Trigger Rating
+    └─→ Status: UNRATED
+[7] Trigger Rating
     └─→ Push to USAGE queue for rating
-</code></pre><p><strong>Mediation Example:</strong></p><p><strong>Raw CDR (Network Format):</strong>
+</code></pre>
+<strong>Mediation Example:</strong>
+<strong>Raw CDR (Network Format):</strong>
 <pre><code class="language-csv">2024-01-15 10:30:00,5215551234567,5215557654321,00:10:00,VOICE
 2024-01-15 10:35:00,5215551234567,5215557654322,00:05:30,VOICE
-</code></pre><p><strong>Canonical Format:</strong>
+</code></pre>
+<strong>Canonical Format:</strong>
 <pre><code class="language-json">{
   "id": "USAGE-2024-001",
   "accountId": "ACC-1001",
@@ -511,8 +752,13 @@
   "billed": false,
   "created_date": "2024-01-15T11:00:00Z"
 }
-</code></pre><h3>1.5 <code>service-payment</code> - Payment Management</h3><p><strong>Location:</strong> <code>/core/service-payment</code>  
-<strong>Purpose:</strong> Payment method and transaction management</p><p><strong>Key Operations:</strong></p><p><strong>1. Process Manual Payment</strong>
+</code></pre>
+<h3>1.5 <code>service-payment</code> - Payment Management</h3>
+
+<strong>Location:</strong> <code>/core/service-payment</code>  
+<strong>Purpose:</strong> Payment method and transaction management
+<strong>Key Operations:</strong>
+<strong>1. Process Manual Payment</strong>
 <pre><code class="language-graphql">mutation ProcessPayment {
   processPayment(input: {
     accountId: "ACC-1001"
@@ -526,20 +772,24 @@
     transactionId
   }
 }
-</code></pre><p><strong>Payment Processing Flow:</strong>
+</code></pre>
+<strong>Payment Processing Flow:</strong>
 <pre><code class="language-">[1] Validate Payment
     ├─→ Check payment amount &gt; 0
     ├─→ Verify payment method active
-    └─→ Validate account exists</p><p>[2] Call Payment Gateway
+    └─→ Validate account exists
+[2] Call Payment Gateway
     ├─→ payment-gateway.processPayment()
     ├─→ External processor (Stripe, PayPal, bank)
-    └─→ Receive transaction result</p><p>[3] Record Payment
+    └─→ Receive transaction result
+[3] Record Payment
     ├─→ Create payment record in database
     │   - payment_id: PAY-2024-001
     │   - amount: 752.84
     │   - external_transaction_id: ch_stripe_789
     │   - status: COMPLETED
-    └─→ Payment date: now()</p><p>[4] Allocate to Invoices
+    └─→ Payment date: now()
+[4] Allocate to Invoices
     ├─→ Find invoices specified or oldest pending
     ├─→ For each invoice (oldest first):
     │   ├─→ Calculate allocation amount
@@ -548,14 +798,17 @@
     │   ├─→ Update invoice.amount_paid += allocation
     │   ├─→ Update invoice.balance -= allocation
     │   └─→ If invoice.balance == 0: invoice.status = PAID
-    └─→ Remaining payment → account credit</p><p>[5] Update Account Balance
+    └─→ Remaining payment → account credit
+[5] Update Account Balance
     ├─→ account.balance += payment.amount
     ├─→ Create balance_impact record for audit
     └─→ If balance was negative and now &gt;= 0:
-        trigger auto-resume (EP-5480)</p><p>[6] Notification
+        trigger auto-resume (EP-5480)
+[6] Notification
     ├─→ Send payment confirmation email
     └─→ Update customer portal
-</code></pre><p><strong>2. Refund Payment</strong>
+</code></pre>
+<strong>2. Refund Payment</strong>
 <pre><code class="language-graphql">mutation RefundPayment {
   refundPayment(input: {
     paymentId: "PAY-2024-001"
@@ -566,15 +819,23 @@
     status
   }
 }
-</code></pre><h3>1.6 <code>service-revenue</code> - Revenue Recognition</h3><p><strong>Location:</strong> <code>/core/service-revenue</code>  
-<strong>Purpose:</strong> IFRS 15 / ASC 606 compliant revenue recognition</p><p><strong>Key Concepts:</strong></p><p><strong>1. Performance Obligation</strong>
-A promise to deliver a good or service to customer.</p><p><strong>Example:</strong>
+</code></pre>
+<h3>1.6 <code>service-revenue</code> - Revenue Recognition</h3>
+
+<strong>Location:</strong> <code>/core/service-revenue</code>  
+<strong>Purpose:</strong> IFRS 15 / ASC 606 compliant revenue recognition
+<strong>Key Concepts:</strong>
+<strong>1. Performance Obligation</strong>
+A promise to deliver a good or service to customer.
+<strong>Example:</strong>
 <ul>
 <li>Sell annual internet subscription for $1,200 upfront</li>
 <li>Performance obligation: Provide internet service for 12 months</li>
 <li>Revenue recognition: Recognize $100/month over 12 months</li>
-</ul><p><strong>2. Deferred Revenue</strong>
-Payment received but service not yet delivered.</p><p><strong>Example:</strong>
+</ul>
+<strong>2. Deferred Revenue</strong>
+Payment received but service not yet delivered.
+<strong>Example:</strong>
 <pre><code class="language-">Customer pays $1,200 on Jan 1 for annual subscription
     ↓
 [Initial Recording]
@@ -590,17 +851,21 @@ Payment received but service not yet delivered.</p><p><strong>Example:</strong>
     Credit: Revenue (Income) $100
     ↓
 ... (repeat for 12 months)
-</code></pre><p><strong>Revenue Recognition Flow:</strong>
+</code></pre>
+<strong>Revenue Recognition Flow:</strong>
 <pre><code class="language-">[1] Charge Created
-    └─→ service-billing creates charge for $1,200</p><p>[2] Analyze Revenue Model
+    └─→ service-billing creates charge for $1,200
+[2] Analyze Revenue Model
     ├─→ Charge type: RECURRING
     ├─→ Recognition model: STRAIGHT_LINE
-    └─→ Period: 12 months</p><p>[3] Create Deferred Revenue
+    └─→ Period: 12 months
+[3] Create Deferred Revenue
     ├─→ deferred_revenue.total_amount = 1200.00
     ├─→ deferred_revenue.recognized_amount = 0.00
     ├─→ deferred_revenue.remaining_amount = 1200.00
     ├─→ recognition_start = 2024-01-01
-    └─→ recognition_end = 2024-12-31</p><p>[4] Daily Recognition Job (runs nightly)
+    └─→ recognition_end = 2024-12-31
+[4] Daily Recognition Job (runs nightly)
     ├─→ For each active deferred revenue:
     │   ├─→ Calculate daily amount: 1200 / 365 = 3.29
     │   ├─→ Create journal entry:
@@ -608,9 +873,11 @@ Payment received but service not yet delivered.</p><p><strong>Example:</strong>
     │   │   Credit: Revenue 3.29
     │   ├─→ Update recognized_amount += 3.29
     │   └─→ Update remaining_amount -= 3.29
-    └─→ Export to finance-gateway</p><p>[5] Monthly Reporting
+    └─→ Export to finance-gateway
+[5] Monthly Reporting
     └─→ Revenue recognized in January: 3.29 * 31 = 101.99
-</code></pre><p><strong>GraphQL Operations:</strong>
+</code></pre>
+<strong>GraphQL Operations:</strong>
 <pre><code class="language-graphql">query GetRevenueSchedule {
   getRevenueSchedule(input: {
     chargeId: "CHG-2024-001"
@@ -626,16 +893,19 @@ Payment received but service not yet delivered.</p><p><strong>Example:</strong>
     }
   }
 }
-</code></pre><h3>1.7 <code>batch-process</code> - Background Jobs</h3><p><strong>Location:</strong> <code>/core/batch-process</code>  
-<strong>Purpose:</strong> Long-running, resource-intensive batch jobs</p><p><strong>Key Jobs:</strong></p><p><strong>1. Daily Billing Cycle</strong>
+</code></pre>
+<h3>1.7 <code>batch-process</code> - Background Jobs</h3>
+
+<strong>Location:</strong> <code>/core/batch-process</code>  
+<strong>Purpose:</strong> Long-running, resource-intensive batch jobs
+<strong>Key Jobs:</strong>
+<strong>1. Daily Billing Cycle</strong>
 <pre><code class="language-groovy">@Scheduled(cron = "0 0 2 <em> </em> *")  // 2 AM daily
 void executeDailyBillingCycle() {
     // Find accounts with bill_cycle_day = today
     Integer today = LocalDate.now().getDayOfMonth()
     List&lt;Account&gt; accounts = findAccountsByBillCycleDay(today)
-    
     log.info("Starting billing for ${accounts.size()} accounts")
-    
     // Process in parallel (thread pool)
     accounts.eachParallel { account -&gt;
         try {
@@ -645,34 +915,31 @@ void executeDailyBillingCycle() {
         }
     }
 }
-</code></pre><p><strong>2. Usage Rating Batch</strong>
+</code></pre>
+<strong>2. Usage Rating Batch</strong>
 <pre><code class="language-groovy">@Scheduled(cron = "0 0 <em> </em> <em> </em>")  // Hourly
 void processUnratedUsage() {
     // Find unrated usage records
     List&lt;UsageRecord&gt; unrated = findUnratedUsageRecords()
-    
     log.info("Rating ${unrated.size()} usage records")
-    
     // Process in batches of 1000
     unrated.collate(1000).each { batch -&gt;
         usageService.rateUsageBatch(batch)
     }
 }
-</code></pre><p><strong>3. Revenue Recognition Batch</strong>
+</code></pre>
+<strong>3. Revenue Recognition Batch</strong>
 <pre><code class="language-groovy">@Scheduled(cron = "0 0 1 <em> </em> *")  // 1 AM daily
 void recognizeRevenue() {
     LocalDate today = LocalDate.now()
-    
     // Find active deferred revenue
     List&lt;DeferredRevenue&gt; active = findActiveDeferredRevenue(today)
-    
     active.each { deferredRevenue -&gt;
         BigDecimal dailyAmount = deferredRevenue.totalAmount / 
             ChronoUnit.DAYS.between(
                 deferredRevenue.recognitionStartDate,
                 deferredRevenue.recognitionEndDate
             )
-        
         // Create journal entry
         JournalEntry entry = createJournalEntry(
             debit: "Deferred Revenue",
@@ -680,14 +947,14 @@ void recognizeRevenue() {
             amount: dailyAmount,
             reference: deferredRevenue.id
         )
-        
         // Update deferred revenue
         deferredRevenue.recognizedAmount += dailyAmount
         deferredRevenue.remainingAmount -= dailyAmount
         save(deferredRevenue)
     }
 }
-</code></pre><p><strong>4. Payment File Processing</strong>
+</code></pre>
+<strong>4. Payment File Processing</strong>
 <pre><code class="language-groovy">@Scheduled(cron = "0 <em>/15 </em> <em> </em> *")  // Every 15 minutes
 void processPaymentFiles() {
     // Check S3 for new payment files
@@ -695,24 +962,19 @@ void processPaymentFiles() {
         bucket: "${tenant}-payments",
         prefix: "input/"
     )
-    
     files.each { file -&gt;
         if (!isProcessed(file.key)) {
             try {
                 // Download file
                 InputStream content = s3Client.getObject(file)
-                
                 // Parse CSV
                 List&lt;Payment&gt; payments = parsePaymentFile(content)
-                
                 // Process each payment
                 payments.each { payment -&gt;
                     paymentService.processPayment(payment)
                 }
-                
                 // Mark as processed
                 markFileProcessed(file.key)
-                
             } catch (Exception e) {
                 log.error("Failed to process ${file.key}", e)
                 alertSlack("#payment-errors", "Payment file failed: ${file.key}")
@@ -720,7 +982,16 @@ void processPaymentFiles() {
         }
     }
 }
-</code></pre><hr><h2>2. Database Architecture</h2><h3>2.1 Schema Organization</h3><p>PostgreSQL database organized into domain-specific schemas:</p><pre><code class="language-">Database: coredb-{tenant}
+</code></pre>
+
+<hr>
+
+<h2>2. Database Architecture</h2>
+
+<h3>2.1 Schema Organization</h3>
+
+PostgreSQL database organized into domain-specific schemas:
+<pre><code class="language-">Database: coredb-{tenant}
 ├── core_engine (Shared Business Entities)
 │   ├── account
 │   ├── subscription
@@ -764,7 +1035,12 @@ void processPaymentFiles() {
     ├── cdr_file
     ├── cdr_error
     └── mediation_stats
-</code></pre><h3>2.2 Key Tables Deep Dive</h3><h4>2.2.1 account Table</h4><pre><code class="language-sql">CREATE TABLE core_engine.account (
+</code></pre>
+<h3>2.2 Key Tables Deep Dive</h3>
+
+<h4>2.2.1 account Table</h4>
+
+<pre><code class="language-sql">CREATE TABLE core_engine.account (
     id VARCHAR(50) PRIMARY KEY,
     parent_account_id VARCHAR(50),                    -- For hierarchical accounts
     account_type VARCHAR(20) NOT NULL,                -- RESIDENTIAL, BUSINESS, WHOLESALE
@@ -774,191 +1050,209 @@ void processPaymentFiles() {
     credit_limit NUMERIC(19,4),                       -- Maximum credit allowed
     bill_cycle_day INTEGER,                           -- Day of month (1-31)
     payment_terms INTEGER DEFAULT 30,                 -- Days until payment due
-    
     -- Metadata
     created_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     modified_date TIMESTAMP,
     created_by VARCHAR(50),
     modified_by VARCHAR(50),
-    
     CONSTRAINT fk_parent_account FOREIGN KEY (parent_account_id) 
         REFERENCES core_engine.account(id)
-);</p><p>CREATE INDEX idx_account_status ON core_engine.account(status);
+);
+CREATE INDEX idx_account_status ON core_engine.account(status);
 CREATE INDEX idx_account_bill_cycle ON core_engine.account(bill_cycle_day);
 CREATE INDEX idx_account_balance ON core_engine.account(balance) WHERE balance &lt; 0;
-</code></pre><p><strong>Business Rules:</strong>
+</code></pre>
+<strong>Business Rules:</strong>
 <ul>
 <li><code>balance < 0</code> means customer owes money</li>
 <li><code>balance > 0</code> means customer has credit</li>
 <li><code>status = SUSPENDED</code> when <code>balance < -credit_limit</code></li>
-</ul><h4>2.2.2 order Table</h4><pre><code class="language-sql">CREATE TABLE core_oms.order (
+</ul>
+<h4>2.2.2 order Table</h4>
+
+<pre><code class="language-sql">CREATE TABLE core_oms.order (
     id VARCHAR(50) PRIMARY KEY,                       -- ORD-2024-001
     account_id VARCHAR(50) NOT NULL,
     user_id VARCHAR(50),                              -- Who created the order
     type VARCHAR(50) NOT NULL,                        -- NEW, MODIFY, CANCEL, SUSPEND, RESUME
     status VARCHAR(50) NOT NULL,                      -- CREATED, PROVISIONING, COMPLETED, FAILED
     allowed_partial_fulfillment BOOLEAN DEFAULT false,
-    
     -- Dates
     created_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     modified_date TIMESTAMP,
     completed_date TIMESTAMP,
-    
     -- Flexible attributes
     extended_data JSONB,
-    
     CONSTRAINT fk_order_account FOREIGN KEY (account_id) 
         REFERENCES core_engine.account(id)
-);</p><p>CREATE INDEX idx_order_account ON core_oms.order(account_id);
+);
+CREATE INDEX idx_order_account ON core_oms.order(account_id);
 CREATE INDEX idx_order_status ON core_oms.order(status);
 CREATE INDEX idx_order_created ON core_oms.order(created_date);
 CREATE INDEX idx_order_extended_data ON core_oms.order USING GIN (extended_data);
-</code></pre><p><strong>JSONB Usage:</strong>
+</code></pre>
+<strong>JSONB Usage:</strong>
 <pre><code class="language-json">{
   "salesforce_opportunity_id": "OPP-12345",
   "installation_notes": "Customer prefers afternoon installation",
   "special_requirements": "Need ladder for roof access"
 }
-</code></pre><h4>2.2.3 invoice Table</h4><pre><code class="language-sql">CREATE TABLE core_billing.invoice (
+</code></pre>
+<h4>2.2.3 invoice Table</h4>
+
+<pre><code class="language-sql">CREATE TABLE core_billing.invoice (
     id VARCHAR(50) PRIMARY KEY,                       -- INV-2024-001
     account_id VARCHAR(50) NOT NULL,
     bill_unit_id VARCHAR(50),
-    
     -- Dates
     invoice_date DATE NOT NULL,
     due_date DATE NOT NULL,
     billing_period_start DATE NOT NULL,
     billing_period_end DATE NOT NULL,
-    
     -- Amounts
     subtotal NUMERIC(19,4) NOT NULL,                  -- Charges before tax
     tax_total NUMERIC(19,4) DEFAULT 0,
     total_amount NUMERIC(19,4) NOT NULL,              -- subtotal + tax_total
     amount_paid NUMERIC(19,4) DEFAULT 0,
     balance NUMERIC(19,4) NOT NULL,                   -- total_amount - amount_paid
-    
     -- Status
     status VARCHAR(20) NOT NULL,                      -- PENDING, SENT, PAID, OVERDUE
-    
     -- Documents
     pdf_url TEXT,                                     -- S3 URL to PDF
     html_content TEXT,                                -- For email rendering
-    
     -- Mexican CFDI
     uuid VARCHAR(100),                                -- Digital stamp UUID
     stamped_date TIMESTAMP,                           -- When stamped by PAC
-    
     -- Metadata
     created_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     modified_date TIMESTAMP,
-    
     CONSTRAINT fk_invoice_account FOREIGN KEY (account_id) 
         REFERENCES core_engine.account(id)
-);</p><p>CREATE INDEX idx_invoice_account ON core_billing.invoice(account_id);
+);
+CREATE INDEX idx_invoice_account ON core_billing.invoice(account_id);
 CREATE INDEX idx_invoice_status ON core_billing.invoice(status);
 CREATE INDEX idx_invoice_due_date ON core_billing.invoice(due_date);
 CREATE INDEX idx_invoice_period ON core_billing.invoice(billing_period_start, billing_period_end);
-</code></pre><h4>2.2.4 usage_record Table (Partitioned)</h4><pre><code class="language-sql">-- Parent table
+</code></pre>
+<h4>2.2.4 usage_record Table (Partitioned)</h4>
+
+<pre><code class="language-sql">-- Parent table
 CREATE TABLE core_usage.usage_record (
     id VARCHAR(50),
     account_id VARCHAR(50) NOT NULL,
     subscription_id VARCHAR(50),
-    
     -- Source
     source_id VARCHAR(100) NOT NULL,                  -- IMSI, phone number, IP address
     usage_date DATE NOT NULL,                         -- For partitioning
-    
     -- Time
     start_time TIMESTAMP NOT NULL,
     end_time TIMESTAMP,
     duration INTEGER,                                 -- Seconds
     volume BIGINT,                                    -- Bytes
-    
     -- Classification
     destination VARCHAR(100),                         -- Called number, URL, etc.
     service_type VARCHAR(50) NOT NULL,                -- VOICE_CALL, SMS, DATA, VIDEO
     call_type VARCHAR(50),                            -- LOCAL, LONG_DISTANCE, INTERNATIONAL
-    
     -- Rating
     rated_amount NUMERIC(19,4) DEFAULT 0,
     rating_plan_id VARCHAR(50),
     status VARCHAR(20) NOT NULL,                      -- UNRATED, RATED, BILLED, DISPUTED
     billed BOOLEAN DEFAULT false,
-    
     -- Metadata
     created_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    
     PRIMARY KEY (id, usage_date)
-) PARTITION BY RANGE (usage_date);</p><p>-- Monthly partitions
+) PARTITION BY RANGE (usage_date);
+-- Monthly partitions
 CREATE TABLE core_usage.usage_record_2024_01 
 PARTITION OF core_usage.usage_record
-FOR VALUES FROM ('2024-01-01') TO ('2024-02-01');</p><p>CREATE TABLE core_usage.usage_record_2024_02 
+FOR VALUES FROM ('2024-01-01') TO ('2024-02-01');
+CREATE TABLE core_usage.usage_record_2024_02 
 PARTITION OF core_usage.usage_record
-FOR VALUES FROM ('2024-02-01') TO ('2024-03-01');</p><p>-- Indexes on partitions
+FOR VALUES FROM ('2024-02-01') TO ('2024-03-01');
+-- Indexes on partitions
 CREATE INDEX idx_usage_2024_01_account ON core_usage.usage_record_2024_01(account_id);
 CREATE INDEX idx_usage_2024_01_status ON core_usage.usage_record_2024_01(status) WHERE billed = false;
-</code></pre><p><strong>Partitioning Benefits:</strong>
+</code></pre>
+<strong>Partitioning Benefits:</strong>
 <ul>
 <li>Faster queries (scan only relevant month)</li>
 <li>Easier archival (drop old partitions)</li>
 <li>Better vacuum performance</li>
-</ul><h3>2.3 Database Performance Optimizations</h3><h4>2.3.1 Indexing Strategy</h4><pre><code class="language-sql">-- B-tree indexes for exact matches and ranges
+</ul>
+<h3>2.3 Database Performance Optimizations</h3>
+
+<h4>2.3.1 Indexing Strategy</h4>
+
+<pre><code class="language-sql">-- B-tree indexes for exact matches and ranges
 CREATE INDEX idx_account_id ON invoice(account_id);
-CREATE INDEX idx_created_date ON order(created_date);</p><p>-- Composite indexes for common query patterns
+CREATE INDEX idx_created_date ON order(created_date);
+-- Composite indexes for common query patterns
 CREATE INDEX idx_invoice_account_status ON invoice(account_id, status);
-CREATE INDEX idx_usage_account_date ON usage_record(account_id, usage_date);</p><p>-- Partial indexes for filtered queries
+CREATE INDEX idx_usage_account_date ON usage_record(account_id, usage_date);
+-- Partial indexes for filtered queries
 CREATE INDEX idx_unpaid_invoices ON invoice(account_id) 
-WHERE status IN ('PENDING', 'OVERDUE');</p><p>CREATE INDEX idx_unrated_usage ON usage_record(account_id) 
-WHERE billed = false AND status = 'RATED';</p><p>-- GIN indexes for JSONB
+WHERE status IN ('PENDING', 'OVERDUE');
+CREATE INDEX idx_unrated_usage ON usage_record(account_id) 
+WHERE billed = false AND status = 'RATED';
+-- GIN indexes for JSONB
 CREATE INDEX idx_order_extended_data ON order USING GIN (extended_data);
-</code></pre><h4>2.3.2 Query Optimization Examples</h4><p><strong>Find Overdue Invoices:</strong>
+</code></pre>
+<h4>2.3.2 Query Optimization Examples</h4>
+
+<strong>Find Overdue Invoices:</strong>
 <pre><code class="language-sql">-- Uses: idx_invoice_account_status
 SELECT * FROM core_billing.invoice
 WHERE account_id = 'ACC-1001'
   AND status = 'OVERDUE'
 ORDER BY due_date ASC;
-</code></pre><p><strong>Find Unbilled Usage:</strong>
+</code></pre>
+<strong>Find Unbilled Usage:</strong>
 <pre><code class="language-sql">-- Uses: idx_unrated_usage (partial index)
 SELECT * FROM core_usage.usage_record
 WHERE account_id = 'ACC-1001'
   AND billed = false
   AND status = 'RATED';
-</code></pre><p><strong>Query JSONB Data:</strong>
+</code></pre>
+<strong>Query JSONB Data:</strong>
 <pre><code class="language-sql">-- Uses: idx_order_extended_data (GIN index)
 SELECT * FROM core_oms.order
 WHERE extended_data @&gt; '{"salesforce_opportunity_id": "OPP-12345"}';
-</code></pre><hr><h2>3. Complete End-to-End Business Flows</h2><h3>3.1 New Customer Signup to First Invoice</h3><p><strong>Timeline: Day 1 to Day 30+</strong></p><pre><code class="language-">=== DAY 1: Customer Signs Up ===</p><p>[1] Customer submits order via web portal
+</code></pre>
+
+<hr>
+
+<h2>3. Complete End-to-End Business Flows</h2>
+
+<h3>3.1 New Customer Signup to First Invoice</h3>
+
+<strong>Timeline: Day 1 to Day 30+</strong>
+<pre><code class="language-">=== DAY 1: Customer Signs Up ===
+[1] Customer submits order via web portal
     └─→ Order: Internet 100Mbps + Equipment
-    
 [2] Salesforce CRM creates order
     └─→ GraphQL mutation to crm_gateway.createOrder()
-    
 [3] crm_gateway processes order
     ├─→ Validate account (credit check, address serviceable)
     ├─→ Create order in database (status: CREATED)
     └─→ Push to OMS queue
-    
 [4] Provisioning orchestrator processes
     ├─→ Assign equipment (ONT-12345)
     ├─→ Assign network resources (IP, VLAN)
     ├─→ Calculate taxes
     ├─→ Call provision_gateway
     └─→ Update order (status: PROVISIONING_INITIATED)
-    
 [5] provision_gateway calls Nokia
     ├─→ Configure ONT
     ├─→ Assign VLAN 100
     ├─→ Set speed limit 100Mbps
     └─→ Return provisioning request ID
-    
-=== DAY 2: Provisioning Complete ===</p><p>[6] Nokia sends callback
+=== DAY 2: Provisioning Complete ===
+[6] Nokia sends callback
     └─→ Message to MCM_BILLING_OMS_RESPONSE queue
-    
 [7] ProvisioningResponseProcessor
     ├─→ Update order (status: PROVISIONED)
     ├─→ Update service line (provisioningId: NW-12345)
     └─→ Trigger billing
-    
 [8] Billing creation
     ├─→ Create subscription record
     │   - accountId: ACC-1001
@@ -976,7 +1270,6 @@ WHERE extended_data @&gt; '{"salesforce_opportunity_id": "OPP-12345"}';
     │   - chargeType: RECURRING
     │   - status: BILLED
     └─→ Update service status to ACTIVE
-    
 [9] Invoice generation (immediate for new customers)
     ├─→ Create invoice
     │   - invoiceId: INV-2024-001
@@ -992,15 +1285,13 @@ WHERE extended_data @&gt; '{"salesforce_opportunity_id": "OPP-12345"}';
     │   - Upload to S3
     │   - pdfUrl: s3://urbanos-invoices/.../INV-2024-001.pdf
     └─→ Update invoice (status: SENT)
-    
 [10] Customer notification
     ├─→ Email: "Welcome! Your service is active"
     ├─→ Invoice attached
     └─→ Due date: 2024-02-15 (30 days)
-    
-=== DAY 10: Customer Makes Payment ===</p><p>[11] Customer pays online (Stripe)
+=== DAY 10: Customer Makes Payment ===
+[11] Customer pays online (Stripe)
     └─→ GraphQL mutation: processPayment()
-    
 [12] service-payment processes
     ├─→ Call payment-gateway
     ├─→ Stripe charges card: $358.47
@@ -1015,13 +1306,11 @@ WHERE extended_data @&gt; '{"salesforce_opportunity_id": "OPP-12345"}';
     │   - invoice.status: PAID
     └─→ Update account balance
         - account.balance: 0.00 (was -358.47)
-    
 [13] Payment confirmation
     └─→ Email: "Payment received - Thank you!"
-    
-=== FEBRUARY 1: First Full Month Billing ===</p><p>[14] Batch process runs at 2 AM
+=== FEBRUARY 1: First Full Month Billing ===
+[14] Batch process runs at 2 AM
     └─→ Find accounts with bill_cycle_day = 1
-    
 [15] Billing cycle for ACC-1001
     ├─→ Find active subscriptions
     │   - Internet 100M subscription
@@ -1034,35 +1323,34 @@ WHERE extended_data @&gt; '{"salesforce_opportunity_id": "OPP-12345"}';
     └─→ Calculate taxes
         - IVA 16%: 95.84
         - totalAmount: 694.84
-        
 [16] Invoice generation
     ├─→ Create invoice INV-2024-002
     ├─→ Generate PDF
     └─→ Update invoice (status: SENT)
-    
 [17] Customer notification
     ├─→ Email: "Your February invoice"
     └─→ Due date: 2024-03-02
-</code></pre><h3>3.2 Mobile Customer Usage Flow</h3><p><strong>Timeline: Throughout the month</strong></p><pre><code class="language-">=== USAGE GENERATION ===</p><p>[1] Customer makes phone calls throughout day
+</code></pre>
+<h3>3.2 Mobile Customer Usage Flow</h3>
+
+<strong>Timeline: Throughout the month</strong>
+<pre><code class="language-">=== USAGE GENERATION ===
+[1] Customer makes phone calls throughout day
     ├─→ Call 1: 10 minutes to local number
     ├─→ Call 2: 5 minutes to local number
     └─→ Call 3: 20 minutes to long distance
-    
 [2] Mobile network generates CDRs
     └─→ CDR file created: mcm_voice_20240115.csv
-    
-=== HOURLY: CDR PROCESSING ===</p><p>[3] Network places file on SFTP
+=== HOURLY: CDR PROCESSING ===
+[3] Network places file on SFTP
     └─→ /cdr/outbound/mcm_voice_20240115.csv
-    
 [4] service-mediation Camel route
     ├─→ from("sftp://cdr-server/outbound")
     └─→ to("activemq://MEDIATION")
-    
 [5] MediationProcessor
     ├─→ Download file
     ├─→ Parse CSV (1000 CDRs)
     └─→ Process each CDR:
-    
 [6] For each CDR:
     ├─→ Normalize data
     │   Raw: calling_number=5215551234567, duration=600
@@ -1078,12 +1366,10 @@ WHERE extended_data @&gt; '{"salesforce_opportunity_id": "OPP-12345"}';
     │   - Skip if already processed
     └─→ Insert into usage_record
         - status: UNRATED
-        
 [7] Trigger rating
     └─→ Push batch to USAGE queue
-    
-=== HOURLY: USAGE RATING ===</p><p>[8] service-usage processes USAGE queue
-    
+=== HOURLY: USAGE RATING ===
+[8] service-usage processes USAGE queue
 [9] For each usage record:
     ├─→ Get customer's price offer
     │   - PLAN: Mobile Unlimited Voice
@@ -1101,11 +1387,10 @@ WHERE extended_data @&gt; '{"salesforce_opportunity_id": "OPP-12345"}';
     │   - status: RATED
     └─→ Update accumulator
         - monthly_voice_minutes: 460
-        
 [10] Check quota threshold
     └─→ If &gt; 80% of quota: Send notification
-    
-=== MONTH END: BILLING ===</p><p>[11] Billing cycle execution
+=== MONTH END: BILLING ===
+[11] Billing cycle execution
     └─→ Aggregate usage charges
         SELECT SUM(rated_amount) 
         FROM usage_record 
@@ -1113,65 +1398,59 @@ WHERE extended_data @&gt; '{"salesforce_opportunity_id": "OPP-12345"}';
           AND usage_date BETWEEN '2024-01-01' AND '2024-01-31'
           AND billed = false
         Result: $5.00 (50 minutes overage * $0.10)
-        
 [12] Create invoice
     ├─→ Recurring charge: $50.00 (plan)
     ├─→ Usage charge: $5.00 (overage)
     ├─→ Subtotal: $55.00
     ├─→ Tax (16%): $8.80
     └─→ Total: $63.80
-    
 [13] Mark usage as billed
     └─→ UPDATE usage_record SET billed = true
-</code></pre><h3>3.3 Service Suspension and Auto-Resume Flow (EP-5480)</h3><p><strong>Timeline: Payment overdue to service restoration</strong></p><pre><code class="language-">=== INVOICE BECOMES OVERDUE ===</p><p>[1] Invoice INV-2024-003 due date: March 15
+</code></pre>
+<h3>3.3 Service Suspension and Auto-Resume Flow (EP-5480)</h3>
+
+<strong>Timeline: Payment overdue to service restoration</strong>
+<pre><code class="language-">=== INVOICE BECOMES OVERDUE ===
+[1] Invoice INV-2024-003 due date: March 15
     └─→ Customer doesn't pay by due date
-    
 [2] Batch job runs daily (checks overdue invoices)
     ├─→ Find invoices where due_date &lt; today AND status != PAID
     └─→ Update invoice (status: OVERDUE)
-    
 [3] Collections process
     ├─→ Send overdue notice
     └─→ If overdue &gt; 15 days: Suspend service
-    
 [4] Auto-suspend order generation
     ├─→ Create SUSPEND order
     │   - type: SUSPEND
     │   - reason: CREDIT_LIMIT_EXCEEDED
     │   - services: [{lines: [{ action: SUSPEND }]}]
     └─→ Push to OMS queue
-    
 [5] Suspension orchestrator
     ├─→ Validate suspension request
     ├─→ Call provision_gateway
     └─→ provision_gateway calls network
         - Nokia API: suspendService(ACC-1001)
         - Service deactivated
-        
 [6] Customer notification
     └─→ Email: "Service suspended due to non-payment"
-    
-=== CUSTOMER MAKES PAYMENT ===</p><p>[7] Customer pays via bank transfer
+=== CUSTOMER MAKES PAYMENT ===
+[7] Customer pays via bank transfer
     └─→ Bank generates payment file
-    
 [8] Payment file processing (next day)
     ├─→ Bank uploads: payments_20240330.csv
     ├─→ CRON job downloads file
     └─→ service-payment processes
-    
 [9] For payment record:
     ├─→ Reference: ACC-1001
     ├─→ Amount: $63.80
     ├─→ Find account: ACC-1001
     └─→ Find overdue invoices
-    
 [10] Payment allocation
     ├─→ Allocate $63.80 to INV-2024-003
     ├─→ invoice.amountPaid: 63.80
     ├─→ invoice.balance: 0.00
     ├─→ invoice.status: PAID
     └─→ account.balance: 0.00 (was -63.80)
-    
 [11] Auto-resume logic (EP-5480)
     ├─→ Check if account was suspended
     │   - Query: Find SUSPEND order for ACC-1001
@@ -1182,27 +1461,47 @@ WHERE extended_data @&gt; '{"salesforce_opportunity_id": "OPP-12345"}';
         - type: RESUME
         - reason: PAYMENT_RECEIVED
         - services: [{lines: [{ action: RESUME }]}]
-        
 [12] Resume orchestrator
     ├─→ Validate resume request
     ├─→ Call provision_gateway
     └─→ provision_gateway calls network
         - Nokia API: resumeService(ACC-1001)
         - Service reactivated
-        
 [13] Customer notification
     ├─→ Email: "Service restored - Thank you for your payment"
     └─→ SMS: "Your service is now active"
-</code></pre><hr><h2>4. Development Environment Setup</h2><h3>4.1 Prerequisites</h3><p><strong>Required Software:</strong>
+</code></pre>
+
+<hr>
+
+<h2>4. Development Environment Setup</h2>
+
+<h3>4.1 Prerequisites</h3>
+
+<strong>Required Software:</strong>
 <pre><code class="language-bash"># Java 8
 java -version
-<h1>Output: java version "1.8.0_xxx"</h1><h1>Maven 3.6+</h1>
-mvn -version</p><h1>Docker</h1>
-docker --version</p><h1>Git</h1>
-git --version</p><h1>IDE (IntelliJ IDEA recommended)</h1>
+<h1>Output: java version "1.8.0_xxx"</h1>
+
+<h1>Maven 3.6+</h1>
+
+mvn -version
+<h1>Docker</h1>
+
+docker --version
+<h1>Git</h1>
+
+git --version
+<h1>IDE (IntelliJ IDEA recommended)</h1>
+
 <h1>- Groovy plugin</h1>
+
 <h1>- GraphQL plugin</h1>
-</code></pre><h3>4.2 Infrastructure Setup</h3><p><strong>Start All Infrastructure:</strong>
+
+</code></pre>
+<h3>4.2 Infrastructure Setup</h3>
+
+<strong>Start All Infrastructure:</strong>
 <pre><code class="language-bash"># PostgreSQL
 docker run -d \
     --name postgres10 \
@@ -1210,28 +1509,41 @@ docker run -d \
     -e POSTGRES_USER=omsadmin \
     -e POSTGRES_PASSWORD=password \
     -e POSTGRES_DB=omsdevdb \
-    postgres:10.5</p><h1>ActiveMQ</h1>
+    postgres:10.5
+<h1>ActiveMQ</h1>
+
 docker run -d \
     --name activemq \
     -e 'ACTIVEMQ_CONFIG_MINMEMORY=512' \
     -e 'ACTIVEMQ_CONFIG_MAXMEMORY=2048' \
     -p 8161:8161 \
     -p 61616:61616 \
-    webcenter/activemq:5.14.3</p><h1>Redis</h1>
+    webcenter/activemq:5.14.3
+<h1>Redis</h1>
+
 docker run -d \
     --name redis \
     -p 6379:6379 \
-    redis:6.2</p><h1>HashiCorp Vault (dev mode)</h1>
+    redis:6.2
+<h1>HashiCorp Vault (dev mode)</h1>
+
 docker run -d \
     --name vault \
     --cap-add=IPC_LOCK \
     -e 'VAULT_DEV_ROOT_TOKEN_ID=myroot' \
     -p 8200:8200 \
-    vault</p><h1>Verify all running</h1>
+    vault
+<h1>Verify all running</h1>
+
 docker ps
-</code></pre><h3>4.3 Vault Configuration</h3><p><strong>Create Secrets:</strong>
+</code></pre>
+<h3>4.3 Vault Configuration</h3>
+
+<strong>Create Secrets:</strong>
 <pre><code class="language-bash">export VAULT_ADDR=http://localhost:8200
-export VAULT_TOKEN=myroot</p><h1>Create secrets for crm_gateway</h1>
+export VAULT_TOKEN=myroot
+<h1>Create secrets for crm_gateway</h1>
+
 vault kv put secret/ctg-oms/dev \
     spring.datasource.url="jdbc:postgresql://localhost:5432/omsdevdb?stringtype=unspecified" \
     spring.datasource.username="omsadmin" \
@@ -1243,73 +1555,126 @@ vault kv put secret/ctg-oms/dev \
     application.oauth.clientId="congero" \
     application.oauth.secret="ctg-secret" \
     application.tenant="default-tenant"
-</code></pre><h3>4.4 Database Setup</h3><p><strong>Run Migrations:</strong>
-<pre><code class="language-bash">cd engine</p><h1>Set environment variables</h1>
+</code></pre>
+<h3>4.4 Database Setup</h3>
+
+<strong>Run Migrations:</strong>
+<pre><code class="language-bash">cd engine
+<h1>Set environment variables</h1>
+
 export DB_URL=jdbc:postgresql://localhost:5432/omsdevdb
 export DB_USER=omsadmin
-export DB_PASSWORD=password</p><h1>Run Flyway migrations</h1>
-mvn flyway:migrate -Dspring.profiles.active=dev</p><h1>Verify</h1>
-mvn flyway:info</p><h1>Output:</h1>
+export DB_PASSWORD=password
+<h1>Run Flyway migrations</h1>
+
+mvn flyway:migrate -Dspring.profiles.active=dev
+<h1>Verify</h1>
+
+mvn flyway:info
+<h1>Output:</h1>
+
 <h1>+-----------+---------+---------------------+----------+</h1>
+
 <h1>| Version   | State   | Description         | Installed On |</h1>
+
 <h1>+-----------+---------+---------------------+----------+</h1>
+
 <h1>| 1         | Success | Create Schema       | 2024-01-15 |</h1>
+
 <h1>| 2         | Success | Create Enum Types   | 2024-01-15 |</h1>
+
 <h1>| 3         | Success | Create Config Tables| 2024-01-15 |</h1>
+
 <h1>...</h1>
-</code></pre><h3>4.5 Build and Run</h3><p><strong>Build Sequence (dependencies first):</strong>
+
+</code></pre>
+<h3>4.5 Build and Run</h3>
+
+<strong>Build Sequence (dependencies first):</strong>
 <pre><code class="language-bash"># 1. Build common
 cd common
-mvn clean install -DskipTests</p><h1>2. Build engine</h1>
+mvn clean install -DskipTests
+<h1>2. Build engine</h1>
+
 cd ../engine
-mvn clean install -DskipTests</p><h1>3. Build oms-component</h1>
+mvn clean install -DskipTests
+<h1>3. Build oms-component</h1>
+
 cd ../oms-component
-mvn clean install -DskipTests</p><h1>4. Build gateway-common</h1>
+mvn clean install -DskipTests
+<h1>4. Build gateway-common</h1>
+
 cd ../gateway-common
-mvn clean install -DskipTests</p><h1>5. Build jobs-common</h1>
+mvn clean install -DskipTests
+<h1>5. Build jobs-common</h1>
+
 cd ../jobs-common
 mvn clean install -DskipTests
-</code></pre><p><strong>Run Services:</strong>
+</code></pre>
+<strong>Run Services:</strong>
 <pre><code class="language-bash"># Run crm_gateway
 cd crm_gateway
 export VAULT_URI=http://localhost:8200
 export VAULT_TOKEN=myroot
-mvn spring-boot:run -Dspring.profiles.active=dev</p><h1>Application starts on http://localhost:8080</h1>
+mvn spring-boot:run -Dspring.profiles.active=dev
+<h1>Application starts on http://localhost:8080</h1>
+
 <h1>GraphQL playground: http://localhost:8080/graphiql</h1>
-</code></pre><h3>4.6 Verify Setup</h3><p><strong>Test Database Connection:</strong>
-<pre><code class="language-bash">docker exec -it postgres10 psql -U omsadmin -d omsdevdb</p><h1>Check tables</h1>
+
+</code></pre>
+<h3>4.6 Verify Setup</h3>
+
+<strong>Test Database Connection:</strong>
+<pre><code class="language-bash">docker exec -it postgres10 psql -U omsadmin -d omsdevdb
+<h1>Check tables</h1>
+
 \dt core_engine.*
 \dt core_oms.*
-\dt core_billing.*</p><h1>Query test data</h1>
+\dt core_billing.*
+<h1>Query test data</h1>
+
 SELECT * FROM core_config.tenant;
-</code></pre><p><strong>Test ActiveMQ:</strong>
+</code></pre>
+<strong>Test ActiveMQ:</strong>
 <pre><code class="language-">Open browser: http://localhost:8161
 Login: admin/admin
 Check Queues: Should see "OMS" queue (may be empty)
-</code></pre><p><strong>Test GraphQL:</strong>
+</code></pre>
+<strong>Test GraphQL:</strong>
 <pre><code class="language-bash">curl -X POST http://localhost:8080/graphql \
   -H "Content-Type: application/json" \
-  -d '{"query": "{ __schema { queryType { name } } }"}'</p><h1>Should return: {"data":{"__schema":{"queryType":{"name":"Query"}}}}</h1>
-</code></pre><hr><p><strong>Summary of Part 3:</strong></p><p>You've learned:
+  -d '{"query": "{ __schema { queryType { name } } }"}'
+<h1>Should return: {"data":{"__schema":{"queryType":{"name":"Query"}}}}</h1>
+
+</code></pre>
+
+<hr>
+
+<strong>Summary of Part 3:</strong>
+You've learned:
 <ol>
 <li>✅ Core services and their responsibilities</li>
 <li>✅ Database architecture and schema design</li>
 <li>✅ Complete end-to-end business flows</li>
 <li>✅ How to set up local development environment</li>
 <li>✅ Build sequence and dependencies</li>
-</ol><p><strong>All 3 Parts Complete!</strong></p><p>You now have a comprehensive understanding of:
+</ol>
+<strong>All 3 Parts Complete!</strong>
+You now have a comprehensive understanding of:
 <ul>
 <li><strong>Part 1</strong>: Business purpose, architecture, multi-tenancy</li>
 <li><strong>Part 2</strong>: Foundation libraries, gateways, technical deep dive</li>
 <li><strong>Part 3</strong>: Core services, database, business flows, development</li>
-</ul><p><strong>Next Steps:</strong>
+</ul>
+<strong>Next Steps:</strong>
 <ol>
 <li>Set up your local environment following Part 3</li>
 <li>Explore the codebase using the structure from Parts 1-2</li>
 <li>Try running a simple GraphQL query</li>
 <li>Build a small feature or fix a bug</li>
 <li>Write tests following the patterns described</li>
-</ol><p><strong>Welcome to Embrix O2X! 🚀</strong></p>
+</ol>
+<strong>Welcome to Embrix O2X! 🚀</strong></p>
         <footer>
             <p><strong>Embrix O2X Platform Documentation</strong></p>
             <p>Version 3.1.9-SNAPSHOT • Last Updated: February 2026</p>

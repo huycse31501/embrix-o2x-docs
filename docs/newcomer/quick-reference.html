@@ -5,6 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Quick Reference Guide - Embrix O2X</title>
     
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
 <style>
     * {
         margin: 0;
@@ -13,10 +17,11 @@
     }
 
     body {
-        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-        line-height: 1.6;
-        color: #333;
-        background: #f5f5f5;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+        line-height: 1.7;
+        color: #2d3748;
+        background: linear-gradient(135deg, #f5f7fa 0%, #e9ecef 100%);
+        background-attachment: fixed;
         padding: 20px;
     }
 
@@ -24,9 +29,21 @@
         max-width: 1200px;
         margin: 0 auto;
         background: white;
-        padding: 40px;
-        border-radius: 10px;
-        box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+        padding: 50px;
+        border-radius: 16px;
+        box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .container::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 5px;
+        background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
     }
 
     .nav-header {
@@ -67,30 +84,65 @@
 
     h1 {
         color: #667eea;
-        margin: 30px 0 20px 0;
-        padding-bottom: 10px;
+        margin: 40px 0 25px 0;
+        padding: 15px 0 15px 20px;
+        border-left: 6px solid #667eea;
         border-bottom: 3px solid #667eea;
+        background: linear-gradient(90deg, rgba(102, 126, 234, 0.05) 0%, rgba(255,255,255,0) 100%);
         font-size: 2.5em;
+        border-radius: 0 8px 0 0;
     }
 
     h2 {
         color: #764ba2;
-        margin: 25px 0 15px 0;
-        padding-bottom: 8px;
+        margin: 35px 0 20px 0;
+        padding: 12px 0 12px 15px;
+        border-left: 5px solid #764ba2;
         border-bottom: 2px solid #f0f0f0;
+        background: linear-gradient(90deg, rgba(118, 75, 162, 0.03) 0%, rgba(255,255,255,0) 100%);
         font-size: 2em;
+        border-radius: 0 6px 0 0;
     }
 
     h3 {
         color: #667eea;
-        margin: 20px 0 10px 0;
+        margin: 30px 0 18px 0;
+        padding: 10px 0 10px 15px;
+        border-left: 4px solid #667eea;
+        background: linear-gradient(90deg, rgba(102, 126, 234, 0.04) 0%, transparent 100%);
         font-size: 1.5em;
+        border-radius: 0 6px 6px 0;
     }
 
     h4 {
         color: #764ba2;
-        margin: 15px 0 10px 0;
+        margin: 25px 0 15px 0;
+        padding: 8px 0 8px 12px;
+        border-left: 3px solid #764ba2;
+        background: linear-gradient(90deg, rgba(118, 75, 162, 0.03) 0%, transparent 100%);
         font-size: 1.2em;
+        font-weight: 600;
+        border-radius: 0 4px 4px 0;
+    }
+
+    h5 {
+        color: #667eea;
+        margin: 20px 0 12px 0;
+        padding: 6px 0 6px 10px;
+        border-left: 2px solid #667eea;
+        font-size: 1.05em;
+        font-weight: 600;
+        background: linear-gradient(90deg, rgba(102, 126, 234, 0.02) 0%, transparent 100%);
+        border-radius: 0 3px 3px 0;
+    }
+
+    h6 {
+        color: #764ba2;
+        margin: 15px 0 10px 0;
+        font-size: 1em;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
     }
 
     p {
@@ -99,46 +151,163 @@
     }
 
     ul, ol {
-        margin: 15px 0;
-        padding-left: 30px;
+        margin: 20px 0;
+        padding-left: 35px;
     }
 
     li {
-        margin: 8px 0;
-        line-height: 1.6;
+        margin: 12px 0;
+        line-height: 1.8;
+        position: relative;
+        padding-left: 8px;
+    }
+
+    ul li::marker {
+        color: #667eea;
+        font-weight: bold;
+        font-size: 1.1em;
+    }
+
+    ol li::marker {
+        color: #764ba2;
+        font-weight: bold;
+        font-size: 1em;
+    }
+
+    /* Better list item styling */
+    li {
+        background: linear-gradient(90deg, rgba(102, 126, 234, 0.02) 0%, transparent 100%);
+        border-left: 2px solid transparent;
+        padding: 8px 8px 8px 12px;
+        border-radius: 0 4px 4px 0;
+        transition: all 0.2s ease;
+    }
+
+    li:hover {
+        background: linear-gradient(90deg, rgba(102, 126, 234, 0.05) 0%, transparent 100%);
+        border-left-color: #667eea;
+        padding-left: 16px;
+    }
+
+    /* Nested lists */
+    li ul, li ol {
+        margin: 8px 0 8px 10px;
+    }
+
+    /* Nested list items - smaller styling */
+    li li {
+        font-size: 0.95em;
+        margin: 6px 0;
+        background: linear-gradient(90deg, rgba(118, 75, 162, 0.02) 0%, transparent 100%);
+    }
+
+    li li:hover {
+        background: linear-gradient(90deg, rgba(118, 75, 162, 0.05) 0%, transparent 100%);
+        border-left-color: #764ba2;
     }
 
     code {
-        background: #f4f4f4;
-        padding: 2px 6px;
-        border-radius: 3px;
-        font-family: 'Courier New', Courier, monospace;
-        font-size: 0.9em;
-        color: #e83e8c;
+        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        padding: 3px 8px;
+        border-radius: 5px;
+        font-family: 'Fira Code', 'Courier New', Consolas, monospace;
+        font-size: 0.88em;
+        color: #d63384;
+        border: 1px solid #dee2e6;
+        font-weight: 500;
+    }
+
+    /* Inline code with special highlighting */
+    p code, li code, td code {
+        position: relative;
+    }
+
+    p code::before, li code::before, td code::before {
+        content: '';
+        position: absolute;
+        inset: -2px;
+        border-radius: 5px;
+        background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+        z-index: -1;
+        opacity: 0;
+        transition: opacity 0.2s;
+    }
+
+    p code:hover::before, li code:hover::before, td code:hover::before {
+        opacity: 1;
     }
 
     pre {
-        background: #2d2d2d;
-        color: #f8f8f2;
-        padding: 20px;
-        border-radius: 8px;
+        background: #1e293b;
+        color: #e2e8f0;
+        padding: 24px;
+        border-radius: 10px;
         overflow-x: auto;
-        margin: 20px 0;
-        border-left: 4px solid #667eea;
+        margin: 25px 0;
+        border: 2px solid #334155;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1), 0 0 0 1px rgba(102, 126, 234, 0.1);
+        font-family: 'Cascadia Code', 'Fira Code', 'SF Mono', 'Consolas', 'Liberation Mono', monospace;
+        font-size: 0.875em;
+        line-height: 1.7;
+        position: relative;
     }
 
     pre code {
         background: none;
-        color: #f8f8f2;
+        color: inherit;
         padding: 0;
+        border: none;
+        font-family: inherit;
+        font-weight: normal;
+    }
+
+    /* Better rendering for box-drawing characters */
+    pre {
+        font-feature-settings: "liga" 0;
+        text-rendering: optimizeLegibility;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+    }
+
+    /* Hover effect */
+    pre:hover {
+        border-color: #667eea;
+        box-shadow: 0 6px 12px rgba(0,0,0,0.15), 0 0 0 2px rgba(102, 126, 234, 0.3);
+        transition: all 0.3s ease;
+    }
+
+    /* Code block header indicator */
+    pre::after {
+        content: 'CODE';
+        position: absolute;
+        top: 8px;
+        right: 12px;
+        font-size: 0.65em;
+        color: #64748b;
+        font-weight: 600;
+        letter-spacing: 0.05em;
+        opacity: 0.5;
     }
 
     blockquote {
-        border-left: 4px solid #667eea;
-        padding-left: 20px;
-        margin: 20px 0;
-        color: #666;
+        border-left: 5px solid #667eea;
+        padding: 15px 20px;
+        margin: 25px 0;
+        color: #555;
         font-style: italic;
+        background: linear-gradient(90deg, rgba(102, 126, 234, 0.05) 0%, rgba(255,255,255,0) 100%);
+        border-radius: 0 8px 8px 0;
+        position: relative;
+    }
+
+    blockquote::before {
+        content: '"';
+        position: absolute;
+        left: -10px;
+        top: -10px;
+        font-size: 4em;
+        color: rgba(102, 126, 234, 0.1);
+        font-family: Georgia, serif;
     }
 
     table {
@@ -189,27 +358,42 @@
     }
 
     .info-box {
-        background: #e3f2fd;
-        border-left: 4px solid #2196f3;
-        padding: 15px;
-        margin: 20px 0;
-        border-radius: 5px;
+        background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+        border-left: 5px solid #2196f3;
+        padding: 20px;
+        margin: 25px 0;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(33, 150, 243, 0.2);
     }
 
     .warning-box {
-        background: #fff3e0;
-        border-left: 4px solid #ff9800;
-        padding: 15px;
-        margin: 20px 0;
-        border-radius: 5px;
+        background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%);
+        border-left: 5px solid #ff9800;
+        padding: 20px;
+        margin: 25px 0;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(255, 152, 0, 0.2);
     }
 
     .success-box {
-        background: #e8f5e9;
-        border-left: 4px solid #4caf50;
-        padding: 15px;
-        margin: 20px 0;
-        border-radius: 5px;
+        background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+        border-left: 5px solid #4caf50;
+        padding: 20px;
+        margin: 25px 0;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(76, 175, 80, 0.2);
+    }
+
+    /* Better colors for syntax in diagrams */
+    pre {
+        /* Box drawing characters in nice blue */
+        color: #93c5fd;
+    }
+
+    /* JSON/code syntax in pre blocks */
+    pre {
+        white-space: pre;
+        word-wrap: normal;
     }
 
     .toc {
@@ -316,8 +500,18 @@
 <body>
     <div class="container">
         <div class="nav-header"><div><h1>Embrix O2X Documentation</h1><small>Navigate between guides</small></div><div class="nav-links"><a href="index.html">Home</a><a href="guide-index.html">Guide Index</a><a href="part1-business-architecture.html">Part 1</a><a href="part2-technical-deep-dive.html">Part 2</a><a href="part3-services-development.html">Part 3</a><a href="business-scenarios.html">Scenarios</a><a href="multi-tenant-complete-guide.html">Multi-Tenant</a><a href="quick-reference.html">Quick Ref</a></div></div>
-        <h1>Embrix O2X - Quick Reference Guide</h1><p><strong>For</strong>: Developers who've read the full guides and need quick lookups  
-<strong>Version</strong>: 3.1.9-SNAPSHOT</p><hr><h2>🏗️ Architecture Cheat Sheet</h2><h3>Layers (Bottom to Top):</h3>
+        
+<h1>Embrix O2X - Quick Reference Guide</h1>
+
+<strong>For</strong>: Developers who've read the full guides and need quick lookups  
+<strong>Version</strong>: 3.1.9-SNAPSHOT
+
+<hr>
+
+<h2>🏗️ Architecture Cheat Sheet</h2>
+
+<h3>Layers (Bottom to Top):</h3>
+
 <pre><code class="language-">Infrastructure: PostgreSQL, Redis, ActiveMQ, Vault, S3
      ↓
 Foundation: engine (hubs), common (DTOs), oms-component, gateway-common
@@ -329,14 +523,22 @@ Messaging: ActiveMQ queues (OMS, PROVISIONING_RESPONSE, MEDIATION, USAGE)
 Gateways: crm, provision, tax, payment, finance, diameter
      ↓
 External: Salesforce, Nokia, Banks, PAC Providers, ERP
-</code></pre><h3>Key Principles:</h3>
+</code></pre>
+<h3>Key Principles:</h3>
+
 <ul>
 <li><strong>Shared Engine</strong>: All business logic in <code>engine</code></li>
 <li><strong>Event-Driven</strong>: ActiveMQ for async processing</li>
 <li><strong>Gateway Pattern</strong>: Isolate external systems</li>
 <li><strong>GraphQL-First</strong>: Flexible API layer</li>
 <li><strong>Multi-Tenant</strong>: Database-per-tenant</li>
-</ul><hr><h2>📦 Module Quick Reference</h2><table>
+</ul>
+
+<hr>
+
+<h2>📦 Module Quick Reference</h2>
+
+<table>
 <thead><tr>
 <th>Module</th>
 <th>Purpose</th>
@@ -445,7 +647,14 @@ External: Salesforce, Nokia, Banks, PAC Providers, ERP
 <td>engine, common, jobs-common</td>
 <td>varies</td>
 </tr>
-</tbody></table><hr><h2>🗄️ Database Quick Reference</h2><h3>Schemas:</h3>
+</tbody></table>
+
+<hr>
+
+<h2>🗄️ Database Quick Reference</h2>
+
+<h3>Schemas:</h3>
+
 <pre><code class="language-sql">core_engine      -- Shared entities (account, subscription, user)
 core_oms         -- Orders (order, service_line, order_activity)
 core_billing     -- Financial (charge, invoice, payment)
@@ -454,27 +663,43 @@ core_usage       -- Usage (usage_record - partitioned)
 core_revenue     -- Rev Rec (journal_entry, deferred_revenue)
 core_config      -- Config (tenant, tenant_merchants, oauth*)
 core_mediation   -- CDR processing
-</code></pre><h3>Key Tables:</h3>
+</code></pre>
+<h3>Key Tables:</h3>
+
 <pre><code class="language-sql">-- Account
 core_engine.account
-  - id, parent_account_id, account_type, status, balance, bill_cycle_day</p><p>-- Order
+  - id, parent_account_id, account_type, status, balance, bill_cycle_day
+-- Order
 core_oms.order
-  - id, account_id, type, status, extended_data (JSONB)</p><p>-- Invoice
+  - id, account_id, type, status, extended_data (JSONB)
+-- Invoice
 core_billing.invoice
   - id, account_id, invoice_date, due_date, subtotal, tax_total, total_amount, 
-    amount_paid, balance, status, pdf_url, uuid (CFDI)</p><p>-- Usage (Partitioned by usage_date)
+    amount_paid, balance, status, pdf_url, uuid (CFDI)
+-- Usage (Partitioned by usage_date)
 core_usage.usage_record
   - id, account_id, subscription_id, source_id, usage_date, start_time, 
     duration, volume, destination, service_type, rated_amount, status, billed
-</code></pre><h3>Common Queries:</h3>
+</code></pre>
+<h3>Common Queries:</h3>
+
 <pre><code class="language-sql">-- Find active accounts
-SELECT * FROM core_engine.account WHERE status = 'ACTIVE';</p><p>-- Find overdue invoices
+SELECT * FROM core_engine.account WHERE status = 'ACTIVE';
+-- Find overdue invoices
 SELECT * FROM core_billing.invoice 
-WHERE status = 'OVERDUE' AND account_id = ?;</p><p>-- Find unbilled usage
+WHERE status = 'OVERDUE' AND account_id = ?;
+-- Find unbilled usage
 SELECT * FROM core_usage.usage_record 
-WHERE account_id = ? AND billed = false AND status = 'RATED';</p><p>-- Find account balance
+WHERE account_id = ? AND billed = false AND status = 'RATED';
+-- Find account balance
 SELECT balance FROM core_engine.account WHERE id = ?;
-</code></pre><hr><h2>📨 ActiveMQ Queues</h2><table>
+</code></pre>
+
+<hr>
+
+<h2>📨 ActiveMQ Queues</h2>
+
+<table>
 <thead><tr>
 <th>Queue</th>
 <th>Purpose</th>
@@ -541,48 +766,86 @@ SELECT balance FROM core_engine.account WHERE id = ?;
 <td>Any</td>
 <td>OmsComponent-based</td>
 </tr>
-</tbody></table><p><strong>Retry Policy</strong>: 7 retries, 250ms initial, 1.5x multiplier</p><hr><h2>🌐 GraphQL Endpoints</h2><h3>crm_gateway (Port 8080)</h3>
+</tbody></table>
+<strong>Retry Policy</strong>: 7 retries, 250ms initial, 1.5x multiplier
+
+<hr>
+
+<h2>🌐 GraphQL Endpoints</h2>
+
+<h3>crm_gateway (Port 8080)</h3>
+
 <pre><code class="language-graphql"># Create Order
 mutation {
   createOrder(input: {...}) { id status }
-}</p><h1>Query Orders</h1>
+}
+<h1>Query Orders</h1>
+
 query {
   searchOrders(filter: {...}) { id status services {...} }
-}</p><h1>Get Account</h1>
+}
+<h1>Get Account</h1>
+
 query {
   getAccount(id: "ACC-001") { id balance subscriptions {...} }
 }
-</code></pre><h3>service-billing</h3>
+</code></pre>
+<h3>service-billing</h3>
+
 <pre><code class="language-graphql">mutation {
   runBillingCycle(input: {...}) { totalAccountsBilled totalAmount }
   calculateProration(input: {...}) { proratedAmount daysActive }
 }
-</code></pre><h3>service-invoice</h3>
+</code></pre>
+<h3>service-invoice</h3>
+
 <pre><code class="language-graphql">mutation {
   generateInvoice(input: {...}) { invoiceId pdfUrl totalAmount }
 }
-</code></pre><h3>service-usage</h3>
+</code></pre>
+<h3>service-usage</h3>
+
 <pre><code class="language-graphql">query {
   searchUsageRecords(filter: {...}) { records {...} totalAmount }
   getUsageSummary(input: {...}) { voiceMinutes dataGB totalCharges }
 }
-</code></pre><h3>service-payment</h3>
+</code></pre>
+<h3>service-payment</h3>
+
 <pre><code class="language-graphql">mutation {
   processPayment(input: {...}) { paymentId status transactionId }
 }
-</code></pre><p><strong>Access</strong>: http://localhost:8080/graphiql</p><hr><h2>🔐 Security & Configuration</h2><h3>OAuth2 Token (crm_gateway):</h3>
+</code></pre>
+<strong>Access</strong>: http://localhost:8080/graphiql
+
+<hr>
+
+<h2>🔐 Security & Configuration</h2>
+
+<h3>OAuth2 Token (crm_gateway):</h3>
+
 <pre><code class="language-bash">curl -X POST http://localhost:8080/oauth/token \
   -H "Authorization: Basic $(echo -n 'congero:ctg-secret' | base64)" \
   -d "grant_type=client_credentials&scope=all"
-</code></pre><h3>Vault Secrets:</h3>
+</code></pre>
+<h3>Vault Secrets:</h3>
+
 <pre><code class="language-bash">export VAULT_ADDR=http://localhost:8200
-export VAULT_TOKEN=myroot</p><p>vault kv put secret/ctg-oms/dev \
+export VAULT_TOKEN=myroot
+vault kv put secret/ctg-oms/dev \
   spring.datasource.url="..." \
   spring.datasource.username="..." \
   spring.datasource.password="..." \
   spring.activemq.broker-url="..." \
   application.tenant="..."
-</code></pre><hr><h2>🛠️ Development Commands</h2><h3>Build Order:</h3>
+</code></pre>
+
+<hr>
+
+<h2>🛠️ Development Commands</h2>
+
+<h3>Build Order:</h3>
+
 <pre><code class="language-bash">1. common:         mvn clean install -DskipTests
 <ol>
 <li>engine:         mvn clean install -DskipTests</li>
@@ -591,87 +854,141 @@ export VAULT_TOKEN=myroot</p><p>vault kv put secret/ctg-oms/dev \
 <li>jobs-common:    mvn clean install -DskipTests</li>
 <li>services:       mvn clean install -DskipTests</li>
 </ol>
-</code></pre><h3>Run Service:</h3>
+</code></pre>
+<h3>Run Service:</h3>
+
 <pre><code class="language-bash">export VAULT_URI=http://localhost:8200
 export VAULT_TOKEN=myroot
 mvn spring-boot:run -Dspring.profiles.active=dev
-</code></pre><h3>Database Migration:</h3>
+</code></pre>
+<h3>Database Migration:</h3>
+
 <pre><code class="language-bash">cd engine
 export DB_URL=jdbc:postgresql://localhost:5432/omsdevdb
 export DB_USER=omsadmin
 export DB_PASSWORD=password
 mvn flyway:migrate -Dspring.profiles.active=dev
-</code></pre><h3>Infrastructure:</h3>
+</code></pre>
+<h3>Infrastructure:</h3>
+
 <pre><code class="language-bash"># Start all
-docker-compose up -d  # If docker-compose.yml exists</p><h1>Or individually</h1>
+docker-compose up -d  # If docker-compose.yml exists
+<h1>Or individually</h1>
+
 docker run -d --name postgres10 -p 5432:5432 -e POSTGRES_USER=omsadmin -e POSTGRES_PASSWORD=password -e POSTGRES_DB=omsdevdb postgres:10.5
 docker run -d --name activemq -p 8161:8161 -p 61616:61616 webcenter/activemq:5.14.3
 docker run -d --name redis -p 6379:6379 redis:6.2
-docker run -d --name vault -p 8200:8200 -e 'VAULT_DEV_ROOT_TOKEN_ID=myroot' vault</p><h1>Check status</h1>
+docker run -d --name vault -p 8200:8200 -e 'VAULT_DEV_ROOT_TOKEN_ID=myroot' vault
+<h1>Check status</h1>
+
 docker ps
-</code></pre><hr><h2>🧪 Testing</h2><h3>Unit Test (Spock):</h3>
+</code></pre>
+
+<hr>
+
+<h2>🧪 Testing</h2>
+
+<h3>Unit Test (Spock):</h3>
+
 <pre><code class="language-groovy">def "should calculate correct proration"() {
     given:
     def subscription = new Subscription(monthlyPrice: 30.0, startDate: LocalDate.of(2024, 1, 16))
-    
     when:
     def charge = billingEngine.calculateProration(subscription, ProrationModel.DAYS_IN_MONTH)
-    
     then:
     charge.amount == 15.48
 }
-</code></pre><h3>Run Tests:</h3>
+</code></pre>
+<h3>Run Tests:</h3>
+
 <pre><code class="language-bash"># All tests
-mvn test</p><h1>Specific hub</h1>
+mvn test
+<h1>Specific hub</h1>
+
 mvn test -PbillingHubMarker
 mvn test -ParHubMarker
-</code></pre><hr><h2>🔍 Debugging</h2><h3>Enable Debug Logging:</h3>
+</code></pre>
+
+<hr>
+
+<h2>🔍 Debugging</h2>
+
+<h3>Enable Debug Logging:</h3>
+
 <pre><code class="language-yaml">logging:
   level:
     com.embrix: DEBUG
     org.apache.camel: DEBUG
     org.jooq: DEBUG
-</code></pre><h3>Check ActiveMQ:</h3>
+</code></pre>
+<h3>Check ActiveMQ:</h3>
+
 <ul>
 <li>URL: http://localhost:8161</li>
 <li>Login: admin/admin</li>
 <li>Browse queues for stuck messages</li>
-</ul><h3>Database Query:</h3>
-<pre><code class="language-bash">docker exec -it postgres10 psql -U omsadmin -d omsdevdb</p><h1>Recent orders</h1>
-SELECT id, status, created_date FROM core_oms.order ORDER BY created_date DESC LIMIT 10;</p><h1>Unbilled charges</h1>
+</ul>
+<h3>Database Query:</h3>
+
+<pre><code class="language-bash">docker exec -it postgres10 psql -U omsadmin -d omsdevdb
+<h1>Recent orders</h1>
+
+SELECT id, status, created_date FROM core_oms.order ORDER BY created_date DESC LIMIT 10;
+<h1>Unbilled charges</h1>
+
 SELECT * FROM core_billing.charge WHERE status = 'UNBILLED';
-</code></pre><h3>Redis:</h3>
+</code></pre>
+<h3>Redis:</h3>
+
 <pre><code class="language-bash">docker exec -it redis redis-cli
 KEYS *
 GET pricing:product:123
-</code></pre><hr><h2>📋 Common Tasks</h2><h3>Add New Database Table:</h3>
+</code></pre>
+
+<hr>
+
+<h2>📋 Common Tasks</h2>
+
+<h3>Add New Database Table:</h3>
+
 <pre><code class="language-sql">-- 1. Create migration: engine/src/main/resources/db/migration/V1.XX__description.sql
-CREATE TABLE core_billing.payment_method (...);</p><p>-- 2. Run migration
-mvn flyway:migrate -Dspring.profiles.active=dev</p><p>-- 3. Regenerate JOOQ
+CREATE TABLE core_billing.payment_method (...);
+-- 2. Run migration
+mvn flyway:migrate -Dspring.profiles.active=dev
+-- 3. Regenerate JOOQ
 mvn clean compile
-</code></pre><h3>Add GraphQL Endpoint:</h3>
+</code></pre>
+<h3>Add GraphQL Endpoint:</h3>
+
 <pre><code class="language-graphql">-- 1. Define in schema.graphqls
 type Query {
   getPaymentMethods(accountId: ID!): [PaymentMethod!]!
-}</p><p>-- 2. Create resolver
+}
+-- 2. Create resolver
 @Component
 class PaymentMethodResolver implements GraphQLQueryResolver {
     List&lt;PaymentMethod&gt; getPaymentMethods(String accountId) {...}
 }
-</code></pre><h3>Create Custom Orchestrator:</h3>
+</code></pre>
+<h3>Create Custom Orchestrator:</h3>
+
 <pre><code class="language-groovy">@Component
 class MyOrchestrator extends OmsComponent {
     @Override
     void validate(Exchange exchange) {...}
-    
     @Override
     void process(Exchange exchange) {...}
-    
     @Override
     void processError(Exchange exchange) {...}
 }
 // Queue auto-created: MyOrchestrator
-</code></pre><hr><h2>🚨 Troubleshooting</h2><table>
+</code></pre>
+
+<hr>
+
+<h2>🚨 Troubleshooting</h2>
+
+<table>
 <thead><tr>
 <th>Problem</th>
 <th>Check</th>
@@ -717,23 +1034,42 @@ class MyOrchestrator extends OmsComponent {
 <td>Test DB</td>
 <td>Check embedded PostgreSQL config</td>
 </tr>
-</tbody></table><hr><h2>📊 Business Flow Cheat Sheet</h2><h3>Order Processing:</h3>
+</tbody></table>
+
+<hr>
+
+<h2>📊 Business Flow Cheat Sheet</h2>
+
+<h3>Order Processing:</h3>
+
 <pre><code class="language-">Salesforce CRM → crm_gateway.createOrder() → OMS queue → 
 Orchestrator → provision_gateway → Nokia → Callback → 
 service-billing → service-invoice → Customer notification
-</code></pre><h3>Usage Processing:</h3>
+</code></pre>
+<h3>Usage Processing:</h3>
+
 <pre><code class="language-">Network CDR → SFTP → service-mediation (MEDIATION queue) → 
 Normalize → service-usage (USAGE queue) → Rate → 
 Store (billed=false) → Monthly billing → Invoice
-</code></pre><h3>Payment Processing:</h3>
+</code></pre>
+<h3>Payment Processing:</h3>
+
 <pre><code class="language-">Bank file → S3 → CRON → service-payment → 
 Parse → Allocate to invoices → Update account balance → 
 Auto-resume if needed → Customer notification
-</code></pre><h3>Tax Compliance (CFDI):</h3>
+</code></pre>
+<h3>Tax Compliance (CFDI):</h3>
+
 <pre><code class="language-">Invoice → Generate CFDI XML → SFTP upload to PAC → 
 PAC stamps → SFTP download → Extract UUID → 
 Upload to S3 → Update invoice → Send to customer
-</code></pre><hr><h2>🔗 Useful URLs</h2><table>
+</code></pre>
+
+<hr>
+
+<h2>🔗 Useful URLs</h2>
+
+<table>
 <thead><tr>
 <th>Service</th>
 <th>URL</th>
@@ -769,25 +1105,37 @@ Upload to S3 → Update invoice → Send to customer
 <td>localhost:6379</td>
 <td>(none)</td>
 </tr>
-</tbody></table><hr><h2>📞 Getting Help</h2><p><strong>Documentation</strong>:
+</tbody></table>
+
+<hr>
+
+<h2>📞 Getting Help</h2>
+
+<strong>Documentation</strong>:
 <ul>
 <li>Full Guide: <code>NEWCOMER_GUIDE_INDEX.md</code></li>
 <li>Part 1: Business & Architecture</li>
 <li>Part 2: Technical Deep Dive</li>
 <li>Part 3: Services & Development</li>
-</ul><p><strong>Codebase</strong>:
+</ul>
+<strong>Codebase</strong>:
 <ul>
 <li>Business Logic: <code>engine/src/main/groovy/.../engine/{hub}/</code></li>
 <li>Services: <code>core/service-*/src/main/groovy/</code></li>
 <li>Gateways: <code>{gateway}/src/main/groovy/</code></li>
 <li>Migrations: <code>engine/src/main/resources/db/migration/</code></li>
 <li>GraphQL: <code>*/src/main/resources/graphql/</code></li>
-</ul><p><strong>Common Questions</strong>:
+</ul>
+<strong>Common Questions</strong>:
 <ul>
 <li>Where is X business logic? → Check appropriate hub in engine</li>
 <li>How do I add Y? → See Part 3, Section 5 (Common Development Tasks)</li>
 <li>System isn't working? → See Troubleshooting section above</li>
-</ul><hr><p><strong>Print This Page for Quick Reference! 📄</strong></p>
+</ul>
+
+<hr>
+
+<strong>Print This Page for Quick Reference! 📄</strong></p>
         <footer>
             <p><strong>Embrix O2X Platform Documentation</strong></p>
             <p>Version 3.1.9-SNAPSHOT • Last Updated: February 2026</p>

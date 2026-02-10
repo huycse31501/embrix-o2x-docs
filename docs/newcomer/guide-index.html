@@ -5,6 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Complete Newcomer's Guide Index - Embrix O2X</title>
     
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
 <style>
     * {
         margin: 0;
@@ -13,10 +17,11 @@
     }
 
     body {
-        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-        line-height: 1.6;
-        color: #333;
-        background: #f5f5f5;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+        line-height: 1.7;
+        color: #2d3748;
+        background: linear-gradient(135deg, #f5f7fa 0%, #e9ecef 100%);
+        background-attachment: fixed;
         padding: 20px;
     }
 
@@ -24,9 +29,21 @@
         max-width: 1200px;
         margin: 0 auto;
         background: white;
-        padding: 40px;
-        border-radius: 10px;
-        box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+        padding: 50px;
+        border-radius: 16px;
+        box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .container::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 5px;
+        background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
     }
 
     .nav-header {
@@ -67,30 +84,65 @@
 
     h1 {
         color: #667eea;
-        margin: 30px 0 20px 0;
-        padding-bottom: 10px;
+        margin: 40px 0 25px 0;
+        padding: 15px 0 15px 20px;
+        border-left: 6px solid #667eea;
         border-bottom: 3px solid #667eea;
+        background: linear-gradient(90deg, rgba(102, 126, 234, 0.05) 0%, rgba(255,255,255,0) 100%);
         font-size: 2.5em;
+        border-radius: 0 8px 0 0;
     }
 
     h2 {
         color: #764ba2;
-        margin: 25px 0 15px 0;
-        padding-bottom: 8px;
+        margin: 35px 0 20px 0;
+        padding: 12px 0 12px 15px;
+        border-left: 5px solid #764ba2;
         border-bottom: 2px solid #f0f0f0;
+        background: linear-gradient(90deg, rgba(118, 75, 162, 0.03) 0%, rgba(255,255,255,0) 100%);
         font-size: 2em;
+        border-radius: 0 6px 0 0;
     }
 
     h3 {
         color: #667eea;
-        margin: 20px 0 10px 0;
+        margin: 30px 0 18px 0;
+        padding: 10px 0 10px 15px;
+        border-left: 4px solid #667eea;
+        background: linear-gradient(90deg, rgba(102, 126, 234, 0.04) 0%, transparent 100%);
         font-size: 1.5em;
+        border-radius: 0 6px 6px 0;
     }
 
     h4 {
         color: #764ba2;
-        margin: 15px 0 10px 0;
+        margin: 25px 0 15px 0;
+        padding: 8px 0 8px 12px;
+        border-left: 3px solid #764ba2;
+        background: linear-gradient(90deg, rgba(118, 75, 162, 0.03) 0%, transparent 100%);
         font-size: 1.2em;
+        font-weight: 600;
+        border-radius: 0 4px 4px 0;
+    }
+
+    h5 {
+        color: #667eea;
+        margin: 20px 0 12px 0;
+        padding: 6px 0 6px 10px;
+        border-left: 2px solid #667eea;
+        font-size: 1.05em;
+        font-weight: 600;
+        background: linear-gradient(90deg, rgba(102, 126, 234, 0.02) 0%, transparent 100%);
+        border-radius: 0 3px 3px 0;
+    }
+
+    h6 {
+        color: #764ba2;
+        margin: 15px 0 10px 0;
+        font-size: 1em;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
     }
 
     p {
@@ -99,46 +151,163 @@
     }
 
     ul, ol {
-        margin: 15px 0;
-        padding-left: 30px;
+        margin: 20px 0;
+        padding-left: 35px;
     }
 
     li {
-        margin: 8px 0;
-        line-height: 1.6;
+        margin: 12px 0;
+        line-height: 1.8;
+        position: relative;
+        padding-left: 8px;
+    }
+
+    ul li::marker {
+        color: #667eea;
+        font-weight: bold;
+        font-size: 1.1em;
+    }
+
+    ol li::marker {
+        color: #764ba2;
+        font-weight: bold;
+        font-size: 1em;
+    }
+
+    /* Better list item styling */
+    li {
+        background: linear-gradient(90deg, rgba(102, 126, 234, 0.02) 0%, transparent 100%);
+        border-left: 2px solid transparent;
+        padding: 8px 8px 8px 12px;
+        border-radius: 0 4px 4px 0;
+        transition: all 0.2s ease;
+    }
+
+    li:hover {
+        background: linear-gradient(90deg, rgba(102, 126, 234, 0.05) 0%, transparent 100%);
+        border-left-color: #667eea;
+        padding-left: 16px;
+    }
+
+    /* Nested lists */
+    li ul, li ol {
+        margin: 8px 0 8px 10px;
+    }
+
+    /* Nested list items - smaller styling */
+    li li {
+        font-size: 0.95em;
+        margin: 6px 0;
+        background: linear-gradient(90deg, rgba(118, 75, 162, 0.02) 0%, transparent 100%);
+    }
+
+    li li:hover {
+        background: linear-gradient(90deg, rgba(118, 75, 162, 0.05) 0%, transparent 100%);
+        border-left-color: #764ba2;
     }
 
     code {
-        background: #f4f4f4;
-        padding: 2px 6px;
-        border-radius: 3px;
-        font-family: 'Courier New', Courier, monospace;
-        font-size: 0.9em;
-        color: #e83e8c;
+        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        padding: 3px 8px;
+        border-radius: 5px;
+        font-family: 'Fira Code', 'Courier New', Consolas, monospace;
+        font-size: 0.88em;
+        color: #d63384;
+        border: 1px solid #dee2e6;
+        font-weight: 500;
+    }
+
+    /* Inline code with special highlighting */
+    p code, li code, td code {
+        position: relative;
+    }
+
+    p code::before, li code::before, td code::before {
+        content: '';
+        position: absolute;
+        inset: -2px;
+        border-radius: 5px;
+        background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+        z-index: -1;
+        opacity: 0;
+        transition: opacity 0.2s;
+    }
+
+    p code:hover::before, li code:hover::before, td code:hover::before {
+        opacity: 1;
     }
 
     pre {
-        background: #2d2d2d;
-        color: #f8f8f2;
-        padding: 20px;
-        border-radius: 8px;
+        background: #1e293b;
+        color: #e2e8f0;
+        padding: 24px;
+        border-radius: 10px;
         overflow-x: auto;
-        margin: 20px 0;
-        border-left: 4px solid #667eea;
+        margin: 25px 0;
+        border: 2px solid #334155;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1), 0 0 0 1px rgba(102, 126, 234, 0.1);
+        font-family: 'Cascadia Code', 'Fira Code', 'SF Mono', 'Consolas', 'Liberation Mono', monospace;
+        font-size: 0.875em;
+        line-height: 1.7;
+        position: relative;
     }
 
     pre code {
         background: none;
-        color: #f8f8f2;
+        color: inherit;
         padding: 0;
+        border: none;
+        font-family: inherit;
+        font-weight: normal;
+    }
+
+    /* Better rendering for box-drawing characters */
+    pre {
+        font-feature-settings: "liga" 0;
+        text-rendering: optimizeLegibility;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+    }
+
+    /* Hover effect */
+    pre:hover {
+        border-color: #667eea;
+        box-shadow: 0 6px 12px rgba(0,0,0,0.15), 0 0 0 2px rgba(102, 126, 234, 0.3);
+        transition: all 0.3s ease;
+    }
+
+    /* Code block header indicator */
+    pre::after {
+        content: 'CODE';
+        position: absolute;
+        top: 8px;
+        right: 12px;
+        font-size: 0.65em;
+        color: #64748b;
+        font-weight: 600;
+        letter-spacing: 0.05em;
+        opacity: 0.5;
     }
 
     blockquote {
-        border-left: 4px solid #667eea;
-        padding-left: 20px;
-        margin: 20px 0;
-        color: #666;
+        border-left: 5px solid #667eea;
+        padding: 15px 20px;
+        margin: 25px 0;
+        color: #555;
         font-style: italic;
+        background: linear-gradient(90deg, rgba(102, 126, 234, 0.05) 0%, rgba(255,255,255,0) 100%);
+        border-radius: 0 8px 8px 0;
+        position: relative;
+    }
+
+    blockquote::before {
+        content: '"';
+        position: absolute;
+        left: -10px;
+        top: -10px;
+        font-size: 4em;
+        color: rgba(102, 126, 234, 0.1);
+        font-family: Georgia, serif;
     }
 
     table {
@@ -189,27 +358,42 @@
     }
 
     .info-box {
-        background: #e3f2fd;
-        border-left: 4px solid #2196f3;
-        padding: 15px;
-        margin: 20px 0;
-        border-radius: 5px;
+        background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+        border-left: 5px solid #2196f3;
+        padding: 20px;
+        margin: 25px 0;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(33, 150, 243, 0.2);
     }
 
     .warning-box {
-        background: #fff3e0;
-        border-left: 4px solid #ff9800;
-        padding: 15px;
-        margin: 20px 0;
-        border-radius: 5px;
+        background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%);
+        border-left: 5px solid #ff9800;
+        padding: 20px;
+        margin: 25px 0;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(255, 152, 0, 0.2);
     }
 
     .success-box {
-        background: #e8f5e9;
-        border-left: 4px solid #4caf50;
-        padding: 15px;
-        margin: 20px 0;
-        border-radius: 5px;
+        background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+        border-left: 5px solid #4caf50;
+        padding: 20px;
+        margin: 25px 0;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(76, 175, 80, 0.2);
+    }
+
+    /* Better colors for syntax in diagrams */
+    pre {
+        /* Box drawing characters in nice blue */
+        color: #93c5fd;
+    }
+
+    /* JSON/code syntax in pre blocks */
+    pre {
+        white-space: pre;
+        word-wrap: normal;
     }
 
     .toc {
@@ -316,11 +500,27 @@
 <body>
     <div class="container">
         <div class="nav-header"><div><h1>Embrix O2X Documentation</h1><small>Navigate between guides</small></div><div class="nav-links"><a href="index.html">Home</a><a href="guide-index.html">Guide Index</a><a href="part1-business-architecture.html">Part 1</a><a href="part2-technical-deep-dive.html">Part 2</a><a href="part3-services-development.html">Part 3</a><a href="business-scenarios.html">Scenarios</a><a href="multi-tenant-complete-guide.html">Multi-Tenant</a><a href="quick-reference.html">Quick Ref</a></div></div>
-        <h1>Embrix O2X Platform - Complete Newcomer's Guide</h1><p><strong>Version</strong>: 3.1.9-SNAPSHOT  
+        
+<h1>Embrix O2X Platform - Complete Newcomer's Guide</h1>
+
+<strong>Version</strong>: 3.1.9-SNAPSHOT  
 <strong>Last Updated</strong>: February 2026  
-<strong>Purpose</strong>: Comprehensive onboarding for new developers, business analysts, and technical stakeholders</p><hr><h2>📚 Documentation Structure</h2><p>This guide is split into 3 comprehensive parts to help you understand everything about the Embrix O2X platform, from business context to hands-on development.</p><hr><h2>Part 1: Business Overview & System Architecture</h2>
+<strong>Purpose</strong>: Comprehensive onboarding for new developers, business analysts, and technical stakeholders
+
+<hr>
+
+<h2>📚 Documentation Structure</h2>
+
+This guide is split into 3 comprehensive parts to help you understand everything about the Embrix O2X platform, from business context to hands-on development.
+
+<hr>
+
+<h2>Part 1: Business Overview & System Architecture</h2>
+
 <strong>File</strong>: <code>NEWCOMER_GUIDE_PART1_BUSINESS_AND_ARCHITECTURE.md</code>  
-<strong>Time to Read</strong>: 45-60 minutes</p><h3>What You'll Learn:</h3>
+<strong>Time to Read</strong>: 45-60 minutes
+<h3>What You'll Learn:</h3>
+
 <ul>
 <li>✅ What Embrix O2X is and why it exists</li>
 <li>✅ Real-world business use cases and customer journeys</li>
@@ -329,7 +529,9 @@
 <li>✅ Technology stack and rationale (why Groovy, JOOQ, GraphQL, etc.)</li>
 <li>✅ Multi-tenant architecture model (deployment-level isolation)</li>
 <li>✅ Key business capabilities matrix</li>
-</ul><h3>Key Sections:</h3>
+</ul>
+<h3>Key Sections:</h3>
+
 <ol>
 <li><strong>What is Embrix O2X?</strong> - Platform definition and target market</li>
 <li><strong>Business Purpose & Use Cases</strong> - Real scenarios with detailed flows</li>
@@ -338,15 +540,24 @@
 <li><strong>Technology Stack</strong> - Complete technology inventory with explanations</li>
 <li><strong>Multi-Tenant Architecture</strong> - How tenants are isolated</li>
 <li><strong>Key Business Capabilities</strong> - What the platform can do</li>
-</ol><h3>Who Should Read This:</h3>
+</ol>
+<h3>Who Should Read This:</h3>
+
 <ul>
 <li>New developers joining the team</li>
 <li>Business analysts understanding the product</li>
 <li>Technical stakeholders evaluating the platform</li>
 <li>Anyone needing high-level system understanding</li>
-</ul><hr><h2>Part 2: Technical Deep Dive & Component Architecture</h2>
+</ul>
+
+<hr>
+
+<h2>Part 2: Technical Deep Dive & Component Architecture</h2>
+
 <strong>File</strong>: <code>NEWCOMER_GUIDE_PART2_TECHNICAL_DEEP_DIVE.md</code>  
-<strong>Time to Read</strong>: 60-90 minutes</p><h3>What You'll Learn:</h3>
+<strong>Time to Read</strong>: 60-90 minutes
+<h3>What You'll Learn:</h3>
+
 <ul>
 <li>✅ Foundation layer (engine, common, oms-component, gateway-common)</li>
 <li>✅ Hub-based business logic organization (11 hubs explained)</li>
@@ -355,28 +566,23 @@
 <li>✅ Flyway database migrations</li>
 <li>✅ Apache Camel orchestration framework</li>
 <li>✅ External system integrations</li>
-</ul><h3>Key Sections:</h3>
+</ul>
+<h3>Key Sections:</h3>
+
 <ol>
-<li><strong>Foundation Layer - Shared Libraries</strong></li>
+<li><strong>Foundation Layer - Shared Libraries</strong><br><ul><li>The <code>engine</code> module (heart of the system)</li></ul><br><ul><li>Hub-based organization (arHub, billingHub, customerHub, etc.)</li></ul><br><ul><li>Real-world hub examples with code</li></ul><br><ul><li>JOOQ data access patterns</li></ul><br><ul><li>Flyway migration structure</li></ul></li>
+<li><strong>Gateway Layer</strong><br><ul><li><code>crm_gateway</code> - The front door (GraphQL API, OAuth2)</li></ul><br><ul><li><code>provision_gateway</code> - Service activation</li></ul><br><ul><li><code>tax-gateway</code> & <code>tax-engine</code> - Tax compliance</li></ul><br><ul><li><code>payment-gateway</code> - Payment processing</li></ul><br><ul><li><code>finance-gateway</code> - ERP integration</li></ul></li>
 </ol>
-   - The <code>engine</code> module (heart of the system)
-   - Hub-based organization (arHub, billingHub, customerHub, etc.)
-   - Real-world hub examples with code
-   - JOOQ data access patterns
-   - Flyway migration structure</p><ol>
-<li><strong>Gateway Layer</strong></li>
-</ol>
-   - <code>crm_gateway</code> - The front door (GraphQL API, OAuth2)
-   - <code>provision_gateway</code> - Service activation
-   - <code>tax-gateway</code> & <code>tax-engine</code> - Tax compliance
-   - <code>payment-gateway</code> - Payment processing
-   - <code>finance-gateway</code> - ERP integration</p><h3>Who Should Read This:</h3>
+<h3>Who Should Read This:</h3>
+
 <ul>
 <li>Developers who need to understand the codebase structure</li>
 <li>Architects evaluating the technical design</li>
 <li>Anyone implementing new features or integrations</li>
 <li>Tech leads planning modifications</li>
-</ul><h3>Code Examples Included:</h3>
+</ul>
+<h3>Code Examples Included:</h3>
+
 <ul>
 <li>Hub service implementations</li>
 <li>JOOQ query patterns</li>
@@ -384,9 +590,16 @@
 <li>Apache Camel routes</li>
 <li>GraphQL schemas</li>
 <li>OAuth2 flows</li>
-</ul><hr><h2>Part 3: Core Services, Business Flows & Development Guide</h2>
+</ul>
+
+<hr>
+
+<h2>Part 3: Core Services, Business Flows & Development Guide</h2>
+
 <strong>File</strong>: <code>NEWCOMER_GUIDE_PART3_SERVICES_AND_DEVELOPMENT.md</code>  
-<strong>Time to Read</strong>: 90-120 minutes</p><h3>What You'll Learn:</h3>
+<strong>Time to Read</strong>: 90-120 minutes
+<h3>What You'll Learn:</h3>
+
 <ul>
 <li>✅ All 7 core services explained (billing, invoice, usage, payment, etc.)</li>
 <li>✅ Complete database schema architecture</li>
@@ -394,42 +607,25 @@
 <li>✅ Local development environment setup (step-by-step)</li>
 <li>✅ Build sequences and dependencies</li>
 <li>✅ Testing strategies</li>
-</ul><h3>Key Sections:</h3>
+</ul>
+<h3>Key Sections:</h3>
+
 <ol>
-<li><strong>Core Services Layer</strong></li>
+<li><strong>Core Services Layer</strong><br><ul><li><code>service-billing</code> - Billing operations (proration, discounts)</li></ul><br><ul><li><code>service-invoice</code> - Invoice generation (PDF, CFDI)</li></ul><br><ul><li><code>service-usage</code> - Usage data repository</li></ul><br><ul><li><code>service-mediation</code> - CDR ingestion and normalization</li></ul><br><ul><li><code>service-payment</code> - Payment processing</li></ul><br><ul><li><code>service-revenue</code> - Revenue recognition (IFRS 15)</li></ul><br><ul><li><code>batch-process</code> - Background jobs</li></ul></li>
+<li><strong>Database Architecture</strong><br><ul><li>Schema organization (9 schemas explained)</li></ul><br><ul><li>Key tables deep dive (account, order, invoice, usage_record)</li></ul><br><ul><li>Partitioning strategy</li></ul><br><ul><li>Performance optimizations</li></ul><br><ul><li>Indexing patterns</li></ul></li>
+<li><strong>Complete End-to-End Business Flows</strong><br><ul><li><strong>Flow 1</strong>: New Customer Signup → First Invoice (30-day timeline)</li></ul><br><ul><li><strong>Flow 2</strong>: Mobile Customer Usage Processing (CDR → Rating → Billing)</li></ul><br><ul><li><strong>Flow 3</strong>: Service Suspension → Auto-Resume (EP-5480 feature)</li></ul></li>
+<li><strong>Development Environment Setup</strong><br><ul><li>Prerequisites (Java 8, Maven, Docker)</li></ul><br><ul><li>Infrastructure setup (PostgreSQL, ActiveMQ, Redis, Vault)</li></ul><br><ul><li>Database migrations</li></ul><br><ul><li>Build sequences</li></ul><br><ul><li>Running services locally</li></ul></li>
 </ol>
-   - <code>service-billing</code> - Billing operations (proration, discounts)
-   - <code>service-invoice</code> - Invoice generation (PDF, CFDI)
-   - <code>service-usage</code> - Usage data repository
-   - <code>service-mediation</code> - CDR ingestion and normalization
-   - <code>service-payment</code> - Payment processing
-   - <code>service-revenue</code> - Revenue recognition (IFRS 15)
-   - <code>batch-process</code> - Background jobs</p><ol>
-<li><strong>Database Architecture</strong></li>
-</ol>
-   - Schema organization (9 schemas explained)
-   - Key tables deep dive (account, order, invoice, usage_record)
-   - Partitioning strategy
-   - Performance optimizations
-   - Indexing patterns</p><ol>
-<li><strong>Complete End-to-End Business Flows</strong></li>
-</ol>
-   - <strong>Flow 1</strong>: New Customer Signup → First Invoice (30-day timeline)
-   - <strong>Flow 2</strong>: Mobile Customer Usage Processing (CDR → Rating → Billing)
-   - <strong>Flow 3</strong>: Service Suspension → Auto-Resume (EP-5480 feature)</p><ol>
-<li><strong>Development Environment Setup</strong></li>
-</ol>
-   - Prerequisites (Java 8, Maven, Docker)
-   - Infrastructure setup (PostgreSQL, ActiveMQ, Redis, Vault)
-   - Database migrations
-   - Build sequences
-   - Running services locally</p><h3>Who Should Read This:</h3>
+<h3>Who Should Read This:</h3>
+
 <ul>
 <li>Developers starting hands-on coding</li>
 <li>Anyone setting up local development environment</li>
 <li>QA engineers understanding test data flows</li>
 <li>DevOps understanding deployment requirements</li>
-</ul><h3>Practical Guides Included:</h3>
+</ul>
+<h3>Practical Guides Included:</h3>
+
 <ul>
 <li>Docker commands for all infrastructure</li>
 <li>Vault secret configuration</li>
@@ -437,36 +633,68 @@
 <li>Build order and dependencies</li>
 <li>GraphQL query examples</li>
 <li>Testing setup</li>
-</ul><hr><h2>🎯 Recommended Reading Path</h2><h3>For New Developers (Full Path):</h3>
+</ul>
+
+<hr>
+
+<h2>🎯 Recommended Reading Path</h2>
+
+<h3>For New Developers (Full Path):</h3>
+
 <pre><code class="language-">Day 1 Morning:  Part 1 (Business & Architecture)
-                └─→ Understand what you're building</p><p>Day 1 Afternoon: Part 2 (Technical Deep Dive)
-                 └─→ Understand how it's built</p><p>Day 2 Morning:   Part 3 Sections 1-2 (Services & Database)
-                 └─→ Understand the components</p><p>Day 2 Afternoon: Part 3 Sections 3-4 (Flows & Setup)
-                 └─→ See it in action, set up locally</p><p>Day 3:          Explore codebase with guide as reference
+                └─→ Understand what you're building
+Day 1 Afternoon: Part 2 (Technical Deep Dive)
+                 └─→ Understand how it's built
+Day 2 Morning:   Part 3 Sections 1-2 (Services & Database)
+                 └─→ Understand the components
+Day 2 Afternoon: Part 3 Sections 3-4 (Flows & Setup)
+                 └─→ See it in action, set up locally
+Day 3:          Explore codebase with guide as reference
                 └─→ Navigate confidently with context
-</code></pre><h3>For Business Analysts:</h3>
+</code></pre>
+<h3>For Business Analysts:</h3>
+
 <pre><code class="language-">Part 1: Full read (60 min)
-        └─→ Business use cases, capabilities</p><p>Part 2: Sections 1-2 (Gateway Layer) (30 min)
-        └─→ External integrations</p><p>Part 3: Section 3 (Business Flows) (45 min)
+        └─→ Business use cases, capabilities
+Part 2: Sections 1-2 (Gateway Layer) (30 min)
+        └─→ External integrations
+Part 3: Section 3 (Business Flows) (45 min)
         └─→ End-to-end scenarios
-</code></pre><h3>For Technical Evaluators:</h3>
+</code></pre>
+<h3>For Technical Evaluators:</h3>
+
 <pre><code class="language-">Part 1: Sections 1, 4, 5, 6 (45 min)
-        └─→ Architecture, technology, multi-tenancy</p><p>Part 2: Full read (90 min)
-        └─→ Technical implementation details</p><p>Part 3: Section 2 (Database Architecture) (30 min)
+        └─→ Architecture, technology, multi-tenancy
+Part 2: Full read (90 min)
+        └─→ Technical implementation details
+Part 3: Section 2 (Database Architecture) (30 min)
         └─→ Data model and performance
-</code></pre><h3>For QA Engineers:</h3>
+</code></pre>
+<h3>For QA Engineers:</h3>
+
 <pre><code class="language-">Part 1: Sections 1, 2 (30 min)
-        └─→ Business use cases</p><p>Part 3: Section 3 (Business Flows) (60 min)
-        └─→ Test scenarios</p><p>Part 3: Section 4 (Development Setup) (45 min)
+        └─→ Business use cases
+Part 3: Section 3 (Business Flows) (60 min)
+        └─→ Test scenarios
+Part 3: Section 4 (Development Setup) (45 min)
         └─→ Test environment setup
-</code></pre><hr><h2>📖 Quick Reference Guide</h2><h3>Business Use Cases Covered:</h3>
+</code></pre>
+
+<hr>
+
+<h2>📖 Quick Reference Guide</h2>
+
+<h3>Business Use Cases Covered:</h3>
+
 <ol>
 <li><strong>New Customer Signup</strong> - Internet service order → provisioning → first invoice</li>
 <li><strong>Mobile Usage Processing</strong> - Phone calls → CDR mediation → rating → billing</li>
 <li><strong>Service Suspension/Resume</strong> - Overdue payment → suspension → payment → auto-resume</li>
 <li><strong>Payment Processing</strong> - Bank file upload → payment allocation → invoice updates</li>
 <li><strong>Tax Compliance</strong> - Invoice generation → CFDI XML → PAC stamping → delivery</li>
-</ol><h3>Architecture Patterns Explained:</h3>
+</ol>
+<h3>Architecture Patterns Explained:</h3>
+
 <ul>
 <li><strong>Shared Engine Pattern</strong> - Centralized business logic in <code>engine</code></li>
 <li><strong>Event-Driven Architecture</strong> - ActiveMQ message queues</li>
@@ -474,7 +702,9 @@
 <li><strong>GraphQL-First API</strong> - Flexible data fetching</li>
 <li><strong>Hub-Based Organization</strong> - Domain-driven design</li>
 <li><strong>Multi-Tenant Deployment</strong> - Database-per-tenant isolation</li>
-</ul><h3>Technologies Covered:</h3>
+</ul>
+<h3>Technologies Covered:</h3>
+
 <ul>
 <li><strong>Backend</strong>: Java 8, Groovy 2.4.15, Spring Boot 2.1.4</li>
 <li><strong>API</strong>: GraphQL Java 5.0.2</li>
@@ -483,7 +713,9 @@
 <li><strong>Security</strong>: Vault 2.0.2, OAuth2, JWT</li>
 <li><strong>Documents</strong>: iText 7.1.5, Thymeleaf 3.0.11</li>
 <li><strong>Infrastructure</strong>: Docker, Kubernetes, Helm</li>
-</ul><h3>Hubs in Engine:</h3>
+</ul>
+<h3>Hubs in Engine:</h3>
+
 <ol>
 <li><strong>arHub</strong> - Accounts Receivable (payments, collections)</li>
 <li><strong>billingHub</strong> - Billing Operations (cycles, proration, discounts)</li>
@@ -496,7 +728,9 @@
 <li><strong>commonHub</strong> - Shared Services (documents, files, templates)</li>
 <li><strong>migrationHub</strong> - Data Migration</li>
 <li><strong>selfCareHub</strong> - Customer Self-Service</li>
-</ol><h3>Core Services:</h3>
+</ol>
+<h3>Core Services:</h3>
+
 <ol>
 <li><strong>service-billing</strong> - Billing cycle execution</li>
 <li><strong>service-invoice</strong> - Invoice document generation</li>
@@ -508,7 +742,9 @@
 <li><strong>service-sso</strong> - Single sign-on</li>
 <li><strong>service-proxy</strong> - API gateway</li>
 <li><strong>batch-process</strong> - Background jobs</li>
-</ol><h3>Gateways:</h3>
+</ol>
+<h3>Gateways:</h3>
+
 <ol>
 <li><strong>crm_gateway</strong> - CRM integration (Salesforce)</li>
 <li><strong>provision_gateway</strong> - Network provisioning (Nokia, ServiceNow)</li>
@@ -516,108 +752,116 @@
 <li><strong>payment-gateway</strong> - Payment processors (Stripe, banks)</li>
 <li><strong>finance-gateway</strong> - ERP integration (QuickBooks, NetSuite)</li>
 <li><strong>diameter-gateway</strong> - Real-time charging</li>
-</ol><hr><h2>🔗 Additional Resources</h2><h3>Related Documentation:</h3>
+</ol>
+
+<hr>
+
+<h2>🔗 Additional Resources</h2>
+
+<h3>Related Documentation:</h3>
+
 <ul>
 <li><code>MULTI_TENANT_ARCHITECTURE.md</code> - Detailed multi-tenancy analysis</li>
 <li><code>COMPREHENSIVE_ARCHITECTURE.md</code> - Original architecture documentation</li>
 <li><code>PRODUCT_FLOW_CUSTOMER_JOURNEY_VERIFIED.md</code> - Customer journey flows</li>
 <li><code>CURRENT_TAX_CALCULATION_FLOW.md</code> - Tax processing details</li>
 <li>Individual service READMEs in each module folder</li>
-</ul><h3>Codebase Entry Points:</h3>
+</ul>
+<h3>Codebase Entry Points:</h3>
+
 <pre><code class="language-">Recommended exploration order:
 <ol>
-<li>common/src/main/groovy/com/embrix/core/common/enums/</li>
+<li>common/src/main/groovy/com/embrix/core/common/enums/<br>└─→ Understand domain enums</li>
+<li>engine/src/main/groovy/com/embrix/core/engine/{hub}/<br>└─→ Explore business logic by hub</li>
+<li>crm_gateway/src/main/resources/graphql/<br>└─→ See GraphQL schema</li>
+<li>core/service-*/src/main/groovy/<br>└─→ Understand service implementations</li>
+<li>gateway-common/src/main/groovy/<br>└─→ Gateway integration patterns</li>
 </ol>
-   └─→ Understand domain enums</p><ol>
-<li>engine/src/main/groovy/com/embrix/core/engine/{hub}/</li>
-</ol>
-   └─→ Explore business logic by hub</p><ol>
-<li>crm_gateway/src/main/resources/graphql/</li>
-</ol>
-   └─→ See GraphQL schema</p><ol>
-<li>core/service-*/src/main/groovy/</li>
-</ol>
-   └─→ Understand service implementations</p><ol>
-<li>gateway-common/src/main/groovy/</li>
-</ol>
-   └─→ Gateway integration patterns
-</code></pre><h3>Development Tools:</h3>
+</code></pre>
+<h3>Development Tools:</h3>
+
 <ul>
 <li><strong>GraphQL Playground</strong>: http://localhost:8080/graphiql</li>
 <li><strong>ActiveMQ Console</strong>: http://localhost:8161 (admin/admin)</li>
 <li><strong>Vault UI</strong>: http://localhost:8200/ui</li>
 <li><strong>PostgreSQL</strong>: <code>psql -U omsadmin -d omsdevdb</code></li>
 <li><strong>Redis CLI</strong>: <code>docker exec -it redis redis-cli</code></li>
-</ul><hr><h2>💡 Getting Help</h2><h3>Common Questions:</h3>
+</ul>
+
+<hr>
+
+<h2>💡 Getting Help</h2>
+
+<h3>Common Questions:</h3>
+
 <ul>
-<li><strong>Q</strong>: Where is business logic for billing?</li>
+<li><strong>Q</strong>: Where is business logic for billing?<br><ul><li><strong>A</strong>: <code>engine/src/main/groovy/com/embrix/core/engine/billingHub/</code></li></ul></li>
+<li><strong>Q</strong>: How do I add a new GraphQL endpoint?<br><ul><li><strong>A</strong>: See Part 2, Section 2.1.2 (GraphQL Schema)</li></ul></li>
+<li><strong>Q</strong>: Where are database tables defined?<br><ul><li><strong>A</strong>: <code>engine/src/main/resources/db/migration/</code></li></ul></li>
+<li><strong>Q</strong>: How do orders flow through the system?<br><ul><li><strong>A</strong>: See Part 3, Section 3.1 (Complete Business Flow)</li></ul></li>
+<li><strong>Q</strong>: How do I set up local development?<br><ul><li><strong>A</strong>: Follow Part 3, Section 4 step-by-step</li></ul></li>
 </ul>
-  - <strong>A</strong>: <code>engine/src/main/groovy/com/embrix/core/engine/billingHub/</code></p><ul>
-<li><strong>Q</strong>: How do I add a new GraphQL endpoint?</li>
-</ul>
-  - <strong>A</strong>: See Part 2, Section 2.1.2 (GraphQL Schema)</p><ul>
-<li><strong>Q</strong>: Where are database tables defined?</li>
-</ul>
-  - <strong>A</strong>: <code>engine/src/main/resources/db/migration/</code></p><ul>
-<li><strong>Q</strong>: How do orders flow through the system?</li>
-</ul>
-  - <strong>A</strong>: See Part 3, Section 3.1 (Complete Business Flow)</p><ul>
-<li><strong>Q</strong>: How do I set up local development?</li>
-</ul>
-  - <strong>A</strong>: Follow Part 3, Section 4 step-by-step</p><h3>Troubleshooting:</h3>
+<h3>Troubleshooting:</h3>
+
 <ul>
 <li><strong>Build Errors</strong>: Check dependency order (common → engine → services)</li>
 <li><strong>Database Connection</strong>: Verify Docker containers running (<code>docker ps</code>)</li>
 <li><strong>Vault Secrets</strong>: Ensure VAULT_URI and VAULT_TOKEN set</li>
 <li><strong>ActiveMQ</strong>: Check broker running on port 61616</li>
 <li><strong>GraphQL 404</strong>: Verify service started on correct port</li>
-</ul><hr><h2>📈 Document Statistics</h2><p><strong>Total Pages</strong>: ~150 (across 3 parts)  
+</ul>
+
+<hr>
+
+<h2>📈 Document Statistics</h2>
+
+<strong>Total Pages</strong>: ~150 (across 3 parts)  
 <strong>Code Examples</strong>: 50+  
 <strong>Diagrams</strong>: 15+  
 <strong>Business Flows</strong>: 3 complete end-to-end  
 <strong>Hub Explanations</strong>: 11 detailed  
 <strong>Service Descriptions</strong>: 10 core services  
-<strong>Gateway Coverage</strong>: 6 gateways</p><p><strong>Time Investment</strong>:
+<strong>Gateway Coverage</strong>: 6 gateways
+<strong>Time Investment</strong>:
 <ul>
 <li>Part 1: 45-60 minutes</li>
 <li>Part 2: 60-90 minutes</li>
 <li>Part 3: 90-120 minutes</li>
 <li><strong>Total</strong>: 3-4.5 hours for complete understanding</li>
-</ul><p><strong>Worth It</strong>: This investment gives you comprehensive knowledge that would take weeks to acquire through code exploration alone.</p><hr><h2>🚀 Next Steps After Reading</h2><ol>
-<li><strong>Set Up Local Environment</strong></li>
+</ul>
+<strong>Worth It</strong>: This investment gives you comprehensive knowledge that would take weeks to acquire through code exploration alone.
+
+<hr>
+
+<h2>🚀 Next Steps After Reading</h2>
+
+<ol>
+<li><strong>Set Up Local Environment</strong><br><ul><li>Follow Part 3, Section 4</li></ul><br><ul><li>Get all infrastructure running</li></ul><br><ul><li>Build and run crm_gateway</li></ul></li>
+<li><strong>Explore Codebase</strong><br><ul><li>Navigate hubs in engine</li></ul><br><ul><li>Read GraphQL schemas</li></ul><br><ul><li>Review database migrations</li></ul></li>
+<li><strong>Run a Test Transaction</strong><br><ul><li>Create an account via GraphQL</li></ul><br><ul><li>Submit an order</li></ul><br><ul><li>Track it through the system</li></ul></li>
+<li><strong>Pick a Small Task</strong><br><ul><li>Find a simple bug or feature request</li></ul><br><ul><li>Implement using patterns from guide</li></ul><br><ul><li>Write tests following examples</li></ul></li>
+<li><strong>Contribute</strong><br><ul><li>Understand the architecture</li></ul><br><ul><li>Follow established patterns</li></ul><br><ul><li>Ask questions when stuck</li></ul></li>
 </ol>
-   - Follow Part 3, Section 4
-   - Get all infrastructure running
-   - Build and run crm_gateway</p><ol>
-<li><strong>Explore Codebase</strong></li>
-</ol>
-   - Navigate hubs in engine
-   - Read GraphQL schemas
-   - Review database migrations</p><ol>
-<li><strong>Run a Test Transaction</strong></li>
-</ol>
-   - Create an account via GraphQL
-   - Submit an order
-   - Track it through the system</p><ol>
-<li><strong>Pick a Small Task</strong></li>
-</ol>
-   - Find a simple bug or feature request
-   - Implement using patterns from guide
-   - Write tests following examples</p><ol>
-<li><strong>Contribute</strong></li>
-</ol>
-   - Understand the architecture
-   - Follow established patterns
-   - Ask questions when stuck</p><hr><h2>📝 Document Maintenance</h2><p><strong>This guide should be updated when:</strong>
+
+<hr>
+
+<h2>📝 Document Maintenance</h2>
+
+<strong>This guide should be updated when:</strong>
 <ul>
 <li>New major features are added</li>
 <li>Architecture changes significantly</li>
 <li>New services or gateways are introduced</li>
 <li>Technology stack is upgraded</li>
 <li>Production deployments change</li>
-</ul><p><strong>Last Updated</strong>: February 2026  
+</ul>
+<strong>Last Updated</strong>: February 2026  
 <strong>Maintainer</strong>: Development Team  
-<strong>Review Frequency</strong>: Quarterly</p><hr><p><strong>Welcome to Embrix O2X! Happy Coding! 🎉</strong></p>
+<strong>Review Frequency</strong>: Quarterly
+
+<hr>
+
+<strong>Welcome to Embrix O2X! Happy Coding! 🎉</strong></p>
         <footer>
             <p><strong>Embrix O2X Platform Documentation</strong></p>
             <p>Version 3.1.9-SNAPSHOT • Last Updated: February 2026</p>

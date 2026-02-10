@@ -5,6 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Business Scenarios & Workflows - Embrix O2X</title>
     
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
 <style>
     * {
         margin: 0;
@@ -13,10 +17,11 @@
     }
 
     body {
-        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-        line-height: 1.6;
-        color: #333;
-        background: #f5f5f5;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+        line-height: 1.7;
+        color: #2d3748;
+        background: linear-gradient(135deg, #f5f7fa 0%, #e9ecef 100%);
+        background-attachment: fixed;
         padding: 20px;
     }
 
@@ -24,9 +29,21 @@
         max-width: 1200px;
         margin: 0 auto;
         background: white;
-        padding: 40px;
-        border-radius: 10px;
-        box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+        padding: 50px;
+        border-radius: 16px;
+        box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .container::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 5px;
+        background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
     }
 
     .nav-header {
@@ -67,30 +84,65 @@
 
     h1 {
         color: #667eea;
-        margin: 30px 0 20px 0;
-        padding-bottom: 10px;
+        margin: 40px 0 25px 0;
+        padding: 15px 0 15px 20px;
+        border-left: 6px solid #667eea;
         border-bottom: 3px solid #667eea;
+        background: linear-gradient(90deg, rgba(102, 126, 234, 0.05) 0%, rgba(255,255,255,0) 100%);
         font-size: 2.5em;
+        border-radius: 0 8px 0 0;
     }
 
     h2 {
         color: #764ba2;
-        margin: 25px 0 15px 0;
-        padding-bottom: 8px;
+        margin: 35px 0 20px 0;
+        padding: 12px 0 12px 15px;
+        border-left: 5px solid #764ba2;
         border-bottom: 2px solid #f0f0f0;
+        background: linear-gradient(90deg, rgba(118, 75, 162, 0.03) 0%, rgba(255,255,255,0) 100%);
         font-size: 2em;
+        border-radius: 0 6px 0 0;
     }
 
     h3 {
         color: #667eea;
-        margin: 20px 0 10px 0;
+        margin: 30px 0 18px 0;
+        padding: 10px 0 10px 15px;
+        border-left: 4px solid #667eea;
+        background: linear-gradient(90deg, rgba(102, 126, 234, 0.04) 0%, transparent 100%);
         font-size: 1.5em;
+        border-radius: 0 6px 6px 0;
     }
 
     h4 {
         color: #764ba2;
-        margin: 15px 0 10px 0;
+        margin: 25px 0 15px 0;
+        padding: 8px 0 8px 12px;
+        border-left: 3px solid #764ba2;
+        background: linear-gradient(90deg, rgba(118, 75, 162, 0.03) 0%, transparent 100%);
         font-size: 1.2em;
+        font-weight: 600;
+        border-radius: 0 4px 4px 0;
+    }
+
+    h5 {
+        color: #667eea;
+        margin: 20px 0 12px 0;
+        padding: 6px 0 6px 10px;
+        border-left: 2px solid #667eea;
+        font-size: 1.05em;
+        font-weight: 600;
+        background: linear-gradient(90deg, rgba(102, 126, 234, 0.02) 0%, transparent 100%);
+        border-radius: 0 3px 3px 0;
+    }
+
+    h6 {
+        color: #764ba2;
+        margin: 15px 0 10px 0;
+        font-size: 1em;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
     }
 
     p {
@@ -99,46 +151,163 @@
     }
 
     ul, ol {
-        margin: 15px 0;
-        padding-left: 30px;
+        margin: 20px 0;
+        padding-left: 35px;
     }
 
     li {
-        margin: 8px 0;
-        line-height: 1.6;
+        margin: 12px 0;
+        line-height: 1.8;
+        position: relative;
+        padding-left: 8px;
+    }
+
+    ul li::marker {
+        color: #667eea;
+        font-weight: bold;
+        font-size: 1.1em;
+    }
+
+    ol li::marker {
+        color: #764ba2;
+        font-weight: bold;
+        font-size: 1em;
+    }
+
+    /* Better list item styling */
+    li {
+        background: linear-gradient(90deg, rgba(102, 126, 234, 0.02) 0%, transparent 100%);
+        border-left: 2px solid transparent;
+        padding: 8px 8px 8px 12px;
+        border-radius: 0 4px 4px 0;
+        transition: all 0.2s ease;
+    }
+
+    li:hover {
+        background: linear-gradient(90deg, rgba(102, 126, 234, 0.05) 0%, transparent 100%);
+        border-left-color: #667eea;
+        padding-left: 16px;
+    }
+
+    /* Nested lists */
+    li ul, li ol {
+        margin: 8px 0 8px 10px;
+    }
+
+    /* Nested list items - smaller styling */
+    li li {
+        font-size: 0.95em;
+        margin: 6px 0;
+        background: linear-gradient(90deg, rgba(118, 75, 162, 0.02) 0%, transparent 100%);
+    }
+
+    li li:hover {
+        background: linear-gradient(90deg, rgba(118, 75, 162, 0.05) 0%, transparent 100%);
+        border-left-color: #764ba2;
     }
 
     code {
-        background: #f4f4f4;
-        padding: 2px 6px;
-        border-radius: 3px;
-        font-family: 'Courier New', Courier, monospace;
-        font-size: 0.9em;
-        color: #e83e8c;
+        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        padding: 3px 8px;
+        border-radius: 5px;
+        font-family: 'Fira Code', 'Courier New', Consolas, monospace;
+        font-size: 0.88em;
+        color: #d63384;
+        border: 1px solid #dee2e6;
+        font-weight: 500;
+    }
+
+    /* Inline code with special highlighting */
+    p code, li code, td code {
+        position: relative;
+    }
+
+    p code::before, li code::before, td code::before {
+        content: '';
+        position: absolute;
+        inset: -2px;
+        border-radius: 5px;
+        background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+        z-index: -1;
+        opacity: 0;
+        transition: opacity 0.2s;
+    }
+
+    p code:hover::before, li code:hover::before, td code:hover::before {
+        opacity: 1;
     }
 
     pre {
-        background: #2d2d2d;
-        color: #f8f8f2;
-        padding: 20px;
-        border-radius: 8px;
+        background: #1e293b;
+        color: #e2e8f0;
+        padding: 24px;
+        border-radius: 10px;
         overflow-x: auto;
-        margin: 20px 0;
-        border-left: 4px solid #667eea;
+        margin: 25px 0;
+        border: 2px solid #334155;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1), 0 0 0 1px rgba(102, 126, 234, 0.1);
+        font-family: 'Cascadia Code', 'Fira Code', 'SF Mono', 'Consolas', 'Liberation Mono', monospace;
+        font-size: 0.875em;
+        line-height: 1.7;
+        position: relative;
     }
 
     pre code {
         background: none;
-        color: #f8f8f2;
+        color: inherit;
         padding: 0;
+        border: none;
+        font-family: inherit;
+        font-weight: normal;
+    }
+
+    /* Better rendering for box-drawing characters */
+    pre {
+        font-feature-settings: "liga" 0;
+        text-rendering: optimizeLegibility;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+    }
+
+    /* Hover effect */
+    pre:hover {
+        border-color: #667eea;
+        box-shadow: 0 6px 12px rgba(0,0,0,0.15), 0 0 0 2px rgba(102, 126, 234, 0.3);
+        transition: all 0.3s ease;
+    }
+
+    /* Code block header indicator */
+    pre::after {
+        content: 'CODE';
+        position: absolute;
+        top: 8px;
+        right: 12px;
+        font-size: 0.65em;
+        color: #64748b;
+        font-weight: 600;
+        letter-spacing: 0.05em;
+        opacity: 0.5;
     }
 
     blockquote {
-        border-left: 4px solid #667eea;
-        padding-left: 20px;
-        margin: 20px 0;
-        color: #666;
+        border-left: 5px solid #667eea;
+        padding: 15px 20px;
+        margin: 25px 0;
+        color: #555;
         font-style: italic;
+        background: linear-gradient(90deg, rgba(102, 126, 234, 0.05) 0%, rgba(255,255,255,0) 100%);
+        border-radius: 0 8px 8px 0;
+        position: relative;
+    }
+
+    blockquote::before {
+        content: '"';
+        position: absolute;
+        left: -10px;
+        top: -10px;
+        font-size: 4em;
+        color: rgba(102, 126, 234, 0.1);
+        font-family: Georgia, serif;
     }
 
     table {
@@ -189,27 +358,42 @@
     }
 
     .info-box {
-        background: #e3f2fd;
-        border-left: 4px solid #2196f3;
-        padding: 15px;
-        margin: 20px 0;
-        border-radius: 5px;
+        background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+        border-left: 5px solid #2196f3;
+        padding: 20px;
+        margin: 25px 0;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(33, 150, 243, 0.2);
     }
 
     .warning-box {
-        background: #fff3e0;
-        border-left: 4px solid #ff9800;
-        padding: 15px;
-        margin: 20px 0;
-        border-radius: 5px;
+        background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%);
+        border-left: 5px solid #ff9800;
+        padding: 20px;
+        margin: 25px 0;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(255, 152, 0, 0.2);
     }
 
     .success-box {
-        background: #e8f5e9;
-        border-left: 4px solid #4caf50;
-        padding: 15px;
-        margin: 20px 0;
-        border-radius: 5px;
+        background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+        border-left: 5px solid #4caf50;
+        padding: 20px;
+        margin: 25px 0;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(76, 175, 80, 0.2);
+    }
+
+    /* Better colors for syntax in diagrams */
+    pre {
+        /* Box drawing characters in nice blue */
+        color: #93c5fd;
+    }
+
+    /* JSON/code syntax in pre blocks */
+    pre {
+        white-space: pre;
+        word-wrap: normal;
     }
 
     .toc {
@@ -316,7 +500,18 @@
 <body>
     <div class="container">
         <div class="nav-header"><div><h1>Embrix O2X Documentation</h1><small>Navigate between guides</small></div><div class="nav-links"><a href="index.html">Home</a><a href="guide-index.html">Guide Index</a><a href="part1-business-architecture.html">Part 1</a><a href="part2-technical-deep-dive.html">Part 2</a><a href="part3-services-development.html">Part 3</a><a href="business-scenarios.html">Scenarios</a><a href="multi-tenant-complete-guide.html">Multi-Tenant</a><a href="quick-reference.html">Quick Ref</a></div></div>
-        <h1>Embrix O2X - Business Scenarios & Workflows</h1><h2>Complete Guide to Real-World Use Cases and Business Operations</h2><p>> <strong>Target Audience</strong>: Business analysts, product managers, sales engineers, implementation consultants, and new team members who need to understand what the platform actually does in production.</p><hr><h2>Table of Contents</h2><ol>
+        
+<h1>Embrix O2X - Business Scenarios & Workflows</h1>
+
+<h2>Complete Guide to Real-World Use Cases and Business Operations</h2>
+
+> <strong>Target Audience</strong>: Business analysts, product managers, sales engineers, implementation consultants, and new team members who need to understand what the platform actually does in production.
+
+<hr>
+
+<h2>Table of Contents</h2>
+
+<ol>
 <li><a href="#industry-context">Industry Context</a></li>
 <li><a href="#customer-self-service-scenarios">Customer Self-Service Scenarios</a></li>
 <li><a href="#order-to-cash-complete-workflows">Order-to-Cash Complete Workflows</a></li>
@@ -324,12 +519,24 @@
 <li><a href="#multi-tenant-saas-operations">Multi-Tenant SaaS Operations</a></li>
 <li><a href="#external-system-integrations">External System Integrations</a></li>
 <li><a href="#advanced-business-rules">Advanced Business Rules</a></li>
-</ol><hr><h2>Industry Context</h2><h3>What Embrix O2X Powers</h3><p>Embrix O2X is an <strong>enterprise-grade billing and order management platform</strong> designed for:</p><ul>
+</ol>
+
+<hr>
+
+<h2>Industry Context</h2>
+
+<h3>What Embrix O2X Powers</h3>
+
+Embrix O2X is an <strong>enterprise-grade billing and order management platform</strong> designed for:
+<ul>
 <li><strong>Telecommunications Operators</strong>: Mobile, VoIP, UCaaS, CCaaS providers</li>
 <li><strong>SaaS Companies</strong>: B2B subscription services with complex pricing</li>
 <li><strong>Multi-Tenant Service Providers</strong>: White-label solutions with per-tenant customization</li>
 <li><strong>Usage-Based Businesses</strong>: Companies billing on consumption (data, voice, SMS, API calls)</li>
-</ul><h3>Core Value Proposition</h3><table>
+</ul>
+<h3>Core Value Proposition</h3>
+
+<table>
 <thead><tr>
 <th>Challenge</th>
 <th>Embrix O2X Solution</th>
@@ -366,57 +573,152 @@
 <td>CRM/ERP integration</td>
 <td>Pre-built gateways for Salesforce, QuickBooks, NetSuite, ServiceNow</td>
 </tr>
-</tbody></table><hr><h2>Customer Self-Service Scenarios</h2><h3>Scenario 1: B2B Customer Self-Registration</h3><p><strong>Business Context</strong>: A UCaaS provider offers three service tiers (Starter, Professional, Enterprise) with different features and pricing. Customers can sign up online with immediate service activation.</p><h4>User Journey</h4><ol>
-<li><strong>Discovery Phase</strong></li>
-</ol>
-   - Customer visits public site (<code>ui</code> module)
-   - Views package comparison table (Starter $19/mo, Professional $49/mo, Enterprise Custom)
-   - Clicks "Start Free Trial" or "Sign Up"</p><ol>
+</tbody></table>
+
+<hr>
+
+<h2>Customer Self-Service Scenarios</h2>
+
+<h3>Scenario 1: B2B Customer Self-Registration</h3>
+
+<strong>Business Context</strong>: A UCaaS provider offers three service tiers (Starter, Professional, Enterprise) with different features and pricing. Customers can sign up online with immediate service activation.
+<h4>User Journey</h4>
+
+<ol>
+<li><strong>Discovery Phase</strong><br><ul><li>Customer visits public site (<code>ui</code> module)</li></ul><br><ul><li>Views package comparison table (Starter $19/mo, Professional $49/mo, Enterprise Custom)</li></ul><br><ul><li>Clicks "Start Free Trial" or "Sign Up"</li></ul></li>
 <li><strong>Registration Flow</strong> (<code>selfcare</code> module)</li>
 </ol>
-   
-   <strong>Step 1: Account Details</strong>
-   - Company name, industry, size
-   - Billing address (country, state, city, postal code, street)
-   - Primary contact (name, email, phone)
-   - GraphQL: <code>processNewAccount</code> with account data
-   
-   <strong>Step 2: Payment Setup</strong>
-   - Credit card information collected
-   - Tokenization via Braintree Vault (PCI-compliant)
-   - API: <code>BrainTreeVaultController</code> → Braintree SDK → returns payment token
-   - GraphQL: <code>ADD_CREDIT_CARD</code> permission, <code>manageAccount</code> mutation with payment profile
-   
-   <strong>Step 3: Package Selection</strong>
-   - Lists available packages via <code>searchPackages</code> query
-   - Shows package details, recurring price, included bundles
-   - Customer selects Professional package + optional add-ons
-   
-   <strong>Step 4: Service Configuration</strong>
-   - Selects bundles (e.g., 100 users, 5,000 minutes, video conferencing)
-   - GraphQL: <code>getBundleIdByPackageId</code>, <code>searchBundles</code>
-   - Configures service start date and billing cycle preference
-   
-   <strong>Step 5: Order Creation</strong>
-   - Backend creates:
-     - Account entity
-     - Order with OrderLines for each bundle
-     - Subscription linked to selected package
-     - Bill Unit with billing cycle configuration
-     - Initial invoice (if first month charge)
-   - GraphQL: <code>processNewAccount</code> triggers:
-     - <code>AccountService.create()</code>
-     - <code>OrderProcessService.submitMultiSubscriptionOrder()</code>
-     - <code>SubscriptionService.create()</code>
-     - <code>BillUnitService.create()</code></p><ol>
-<li><strong>Post-Registration</strong></li>
+
+<hr>
+
+<h5>Step 1: Account Details</h5>
+
+<strong>Company Information</strong>:
+<ul>
+<li>Company name, industry, size</li>
+<li>Billing address (country, state, city, postal code, street)</li>
+<li>Primary contact (name, email, phone)</li>
+</ul>
+<strong>API Call</strong>: GraphQL <code>processNewAccount</code> with account data
+
+<hr>
+
+<h5>Step 2: Payment Setup</h5>
+
+<strong>Payment Collection</strong>:
+<ul>
+<li>Credit card information collected securely</li>
+<li>Tokenization via Braintree Vault (PCI-compliant)</li>
+<li>No card data stored on Embrix servers</li>
+</ul>
+<strong>Process</strong>:
+<ol>
+<li><code>BrainTreeVaultController</code> receives card data</li>
+<li>Calls Braintree SDK</li>
+<li>Returns secure payment token</li>
 </ol>
-   - Welcome email sent
-   - Customer redirected to dashboard
-   - Services provisioned via <code>provision_gateway</code> to ServiceNow/vendor systems
-   - First invoice generated (prorated if mid-cycle start)</p><h4>Technical Flow</h4><pre><code class="language-">┌─────────────────────────────────────────────────────────────────────────┐
+<strong>API Call</strong>: 
+<ul>
+<li>GraphQL permission: <code>ADD_CREDIT_CARD</code></li>
+<li>Mutation: <code>manageAccount</code> with payment profile</li>
+</ul>
+
+<hr>
+
+<h5>Step 3: Package Selection</h5>
+
+<strong>Package Discovery</strong>:
+<ul>
+<li>Lists available packages via <code>searchPackages</code> query</li>
+<li>Shows package details:<br><ul><li>Recurring price</li></ul><br><ul><li>Included bundles</li></ul><br><ul><li>Feature comparison</li></ul></li>
+</ul>
+<strong>Selection</strong>:
+<ul>
+<li>Customer selects <strong>Professional package</strong> + optional add-ons</li>
+</ul>
+
+<hr>
+
+<h5>Step 4: Service Configuration</h5>
+
+<strong>Bundle Selection</strong>:
+<table>
+<thead><tr>
+<th>Bundle Type</th>
+<th>Example Selection</th>
+</tr></thead><tbody>
+<tr>
+<td>-------------</td>
+<td>-------------------</td>
+</tr>
+<tr>
+<td>Users</td>
+<td>100 users</td>
+</tr>
+<tr>
+<td>Voice Minutes</td>
+<td>5,000 minutes/month</td>
+</tr>
+<tr>
+<td>Features</td>
+<td>Video conferencing enabled</td>
+</tr>
+</tbody></table>
+<strong>API Calls</strong>:
+<ul>
+<li><code>getBundleIdByPackageId</code> - Get available bundles</li>
+<li><code>searchBundles</code> - Bundle details</li>
+</ul>
+<strong>Configuration</strong>:
+<ul>
+<li>Service start date selection</li>
+<li>Billing cycle preference (e.g., 1st of month)</li>
+</ul>
+
+<hr>
+
+<h5>Step 5: Order Creation</h5>
+
+<strong>Backend Entities Created</strong>:
+<ol>
+<li><strong>Account entity</strong><br><ul><li>Account ID, name, status</li></ul></li>
+<li><strong>Order with OrderLines</strong><br><ul><li>One OrderLine per bundle</li></ul></li>
+<li><strong>Subscription</strong><br><ul><li>Linked to selected package</li></ul><br><ul><li>Status: PENDING</li></ul></li>
+<li><strong>Bill Unit</strong><br><ul><li>Billing cycle configuration</li></ul><br><ul><li>First bill date</li></ul></li>
+<li><strong>Initial Invoice</strong> (if applicable)<br><ul><li>Prorated first month charge</li></ul></li>
+</ol>
+<strong>GraphQL Trigger Chain</strong>:
+<pre><code class="language-">processNewAccount mutation
+  ↓
+AccountService.create()
+  ↓
+OrderProcessService.submitMultiSubscriptionOrder()
+  ↓
+SubscriptionService.create()
+  ↓
+BillUnitService.create()
+</code></pre>
+
+<hr>
+
+<h5>Step 6: Post-Registration Activities</h5>
+
+<strong>Automated Actions</strong>:
+<ol>
+<li><strong>Welcome Email</strong> sent to customer with:<br><ul><li>Account credentials</li></ul><br><ul><li>Quick start guide</li></ul><br><ul><li>Support contact information</li></ul></li>
+<li><strong>Dashboard Redirect</strong>:<br><ul><li>Customer auto-logged into portal</li></ul><br><ul><li>First-time setup wizard displayed</li></ul></li>
+<li><strong>Service Provisioning</strong>:<br><ul><li>Order published to <code>provision_gateway</code></li></ul><br><ul><li>ServiceNow work order created</li></ul><br><ul><li>Vendor systems configured</li></ul></li>
+<li><strong>Invoice Generation</strong>:<br><ul><li>First invoice created (prorated if mid-cycle)</li></ul><br><ul><li>Payment auto-charged if card on file</li></ul><br><ul><li>Billing cycle starts</li></ul></li>
+</ol>
+
+<hr>
+
+<h4>Technical Flow: Complete Backend Architecture</h4>
+
+<pre><code class="language-">┌─────────────────────────────────────────────────────────────────────────┐
 │                        REGISTRATION WORKFLOW                             │
-└─────────────────────────────────────────────────────────────────────────┘</p><p>   ┌──────────────────┐
+└─────────────────────────────────────────────────────────────────────────┘
+   ┌──────────────────┐
    │   Customer UI    │
    │ (selfcare/ui)    │
    └────────┬─────────┘
@@ -492,49 +794,99 @@
    │  │  4. Configures trunk & endpoints                     │  │
    │  │  5. Returns provisioningId and status                │  │
    │  └──────────────────────────────────────────────────────┘  │
-   └────────────────────────────────────────────────────────────┘</p><p>   Result: ✓ Account Created  ✓ Services Provisioned  ✓ Ready to Bill
-</code></pre><hr><h3>Scenario 2: Customer Pays Invoice with Stored Payment Method</h3><p><strong>Business Context</strong>: Monthly recurring invoice generated. Customer logs into self-care portal to pay.</p><h4>User Journey</h4><ol>
-<li><strong>Access Invoice</strong></li>
+   └────────────────────────────────────────────────────────────┘
+   Result: ✓ Account Created  ✓ Services Provisioned  ✓ Ready to Bill
+</code></pre>
+
+<hr>
+
+<h3>Scenario 2: Customer Pays Invoice with Stored Payment Method</h3>
+
+<strong>Business Context</strong>: Monthly recurring invoice generated. Customer logs into self-care portal to pay.
+<h4>User Journey: Step-by-Step Payment Flow</h4>
+
+<h5>Step 1: Access Invoice</h5>
+
+<strong>Action</strong>: Navigate to invoice dashboard
+<ul>
+<li>Customer logs in to selfcare portal</li>
+<li>Navigates to <strong>"Billing Data" → "View Bills"</strong></li>
+<li><strong>Permission check</strong>: <code>VIEW_BILLS</code>, <code>VIEW_INVOICE</code></li>
+<li><strong>API Call</strong>: GraphQL query <code>searchBillInvoice</code> returns pending invoices</li>
+</ul>
+
+<hr>
+
+<h5>Step 2: Invoice Review</h5>
+
+<strong>Action</strong>: Review invoice details before payment
+<strong>Invoice Information Displayed</strong>:
+<ul>
+<li>Invoice number, date, due date</li>
+<li>Recurring charges (subscriptions)</li>
+<li>Usage charges (if applicable)</li>
+<li>Taxes</li>
+<li><strong>Total amount due</strong></li>
+</ul>
+<strong>API Call</strong>: <code>getInvoiceById</code>, <code>searchInvoiceUnits</code>
+
+<hr>
+
+<h5>Step 3: Make Payment</h5>
+
+<strong>Action</strong>: Initiate payment process
+<ol>
+<li>Click <strong>"Pay Now"</strong> button</li>
+<li>Navigate to <strong>"Activity" → "Make Payment"</strong></li>
+<li>Select invoice(s) to pay</li>
+<li>Choose payment method:</li>
 </ol>
-   - Customer logs in to selfcare portal
-   - Navigates to "Billing Data" → "View Bills"
-   - Permission check: <code>VIEW_BILLS</code>, <code>VIEW_INVOICE</code>
-   - GraphQL: <code>searchBillInvoice</code> returns pending invoices</p><ol>
-<li><strong>Invoice Review</strong></li>
+<table>
+<thead><tr>
+<th>Option</th>
+<th>Description</th>
+</tr></thead><tbody>
+<tr>
+<td>--------</td>
+<td>-------------</td>
+</tr>
+<tr>
+<td><strong>Option A</strong></td>
+<td>Use stored credit card (last 4 digits shown: •••• 1234)</td>
+</tr>
+<tr>
+<td><strong>Option B</strong></td>
+<td>Add new credit card (requires tokenization)</td>
+</tr>
+</tbody></table>
+<ol>
+<li><strong>API Call</strong>: <code>searchPayment</code> to retrieve payment profiles</li>
 </ol>
-   - Views invoice details:
-     - Invoice number, date, due date
-     - Recurring charges (subscriptions)
-     - Usage charges (if applicable)
-     - Taxes
-     - Total amount due
-   - GraphQL: <code>getInvoiceById</code>, <code>searchInvoiceUnits</code></p><ol>
-<li><strong>Make Payment</strong></li>
+
+<hr>
+
+<h5>Step 4: Payment Processing</h5>
+
+<strong>Action</strong>: Process payment securely
+<strong>If using new card</strong>:
+<ol>
+<li>Tokenize card via Braintree Vault</li>
+<li><strong>API</strong>: POST to <code>payment-gateway/braintreevault/creditcard</code></li>
+<li>Receive secure payment token</li>
 </ol>
-   - Clicks "Pay Now" button
-   - Navigates to "Activity" → "Make Payment"
-   - Selects invoice(s) to pay
-   - Chooses payment method:
-     - <strong>Option A</strong>: Use stored credit card (masked last 4 digits shown)
-     - <strong>Option B</strong>: Add new credit card
-   - GraphQL: <code>searchPayment</code> to get payment profiles</p><ol>
-<li><strong>Payment Processing</strong></li>
-</ol>
-   - If new card:
-     - Tokenize via Braintree Vault
-     - API: POST to <code>payment-gateway</code> <code>/braintreevault/creditcard</code>
-     - Receives payment token
-   - Apply payment:
-     - GraphQL mutation: <code>applyPayment</code>
-     - Parameters:
-       - <code>accountId</code>
-       - <code>amount</code>
-       - <code>currencyCode</code>
-       - <code>paymentProfileId</code> or <code>cardToken</code>
-       - <code>invoiceIds[]</code> - invoices to apply to
-     - Permission: <code>APPLY_PAYMENT</code></p><ol>
-<li><strong>Backend Processing Flow</strong></li>
-</ol><pre><code class="language-">   ┌─────────────────────────────────────────────────────────────────┐
+<strong>Apply payment</strong>:
+<ul>
+<li><strong>GraphQL mutation</strong>: <code>applyPayment</code></li>
+<li><strong>Parameters</strong>:<br><pre><code class="language-">  {<br>accountId: "ACC-12345"<br>amount: 26705.00<br>currencyCode: "USD"<br>paymentProfileId: "profile_xyz" OR cardToken: "tok_abc123"<br>invoiceIds: ["INV-202602-00123"]<br>}<br></code></pre></li>
+<li><strong>Required Permission</strong>: <code>APPLY_PAYMENT</code></li>
+</ul>
+
+<hr>
+
+<h5>Step 5: Backend Processing Flow</h5>
+
+<strong>Complete Payment Processing Architecture</strong>:
+<pre><code class="language-">   ┌─────────────────────────────────────────────────────────────────┐
    │  Step 1: API Entry Point                                        │
    ├─────────────────────────────────────────────────────────────────┤
    │  service-transactional                                          │
@@ -584,45 +936,123 @@
    │  ├─&gt; If overpayment: creates credit balance                     │
    │  └─&gt; Sends payment confirmation email                           │
    └─────────────────────────────────────────────────────────────────┘
-   </code></pre><ol>
-<li><strong>Confirmation</strong></li>
+</code></pre>
+
+<hr>
+
+<h5>Step 6: Payment Confirmation</h5>
+
+<strong>Customer Experience</strong>:
+<ol>
+<li><strong>Success Message</strong> displayed:<br><ul><li>"Payment of $26,705.00 successfully processed"</li></ul><br><ul><li>Transaction ID shown</li></ul><br><ul><li>Updated balance displayed</li></ul></li>
+<li><strong>Receipt Generation</strong>:<br><ul><li>PDF receipt created via iText</li></ul><br><ul><li>Available for immediate download</li></ul><br><ul><li><strong>API</strong>: <code>getObjectFileById</code> retrieves receipt</li></ul></li>
+<li><strong>Email Confirmation</strong>:<br><ul><li>Sent to account email address</li></ul><br><ul><li>Includes:</li></ul><br><ul><li>Payment amount and date</li></ul><br><ul><li>Invoice(s) paid</li></ul><br><ul><li>Remaining balance (if any)</li></ul><br><ul><li>Receipt attachment</li></ul></li>
 </ol>
-   - Success message displayed
-   - Receipt available for download (PDF)
-   - GraphQL: <code>getObjectFileById</code> for receipt
-   - Email confirmation sent to customer</p><hr><h3>Scenario 3: Customer Views Usage and Transactions</h3><p><strong>Business Context</strong>: A mobile MVNO customer wants to see their data, voice, and SMS usage for the current billing cycle.</p><h4>User Journey</h4><ol>
-<li><strong>Access Usage Dashboard</strong></li>
-</ol>
-   - Customer logs in to selfcare
-   - Navigates to "Billing Data" → "View Transactions"
-   - Permission: <code>VIEW_TRANSACTIONS</code></p><ol>
-<li><strong>View Balances</strong></li>
-</ol>
-   - Navigates to "Billing Data" → "Manage Balances"
-   - Permission: <code>VIEW_BALANCES</code>
-   - GraphQL: <code>getBalanceUnitByAccountId</code>
-   
-   <strong>Displays:</strong>
-   - <strong>Currency Balances</strong>:
-     - Prepaid balance: $25.00 USD
-     - Monthly allowance balance: $50.00 USD
-   - <strong>Grant Balances</strong> (allowances):
-     - Data: 5.2 GB of 10 GB remaining
-     - Voice: 450 minutes of 1,000 remaining
-     - SMS: 890 of 1,000 remaining
-   - <strong>Accumulators</strong> (usage counters):
-     - Data this cycle: 4.8 GB
-     - Voice this cycle: 550 minutes
-     - International calls: 25 minutes</p><ol>
-<li><strong>View Transaction History</strong></li>
-</ol>
+
+<hr>
+
+<h3>Scenario 3: Customer Views Usage and Transactions</h3>
+
+<strong>Business Context</strong>: A mobile MVNO customer wants to see their data, voice, and SMS usage for the current billing cycle.
+<h4>User Journey: Usage & Transaction Monitoring</h4>
+
+<h5>Step 1: Access Usage Dashboard</h5>
+
+<strong>Navigation</strong>:
+<ul>
+<li>Customer logs in to selfcare portal</li>
+<li>Navigates to <strong>"Billing Data" → "View Transactions"</strong></li>
+</ul>
+<strong>Required Permission</strong>: <code>VIEW_TRANSACTIONS</code>
+
+<hr>
+
+<h5>Step 2: View Current Balances</h5>
+
+<strong>Navigation</strong>:
+<ul>
+<li>Go to <strong>"Billing Data" → "Manage Balances"</strong></li>
+</ul>
+<strong>Required Permission</strong>: <code>VIEW_BALANCES</code>
+<strong>API Call</strong>: GraphQL <code>getBalanceUnitByAccountId</code>
+<strong>Balance Dashboard Displays</strong>:
+<table>
+<thead><tr>
+<th>Balance Type</th>
+<th>Current</th>
+<th>Limit/Allowance</th>
+<th>% Used</th>
+</tr></thead><tbody>
+<tr>
+<td>--------------</td>
+<td>---------</td>
+<td>-----------------</td>
+<td>--------</td>
+</tr>
+<tr>
+<td><strong>Prepaid Balance</strong></td>
+<td>$25.00 USD</td>
+<td>N/A</td>
+<td>-</td>
+</tr>
+<tr>
+<td><strong>Monthly Allowance</strong></td>
+<td>$50.00 USD</td>
+<td>N/A</td>
+<td>-</td>
+</tr>
+<tr>
+<td><strong>Data Grant</strong></td>
+<td>5.2 GB</td>
+<td>10 GB</td>
+<td>48%</td>
+</tr>
+<tr>
+<td><strong>Voice Grant</strong></td>
+<td>450 min</td>
+<td>1,000 min</td>
+<td>55%</td>
+</tr>
+<tr>
+<td><strong>SMS Grant</strong></td>
+<td>890 msgs</td>
+<td>1,000 msgs</td>
+<td>11%</td>
+</tr>
+</tbody></table>
+<strong>Usage Accumulators (This Billing Cycle)</strong>:
+<table>
+<thead><tr>
+<th>Metric</th>
+<th>Usage This Cycle</th>
+</tr></thead><tbody>
+<tr>
+<td>--------</td>
+<td>------------------</td>
+</tr>
+<tr>
+<td>Total Data</td>
+<td>4.8 GB</td>
+</tr>
+<tr>
+<td>Total Voice</td>
+<td>550 minutes</td>
+</tr>
+<tr>
+<td>International Calls</td>
+<td>25 minutes</td>
+</tr>
+</tbody></table>
+
+<hr>
+
+<h5>Step 3: View Transaction History</h5>
+
    - GraphQL: <code>getTransactionUnit</code> with filters:
      - <code>accountId</code>
      - <code>fromDate</code>, <code>toDate</code> (current billing cycle)
      - <code>transactionType</code> (e.g., USAGE, RECURRING, ONE_TIME, ADJUSTMENT)
-   
    <strong>Transaction List Shows:</strong>
-   
 <table>
 <thead><tr>
 <th>Date</th>
@@ -673,143 +1103,48 @@
 <td>+$68.75</td>
 <td>$68.75</td>
 </tr>
-</tbody></table><ol>
-<li><strong>Detailed CDR View</strong> (if enabled)</li>
-</ol>
-   - Advanced users can access raw CDR data
-   - Navigates to "Reports" → "Raw CDR Data"
-   - GraphQL: <code>getRawCdrData</code> with parameters:
-     - <code>accountId</code>
-     - <code>fromDate</code>, <code>toDate</code>
-     - <code>serviceType</code> (DATA, VOICE, SMS)
-   
-   <strong>CDR Details:</strong>
-   - Call date/time
-   - Destination number
-   - Duration
-   - Rate applied
-   - Amount charged
-   - Jurisdiction (for telecom tax)</p><hr><h2>Order-to-Cash Complete Workflows</h2><h3>Workflow 1: Subscription Order Creation to Revenue Recognition</h3><p><strong>Business Context</strong>: Enterprise customer orders a new UCaaS subscription with annual commitment. Track the complete journey from order to revenue.</p><h4>Phase 1: Order Initiation (CRM)</h4><ol>
-<li><strong>Sales Opportunity</strong> (Salesforce)</li>
-</ol>
-   - Sales rep creates opportunity for "Acme Corp"
-   - Product: UCaaS Professional - 500 users
-   - Contract: 12 months, annual billing
-   - Total contract value (TCV): $294,000 ($49/user/month × 500 × 12)
-   - Opportunity → Won
-   - Generates Order in Salesforce</p><ol>
-<li><strong>Order Integration</strong> (crm_gateway)</li>
-</ol>
-   - Salesforce triggers order export
-   - Order message published to ActiveMQ queue: <code>OMS</code>
-   - Queue format: JSON with canonical order structure
-   
-   <pre><code class="language-json">   {
-     "externalOrderId": "SF-0034567",
-     "accountId": "ACC-001",
-     "orderDate": "2026-02-10",
-     "orderType": "NEW_SERVICE",
-     "orderLines": [
-       {
-         "itemId": "UCAAS-PRO",
-         "quantity": 500,
-         "serviceStartDate": "2026-03-01",
-         "term": 12,
-         "termUnit": "MONTH",
-         "billableServices": [...]
-       }
-     ]
-   }
-   </code></pre><ol>
-<li><strong>Order Consumption</strong> (crm_gateway → service-transactional)</li>
-</ol>
-   - <code>OmsProcessor</code> consumes from OMS queue
-   - Maps external order to internal Order DTO
-   - Validates account exists
-   - Calls <code>OrderService.createOrder()</code>
-   - Publishes to PROVISIONING queue</p><h4>Phase 2: Order Processing & Provisioning</h4><ol>
-<li><strong>Order Processing</strong> (engine → customerHub)</li>
-</ol>
-   - <code>PGOrderProcessService.submitMultiSubscriptionOrder()</code>
-   - Creates entities:
-     - <strong>Order</strong>: status = PENDING_PROVISIONING
-     - <strong>OrderLines</strong>: one per product/bundle
-     - <strong>OrderServices</strong>: billable service configurations
-     - <strong>Subscription</strong>: status = PENDING, startDate = 2026-03-01
-     - <strong>PriceUnits</strong>: recurring pricing rules from price offer
-     - <strong>ServiceUnits</strong>: service-level details
-   
+</tbody></table>
 <ol>
-<li><strong>Provisioning</strong> (provision_gateway)</li>
+<li><strong>Detailed CDR View</strong> (if enabled)<br><ul><li>Advanced users can access raw CDR data</li></ul><br><ul><li>Navigates to "Reports" → "Raw CDR Data"</li></ul><br><ul><li>GraphQL: <code>getRawCdrData</code> with parameters:</li></ul><br><ul><li><code>accountId</code></li></ul><br><ul><li><code>fromDate</code>, <code>toDate</code></li></ul><br><ul><li><code>serviceType</code> (DATA, VOICE, SMS)</li></ul><br><strong>CDR Details:</strong><br><ul><li>Call date/time</li></ul><br><ul><li>Destination number</li></ul><br><ul><li>Duration</li></ul><br><ul><li>Rate applied</li></ul><br><ul><li>Amount charged</li></ul><br><ul><li>Jurisdiction (for telecom tax)</li></ul></li>
 </ol>
-   - Consumes order from PROVISIONING queue
-   - Maps to ServiceNow format
-   - Creates service request in ServiceNow
-   - ServiceNow assigns to fulfillment team
-   - Vendor systems provisioned:
-     - User accounts created
-     - DIDs assigned
-     - Trunk configuration
-     - Endpoints activated
-   - Returns provisioningId and operative status
-   - Updates Order status: PROVISIONED
-   - Publishes to PROVISIONING_RESPONSE queue</p><ol>
-<li><strong>Subscription Activation</strong></li>
+
+<hr>
+
+<h2>Order-to-Cash Complete Workflows</h2>
+
+<h3>Workflow 1: Subscription Order Creation to Revenue Recognition</h3>
+
+<strong>Business Context</strong>: Enterprise customer orders a new UCaaS subscription with annual commitment. Track the complete journey from order to revenue.
+<h4>Phase 1: Order Initiation (CRM)</h4>
+
+<ol>
+<li><strong>Sales Opportunity</strong> (Salesforce)<br><ul><li>Sales rep creates opportunity for "Acme Corp"</li></ul><br><ul><li>Product: UCaaS Professional - 500 users</li></ul><br><ul><li>Contract: 12 months, annual billing</li></ul><br><ul><li>Total contract value (TCV): $294,000 ($49/user/month × 500 × 12)</li></ul><br><ul><li>Opportunity → Won</li></ul><br><ul><li>Generates Order in Salesforce</li></ul></li>
+<li><strong>Order Integration</strong> (crm_gateway)<br><ul><li>Salesforce triggers order export</li></ul><br><ul><li>Order message published to ActiveMQ queue: <code>OMS</code></li></ul><br><ul><li>Queue format: JSON with canonical order structure</li></ul><br><pre><code class="language-json">   {<br>"externalOrderId": "SF-0034567",<br>"accountId": "ACC-001",<br>"orderDate": "2026-02-10",<br>"orderType": "NEW_SERVICE",<br>"orderLines": [<br>{<br>"itemId": "UCAAS-PRO",<br>"quantity": 500,<br>"serviceStartDate": "2026-03-01",<br>"term": 12,<br>"termUnit": "MONTH",<br>"billableServices": [...]<br>}<br>]<br>}<br></code></pre></li>
+<li><strong>Order Consumption</strong> (crm_gateway → service-transactional)<br><ul><li><code>OmsProcessor</code> consumes from OMS queue</li></ul><br><ul><li>Maps external order to internal Order DTO</li></ul><br><ul><li>Validates account exists</li></ul><br><ul><li>Calls <code>OrderService.createOrder()</code></li></ul><br><ul><li>Publishes to PROVISIONING queue</li></ul></li>
 </ol>
-   - <code>SubscriptionService.updateStatus(ACTIVE)</code>
-   - Service start date: 2026-03-01
-   - First billing cycle established</p><h4>Phase 3: Billing & Invoicing</h4><ol>
-<li><strong>Billing Run</strong> (service-billing)</li>
+<h4>Phase 2: Order Processing & Provisioning</h4>
+
+<ol>
+<li><strong>Order Processing</strong> (engine → customerHub)<br><ul><li><code>PGOrderProcessService.submitMultiSubscriptionOrder()</code></li></ul><br><ul><li>Creates entities:</li></ul><br><ul><li><strong>Order</strong>: status = PENDING_PROVISIONING</li></ul><br><ul><li><strong>OrderLines</strong>: one per product/bundle</li></ul><br><ul><li><strong>OrderServices</strong>: billable service configurations</li></ul><br><ul><li><strong>Subscription</strong>: status = PENDING, startDate = 2026-03-01</li></ul><br><ul><li><strong>PriceUnits</strong>: recurring pricing rules from price offer</li></ul><br><ul><li><strong>ServiceUnits</strong>: service-level details</li></ul></li>
+<li><strong>Provisioning</strong> (provision_gateway)<br><ul><li>Consumes order from PROVISIONING queue</li></ul><br><ul><li>Maps to ServiceNow format</li></ul><br><ul><li>Creates service request in ServiceNow</li></ul><br><ul><li>ServiceNow assigns to fulfillment team</li></ul><br><ul><li>Vendor systems provisioned:</li></ul><br><ul><li>User accounts created</li></ul><br><ul><li>DIDs assigned</li></ul><br><ul><li>Trunk configuration</li></ul><br><ul><li>Endpoints activated</li></ul><br><ul><li>Returns provisioningId and operative status</li></ul><br><ul><li>Updates Order status: PROVISIONED</li></ul><br><ul><li>Publishes to PROVISIONING_RESPONSE queue</li></ul></li>
+<li><strong>Subscription Activation</strong><br><ul><li><code>SubscriptionService.updateStatus(ACTIVE)</code></li></ul><br><ul><li>Service start date: 2026-03-01</li></ul><br><ul><li>First billing cycle established</li></ul></li>
 </ol>
-   - <strong>Trigger</strong>: Scheduled job (e.g., monthly on day 1)
-   - <strong>Or</strong>: Manual via service-proxy: <code>runBilling</code> mutation
-   
-   <strong>Process</strong> (<code>PGBillUnitService.runBilling</code>):
-   - Fetches all active subscriptions due for billing
-   - For each subscription:
-     - Identifies PriceUnits to bill
-     - Calculates prorated amount (if mid-cycle start)
-     - Applies volume discounts (if configured)
-     - Creates TransactionUnit for each charge
-     - Updates BalanceUnit (if prepaid)
-     - Creates AccumulatorBalance entries
-   - Creates BillUnit with status = PENDING
-   - Links TransactionUnits to BillUnit</p><ol>
-<li><strong>Tax Calculation</strong> (tax-gateway)</li>
+<h4>Phase 3: Billing & Invoicing</h4>
+
+<ol>
+<li><strong>Billing Run</strong> (service-billing)<br><ul><li><strong>Trigger</strong>: Scheduled job (e.g., monthly on day 1)</li></ul><br><ul><li><strong>Or</strong>: Manual via service-proxy: <code>runBilling</code> mutation</li></ul><br><strong>Process</strong> (<code>PGBillUnitService.runBilling</code>):<br><ul><li>Fetches all active subscriptions due for billing</li></ul><br><ul><li>For each subscription:</li></ul><br><ul><li>Identifies PriceUnits to bill</li></ul><br><ul><li>Calculates prorated amount (if mid-cycle start)</li></ul><br><ul><li>Applies volume discounts (if configured)</li></ul><br><ul><li>Creates TransactionUnit for each charge</li></ul><br><ul><li>Updates BalanceUnit (if prepaid)</li></ul><br><ul><li>Creates AccumulatorBalance entries</li></ul><br><ul><li>Creates BillUnit with status = PENDING</li></ul><br><ul><li>Links TransactionUnits to BillUnit</li></ul></li>
+<li><strong>Tax Calculation</strong> (tax-gateway)<br><ul><li><code>InvoiceTaxService.calculate()</code></li></ul><br><ul><li>Calls tax-gateway: POST <code>/calculateTax</code></li></ul><br><ul><li>Request includes:</li></ul><br><ul><li>Line items with amounts</li></ul><br><ul><li>Service addresses</li></ul><br><ul><li>Tax jurisdiction codes</li></ul><br><ul><li>tax-gateway routes to Avalara (or internal engine)</li></ul><br><ul><li>Returns tax amounts per line</li></ul><br><ul><li>Creates TransactionTaxData entities</li></ul></li>
+<li><strong>Invoice Generation</strong> (service-invoice)<br><ul><li><strong>Trigger</strong>: Scheduled job or manual via service-proxy</li></ul><br><ul><li><strong>Process</strong> (<code>InvoicingService.invoiceAccount</code>):</li></ul><br><ul><li>Fetches BillUnit(s) with status = PENDING</li></ul><br><ul><li>Groups TransactionUnits</li></ul><br><ul><li>Calculates totals:</li></ul><br><ul><li>Subtotal: $24,500 (one month of service)</li></ul><br><ul><li>Tax: $2,205 (9% telecom tax)</li></ul><br><ul><li><strong>Total: $26,705</strong></li></ul><br><ul><li>Creates InvoiceUnit:</li></ul><br><ul><li>invoiceNumber: INV-202602-00123</li></ul><br><ul><li>invoiceDate: 2026-02-28</li></ul><br><ul><li>dueDate: 2026-03-15 (NET 15)</li></ul><br><ul><li>status: OPEN</li></ul><br><ul><li>amount: $26,705</li></ul><br><ul><li>Generates PDF via iText library</li></ul><br><ul><li>Stores in document repository</li></ul><br><ul><li>Updates BillUnit status: BILLED</li></ul></li>
+<li><strong>Invoice Distribution</strong><br><ul><li>Sends invoice via email (Thymeleaf template)</li></ul><br><ul><li>Syncs to accounting system via finance-gateway</li></ul><br><ul><li>GraphQL mutation: <code>createInvoice</code> to QuickBooks/NetSuite</li></ul></li>
 </ol>
-   - <code>InvoiceTaxService.calculate()</code>
-   - Calls tax-gateway: POST <code>/calculateTax</code>
-   - Request includes:
-     - Line items with amounts
-     - Service addresses
-     - Tax jurisdiction codes
-   - tax-gateway routes to Avalara (or internal engine)
-   - Returns tax amounts per line
-   - Creates TransactionTaxData entities</p><ol>
-<li><strong>Invoice Generation</strong> (service-invoice)</li>
-</ol>
-   - <strong>Trigger</strong>: Scheduled job or manual via service-proxy
-   - <strong>Process</strong> (<code>InvoicingService.invoiceAccount</code>):
-     - Fetches BillUnit(s) with status = PENDING
-     - Groups TransactionUnits
-     - Calculates totals:
-       - Subtotal: $24,500 (one month of service)
-       - Tax: $2,205 (9% telecom tax)
-       - <strong>Total: $26,705</strong>
-     - Creates InvoiceUnit:
-       - invoiceNumber: INV-202602-00123
-       - invoiceDate: 2026-02-28
-       - dueDate: 2026-03-15 (NET 15)
-       - status: OPEN
-       - amount: $26,705
-     - Generates PDF via iText library
-     - Stores in document repository
-     - Updates BillUnit status: BILLED</p><ol>
-<li><strong>Invoice Distribution</strong></li>
-</ol>
-    - Sends invoice via email (Thymeleaf template)
-    - Syncs to accounting system via finance-gateway
-    - GraphQL mutation: <code>createInvoice</code> to QuickBooks/NetSuite</p><h4>Phase 4: Revenue Recognition</h4><p>##### 11. Revenue Journal Creation (engine → revenueHub)</p><p><strong>Trigger</strong>: BillUnit status = BILLED</p><p><strong>Service</strong>: <code>PGBillUnitService.createRevenueJournal()</code></p><p><strong>Process Flow</strong>:</p><pre><code class="language-">┌──────────────────────────────────────────────────────────────────┐
+<h4>Phase 4: Revenue Recognition</h4>
+
+<h5>11. Revenue Journal Creation (engine → revenueHub)</h5>
+
+<strong>Trigger</strong>: BillUnit status = BILLED
+<strong>Service</strong>: <code>PGBillUnitService.createRevenueJournal()</code>
+<strong>Process Flow</strong>:
+<pre><code class="language-">┌──────────────────────────────────────────────────────────────────┐
 │  Initial Journal Entry (Day 1)                                   │
 ├──────────────────────────────────────────────────────────────────┤
 │  • Determines revenue recognition type from Item configuration   │
@@ -826,7 +1161,9 @@
 │  │    • Deferred:        2400 (Deferred Revenue)              │ │
 │  └────────────────────────────────────────────────────────────┘ │
 └──────────────────────────────────────────────────────────────────┘
-</code></pre><p><strong>Monthly Schedule Created</strong>:</p><table>
+</code></pre>
+<strong>Monthly Schedule Created</strong>:
+<table>
 <thead><tr>
 <th>Month</th>
 <th>Accounting Period</th>
@@ -876,7 +1213,17 @@
 <td>PENDING</td>
 <td>Dr: 2400, Cr: 4000</td>
 </tr>
-</tbody></table><p><strong>Total</strong>: 12 months × $2,041.67 = $24,500.00</p><hr><p>##### 12. Monthly Revenue Recognition (service-revenue)</p><p><strong>Trigger</strong>: Monthly job on last day of month</p><p><strong>Service</strong>: <code>RecognizeRevenueService.recognizeRevenue()</code></p><p><strong>Process Flow</strong>:</p><pre><code class="language-">┌──────────────────────────────────────────────────────────────────┐
+</tbody></table>
+<strong>Total</strong>: 12 months × $2,041.67 = $24,500.00
+
+<hr>
+
+<h5>12. Monthly Revenue Recognition (service-revenue)</h5>
+
+<strong>Trigger</strong>: Monthly job on last day of month
+<strong>Service</strong>: <code>RecognizeRevenueService.recognizeRevenue()</code>
+<strong>Process Flow</strong>:
+<pre><code class="language-">┌──────────────────────────────────────────────────────────────────┐
 │  Month-End Processing                                            │
 ├──────────────────────────────────────────────────────────────────┤
 │                                                                   │
@@ -909,7 +1256,9 @@
 │         └─&gt; QuickBooks / NetSuite                                │
 │                                                                   │
 └──────────────────────────────────────────────────────────────────┘
-</code></pre><p><strong>Balance Sheet Impact Over Time</strong>:</p><table>
+</code></pre>
+<strong>Balance Sheet Impact Over Time</strong>:
+<table>
 <thead><tr>
 <th>Month</th>
 <th>Deferred Revenue</th>
@@ -952,88 +1301,36 @@
 <td>$24,500.00</td>
 <td>$0</td>
 </tr>
-</tbody></table><h4>Phase 5: Collections & Payment</h4><ol>
-<li><strong>Payment Application</strong> (service-payment)</li>
-</ol>
-    - Customer pays invoice via:
-      - <strong>Option A</strong>: Self-care portal (covered earlier)
-      - <strong>Option B</strong>: ACH/wire transfer (backend applied)
-      - <strong>Option C</strong>: Auto-charge from stored payment method
-    
-    <strong>Auto-Charge Flow</strong>:
-    - <strong>Trigger</strong>: Invoice due date approaching (e.g., 3 days before)
-    - <strong>Job</strong>: CollectionsService.invoiceDueReminder
-    - <strong>Process</strong>:
-      - Identifies invoices due
-      - Checks account has payment profile with autoCharge = true
-      - Calls payment-gateway to charge card
-      - If successful:
-        - Creates Payment entity
-        - Creates PaymentAllocation
-        - Updates Invoice status: PAID
-        - Updates Account arBalance
-      - If failed:
-        - Creates notification
-        - Sends email to customer
-        - Creates CollectionUnit if past due</p><ol>
-<li><strong>Collections Management</strong> (if payment fails)</li>
-</ol>
-    - <strong>Trigger</strong>: Invoice past due date
-    - <strong>Process</strong> (<code>CollectionsService.createCollectionUnit</code>):
-      - Creates CollectionUnit:
-        - invoiceId
-        - dueDate: 2026-03-15
-        - collectionDate: 2026-03-16
-        - amount: $26,705
-        - status: NEW
-      - Assigns to collections queue
-      - Sends dunning emails (days 1, 7, 14, 30)
-      - If 30 days past due:
-        - Suspends services
-        - GraphQL: <code>updateSubscriptionStatus(SUSPENDED)</code>
-      - If 60 days past due:
-        - Creates write-off proposal
-        - Requires management approval</p><hr><h3>Workflow 2: Prepaid Mobile Top-Up and Usage Rating</h3><p><strong>Business Context</strong>: Prepaid mobile customer tops up account and makes calls/uses data. Real-time rating and balance deduction.</p><h4>Phase 1: Account Top-Up</h4><ol>
-<li><strong>Customer Initiates Top-Up</strong></li>
-</ol>
-   - Methods:
-     - Self-care portal
-     - USSD (<em>123</em>PIN#)
-     - Mobile app
-     - Retail voucher
-     - Credit card online
-   
+</tbody></table>
+<h4>Phase 5: Collections & Payment</h4>
+
 <ol>
-<li><strong>Payment Processing</strong></li>
+<li><strong>Payment Application</strong> (service-payment)<br><ul><li>Customer pays invoice via:</li></ul><br><ul><li><strong>Option A</strong>: Self-care portal (covered earlier)</li></ul><br><ul><li><strong>Option B</strong>: ACH/wire transfer (backend applied)</li></ul><br><ul><li><strong>Option C</strong>: Auto-charge from stored payment method</li></ul><br><strong>Auto-Charge Flow</strong>:<br><ul><li><strong>Trigger</strong>: Invoice due date approaching (e.g., 3 days before)</li></ul><br><ul><li><strong>Job</strong>: CollectionsService.invoiceDueReminder</li></ul><br><ul><li><strong>Process</strong>:</li></ul><br><ul><li>Identifies invoices due</li></ul><br><ul><li>Checks account has payment profile with autoCharge = true</li></ul><br><ul><li>Calls payment-gateway to charge card</li></ul><br><ul><li>If successful:</li></ul><br><ul><li>Creates Payment entity</li></ul><br><ul><li>Creates PaymentAllocation</li></ul><br><ul><li>Updates Invoice status: PAID</li></ul><br><ul><li>Updates Account arBalance</li></ul><br><ul><li>If failed:</li></ul><br><ul><li>Creates notification</li></ul><br><ul><li>Sends email to customer</li></ul><br><ul><li>Creates CollectionUnit if past due</li></ul></li>
+<li><strong>Collections Management</strong> (if payment fails)<br><ul><li><strong>Trigger</strong>: Invoice past due date</li></ul><br><ul><li><strong>Process</strong> (<code>CollectionsService.createCollectionUnit</code>):</li></ul><br><ul><li>Creates CollectionUnit:</li></ul><br><ul><li>invoiceId</li></ul><br><ul><li>dueDate: 2026-03-15</li></ul><br><ul><li>collectionDate: 2026-03-16</li></ul><br><ul><li>amount: $26,705</li></ul><br><ul><li>status: NEW</li></ul><br><ul><li>Assigns to collections queue</li></ul><br><ul><li>Sends dunning emails (days 1, 7, 14, 30)</li></ul><br><ul><li>If 30 days past due:</li></ul><br><ul><li>Suspends services</li></ul><br><ul><li>GraphQL: <code>updateSubscriptionStatus(SUSPENDED)</code></li></ul><br><ul><li>If 60 days past due:</li></ul><br><ul><li>Creates write-off proposal</li></ul><br><ul><li>Requires management approval</li></ul></li>
 </ol>
-   - If credit card:
-     - Calls payment-gateway
-     - Braintree processes payment
-     - Returns authorization
-   - If voucher:
-     - Validates voucher PIN
-     - Checks voucher not already redeemed
-   
+
+<hr>
+
+<h3>Workflow 2: Prepaid Mobile Top-Up and Usage Rating</h3>
+
+<strong>Business Context</strong>: Prepaid mobile customer tops up account and makes calls/uses data. Real-time rating and balance deduction.
+<h4>Phase 1: Account Top-Up</h4>
+
 <ol>
-<li><strong>Balance Update</strong> (engine → arHub)</li>
+<li><strong>Customer Initiates Top-Up</strong><br><ul><li>Methods:</li></ul><br><ul><li>Self-care portal</li></ul><br><ul><li>USSD (<em>123</em>PIN#)</li></ul><br><ul><li>Mobile app</li></ul><br><ul><li>Retail voucher</li></ul><br><ul><li>Credit card online</li></ul></li>
+<li><strong>Payment Processing</strong><br><ul><li>If credit card:</li></ul><br><ul><li>Calls payment-gateway</li></ul><br><ul><li>Braintree processes payment</li></ul><br><ul><li>Returns authorization</li></ul><br><ul><li>If voucher:</li></ul><br><ul><li>Validates voucher PIN</li></ul><br><ul><li>Checks voucher not already redeemed</li></ul></li>
+<li><strong>Balance Update</strong> (engine → arHub)<br><ul><li><code>BalanceUnitService.create/update()</code></li></ul><br><ul><li>Creates BalanceUnitBalance entity:</li></ul><br><ul><li>accountId</li></ul><br><ul><li>balanceType: CURRENCY</li></ul><br><ul><li>currencyCode: USD</li></ul><br><ul><li>amount: +$50.00 (top-up)</li></ul><br><ul><li>effectiveDate: now</li></ul><br><ul><li>expiryDate: +90 days</li></ul><br><ul><li>Also updates BalanceUnitGrant if purchasing data/voice packages:</li></ul><br><ul><li>grantType: DATA</li></ul><br><ul><li>quantity: +5 GB</li></ul><br><ul><li>expiryDate: end of month</li></ul></li>
+<li><strong>Notification</strong><br><ul><li>SMS sent: "Your account has been recharged with $50. New balance: $75.50. Valid until 2026-05-10."</li></ul></li>
 </ol>
-   - <code>BalanceUnitService.create/update()</code>
-   - Creates BalanceUnitBalance entity:
-     - accountId
-     - balanceType: CURRENCY
-     - currencyCode: USD
-     - amount: +$50.00 (top-up)
-     - effectiveDate: now
-     - expiryDate: +90 days
-   - Also updates BalanceUnitGrant if purchasing data/voice packages:
-     - grantType: DATA
-     - quantity: +5 GB
-     - expiryDate: end of month</p><ol>
-<li><strong>Notification</strong></li>
-</ol>
-   - SMS sent: "Your account has been recharged with $50. New balance: $75.50. Valid until 2026-05-10."</p><h4>Phase 2: Real-Time Usage Rating (Prepaid)</h4><p><strong>Scenario</strong>: Customer makes 10-minute voice call to another mobile number.</p><p>##### Real-Time Rating Workflow</p><pre><code class="language-">┌──────────────────────────────────────────────────────────────────────────┐
+<h4>Phase 2: Real-Time Usage Rating (Prepaid)</h4>
+
+<strong>Scenario</strong>: Customer makes 10-minute voice call to another mobile number.
+<h5>Real-Time Rating Workflow</h5>
+
+<pre><code class="language-">┌──────────────────────────────────────────────────────────────────────────┐
 │                   REAL-TIME USAGE RATING PIPELINE                         │
-└──────────────────────────────────────────────────────────────────────────┘</p><p>Step 1: Usage Event Capture
+└──────────────────────────────────────────────────────────────────────────┘
+Step 1: Usage Event Capture
 ┌─────────────────────────────────────────────────────────────────┐
 │  Telecom Network (Soft switch / MSC)                            │
 │  ├─&gt; Call completed: +1234567890 → +9876543210                 │
@@ -1047,7 +1344,8 @@
 │  └─&gt; Publishes to ActiveMQ queue: USAGE                        │
 └──────────────────────┬──────────────────────────────────────────┘
                        │
-                       ▼</p><p>Step 2: Usage Ingestion
+                       ▼
+Step 2: Usage Ingestion
 ┌─────────────────────────────────────────────────────────────────┐
 │  service-mediation: MCMMediationService                         │
 │  ┌───────────────────────────────────────────────────────────┐  │
@@ -1066,7 +1364,8 @@
 │  └───────────────────────────────────────────────────────────┘  │
 └──────────────────────┬──────────────────────────────────────────┘
                        │
-                       ▼</p><p>Step 3: Pre-Processing Pipeline
+                       ▼
+Step 3: Pre-Processing Pipeline
 ┌─────────────────────────────────────────────────────────────────┐
 │  engine → usageProcessHub → PreProcessingService                │
 │  ┌───────────────────────────────────────────────────────────┐  │
@@ -1098,7 +1397,8 @@
 │  └───────────────────────────────────────────────────────────┘  │
 └──────────────────────┬──────────────────────────────────────────┘
                        │
-                       ▼</p><p>Step 4: Prepaid Rating
+                       ▼
+Step 4: Prepaid Rating
 ┌─────────────────────────────────────────────────────────────────┐
 │  PrepaidRatingService.rateUsageRecord()                         │
 │  ┌───────────────────────────────────────────────────────────┐  │
@@ -1129,8 +1429,11 @@
 │  │  │  • Currency balance: unchanged                      │  │  │
 │  │  └─────────────────────────────────────────────────────┘  │  │
 │  └───────────────────────────────────────────────────────────┘  │
-└─────────────────────────────────────────────────────────────────┘</p><p>Result: ✓ Call Rated  ✓ Balance Updated  ✓ Transaction Created
-</code></pre><p><strong>Balance After Rating</strong>:</p><table>
+└─────────────────────────────────────────────────────────────────┘
+Result: ✓ Call Rated  ✓ Balance Updated  ✓ Transaction Created
+</code></pre>
+<strong>Balance After Rating</strong>:
+<table>
 <thead><tr>
 <th>Balance Type</th>
 <th>Before</th>
@@ -1166,63 +1469,27 @@
 <td>5.2</td>
 <td>Unchanged</td>
 </tr>
-</tbody></table><ol>
-<li><strong>Transaction Creation</strong></li>
+</tbody></table>
+<ol>
+<li><strong>Transaction Creation</strong><br><ul><li>Creates TransactionUnit:</li></ul><br><ul><li>transactionType: USAGE</li></ul><br><ul><li>amount: -$1.00</li></ul><br><ul><li>description: "Voice call - 10 min to +1234567890"</li></ul><br><ul><li>transactionDate: 2026-02-10T14:32:15</li></ul><br><ul><li>status: RATED</li></ul><br><ul><li>Links to DetailRecord (CDR)</li></ul><br><ul><li>Updates BalanceUnit</li></ul><br><ul><li>Updates AccumulatorBalance (for volume discounts)</li></ul></li>
+<li><strong>Real-Time Balance Check</strong><br><ul><li>If balance < $5.00 (low balance threshold):</li></ul><br><ul><li>Sends SMS: "Your balance is low: $4.50. Recharge now to avoid service interruption."</li></ul><br><ul><li>Creates notification in selfcare portal</li></ul><br><ul><li>If balance ≤ $0.00:</li></ul><br><ul><li>Suspends outbound services</li></ul><br><ul><li>Allows emergency calls only (E911)</li></ul><br><ul><li>Status update: SUSPENDED_LOW_BALANCE</li></ul></li>
+<li><strong>Usage Record Storage</strong><br><ul><li>UsageContainer persisted to database</li></ul><br><ul><li>Status: PROCESSED</li></ul><br><ul><li>Available in selfcare for customer to view</li></ul><br><ul><li>CDR available for regulatory reporting</li></ul></li>
 </ol>
-   - Creates TransactionUnit:
-     - transactionType: USAGE
-     - amount: -$1.00
-     - description: "Voice call - 10 min to +1234567890"
-     - transactionDate: 2026-02-10T14:32:15
-     - status: RATED
-   - Links to DetailRecord (CDR)
-   - Updates BalanceUnit
-   - Updates AccumulatorBalance (for volume discounts)</p><ol>
-<li><strong>Real-Time Balance Check</strong></li>
+
+<hr>
+
+<h2>Telecom-Specific Scenarios</h2>
+
+<h3>Scenario 4: Operator Reconciliation & Settlement</h3>
+
+<strong>Business Context</strong>: MVNO (Mobile Virtual Network Operator) receives monthly invoice from MNO (host operator) for network usage. Must reconcile wholesale charges against retail billing.
+<h4>Monthly Reconciliation Process</h4>
+
+<ol>
+<li><strong>Operator Invoice Receipt</strong><br><ul><li>MNO sends invoice via:</li></ul><br><ul><li>SFTP file drop</li></ul><br><ul><li>API push</li></ul><br><ul><li>Email attachment</li></ul><br><ul><li>File format: CSV/Excel with usage summary</li></ul></li>
+<li><strong>Invoice Ingestion</strong> (provision_gateway)<br><ul><li><code>OperatorRecordService.create()</code></li></ul><br><ul><li>Creates OperatorInvoice entity:</li></ul><br><ul><li>operatorName: "Verizon Wholesale"</li></ul><br><ul><li>invoiceNumber: "OP-202601-0045"</li></ul><br><ul><li>invoiceDate: 2026-01-31</li></ul><br><ul><li>periodStart: 2026-01-01</li></ul><br><ul><li>periodEnd: 2026-01-31</li></ul><br><ul><li>totalAmount: $125,000</li></ul><br><ul><li>status: NEW</li></ul></li>
+<li><strong>Usage Reconciliation</strong><br><ul><li><strong>Process</strong>: Compare operator CDRs vs. internal CDRs</li></ul><br><ul><li>Query: <code>getRawCdrData</code> for date range</li></ul><br><ul><li>Match on:</li></ul><br><ul><li>Calling number</li></ul><br><ul><li>Called number</li></ul><br><ul><li>Start time</li></ul><br><ul><li>Duration</li></ul><br><strong>Reconciliation Report</strong>:</li>
 </ol>
-   - If balance < $5.00 (low balance threshold):
-     - Sends SMS: "Your balance is low: $4.50. Recharge now to avoid service interruption."
-     - Creates notification in selfcare portal
-   
-   - If balance ≤ $0.00:
-     - Suspends outbound services
-     - Allows emergency calls only (E911)
-     - Status update: SUSPENDED_LOW_BALANCE</p><ol>
-<li><strong>Usage Record Storage</strong></li>
-</ol>
-   - UsageContainer persisted to database
-   - Status: PROCESSED
-   - Available in selfcare for customer to view
-   - CDR available for regulatory reporting</p><hr><h2>Telecom-Specific Scenarios</h2><h3>Scenario 4: Operator Reconciliation & Settlement</h3><p><strong>Business Context</strong>: MVNO (Mobile Virtual Network Operator) receives monthly invoice from MNO (host operator) for network usage. Must reconcile wholesale charges against retail billing.</p><h4>Monthly Reconciliation Process</h4><ol>
-<li><strong>Operator Invoice Receipt</strong></li>
-</ol>
-   - MNO sends invoice via:
-     - SFTP file drop
-     - API push
-     - Email attachment
-   - File format: CSV/Excel with usage summary</p><ol>
-<li><strong>Invoice Ingestion</strong> (provision_gateway)</li>
-</ol>
-   - <code>OperatorRecordService.create()</code>
-   - Creates OperatorInvoice entity:
-     - operatorName: "Verizon Wholesale"
-     - invoiceNumber: "OP-202601-0045"
-     - invoiceDate: 2026-01-31
-     - periodStart: 2026-01-01
-     - periodEnd: 2026-01-31
-     - totalAmount: $125,000
-     - status: NEW</p><ol>
-<li><strong>Usage Reconciliation</strong></li>
-</ol>
-   - <strong>Process</strong>: Compare operator CDRs vs. internal CDRs
-   - Query: <code>getRawCdrData</code> for date range
-   - Match on:
-     - Calling number
-     - Called number
-     - Start time
-     - Duration
-   
-   <strong>Reconciliation Report</strong>:
 <table>
 <thead><tr>
 <th>Category</th>
@@ -1266,434 +1533,159 @@
 <td><strong>+$456</strong></td>
 <td>0.36% over</td>
 </tr>
-</tbody></table><ol>
-<li><strong>Dispute Management</strong> (if variance > threshold)</li>
-</ol>
-   - Creates OperatorDispute:
-     - operatorInvoiceId
-     - disputeType: USAGE_VARIANCE
-     - amount: $456
-     - reason: "CDR count mismatch for voice"
-     - status: OPEN
-   - Generates dispute report with CDR details
-   - Exported for operator review</p><ol>
-<li><strong>Settlement</strong></li>
-</ol>
-   - If dispute resolved:
-     - Updates OperatorInvoice amount (if adjusted)
-   - Creates Payment:
-     - paymentType: OPERATOR_SETTLEMENT
-     - amount: $124,544 (after adjustment)
-     - paymentDate: 2026-02-15
-   - Syncs to finance system as COGS (Cost of Goods Sold)
-   - GL Entry:
-     - Debit: COGS - Wholesale Network (5100): $124,544
-     - Credit: Cash/AP (2000): $124,544</p><ol>
-<li><strong>Margin Analysis</strong></li>
-</ol>
-   - <strong>Revenue</strong> (from retail customers): $287,650
-   - <strong>COGS</strong> (wholesale network): $124,544
-   - <strong>Gross Profit</strong>: $163,106
-   - <strong>Gross Margin</strong>: 56.7%
-   
-   Report includes:
-   - Revenue by service type (voice, data, SMS)
-   - COGS by service type
-   - Margin by customer segment
-   - Identifies unprofitable customers/services</p><hr><h3>Scenario 5: Number Porting & Provisioning</h3><p><strong>Business Context</strong>: Customer requests to port their existing phone number from another carrier to the new service.</p><h4>Port-In Workflow</h4><ol>
-<li><strong>Port Request Initiation</strong></li>
-</ol>
-   - Customer initiates in selfcare or via sales agent
-   - Provides:
-     - Current phone number
-     - Current carrier
-     - Account number with current carrier
-     - PIN/password for authorization</p><ol>
-<li><strong>Port Request Validation</strong></li>
-</ol>
-   - System checks:
-     - Number is valid and portable
-     - Not in recent port history
-     - Account in good standing
-   - Creates Order:
-     - orderType: NUMBER_PORT_IN
-     - orderServices includes:
-       - serviceType: DID
-       - provisioningId: [phone number]
-       - portDetails: { carrier, accountNumber, pin }</p><ol>
-<li><strong>Provisioning Flow</strong> (provision_gateway)</li>
-</ol>
-   - Order published to PROVISIONING queue
-   - <code>ProvisionGatewayService.processProvisioning()</code>
-   - Calls carrier port-in API (or submits LSR - Local Service Request)
-   - Creates work order in ServiceNow:
-     - workOrderType: PORT_IN
-     - expectedCompletionDate: +3 business days
-     - status: PENDING_CARRIER</p><ol>
-<li><strong>Carrier Processing</strong> (External)</li>
-</ol>
-   - Current carrier receives port request
-   - Validates customer authorization
-   - Returns:
-     - <strong>Approved</strong>: Port will complete on [date]
-     - <strong>Rejected</strong>: Invalid account/PIN
-   
+</tbody></table>
 <ol>
-<li><strong>Port Completion</strong></li>
+<li><strong>Dispute Management</strong> (if variance > threshold)<br><ul><li>Creates OperatorDispute:</li></ul><br><ul><li>operatorInvoiceId</li></ul><br><ul><li>disputeType: USAGE_VARIANCE</li></ul><br><ul><li>amount: $456</li></ul><br><ul><li>reason: "CDR count mismatch for voice"</li></ul><br><ul><li>status: OPEN</li></ul><br><ul><li>Generates dispute report with CDR details</li></ul><br><ul><li>Exported for operator review</li></ul></li>
+<li><strong>Settlement</strong><br><ul><li>If dispute resolved:</li></ul><br><ul><li>Updates OperatorInvoice amount (if adjusted)</li></ul><br><ul><li>Creates Payment:</li></ul><br><ul><li>paymentType: OPERATOR_SETTLEMENT</li></ul><br><ul><li>amount: $124,544 (after adjustment)</li></ul><br><ul><li>paymentDate: 2026-02-15</li></ul><br><ul><li>Syncs to finance system as COGS (Cost of Goods Sold)</li></ul><br><ul><li>GL Entry:</li></ul><br><ul><li>Debit: COGS - Wholesale Network (5100): $124,544</li></ul><br><ul><li>Credit: Cash/AP (2000): $124,544</li></ul></li>
+<li><strong>Margin Analysis</strong><br><ul><li><strong>Revenue</strong> (from retail customers): $287,650</li></ul><br><ul><li><strong>COGS</strong> (wholesale network): $124,544</li></ul><br><ul><li><strong>Gross Profit</strong>: $163,106</li></ul><br><ul><li><strong>Gross Margin</strong>: 56.7%</li></ul><br>Report includes:<br><ul><li>Revenue by service type (voice, data, SMS)</li></ul><br><ul><li>COGS by service type</li></ul><br><ul><li>Margin by customer segment</li></ul><br><ul><li>Identifies unprofitable customers/services</li></ul></li>
 </ol>
-   - On port date:
-     - Current carrier releases number
-     - New carrier activates number
-   - Vendor system notifies via webhook
-   - Updates Order status: PROVISIONED
-   - Updates ServiceUnit:
-     - provisioningId: [phone number]
-     - provisioningStatus: ACTIVE
-     - activationDate: [port completion date]</p><ol>
-<li><strong>Service Activation</strong></li>
+
+<hr>
+
+<h3>Scenario 5: Number Porting & Provisioning</h3>
+
+<strong>Business Context</strong>: Customer requests to port their existing phone number from another carrier to the new service.
+<h4>Port-In Workflow</h4>
+
+<ol>
+<li><strong>Port Request Initiation</strong><br><ul><li>Customer initiates in selfcare or via sales agent</li></ul><br><ul><li>Provides:</li></ul><br><ul><li>Current phone number</li></ul><br><ul><li>Current carrier</li></ul><br><ul><li>Account number with current carrier</li></ul><br><ul><li>PIN/password for authorization</li></ul></li>
+<li><strong>Port Request Validation</strong><br><ul><li>System checks:</li></ul><br><ul><li>Number is valid and portable</li></ul><br><ul><li>Not in recent port history</li></ul><br><ul><li>Account in good standing</li></ul><br><ul><li>Creates Order:</li></ul><br><ul><li>orderType: NUMBER_PORT_IN</li></ul><br><ul><li>orderServices includes:</li></ul><br><ul><li>serviceType: DID</li></ul><br><ul><li>provisioningId: [phone number]</li></ul><br><ul><li>portDetails: { carrier, accountNumber, pin }</li></ul></li>
+<li><strong>Provisioning Flow</strong> (provision_gateway)<br><ul><li>Order published to PROVISIONING queue</li></ul><br><ul><li><code>ProvisionGatewayService.processProvisioning()</code></li></ul><br><ul><li>Calls carrier port-in API (or submits LSR - Local Service Request)</li></ul><br><ul><li>Creates work order in ServiceNow:</li></ul><br><ul><li>workOrderType: PORT_IN</li></ul><br><ul><li>expectedCompletionDate: +3 business days</li></ul><br><ul><li>status: PENDING_CARRIER</li></ul></li>
+<li><strong>Carrier Processing</strong> (External)<br><ul><li>Current carrier receives port request</li></ul><br><ul><li>Validates customer authorization</li></ul><br><ul><li>Returns:</li></ul><br><ul><li><strong>Approved</strong>: Port will complete on [date]</li></ul><br><ul><li><strong>Rejected</strong>: Invalid account/PIN</li></ul></li>
+<li><strong>Port Completion</strong><br><ul><li>On port date:</li></ul><br><ul><li>Current carrier releases number</li></ul><br><ul><li>New carrier activates number</li></ul><br><ul><li>Vendor system notifies via webhook</li></ul><br><ul><li>Updates Order status: PROVISIONED</li></ul><br><ul><li>Updates ServiceUnit:</li></ul><br><ul><li>provisioningId: [phone number]</li></ul><br><ul><li>provisioningStatus: ACTIVE</li></ul><br><ul><li>activationDate: [port completion date]</li></ul></li>
+<li><strong>Service Activation</strong><br><ul><li>Number now routes to new platform</li></ul><br><ul><li>Customer can make/receive calls</li></ul><br><ul><li>Billing begins (prorated from activation date)</li></ul><br><ul><li>Old carrier sends final invoice</li></ul></li>
 </ol>
-   - Number now routes to new platform
-   - Customer can make/receive calls
-   - Billing begins (prorated from activation date)
-   - Old carrier sends final invoice</p><hr><h2>Multi-Tenant SaaS Operations</h2><h3>Scenario 6: New Tenant Onboarding</h3><p><strong>Business Context</strong>: Embrix O2X platform is sold as white-label solution. New partner company wants their own branded self-care portal.</p><h4>Tenant Onboarding Process</h4><ol>
-<li><strong>Tenant Configuration Creation</strong> (ui-core → Ops Hub)</li>
+
+<hr>
+
+<h2>Multi-Tenant SaaS Operations</h2>
+
+<h3>Scenario 6: New Tenant Onboarding</h3>
+
+<strong>Business Context</strong>: Embrix O2X platform is sold as white-label solution. New partner company wants their own branded self-care portal.
+<h4>Tenant Onboarding Process</h4>
+
+<ol>
+<li><strong>Tenant Configuration Creation</strong> (ui-core → Ops Hub)<br><ul><li>Admin user accesses "Tenant Onboarding" module</li></ul><br><ul><li>Creates new tenant record:</li></ul><br><ul><li>tenantName: "Acme Communications"</li></ul><br><ul><li>tenantCode: "acme-com"</li></ul><br><ul><li>domain: "selfcare.acme-communications.com"</li></ul><br><ul><li>logoUrl: "https://cdn.acme.com/logo.png"</li></ul><br><ul><li>themeColors: { primary: "#0066CC", secondary: "#FF6600" }</li></ul><br><ul><li>supportEmail: "support@acme-communications.com"</li></ul><br><ul><li>supportPhone: "+1-800-555-0100"</li></ul></li>
+<li><strong>Database Tenant Setup</strong> (engine → opsHub)<br><ul><li>Creates tenant schema (if silo model):</li></ul><br><ul><li>Schema name: <code>acme_com</code></li></ul><br><ul><li>Copies table structure from template</li></ul><br><ul><li>Applies Flyway migrations</li></ul><br><ul><li>Or configures tenant_id column filtering (if shared schema)</li></ul></li>
+<li><strong>Self-Care Configuration</strong> (<code>TenantSelfCareConfig</code>)<br><ul><li>Enables/disables features per tenant:</li></ul><br><ul><li>enableSelfRegistration: true</li></ul><br><ul><li>enableCreditCardPayment: true</li></ul><br><ul><li>enableUsageReports: false (enterprise only)</li></ul><br><ul><li>enableVoiceCDR: false</li></ul><br><ul><li>Sets permission defaults for new users</li></ul><br><ul><li>Configures package visibility</li></ul></li>
+<li><strong>Integration Setup</strong><br><ul><li>CRM Gateway:</li></ul><br><ul><li>Salesforce credentials for tenant's SFDC org</li></ul><br><ul><li>Maps tenant→SF org mapping</li></ul><br><ul><li>Payment Gateway:</li></ul><br><ul><li>Braintree merchant account credentials</li></ul><br><ul><li>Tenant gets their own merchant account</li></ul><br><ul><li>Tax Gateway:</li></ul><br><ul><li>Avalara account credentials</li></ul><br><ul><li>Tax jurisdiction setup</li></ul><br><ul><li>Finance Gateway:</li></ul><br><ul><li>QuickBooks/NetSuite credentials</li></ul><br><ul><li>Chart of accounts mapping</li></ul></li>
+<li><strong>Credential Storage</strong> (Vault)<br><ul><li>Creates Vault path: <code>/secret/embrix/tenant/acme-com/</code></li></ul><br><ul><li>Stores:</li></ul><br><ul><li><code>vendorCredentials/SFDC</code></li></ul><br><ul><li><code>vendorCredentials/BRAINTREE</code></li></ul><br><ul><li><code>vendorCredentials/AVALARA</code></li></ul><br><ul><li><code>vendorCredentials/QUICKBOOKS</code></li></ul><br><ul><li>Each credential includes:</li></ul><br><ul><li>API keys/tokens</li></ul><br><ul><li>Endpoints</li></ul><br><ul><li>Org/merchant IDs</li></ul></li>
+<li><strong>URL/DNS Configuration</strong><br><ul><li>Creates subdomain: <code>selfcare.acme-communications.com</code></li></ul><br><ul><li>Points to Embrix O2X load balancer</li></ul><br><ul><li>SSL certificate provisioned (Let's Encrypt or custom)</li></ul><br><ul><li>Nginx/ALB routes by hostname → tenant resolution</li></ul></li>
+<li><strong>Initial Data Population</strong><br><ul><li><strong>Pricing</strong>: Imports tenant's product catalog</li></ul><br><ul><li><strong>Users</strong>: Creates admin user for tenant</li></ul><br><ul><li><strong>Reports</strong>: Configures report templates</li></ul><br><ul><li><strong>Notifications</strong>: Sets up email templates with tenant branding</li></ul></li>
+<li><strong>Testing & Validation</strong><br><ul><li>QA performs smoke tests:</li></ul><br><ul><li>User registration flow</li></ul><br><ul><li>Payment processing</li></ul><br><ul><li>Invoice generation</li></ul><br><ul><li>External integrations</li></ul><br><ul><li>Tenant admin reviews and approves</li></ul></li>
+<li><strong>Go-Live</strong><br><ul><li>Tenant status: ACTIVE</li></ul><br><ul><li>Users can access portal</li></ul><br><ul><li>Billing begins</li></ul><br><ul><li>Support team notified</li></ul></li>
 </ol>
-   - Admin user accesses "Tenant Onboarding" module
-   - Creates new tenant record:
-     - tenantName: "Acme Communications"
-     - tenantCode: "acme-com"
-     - domain: "selfcare.acme-communications.com"
-     - logoUrl: "https://cdn.acme.com/logo.png"
-     - themeColors: { primary: "#0066CC", secondary: "#FF6600" }
-     - supportEmail: "support@acme-communications.com"
-     - supportPhone: "+1-800-555-0100"</p><ol>
-<li><strong>Database Tenant Setup</strong> (engine → opsHub)</li>
+
+<hr>
+
+<h3>Scenario 7: Tenant-Specific Customization</h3>
+
+<strong>Business Context</strong>: Tenant "Acme Communications" needs custom business logic for their vertical (e.g., healthcare compliance, non-standard billing rules).
+<h4>Customization Types</h4>
+
+<ol>
+<li><strong>Custom Attributes</strong><br><ul><li>Account level:</li></ul><br><ul><li><code>hipaaCompliant</code> (boolean)</li></ul><br><ul><li><code>emrSystem</code> (string) - which EMR they integrate with</li></ul><br><ul><li><code>npiNumber</code> (string) - National Provider Identifier</li></ul><br><ul><li>Stored in <code>custom_attributes</code> JSONB column</li></ul><br><ul><li>Accessible in pricing/billing rules</li></ul></li>
+<li><strong>Custom Pricing Rules</strong><br><ul><li>Volume discount tiers specific to Acme:</li></ul><br><ul><li>0-1,000 users: $49/user</li></ul><br><ul><li>1,001-5,000 users: $45/user</li></ul><br><ul><li>5,001+ users: $40/user</li></ul><br><ul><li>Configured in PriceOffer with tenant-specific tiers</li></ul></li>
+<li><strong>Custom Reports</strong><br><ul><li>HIPAA audit log export</li></ul><br><ul><li>Compliance reporting</li></ul><br><ul><li>Custom CDR format for EMR integration</li></ul><br><ul><li>GraphQL: Custom queries registered in tenant config</li></ul></li>
+<li><strong>Custom Workflows</strong><br><ul><li>Order approval workflow (for healthcare orgs):</li></ul><br><ul><li>Orders > $10,000 require manager approval</li></ul><br><ul><li>Implemented via <code>ConfigOrderApproval</code> with tenant filter</li></ul><br><ul><li>Auto-suspension rules:</li></ul><br><ul><li>Different grace periods per customer type</li></ul><br><ul><li>Configured in <code>CollectionsConfig</code></li></ul></li>
 </ol>
-   - Creates tenant schema (if silo model):
-     - Schema name: <code>acme_com</code>
-     - Copies table structure from template
-     - Applies Flyway migrations
-   - Or configures tenant_id column filtering (if shared schema)</p><ol>
-<li><strong>Self-Care Configuration</strong> (<code>TenantSelfCareConfig</code>)</li>
+
+<hr>
+
+<h2>External System Integrations</h2>
+
+<h3>Scenario 8: Salesforce → Embrix → ServiceNow End-to-End</h3>
+
+<strong>Business Context</strong>: Complete order lifecycle across three systems.
+<h4>Integration Flow</h4>
+
+<ol>
+<li><strong>Salesforce (CRM)</strong><br><ul><li>Sales rep creates Opportunity</li></ul><br><ul><li>Adds products to quote</li></ul><br><ul><li>Quote → Order</li></ul><br><ul><li>Order status: WAITING_PROVISIONING</li></ul><br><ul><li>Triggers Process Builder / Flow</li></ul><br><ul><li>Publishes to OMS queue via CRM Gateway webhook</li></ul></li>
+<li><strong>CRM Gateway</strong><br><ul><li>Receives webhook from Salesforce</li></ul><br><ul><li>Authenticates via OAuth2 (Salesforce → Vault)</li></ul><br><ul><li>Maps SF Order → Canonical Order DTO</li></ul><br><ul><li>Publishes to ActiveMQ: <code>OMS</code> queue</li></ul><br><ul><li>Returns acknowledgment to Salesforce</li></ul></li>
+<li><strong>Embrix O2X (OMS/Billing)</strong><br><ul><li><code>OmsProcessor</code> consumes from queue</li></ul><br><ul><li>Creates Order, Subscription, BillUnit</li></ul><br><ul><li>Runs billing (if charges due immediately)</li></ul><br><ul><li>Publishes to <code>PROVISIONING</code> queue</li></ul><br><ul><li>Updates SF Order via CRM Gateway:</li></ul><br><ul><li>embrixOrderId</li></ul><br><ul><li>status: PENDING_PROVISIONING</li></ul></li>
+<li><strong>Provision Gateway</strong><br><ul><li>Consumes from PROVISIONING queue</li></ul><br><ul><li>Maps to ServiceNow format:</li></ul><br><ul><li>Creates Work Order in ServiceNow</li></ul><br><ul><li>workOrderType: NEW_SERVICE</li></ul><br><ul><li>assignedGroup: Network Ops</li></ul><br><ul><li>ServiceNow assigns to technician</li></ul></li>
+<li><strong>ServiceNow (ITSM/Fulfillment)</strong><br><ul><li>Technician completes work order:</li></ul><br><ul><li>Provisions equipment</li></ul><br><ul><li>Activates service</li></ul><br><ul><li>Tests connectivity</li></ul><br><ul><li>Updates work order status: COMPLETED</li></ul><br><ul><li>Triggers webhook to Provision Gateway</li></ul></li>
+<li><strong>Provision Gateway (Callback)</strong><br><ul><li>Receives ServiceNow webhook</li></ul><br><ul><li>Maps ServiceNow response → Canonical</li></ul><br><ul><li>Updates Order status: PROVISIONED</li></ul><br><ul><li>Publishes to <code>PROVISIONING_RESPONSE</code> queue</li></ul></li>
+<li><strong>Embrix O2X (Completion)</strong><br><ul><li>Consumes from PROVISIONING_RESPONSE</li></ul><br><ul><li>Updates Order status: COMPLETED</li></ul><br><ul><li>Activates Subscription</li></ul><br><ul><li>Notifies customer (email/SMS)</li></ul><br><ul><li>Updates SF Order via CRM Gateway:</li></ul><br><ul><li>status: ACTIVATED</li></ul><br><ul><li>activationDate</li></ul><br><ul><li>provisioningId</li></ul></li>
+<li><strong>Salesforce (Status Update)</strong><br><ul><li>Order status: ACTIVATED</li></ul><br><ul><li>Triggers Success Playbook:</li></ul><br><ul><li>Schedules onboarding call</li></ul><br><ul><li>Sends welcome kit</li></ul><br><ul><li>Creates support case record</li></ul></li>
 </ol>
-   - Enables/disables features per tenant:
-     - enableSelfRegistration: true
-     - enableCreditCardPayment: true
-     - enableUsageReports: false (enterprise only)
-     - enableVoiceCDR: false
-   - Sets permission defaults for new users
-   - Configures package visibility</p><ol>
-<li><strong>Integration Setup</strong></li>
+
+<hr>
+
+<h3>Scenario 9: QuickBooks Revenue Sync</h3>
+
+<strong>Business Context</strong>: Monthly revenue recognition entries need to sync to QuickBooks for financial reporting.
+<h4>Monthly Sync Process</h4>
+
+<ol>
+<li><strong>Revenue Recognition</strong> (Embrix O2X)<br><ul><li>Month-end job runs: <code>recognizeRevenue</code></li></ul><br><ul><li>Processes all pending revenue journals for the month</li></ul><br><ul><li>Creates GL entries in internal ledger</li></ul></li>
+<li><strong>Journal Entry Batch Creation</strong><br><ul><li>Groups revenue journals by:</li></ul><br><ul><li>GL account</li></ul><br><ul><li>Department/cost center</li></ul><br><ul><li>Customer (if needed)</li></ul><br><ul><li>Creates batch:</li></ul><br><ul><li>Batch date: Last day of month</li></ul><br><ul><li>Description: "February 2026 Revenue Recognition"</li></ul><br><ul><li>Entries: 1,234 line items</li></ul></li>
+<li><strong>Finance Gateway Call</strong><br><ul><li>GraphQL: <code>createJournal</code> mutation</li></ul><br><ul><li>Parameters:</li></ul><br><ul><li>journalEntries: [{ account, debit, credit, memo }]</li></ul><br><ul><li>batchId</li></ul><br><ul><li>Finance Gateway receives request</li></ul></li>
+<li><strong>QuickBooks Mapping</strong> (finance-gateway)<br><ul><li>Maps Embrix GL accounts → QuickBooks accounts:</li></ul><br><ul><li>4000 (Revenue) → "4000 - Service Revenue"</li></ul><br><ul><li>2400 (Deferred) → "2400 - Deferred Revenue"</li></ul><br><ul><li>Uses <code>ConfigChartOfAccount</code> mapping table</li></ul><br><ul><li>Formats as QuickBooks Journal Entry:</li></ul><br><pre><code class="language-json">   {<br>"TxnDate": "2026-02-28",<br>"Line": [<br>{<br>"DetailType": "JournalEntryLineDetail",<br>"Amount": 125000.00,<br>"JournalEntryLineDetail": {<br>"PostingType": "Debit",<br>"AccountRef": { "value": "82" } // Deferred Revenue<br>}<br>},<br>{<br>"DetailType": "JournalEntryLineDetail",<br>"Amount": 125000.00,<br>"JournalEntryLineDetail": {<br>"PostingType": "Credit",<br>"AccountRef": { "value": "79" } // Service Revenue<br>}<br>}<br>]<br>}<br></code></pre></li>
+<li><strong>QuickBooks API Call</strong><br><ul><li>finance-gateway calls QuickBooks API:</li></ul><br><ul><li>Endpoint: POST <code>/v3/company/{realmId}/journalentry</code></li></ul><br><ul><li>Auth: OAuth2 token from Vault</li></ul><br><ul><li>QuickBooks validates and creates entry</li></ul><br><ul><li>Returns: JournalEntry ID</li></ul></li>
+<li><strong>Sync Confirmation</strong><br><ul><li>finance-gateway updates RevenueJournal:</li></ul><br><ul><li>externalId: QuickBooks JournalEntry ID</li></ul><br><ul><li>syncStatus: SYNCED</li></ul><br><ul><li>syncDate: 2026-02-28T23:45:12Z</li></ul><br><ul><li>If error:</li></ul><br><ul><li>syncStatus: FAILED</li></ul><br><ul><li>errorMessage: stored for retry</li></ul><br><ul><li>Notification sent to accounting team</li></ul></li>
+<li><strong>Reconciliation Report</strong><br><ul><li>Compares Embrix GL → QuickBooks:</li></ul><br><ul><li>Revenue by account</li></ul><br><ul><li>Deferred revenue balance</li></ul><br><ul><li>Month-over-month variance</li></ul><br><ul><li>Report generated and emailed to CFO</li></ul></li>
 </ol>
-   - CRM Gateway:
-     - Salesforce credentials for tenant's SFDC org
-     - Maps tenant→SF org mapping
-   - Payment Gateway:
-     - Braintree merchant account credentials
-     - Tenant gets their own merchant account
-   - Tax Gateway:
-     - Avalara account credentials
-     - Tax jurisdiction setup
-   - Finance Gateway:
-     - QuickBooks/NetSuite credentials
-     - Chart of accounts mapping</p><ol>
-<li><strong>Credential Storage</strong> (Vault)</li>
-</ol>
-   - Creates Vault path: <code>/secret/embrix/tenant/acme-com/</code>
-   - Stores:
-     - <code>vendorCredentials/SFDC</code>
-     - <code>vendorCredentials/BRAINTREE</code>
-     - <code>vendorCredentials/AVALARA</code>
-     - <code>vendorCredentials/QUICKBOOKS</code>
-   - Each credential includes:
-     - API keys/tokens
-     - Endpoints
-     - Org/merchant IDs</p><ol>
-<li><strong>URL/DNS Configuration</strong></li>
-</ol>
-   - Creates subdomain: <code>selfcare.acme-communications.com</code>
-   - Points to Embrix O2X load balancer
-   - SSL certificate provisioned (Let's Encrypt or custom)
-   - Nginx/ALB routes by hostname → tenant resolution</p><ol>
-<li><strong>Initial Data Population</strong></li>
-</ol>
-   - <strong>Pricing</strong>: Imports tenant's product catalog
-   - <strong>Users</strong>: Creates admin user for tenant
-   - <strong>Reports</strong>: Configures report templates
-   - <strong>Notifications</strong>: Sets up email templates with tenant branding</p><ol>
-<li><strong>Testing & Validation</strong></li>
-</ol>
-   - QA performs smoke tests:
-     - User registration flow
-     - Payment processing
-     - Invoice generation
-     - External integrations
-   - Tenant admin reviews and approves</p><ol>
-<li><strong>Go-Live</strong></li>
-</ol>
-   - Tenant status: ACTIVE
-   - Users can access portal
-   - Billing begins
-   - Support team notified</p><hr><h3>Scenario 7: Tenant-Specific Customization</h3><p><strong>Business Context</strong>: Tenant "Acme Communications" needs custom business logic for their vertical (e.g., healthcare compliance, non-standard billing rules).</p><h4>Customization Types</h4><ol>
-<li><strong>Custom Attributes</strong></li>
-</ol>
-   - Account level:
-     - <code>hipaaCompliant</code> (boolean)
-     - <code>emrSystem</code> (string) - which EMR they integrate with
-     - <code>npiNumber</code> (string) - National Provider Identifier
-   - Stored in <code>custom_attributes</code> JSONB column
-   - Accessible in pricing/billing rules</p><ol>
-<li><strong>Custom Pricing Rules</strong></li>
-</ol>
-   - Volume discount tiers specific to Acme:
-     - 0-1,000 users: $49/user
-     - 1,001-5,000 users: $45/user
-     - 5,001+ users: $40/user
-   - Configured in PriceOffer with tenant-specific tiers</p><ol>
-<li><strong>Custom Reports</strong></li>
-</ol>
-   - HIPAA audit log export
-   - Compliance reporting
-   - Custom CDR format for EMR integration
-   - GraphQL: Custom queries registered in tenant config</p><ol>
-<li><strong>Custom Workflows</strong></li>
-</ol>
-   - Order approval workflow (for healthcare orgs):
-     - Orders > $10,000 require manager approval
-     - Implemented via <code>ConfigOrderApproval</code> with tenant filter
-   - Auto-suspension rules:
-     - Different grace periods per customer type
-     - Configured in <code>CollectionsConfig</code></p><hr><h2>External System Integrations</h2><h3>Scenario 8: Salesforce → Embrix → ServiceNow End-to-End</h3><p><strong>Business Context</strong>: Complete order lifecycle across three systems.</p><h4>Integration Flow</h4><ol>
-<li><strong>Salesforce (CRM)</strong></li>
-</ol>
-   - Sales rep creates Opportunity
-   - Adds products to quote
-   - Quote → Order
-   - Order status: WAITING_PROVISIONING
-   - Triggers Process Builder / Flow
-   - Publishes to OMS queue via CRM Gateway webhook</p><ol>
-<li><strong>CRM Gateway</strong></li>
-</ol>
-   - Receives webhook from Salesforce
-   - Authenticates via OAuth2 (Salesforce → Vault)
-   - Maps SF Order → Canonical Order DTO
-   - Publishes to ActiveMQ: <code>OMS</code> queue
-   - Returns acknowledgment to Salesforce</p><ol>
-<li><strong>Embrix O2X (OMS/Billing)</strong></li>
-</ol>
-   - <code>OmsProcessor</code> consumes from queue
-   - Creates Order, Subscription, BillUnit
-   - Runs billing (if charges due immediately)
-   - Publishes to <code>PROVISIONING</code> queue
-   - Updates SF Order via CRM Gateway:
-     - embrixOrderId
-     - status: PENDING_PROVISIONING</p><ol>
-<li><strong>Provision Gateway</strong></li>
-</ol>
-   - Consumes from PROVISIONING queue
-   - Maps to ServiceNow format:
-     - Creates Work Order in ServiceNow
-     - workOrderType: NEW_SERVICE
-     - assignedGroup: Network Ops
-   - ServiceNow assigns to technician</p><ol>
-<li><strong>ServiceNow (ITSM/Fulfillment)</strong></li>
-</ol>
-   - Technician completes work order:
-     - Provisions equipment
-     - Activates service
-     - Tests connectivity
-   - Updates work order status: COMPLETED
-   - Triggers webhook to Provision Gateway</p><ol>
-<li><strong>Provision Gateway (Callback)</strong></li>
-</ol>
-   - Receives ServiceNow webhook
-   - Maps ServiceNow response → Canonical
-   - Updates Order status: PROVISIONED
-   - Publishes to <code>PROVISIONING_RESPONSE</code> queue</p><ol>
-<li><strong>Embrix O2X (Completion)</strong></li>
-</ol>
-   - Consumes from PROVISIONING_RESPONSE
-   - Updates Order status: COMPLETED
-   - Activates Subscription
-   - Notifies customer (email/SMS)
-   - Updates SF Order via CRM Gateway:
-     - status: ACTIVATED
-     - activationDate
-     - provisioningId</p><ol>
-<li><strong>Salesforce (Status Update)</strong></li>
-</ol>
-   - Order status: ACTIVATED
-   - Triggers Success Playbook:
-     - Schedules onboarding call
-     - Sends welcome kit
-     - Creates support case record</p><hr><h3>Scenario 9: QuickBooks Revenue Sync</h3><p><strong>Business Context</strong>: Monthly revenue recognition entries need to sync to QuickBooks for financial reporting.</p><h4>Monthly Sync Process</h4><ol>
-<li><strong>Revenue Recognition</strong> (Embrix O2X)</li>
-</ol>
-   - Month-end job runs: <code>recognizeRevenue</code>
-   - Processes all pending revenue journals for the month
-   - Creates GL entries in internal ledger</p><ol>
-<li><strong>Journal Entry Batch Creation</strong></li>
-</ol>
-   - Groups revenue journals by:
-     - GL account
-     - Department/cost center
-     - Customer (if needed)
-   - Creates batch:
-     - Batch date: Last day of month
-     - Description: "February 2026 Revenue Recognition"
-     - Entries: 1,234 line items</p><ol>
-<li><strong>Finance Gateway Call</strong></li>
-</ol>
-   - GraphQL: <code>createJournal</code> mutation
-   - Parameters:
-     - journalEntries: [{ account, debit, credit, memo }]
-     - batchId
-   - Finance Gateway receives request</p><ol>
-<li><strong>QuickBooks Mapping</strong> (finance-gateway)</li>
-</ol>
-   - Maps Embrix GL accounts → QuickBooks accounts:
-     - 4000 (Revenue) → "4000 - Service Revenue"
-     - 2400 (Deferred) → "2400 - Deferred Revenue"
-   - Uses <code>ConfigChartOfAccount</code> mapping table
-   - Formats as QuickBooks Journal Entry:</p><pre><code class="language-json">   {
-     "TxnDate": "2026-02-28",
-     "Line": [
-       {
-         "DetailType": "JournalEntryLineDetail",
-         "Amount": 125000.00,
-         "JournalEntryLineDetail": {
-           "PostingType": "Debit",
-           "AccountRef": { "value": "82" } // Deferred Revenue
-         }
-       },
-       {
-         "DetailType": "JournalEntryLineDetail",
-         "Amount": 125000.00,
-         "JournalEntryLineDetail": {
-           "PostingType": "Credit",
-           "AccountRef": { "value": "79" } // Service Revenue
-         }
-       }
-     ]
-   }
-   </code></pre><ol>
-<li><strong>QuickBooks API Call</strong></li>
-</ol>
-   - finance-gateway calls QuickBooks API:
-     - Endpoint: POST <code>/v3/company/{realmId}/journalentry</code>
-     - Auth: OAuth2 token from Vault
-   - QuickBooks validates and creates entry
-   - Returns: JournalEntry ID</p><ol>
-<li><strong>Sync Confirmation</strong></li>
-</ol>
-   - finance-gateway updates RevenueJournal:
-     - externalId: QuickBooks JournalEntry ID
-     - syncStatus: SYNCED
-     - syncDate: 2026-02-28T23:45:12Z
-   - If error:
-     - syncStatus: FAILED
-     - errorMessage: stored for retry
-     - Notification sent to accounting team</p><ol>
-<li><strong>Reconciliation Report</strong></li>
-</ol>
-   - Compares Embrix GL → QuickBooks:
-     - Revenue by account
-     - Deferred revenue balance
-     - Month-over-month variance
-   - Report generated and emailed to CFO</p><hr><h2>Advanced Business Rules</h2><h3>Scenario 10: Complex Volume Discount with Tiered Pricing</h3><p><strong>Business Context</strong>: Enterprise customer has negotiated custom pricing: tiered rates with volume discounts that apply retroactively.</p><h4>Pricing Structure</h4><p><strong>Base Pricing (per user/month)</strong>:
+
+<hr>
+
+<h2>Advanced Business Rules</h2>
+
+<h3>Scenario 10: Complex Volume Discount with Tiered Pricing</h3>
+
+<strong>Business Context</strong>: Enterprise customer has negotiated custom pricing: tiered rates with volume discounts that apply retroactively.
+<h4>Pricing Structure</h4>
+
+<strong>Base Pricing (per user/month)</strong>:
 <ul>
 <li>Tier 1 (0-100 users): $50/user</li>
 <li>Tier 2 (101-500 users): $45/user</li>
 <li>Tier 3 (501-2,000 users): $40/user</li>
 <li>Tier 4 (2,001+ users): $35/user</li>
-</ul><p><strong>Volume Discount</strong> (applied retroactively to ALL users):
+</ul>
+<strong>Volume Discount</strong> (applied retroactively to ALL users):
 <ul>
 <li>< 500 users: 0% discount</li>
 <li>500-1,999 users: 5% discount</li>
 <li>2,000-4,999 users: 10% discount</li>
 <li>5,000+ users: 15% discount</li>
-</ul><p><strong>Customer has 1,800 users.</strong></p><h4>Billing Calculation</h4><ol>
-<li><strong>Tiered Rate Calculation</strong> (<code>PGBillUnitService</code>)</li>
+</ul>
+<strong>Customer has 1,800 users.</strong>
+<h4>Billing Calculation</h4>
+
+<ol>
+<li><strong>Tiered Rate Calculation</strong> (<code>PGBillUnitService</code>)<br><ul><li><code>applyMCMTieredComplexVolumeDiscountForData()</code></li></ul><br><strong>Step 1: Calculate by tiers</strong>:<br><ul><li>Tier 1: 100 users × $50 = $5,000</li></ul><br><ul><li>Tier 2: 400 users × $45 = $18,000</li></ul><br><ul><li>Tier 3: 1,300 users × $40 = $52,000</li></ul><br><ul><li><strong>Subtotal: $75,000</strong></li></ul></li>
+<li><strong>Volume Discount Application</strong> (<code>applyVolumeDiscount</code>)<br><ul><li>Total users: 1,800</li></ul><br><ul><li>Volume discount tier: 500-1,999 → 5%</li></ul><br><ul><li>Discount amount: $75,000 × 5% = $3,750</li></ul><br><ul><li><strong>Total after discount: $71,250</strong></li></ul></li>
+<li><strong>Transaction Creation</strong><br><ul><li>Recurring charge transaction:</li></ul><br><ul><li>amount: $71,250</li></ul><br><ul><li>description: "UCaaS Service - 1,800 users"</li></ul><br><ul><li>pricingDetail: JSON with tier breakdown</li></ul><br><ul><li>Volume discount transaction:</li></ul><br><ul><li>amount: -$3,750</li></ul><br><ul><li>description: "Volume discount - 5%"</li></ul><br><ul><li>discountType: VOLUME_RETROACTIVE</li></ul></li>
+<li><strong>Invoice Display</strong><br><pre><code class="language-">   INVOICE INV-202602-00789<br>Services:<br><ul><li>UCaaS Professional (0-100 users @ $50)     $5,000</li></ul><br><ul><li>UCaaS Professional (101-500 users @ $45)   $18,000</li></ul><br><ul><li>UCaaS Professional (501-1,800 users @ $40) $52,000</li></ul><br>Subtotal:                                     $75,000<br>Volume Discount (5% - 1,800 users):           ($3,750)<br>Subtotal after discount:                      $71,250<br>Tax (9%):                                     $6,412.50<br>TOTAL DUE:                                    $77,662.50<br></code></pre></li>
 </ol>
-   - <code>applyMCMTieredComplexVolumeDiscountForData()</code>
-   
-   <strong>Step 1: Calculate by tiers</strong>:
-   - Tier 1: 100 users × $50 = $5,000
-   - Tier 2: 400 users × $45 = $18,000
-   - Tier 3: 1,300 users × $40 = $52,000
-   - <strong>Subtotal: $75,000</strong></p><ol>
-<li><strong>Volume Discount Application</strong> (<code>applyVolumeDiscount</code>)</li>
+
+<hr>
+
+<h3>Scenario 11: Proration for Mid-Cycle Changes</h3>
+
+<strong>Business Context</strong>: Customer adds 50 users on day 15 of a 30-day billing cycle. Need to prorate the charges.
+<h4>Proration Calculation</h4>
+
+<ol>
+<li><strong>Change Order Processing</strong><br><ul><li>Order type: ADD_SEATS</li></ul><br><ul><li>Original subscription: 500 users</li></ul><br><ul><li>New subscription: 550 users</li></ul><br><ul><li>Change date: 2026-02-15 (day 15 of 30-day cycle)</li></ul></li>
+<li><strong>Proration Logic</strong> (<code>PGBillUnitService.alignedToCycleBilling</code>)<br><ul><li>Days remaining in cycle: 30 - 15 + 1 = 16 days</li></ul><br><ul><li>Proration factor: 16 / 30 = 0.533</li></ul><br><strong>Calculation</strong>:<br><ul><li>Monthly rate per user: $45</li></ul><br><ul><li>New users: 50</li></ul><br><ul><li>Full month charge: 50 × $45 = $2,250</li></ul><br><ul><li><strong>Prorated charge: $2,250 × 0.533 = $1,199.25</strong></li></ul></li>
+<li><strong>Immediate Billing</strong> (<code>runPendingBill</code>)<br><ul><li>Creates pending bill immediately</li></ul><br><ul><li>TransactionUnit:</li></ul><br><ul><li>amount: $1,199.25</li></ul><br><ul><li>description: "Prorated charge - 50 users added (Feb 15-28)"</li></ul><br><ul><li>prorationFactor: 0.533</li></ul><br><ul><li>billingPeriod: 2026-02-15 to 2026-02-28</li></ul><br><ul><li>Invoiced immediately</li></ul><br><ul><li>Next regular bill will include full month for 550 users</li></ul></li>
 </ol>
-   - Total users: 1,800
-   - Volume discount tier: 500-1,999 → 5%
-   - Discount amount: $75,000 × 5% = $3,750
-   - <strong>Total after discount: $71,250</strong></p><ol>
-<li><strong>Transaction Creation</strong></li>
+
+<hr>
+
+<h3>Scenario 12: Revenue Recognition for Annual Contracts</h3>
+
+<strong>Business Context</strong>: Customer pays $120,000 upfront for 12-month contract. Revenue must be recognized monthly per GAAP.
+<h4>Revenue Recognition Flow</h4>
+
+<ol>
+<li><strong>Payment Received</strong><br><ul><li>Payment: $120,000 on 2026-01-15</li></ul><br><ul><li>Service period: 2026-01-15 to 2027-01-14</li></ul></li>
+<li><strong>Initial Journal Entry</strong> (Day 1)<br><ul><li><strong>Dr</strong>: Cash (1000) - $120,000</li></ul><br><ul><li><strong>Cr</strong>: Deferred Revenue (2400) - $120,000</li></ul></li>
+<li><strong>Monthly Recognition Schedule</strong> (<code>RevenueRecognitionType: MONTHLY_STRAIGHT_LINE_AMORTIZATION</code>)<br><ul><li>Creates 12 RevenueJournal entries:</li></ul></li>
 </ol>
-   - Recurring charge transaction:
-     - amount: $71,250
-     - description: "UCaaS Service - 1,800 users"
-     - pricingDetail: JSON with tier breakdown
-   - Volume discount transaction:
-     - amount: -$3,750
-     - description: "Volume discount - 5%"
-     - discountType: VOLUME_RETROACTIVE</p><ol>
-<li><strong>Invoice Display</strong></li>
-</ol>
-   
-   <pre><code class="language-">   INVOICE INV-202602-00789
-   
-   Services:
-   - UCaaS Professional (0-100 users @ $50)     $5,000
-   - UCaaS Professional (101-500 users @ $45)   $18,000
-   - UCaaS Professional (501-1,800 users @ $40) $52,000
-   
-   Subtotal:                                     $75,000
-   Volume Discount (5% - 1,800 users):           ($3,750)
-   
-   Subtotal after discount:                      $71,250
-   Tax (9%):                                     $6,412.50
-   
-   TOTAL DUE:                                    $77,662.50
-   </code></pre><hr><h3>Scenario 11: Proration for Mid-Cycle Changes</h3><p><strong>Business Context</strong>: Customer adds 50 users on day 15 of a 30-day billing cycle. Need to prorate the charges.</p><h4>Proration Calculation</h4><ol>
-<li><strong>Change Order Processing</strong></li>
-</ol>
-   - Order type: ADD_SEATS
-   - Original subscription: 500 users
-   - New subscription: 550 users
-   - Change date: 2026-02-15 (day 15 of 30-day cycle)</p><ol>
-<li><strong>Proration Logic</strong> (<code>PGBillUnitService.alignedToCycleBilling</code>)</li>
-</ol>
-   - Days remaining in cycle: 30 - 15 + 1 = 16 days
-   - Proration factor: 16 / 30 = 0.533
-   
-   <strong>Calculation</strong>:
-   - Monthly rate per user: $45
-   - New users: 50
-   - Full month charge: 50 × $45 = $2,250
-   - <strong>Prorated charge: $2,250 × 0.533 = $1,199.25</strong></p><ol>
-<li><strong>Immediate Billing</strong> (<code>runPendingBill</code>)</li>
-</ol>
-   - Creates pending bill immediately
-   - TransactionUnit:
-     - amount: $1,199.25
-     - description: "Prorated charge - 50 users added (Feb 15-28)"
-     - prorationFactor: 0.533
-     - billingPeriod: 2026-02-15 to 2026-02-28
-   - Invoiced immediately
-   - Next regular bill will include full month for 550 users</p><hr><h3>Scenario 12: Revenue Recognition for Annual Contracts</h3><p><strong>Business Context</strong>: Customer pays $120,000 upfront for 12-month contract. Revenue must be recognized monthly per GAAP.</p><h4>Revenue Recognition Flow</h4><ol>
-<li><strong>Payment Received</strong></li>
-</ol>
-   - Payment: $120,000 on 2026-01-15
-   - Service period: 2026-01-15 to 2027-01-14</p><ol>
-<li><strong>Initial Journal Entry</strong> (Day 1)</li>
-</ol>
-   - <strong>Dr</strong>: Cash (1000) - $120,000
-   - <strong>Cr</strong>: Deferred Revenue (2400) - $120,000</p><ol>
-<li><strong>Monthly Recognition Schedule</strong> (<code>RevenueRecognitionType: MONTHLY_STRAIGHT_LINE_AMORTIZATION</code>)</li>
-</ol>
-   - Creates 12 RevenueJournal entries:
-   
 <table>
 <thead><tr>
 <th>Month</th>
@@ -1731,36 +1723,20 @@
 <td>$10,000</td>
 <td>Same</td>
 </tr>
-</tbody></table><ol>
-<li><strong>Month-End Processing</strong></li>
+</tbody></table>
+<ol>
+<li><strong>Month-End Processing</strong><br><ul><li>Job runs on last day of month</li></ul><br><ul><li><code>RecognizeRevenueService.recognizeRevenue()</code></li></ul><br><ul><li>Queries journals for current month</li></ul><br><ul><li>Creates GL entries</li></ul><br><ul><li>Syncs to QuickBooks via finance-gateway</li></ul><br><ul><li>Updates RevenueJournal.amountRecognized</li></ul><br><ul><li>Status: RECOGNIZED</li></ul></li>
+<li><strong>Balance Sheet Impact</strong><br><ul><li>Month 1 (Jan 2026):</li></ul><br><ul><li>Cash: $120,000</li></ul><br><ul><li>Deferred Revenue: $110,000 (after $10,000 recognized)</li></ul><br><ul><li>Month 6 (Jun 2026):</li></ul><br><ul><li>Cash: $120,000</li></ul><br><ul><li>Deferred Revenue: $60,000 (after $60,000 recognized)</li></ul><br><ul><li>Month 12 (Jan 2027):</li></ul><br><ul><li>Cash: $120,000 (may be spent on ops)</li></ul><br><ul><li>Deferred Revenue: $0 (all recognized)</li></ul></li>
+<li><strong>Early Termination Handling</strong><br><ul><li>If customer cancels in month 8:</li></ul><br><ul><li>Recognized revenue: $80,000 (8 months)</li></ul><br><ul><li>Remaining deferred: $40,000</li></ul><br><ul><li>Options:</li></ul><br><ul><li><strong>Refund</strong>: Return $40,000, reverse deferred revenue</li></ul><br><ul><li><strong>Accelerate</strong>: Recognize all $40,000 immediately (revenue hit)</li></ul><br><ul><li><strong>Forfeit</strong>: Keep as termination fee (contract dependent)</li></ul></li>
 </ol>
-   - Job runs on last day of month
-   - <code>RecognizeRevenueService.recognizeRevenue()</code>
-   - Queries journals for current month
-   - Creates GL entries
-   - Syncs to QuickBooks via finance-gateway
-   - Updates RevenueJournal.amountRecognized
-   - Status: RECOGNIZED</p><ol>
-<li><strong>Balance Sheet Impact</strong></li>
-</ol>
-   - Month 1 (Jan 2026):
-     - Cash: $120,000
-     - Deferred Revenue: $110,000 (after $10,000 recognized)
-   - Month 6 (Jun 2026):
-     - Cash: $120,000
-     - Deferred Revenue: $60,000 (after $60,000 recognized)
-   - Month 12 (Jan 2027):
-     - Cash: $120,000 (may be spent on ops)
-     - Deferred Revenue: $0 (all recognized)</p><ol>
-<li><strong>Early Termination Handling</strong></li>
-</ol>
-   - If customer cancels in month 8:
-     - Recognized revenue: $80,000 (8 months)
-     - Remaining deferred: $40,000
-   - Options:
-     - <strong>Refund</strong>: Return $40,000, reverse deferred revenue
-     - <strong>Accelerate</strong>: Recognize all $40,000 immediately (revenue hit)
-     - <strong>Forfeit</strong>: Keep as termination fee (contract dependent)</p><hr><h2>Summary & Key Takeaways</h2><h3>Business Capabilities Demonstrated</h3><ol>
+
+<hr>
+
+<h2>Summary & Key Takeaways</h2>
+
+<h3>Business Capabilities Demonstrated</h3>
+
+<ol>
 <li><strong>Self-Service Operations</strong>: Complete customer portal with registration, billing, payments, usage tracking</li>
 <li><strong>Complex Pricing</strong>: Tiered, volume, bundle-based, proration, discounts</li>
 <li><strong>Real-Time Rating</strong>: Prepaid/postpaid usage processing with balance management</li>
@@ -1769,7 +1745,10 @@
 <li><strong>Revenue Compliance</strong>: GAAP-compliant recognition, deferred revenue, milestones</li>
 <li><strong>External Integrations</strong>: Pre-built connectors for major CRM, ERP, payment, tax systems</li>
 <li><strong>Telecom-Specific</strong>: CDR mediation, operator settlement, number porting, regulatory reporting</li>
-</ol><h3>Typical Customer Profile</h3><table>
+</ol>
+<h3>Typical Customer Profile</h3>
+
+<table>
 <thead><tr>
 <th>Industry</th>
 <th>Use Cases</th>
@@ -1805,22 +1784,33 @@
 <td>Device connectivity, API usage</td>
 <td>Usage rating, micro-transactions, volume discounts, GraphQL API</td>
 </tr>
-</tbody></table><h3>Deployment Patterns</h3><ol>
+</tbody></table>
+<h3>Deployment Patterns</h3>
+
+<ol>
 <li><strong>Single-Tenant (Silo)</strong>: Enterprise customer, dedicated instance, full customization</li>
 <li><strong>Multi-Tenant (Shared)</strong>: SaaS provider, thousands of tenants, per-tenant configuration</li>
 <li><strong>Hybrid</strong>: Large tenants get dedicated, small tenants share infrastructure</li>
-</ol><hr><h2>Next Steps</h2><ul>
+</ol>
+
+<hr>
+
+<h2>Next Steps</h2>
+
+<ul>
 <li><strong>For Implementation Teams</strong>: Use these scenarios as test cases during onboarding</li>
 <li><strong>For Sales/Presales</strong>: Customize scenarios to match prospect's business model</li>
 <li><strong>For Developers</strong>: Reference these workflows when debugging cross-module issues</li>
 <li><strong>For Product Managers</strong>: Identify gaps or enhancement opportunities</li>
-</ul><p>For technical details on any scenario, see:
+</ul>
+For technical details on any scenario, see:
 <ul>
 <li><a href="NEWCOMER_GUIDE_PART1_BUSINESS_AND_ARCHITECTURE.md">Architecture Guide</a></li>
 <li><a href="NEWCOMER_GUIDE_PART2_TECHNICAL_DEEP_DIVE.md">Technical Deep Dive</a></li>
 <li><a href="NEWCOMER_GUIDE_PART3_SERVICES_AND_DEVELOPMENT.md">Services & Development</a></li>
 <li><a href="docs/MULTI_TENANT_COMPLETE_GUIDE.md">Multi-Tenant Guide</a></li>
 </ul>
+
         <footer>
             <p><strong>Embrix O2X Platform Documentation</strong></p>
             <p>Version 3.1.9-SNAPSHOT • Last Updated: February 2026</p>
