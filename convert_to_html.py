@@ -346,7 +346,8 @@ def convert_markdown_to_html(markdown_text, title, nav_links=None):
             if not in_ordered_list:
                 result.append('<ol>')
                 in_ordered_list = True
-            result.append(f'<li>{re.sub(r"^\d+\. ", "", line)}</li>')
+            list_item_text = re.sub(r'^\d+\. ', '', line)
+            result.append(f'<li>{list_item_text}</li>')
         else:
             if in_list:
                 result.append('</ul>')
