@@ -22,8 +22,9 @@ CSS_TEMPLATE = """
 
     body {
         font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+        font-size: 16px;
         line-height: 1.7;
-        color: #2d3748;
+        color: #1f2937;
         background: linear-gradient(135deg, #f5f7fa 0%, #e9ecef 100%);
         background-attachment: fixed;
         padding: 20px;
@@ -33,7 +34,7 @@ CSS_TEMPLATE = """
         max-width: 1200px;
         margin: 0 auto;
         background: white;
-        padding: 50px;
+        padding: 40px 50px;
         border-radius: 16px;
         box-shadow: 0 10px 40px rgba(0,0,0,0.1);
         position: relative;
@@ -63,8 +64,9 @@ CSS_TEMPLATE = """
     }
 
     .nav-header h1 {
-        font-size: 1.5em;
+        font-size: 1.4em;
         margin-bottom: 5px;
+        font-weight: 600;
     }
 
     .nav-links {
@@ -88,51 +90,54 @@ CSS_TEMPLATE = """
 
     h1 {
         color: #667eea;
-        margin: 40px 0 25px 0;
-        padding: 15px 0 15px 20px;
-        border-left: 6px solid #667eea;
-        border-bottom: 3px solid #667eea;
+        margin: 35px 0 20px 0;
+        padding: 12px 0 12px 18px;
+        border-left: 5px solid #667eea;
+        border-bottom: 2px solid #667eea;
         background: linear-gradient(90deg, rgba(102, 126, 234, 0.05) 0%, rgba(255,255,255,0) 100%);
-        font-size: 2.5em;
+        font-size: 1.8em;
+        font-weight: 700;
         border-radius: 0 8px 0 0;
     }
 
     h2 {
         color: #764ba2;
-        margin: 35px 0 20px 0;
-        padding: 12px 0 12px 15px;
-        border-left: 5px solid #764ba2;
+        margin: 30px 0 18px 0;
+        padding: 10px 0 10px 15px;
+        border-left: 4px solid #764ba2;
         border-bottom: 2px solid #f0f0f0;
         background: linear-gradient(90deg, rgba(118, 75, 162, 0.03) 0%, rgba(255,255,255,0) 100%);
-        font-size: 2em;
+        font-size: 1.5em;
+        font-weight: 700;
         border-radius: 0 6px 0 0;
     }
 
     h3 {
         color: #667eea;
-        margin: 30px 0 18px 0;
-        padding: 10px 0 10px 15px;
-        border-left: 4px solid #667eea;
+        margin: 25px 0 15px 0;
+        padding: 8px 0 8px 12px;
+        border-left: 3px solid #667eea;
         background: linear-gradient(90deg, rgba(102, 126, 234, 0.04) 0%, transparent 100%);
-        font-size: 1.5em;
+        font-size: 1.25em;
+        font-weight: 600;
         border-radius: 0 6px 6px 0;
     }
 
     h4 {
         color: #764ba2;
-        margin: 25px 0 15px 0;
-        padding: 8px 0 8px 12px;
-        border-left: 3px solid #764ba2;
+        margin: 20px 0 12px 0;
+        padding: 6px 0 6px 10px;
+        border-left: 2px solid #764ba2;
         background: linear-gradient(90deg, rgba(118, 75, 162, 0.03) 0%, transparent 100%);
-        font-size: 1.2em;
+        font-size: 1.1em;
         font-weight: 600;
         border-radius: 0 4px 4px 0;
     }
 
     h5 {
         color: #667eea;
-        margin: 20px 0 12px 0;
-        padding: 6px 0 6px 10px;
+        margin: 18px 0 10px 0;
+        padding: 4px 0 4px 8px;
         border-left: 2px solid #667eea;
         font-size: 1.05em;
         font-weight: 600;
@@ -142,16 +147,23 @@ CSS_TEMPLATE = """
 
     h6 {
         color: #764ba2;
-        margin: 15px 0 10px 0;
-        font-size: 1em;
+        margin: 15px 0 8px 0;
+        font-size: 0.95em;
         font-weight: 600;
         text-transform: uppercase;
         letter-spacing: 0.5px;
     }
 
     p {
-        margin: 15px 0;
-        line-height: 1.8;
+        margin: 12px 0;
+        line-height: 1.7;
+        font-size: 0.95em;
+        color: #374151;
+    }
+    
+    /* Better spacing for paragraphs after headings */
+    h1 + p, h2 + p, h3 + p, h4 + p {
+        margin-top: 10px;
     }
 
     ul, ol {
@@ -160,8 +172,9 @@ CSS_TEMPLATE = """
     }
 
     li {
-        margin: 12px 0;
-        line-height: 1.8;
+        margin: 10px 0;
+        line-height: 1.7;
+        font-size: 0.95em;
         position: relative;
         padding-left: 8px;
     }
@@ -200,7 +213,7 @@ CSS_TEMPLATE = """
 
     /* Nested list items - smaller styling */
     li li {
-        font-size: 0.95em;
+        font-size: 0.92em;
         margin: 6px 0;
         background: linear-gradient(90deg, rgba(118, 75, 162, 0.02) 0%, transparent 100%);
     }
@@ -212,10 +225,10 @@ CSS_TEMPLATE = """
 
     code {
         background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-        padding: 3px 8px;
-        border-radius: 5px;
+        padding: 2px 6px;
+        border-radius: 4px;
         font-family: 'Fira Code', 'Courier New', Consolas, monospace;
-        font-size: 0.88em;
+        font-size: 0.85em;
         color: #d63384;
         border: 1px solid #dee2e6;
         font-weight: 500;
@@ -244,15 +257,15 @@ CSS_TEMPLATE = """
     pre {
         background: #1e293b;
         color: #e2e8f0;
-        padding: 24px;
-        border-radius: 10px;
+        padding: 20px;
+        border-radius: 8px;
         overflow-x: auto;
-        margin: 25px 0;
+        margin: 20px 0;
         border: 2px solid #334155;
-        box-shadow: 0 4px 6px rgba(0,0,0,0.1), 0 0 0 1px rgba(102, 126, 234, 0.1);
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         font-family: 'Cascadia Code', 'Fira Code', 'SF Mono', 'Consolas', 'Liberation Mono', monospace;
-        font-size: 0.875em;
-        line-height: 1.7;
+        font-size: 0.85em;
+        line-height: 1.6;
         position: relative;
     }
 
@@ -294,13 +307,14 @@ CSS_TEMPLATE = """
     }
 
     blockquote {
-        border-left: 5px solid #667eea;
+        border-left: 4px solid #667eea;
         padding: 15px 20px;
-        margin: 25px 0;
+        margin: 20px 0;
         color: #555;
         font-style: italic;
+        font-size: 0.95em;
         background: linear-gradient(90deg, rgba(102, 126, 234, 0.05) 0%, rgba(255,255,255,0) 100%);
-        border-radius: 0 8px 8px 0;
+        border-radius: 0 6px 6px 0;
         position: relative;
     }
 
@@ -317,11 +331,12 @@ CSS_TEMPLATE = """
     table {
         width: 100%;
         border-collapse: collapse;
-        margin: 25px 0;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        margin: 20px 0;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.08);
         border-radius: 8px;
         overflow: hidden;
         background: white;
+        font-size: 0.9em;
     }
 
     thead {
@@ -330,18 +345,19 @@ CSS_TEMPLATE = """
 
     th {
         color: white;
-        padding: 15px 12px;
+        padding: 12px 15px;
         text-align: left;
         font-weight: 600;
         text-transform: uppercase;
-        font-size: 0.85em;
-        letter-spacing: 0.5px;
+        font-size: 0.82em;
+        letter-spacing: 0.3px;
     }
 
     td {
-        padding: 12px;
-        border-bottom: 1px solid #e0e0e0;
+        padding: 10px 15px;
+        border-bottom: 1px solid #e5e7eb;
         vertical-align: top;
+        line-height: 1.6;
     }
 
     tbody tr:last-child td {
@@ -349,16 +365,22 @@ CSS_TEMPLATE = """
     }
 
     tbody tr:hover {
-        background: #f8f9fa;
+        background: rgba(102, 126, 234, 0.04);
         transition: background 0.2s ease;
     }
 
     tbody tr:nth-child(even) {
-        background: #fafafa;
+        background: rgba(102, 126, 234, 0.02);
     }
 
     tbody tr:nth-child(even):hover {
-        background: #f0f0f0;
+        background: rgba(102, 126, 234, 0.05);
+    }
+    
+    /* Better code in tables */
+    td code {
+        font-size: 0.85em;
+        padding: 2px 6px;
     }
 
     .info-box {
