@@ -148,25 +148,48 @@ CSS_TEMPLATE = """
     table {
         width: 100%;
         border-collapse: collapse;
-        margin: 20px 0;
+        margin: 25px 0;
         box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        border-radius: 8px;
+        overflow: hidden;
+        background: white;
+    }
+
+    thead {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     }
 
     th {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         color: white;
-        padding: 12px;
+        padding: 15px 12px;
         text-align: left;
         font-weight: 600;
+        text-transform: uppercase;
+        font-size: 0.85em;
+        letter-spacing: 0.5px;
     }
 
     td {
         padding: 12px;
-        border-bottom: 1px solid #f0f0f0;
+        border-bottom: 1px solid #e0e0e0;
+        vertical-align: top;
     }
 
-    tr:hover {
+    tbody tr:last-child td {
+        border-bottom: none;
+    }
+
+    tbody tr:hover {
         background: #f8f9fa;
+        transition: background 0.2s ease;
+    }
+
+    tbody tr:nth-child(even) {
+        background: #fafafa;
+    }
+
+    tbody tr:nth-child(even):hover {
+        background: #f0f0f0;
     }
 
     .info-box {
@@ -327,28 +350,72 @@ def convert_markdown_to_html(markdown_text, title, nav_links=None):
     # Links
     markdown_text = re.sub(r'\[([^\]]+)\]\(([^\)]+)\)', r'<a href="\2">\1</a>', markdown_text)
     
-    # Lists
-    # Unordered lists
+    # Tables - Process before lists
     lines = markdown_text.split('\n')
     result = []
     in_list = False
     in_ordered_list = False
+    in_table = False
+    is_header_row = True
     
-    for line in lines:
+    for i, line in enumerate(lines):
+        # Table detection
+        if line.strip().startswith('|') and line.strip().endswith('|'):
+            # Skip separator rows (e.g., |---|---|)
+            if re.match(r'^\s*\|[\s\-:]+\|\s*$', line):
+                is_header_row = False
+                continue
+            
+            if not in_table:
+                result.append('<table>')
+                in_table = True
+                is_header_row = True
+            
+            # Close any open lists
+            if in_list:
+                result.append('</ul>')
+                in_list = False
+            if in_ordered_list:
+                result.append('</ol>')
+                in_ordered_list = False
+            
+            # Parse table row
+            cells = [cell.strip() for cell in line.strip().split('|')[1:-1]]
+            
+            if is_header_row:
+                result.append('<thead><tr>')
+                for cell in cells:
+                    result.append(f'<th>{cell}</th>')
+                result.append('</tr></thead><tbody>')
+                is_header_row = False
+            else:
+                result.append('<tr>')
+                for cell in cells:
+                    result.append(f'<td>{cell}</td>')
+                result.append('</tr>')
         # Unordered list
-        if re.match(r'^- ', line):
+        elif re.match(r'^- ', line):
+            if in_table:
+                result.append('</tbody></table>')
+                in_table = False
             if not in_list:
                 result.append('<ul>')
                 in_list = True
             result.append(f'<li>{line[2:]}</li>')
         # Ordered list
         elif re.match(r'^\d+\. ', line):
+            if in_table:
+                result.append('</tbody></table>')
+                in_table = False
             if not in_ordered_list:
                 result.append('<ol>')
                 in_ordered_list = True
             list_item_text = re.sub(r'^\d+\. ', '', line)
             result.append(f'<li>{list_item_text}</li>')
         else:
+            if in_table:
+                result.append('</tbody></table>')
+                in_table = False
             if in_list:
                 result.append('</ul>')
                 in_list = False
@@ -357,6 +424,8 @@ def convert_markdown_to_html(markdown_text, title, nav_links=None):
                 in_ordered_list = False
             result.append(line)
     
+    if in_table:
+        result.append('</tbody></table>')
     if in_list:
         result.append('</ul>')
     if in_ordered_list:
@@ -377,8 +446,8 @@ def convert_markdown_to_html(markdown_text, title, nav_links=None):
     markdown_text = re.sub(r'(</h[1-6]>)\s*</p>', r'\1', markdown_text)
     markdown_text = re.sub(r'<p>\s*(<pre>)', r'\1', markdown_text)
     markdown_text = re.sub(r'(</pre>)\s*</p>', r'\1', markdown_text)
-    markdown_text = re.sub(r'<p>\s*(<ul>|<ol>|<hr>)', r'\1', markdown_text)
-    markdown_text = re.sub(r'(</ul>|</ol>|<hr>)\s*</p>', r'\1', markdown_text)
+    markdown_text = re.sub(r'<p>\s*(<ul>|<ol>|<hr>|<table>)', r'\1', markdown_text)
+    markdown_text = re.sub(r'(</ul>|</ol>|<hr>|</table>)\s*</p>', r'\1', markdown_text)
     
     # Build navigation
     nav_html = ""

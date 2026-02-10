@@ -144,25 +144,48 @@
     table {
         width: 100%;
         border-collapse: collapse;
-        margin: 20px 0;
+        margin: 25px 0;
         box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        border-radius: 8px;
+        overflow: hidden;
+        background: white;
+    }
+
+    thead {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     }
 
     th {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         color: white;
-        padding: 12px;
+        padding: 15px 12px;
         text-align: left;
         font-weight: 600;
+        text-transform: uppercase;
+        font-size: 0.85em;
+        letter-spacing: 0.5px;
     }
 
     td {
         padding: 12px;
-        border-bottom: 1px solid #f0f0f0;
+        border-bottom: 1px solid #e0e0e0;
+        vertical-align: top;
     }
 
-    tr:hover {
+    tbody tr:last-child td {
+        border-bottom: none;
+    }
+
+    tbody tr:hover {
         background: #f8f9fa;
+        transition: background 0.2s ease;
+    }
+
+    tbody tr:nth-child(even) {
+        background: #fafafa;
+    }
+
+    tbody tr:nth-child(even):hover {
+        background: #f0f0f0;
     }
 
     .info-box {
@@ -513,13 +536,57 @@ Customer receives "Service Restored" notification
 <li>Ensures consistency between billing and financial data</li>
 <li>Reduces month-end close time</li>
 <li>Improves financial reporting accuracy</li>
-</ul><hr><h2>3. Current Production Deployments</h2><h3>3.1 Live Tenants</h3><p>Based on Helm configurations and production deployments:</p><p>| Tenant | Country | Industry | Services | Status |
-|--------|---------|----------|----------|--------|
-| <strong>MCM Telecom</strong> | Mexico | Fixed-line ISP | Internet, Voice | Production |
-| <strong>CoopeG</strong> | Costa Rica | Cooperative Telecom | Internet, Voice, TV | Production |
-| <strong>CoopeG Energy</strong> | Costa Rica | Energy Utility | Electricity Billing | Production |
-| <strong>Urbanos</strong> | (TBD) | (TBD) | (TBD) | Development |
-| <strong>SHM</strong> | (TBD) | (TBD) | (TBD) | Production |</p><h3>3.2 Scale Indicators</h3><p><strong>MCM Telecom (Mexico):</strong>
+</ul><hr><h2>3. Current Production Deployments</h2><h3>3.1 Live Tenants</h3><p>Based on Helm configurations and production deployments:</p><table>
+<thead><tr>
+<th>Tenant</th>
+<th>Country</th>
+<th>Industry</th>
+<th>Services</th>
+<th>Status</th>
+</tr></thead><tbody>
+<tr>
+<td>--------</td>
+<td>---------</td>
+<td>----------</td>
+<td>----------</td>
+<td>--------</td>
+</tr>
+<tr>
+<td><strong>MCM Telecom</strong></td>
+<td>Mexico</td>
+<td>Fixed-line ISP</td>
+<td>Internet, Voice</td>
+<td>Production</td>
+</tr>
+<tr>
+<td><strong>CoopeG</strong></td>
+<td>Costa Rica</td>
+<td>Cooperative Telecom</td>
+<td>Internet, Voice, TV</td>
+<td>Production</td>
+</tr>
+<tr>
+<td><strong>CoopeG Energy</strong></td>
+<td>Costa Rica</td>
+<td>Energy Utility</td>
+<td>Electricity Billing</td>
+<td>Production</td>
+</tr>
+<tr>
+<td><strong>Urbanos</strong></td>
+<td>(TBD)</td>
+<td>(TBD)</td>
+<td>(TBD)</td>
+<td>Development</td>
+</tr>
+<tr>
+<td><strong>SHM</strong></td>
+<td>(TBD)</td>
+<td>(TBD)</td>
+<td>(TBD)</td>
+<td>Production</td>
+</tr>
+</tbody></table><h3>3.2 Scale Indicators</h3><p><strong>MCM Telecom (Mexico):</strong>
 <ul>
 <li>Processes millions of CDRs monthly</li>
 <li>Mexican CFDI compliance with PAC integration</li>
@@ -651,16 +718,58 @@ query {
 <li><code>usageProcessHub</code> - Usage Rating</li>
 <li><code>mediationHub</code> - Usage Data Mediation</li>
 <li><code>opsHub</code> - Operations & Admin</li>
-</ul><hr><h2>5. Technology Stack</h2><h3>5.1 Backend Technologies</h3><p>| Technology | Version | Purpose |
-|------------|---------|---------|
-| <strong>Java</strong> | 8 | Core language |
-| <strong>Groovy</strong> | 2.4.15 | Business logic (more concise than Java) |
-| <strong>Spring Boot</strong> | 2.1.4 | Microservice framework |
-| <strong>Apache Camel</strong> | 2.22.0 - 2.23.1 | Integration and routing |
-| <strong>GraphQL Java</strong> | 5.0.2 | API layer |
-| <strong>JOOQ</strong> | 3.11.10 | Type-safe SQL generation |
-| <strong>Flyway</strong> | 5.2.4 | Database migrations |
-| <strong>Maven</strong> | 3.6+ | Build and dependency management |</p><p><strong>Why Groovy?</strong>
+</ul><hr><h2>5. Technology Stack</h2><h3>5.1 Backend Technologies</h3><table>
+<thead><tr>
+<th>Technology</th>
+<th>Version</th>
+<th>Purpose</th>
+</tr></thead><tbody>
+<tr>
+<td>------------</td>
+<td>---------</td>
+<td>---------</td>
+</tr>
+<tr>
+<td><strong>Java</strong></td>
+<td>8</td>
+<td>Core language</td>
+</tr>
+<tr>
+<td><strong>Groovy</strong></td>
+<td>2.4.15</td>
+<td>Business logic (more concise than Java)</td>
+</tr>
+<tr>
+<td><strong>Spring Boot</strong></td>
+<td>2.1.4</td>
+<td>Microservice framework</td>
+</tr>
+<tr>
+<td><strong>Apache Camel</strong></td>
+<td>2.22.0 - 2.23.1</td>
+<td>Integration and routing</td>
+</tr>
+<tr>
+<td><strong>GraphQL Java</strong></td>
+<td>5.0.2</td>
+<td>API layer</td>
+</tr>
+<tr>
+<td><strong>JOOQ</strong></td>
+<td>3.11.10</td>
+<td>Type-safe SQL generation</td>
+</tr>
+<tr>
+<td><strong>Flyway</strong></td>
+<td>5.2.4</td>
+<td>Database migrations</td>
+</tr>
+<tr>
+<td><strong>Maven</strong></td>
+<td>3.6+</td>
+<td>Build and dependency management</td>
+</tr>
+</tbody></table><p><strong>Why Groovy?</strong>
 <ul>
 <li>Less boilerplate than Java</li>
 <li>Native JSON/XML support</li>
@@ -677,12 +786,38 @@ List&lt;Subscription&gt; activeSubscriptions = subscriptions.stream()
 BigDecimal totalRevenue = activeSubscriptions.stream()
     .map(Subscription::getMonthlyCharge)
     .reduce(BigDecimal.ZERO, BigDecimal::add);
-</code></pre><h3>5.2 Data Layer</h3><p>| Technology | Version | Purpose |
-|------------|---------|---------|
-| <strong>PostgreSQL</strong> | 10.5+ | Primary relational database |
-| <strong>JOOQ</strong> | 3.11.10 | Type-safe SQL queries |
-| <strong>Flyway</strong> | 5.2.4 | Schema version control |
-| <strong>HikariCP</strong> | (via Spring Boot) | Connection pooling |</p><p><strong>Why JOOQ over JPA/Hibernate?</strong>
+</code></pre><h3>5.2 Data Layer</h3><table>
+<thead><tr>
+<th>Technology</th>
+<th>Version</th>
+<th>Purpose</th>
+</tr></thead><tbody>
+<tr>
+<td>------------</td>
+<td>---------</td>
+<td>---------</td>
+</tr>
+<tr>
+<td><strong>PostgreSQL</strong></td>
+<td>10.5+</td>
+<td>Primary relational database</td>
+</tr>
+<tr>
+<td><strong>JOOQ</strong></td>
+<td>3.11.10</td>
+<td>Type-safe SQL queries</td>
+</tr>
+<tr>
+<td><strong>Flyway</strong></td>
+<td>5.2.4</td>
+<td>Schema version control</td>
+</tr>
+<tr>
+<td><strong>HikariCP</strong></td>
+<td>(via Spring Boot)</td>
+<td>Connection pooling</td>
+</tr>
+</tbody></table><p><strong>Why JOOQ over JPA/Hibernate?</strong>
 <ul>
 <li>✅ Type-safe SQL checked at compile time</li>
 <li>✅ Full SQL power (complex joins, CTEs, window functions)</li>
@@ -699,10 +834,28 @@ def invoices = dsl
     .orderBy(INVOICE.DUE_DATE.asc())
     .fetch()
 // Compile error if INVOICE.STATUS doesn't exist!
-</code></pre><h3>5.3 Messaging & Integration</h3><p>| Technology | Version | Purpose |
-|------------|---------|---------|
-| <strong>ActiveMQ</strong> | 5.15.9 | Message broker |
-| <strong>Apache Camel</strong> | 2.22.0 - 2.23.1 | Integration framework |</p><p><strong>ActiveMQ Queues:</strong>
+</code></pre><h3>5.3 Messaging & Integration</h3><table>
+<thead><tr>
+<th>Technology</th>
+<th>Version</th>
+<th>Purpose</th>
+</tr></thead><tbody>
+<tr>
+<td>------------</td>
+<td>---------</td>
+<td>---------</td>
+</tr>
+<tr>
+<td><strong>ActiveMQ</strong></td>
+<td>5.15.9</td>
+<td>Message broker</td>
+</tr>
+<tr>
+<td><strong>Apache Camel</strong></td>
+<td>2.22.0 - 2.23.1</td>
+<td>Integration framework</td>
+</tr>
+</tbody></table><p><strong>ActiveMQ Queues:</strong>
 <ul>
 <li><code>OMS</code> - Order intake</li>
 <li><code>PROVISIONING_RESPONSE</code> - Provisioning callbacks</li>
@@ -714,36 +867,124 @@ def invoices = dsl
 initialDelay: 250ms
 backoffMultiplier: 1.5x
 <h1>Retry delays: 250ms, 375ms, 562ms, 843ms, 1.26s, 1.9s, 2.85s</h1>
-</code></pre><h3>5.4 Security & Configuration</h3><p>| Technology | Version | Purpose |
-|------------|---------|---------|
-| <strong>HashiCorp Vault</strong> | 2.0.2 | Secrets management |
-| <strong>OAuth2</strong> | (Spring Security) | Authorization |
-| <strong>JWT</strong> | (Spring Security) | Token-based auth |</p><p><strong>Vault Secrets:</strong>
+</code></pre><h3>5.4 Security & Configuration</h3><table>
+<thead><tr>
+<th>Technology</th>
+<th>Version</th>
+<th>Purpose</th>
+</tr></thead><tbody>
+<tr>
+<td>------------</td>
+<td>---------</td>
+<td>---------</td>
+</tr>
+<tr>
+<td><strong>HashiCorp Vault</strong></td>
+<td>2.0.2</td>
+<td>Secrets management</td>
+</tr>
+<tr>
+<td><strong>OAuth2</strong></td>
+<td>(Spring Security)</td>
+<td>Authorization</td>
+</tr>
+<tr>
+<td><strong>JWT</strong></td>
+<td>(Spring Security)</td>
+<td>Token-based auth</td>
+</tr>
+</tbody></table><p><strong>Vault Secrets:</strong>
 <ul>
 <li>Database credentials</li>
 <li>ActiveMQ credentials</li>
 <li>External API keys (QuickBooks, Stripe, etc.)</li>
 <li>JWT signing keys</li>
 <li>Slack webhook URLs</li>
-</ul><h3>5.5 Document Generation</h3><p>| Technology | Version | Purpose |
-|------------|---------|---------|
-| <strong>iText</strong> | 7.1.5 | PDF generation |
-| <strong>Apache FOP</strong> | 2.3 | XSL-FO to PDF |
-| <strong>Thymeleaf</strong> | 3.0.11 | HTML templates |</p><h3>5.6 Caching & Performance</h3><p>| Technology | Version | Purpose |
-|------------|---------|---------|
-| <strong>Redis</strong> | 6.2+ | Caching, real-time counters |
-| <strong>Jedis</strong> | (via Spring Data Redis) | Redis client |</p><p><strong>Redis Use Cases:</strong>
+</ul><h3>5.5 Document Generation</h3><table>
+<thead><tr>
+<th>Technology</th>
+<th>Version</th>
+<th>Purpose</th>
+</tr></thead><tbody>
+<tr>
+<td>------------</td>
+<td>---------</td>
+<td>---------</td>
+</tr>
+<tr>
+<td><strong>iText</strong></td>
+<td>7.1.5</td>
+<td>PDF generation</td>
+</tr>
+<tr>
+<td><strong>Apache FOP</strong></td>
+<td>2.3</td>
+<td>XSL-FO to PDF</td>
+</tr>
+<tr>
+<td><strong>Thymeleaf</strong></td>
+<td>3.0.11</td>
+<td>HTML templates</td>
+</tr>
+</tbody></table><h3>5.6 Caching & Performance</h3><table>
+<thead><tr>
+<th>Technology</th>
+<th>Version</th>
+<th>Purpose</th>
+</tr></thead><tbody>
+<tr>
+<td>------------</td>
+<td>---------</td>
+<td>---------</td>
+</tr>
+<tr>
+<td><strong>Redis</strong></td>
+<td>6.2+</td>
+<td>Caching, real-time counters</td>
+</tr>
+<tr>
+<td><strong>Jedis</strong></td>
+<td>(via Spring Data Redis)</td>
+<td>Redis client</td>
+</tr>
+</tbody></table><p><strong>Redis Use Cases:</strong>
 <ul>
 <li>Pricing catalog cache (fast lookup)</li>
 <li>Real-time usage quotas (prepaid balance checks)</li>
 <li>Session data</li>
 <li>Temporary computation results</li>
-</ul><h3>5.7 Testing</h3><p>| Technology | Version | Purpose |
-|------------|---------|---------|
-| <strong>Spock Framework</strong> | 1.1-groovy-2.4 | BDD testing (Groovy) |
-| <strong>JUnit</strong> | 4.12 | Unit testing (Java) |
-| <strong>Embedded PostgreSQL</strong> | 2.9 | Integration tests |
-| <strong>Embedded Redis</strong> | 0.7.3 | Cache tests |</p><p><strong>Why Spock?</strong>
+</ul><h3>5.7 Testing</h3><table>
+<thead><tr>
+<th>Technology</th>
+<th>Version</th>
+<th>Purpose</th>
+</tr></thead><tbody>
+<tr>
+<td>------------</td>
+<td>---------</td>
+<td>---------</td>
+</tr>
+<tr>
+<td><strong>Spock Framework</strong></td>
+<td>1.1-groovy-2.4</td>
+<td>BDD testing (Groovy)</td>
+</tr>
+<tr>
+<td><strong>JUnit</strong></td>
+<td>4.12</td>
+<td>Unit testing (Java)</td>
+</tr>
+<tr>
+<td><strong>Embedded PostgreSQL</strong></td>
+<td>2.9</td>
+<td>Integration tests</td>
+</tr>
+<tr>
+<td><strong>Embedded Redis</strong></td>
+<td>0.7.3</td>
+<td>Cache tests</td>
+</tr>
+</tbody></table><p><strong>Why Spock?</strong>
 <ul>
 <li>Readable BDD-style tests</li>
 <li>Built-in mocking</li>
@@ -767,13 +1008,36 @@ backoffMultiplier: 1.5x
     charge.amount == 15.48  // (30.00 / 31) * 16
     charge.chargeType == ChargeType.RECURRING
 }
-</code></pre><h3>5.8 DevOps & Infrastructure</h3><p>| Technology | Purpose |
-|------------|---------|
-| <strong>Docker</strong> | Containerization |
-| <strong>Kubernetes</strong> | Container orchestration |
-| <strong>Helm</strong> | Deployment configuration |
-| <strong>AWS S3</strong> | Document storage |
-| <strong>GitLab CI</strong> | CI/CD pipeline |</p><hr><h2>6. Multi-Tenant Architecture</h2><h3>6.1 Deployment-Level Multi-Tenancy</h3><p><strong>Architecture Pattern:</strong> Each tenant gets:
+</code></pre><h3>5.8 DevOps & Infrastructure</h3><table>
+<thead><tr>
+<th>Technology</th>
+<th>Purpose</th>
+</tr></thead><tbody>
+<tr>
+<td>------------</td>
+<td>---------</td>
+</tr>
+<tr>
+<td><strong>Docker</strong></td>
+<td>Containerization</td>
+</tr>
+<tr>
+<td><strong>Kubernetes</strong></td>
+<td>Container orchestration</td>
+</tr>
+<tr>
+<td><strong>Helm</strong></td>
+<td>Deployment configuration</td>
+</tr>
+<tr>
+<td><strong>AWS S3</strong></td>
+<td>Document storage</td>
+</tr>
+<tr>
+<td><strong>GitLab CI</strong></td>
+<td>CI/CD pipeline</td>
+</tr>
+</tbody></table><hr><h2>6. Multi-Tenant Architecture</h2><h3>6.1 Deployment-Level Multi-Tenancy</h3><p><strong>Architecture Pattern:</strong> Each tenant gets:
 <ul>
 <li>✅ Dedicated Kubernetes deployment</li>
 <li>✅ Dedicated database (<code>coredb-{tenant-name}</code>)</li>
@@ -862,30 +1126,147 @@ private String tenant_id
 <li>Single RDS instance (potential bottleneck)</li>
 <li>Shared Kubernetes cluster</li>
 <li>Shared Redis/ActiveMQ</li>
-</ul><hr><h2>7. Key Business Capabilities</h2><h3>7.1 Platform Capabilities Matrix</h3><p>| Capability | Maturity | Complexity | Business Value |
-|------------|----------|------------|----------------|
-| Order Management | Production | Medium | High |
-| Service Provisioning | Production | High | High |
-| Usage Mediation | Production | High | Critical |
-| Usage Rating | Production | High | Critical |
-| Billing | Production | High | Critical |
-| Invoicing | Production | Medium | High |
-| Payment Processing | Production | Medium | High |
-| Tax Compliance (CFDI) | Production | High | Critical (Mexico) |
-| Revenue Recognition | Production | Medium | Medium |
-| Financial Integration | Production | Medium | Medium |
-| Multi-Tenant | Production | High | High |</p><h3>7.2 Integration Capabilities</h3><p><strong>Supported Integrations:</strong></p><p>| Category | Systems | Status |
-|----------|---------|--------|
-| <strong>CRM</strong> | Salesforce | Production |
-| <strong>Provisioning</strong> | Nokia, ServiceNow | Production |
-| <strong>Tax</strong> | PAC Providers (Mexico) | Production |
-| <strong>Tax</strong> | Avalara | Design Phase |
-| <strong>Payment</strong> | Stripe, PayPal | Production |
-| <strong>Payment</strong> | Mexican Banks | Production |
-| <strong>ERP</strong> | QuickBooks | Production |
-| <strong>ERP</strong> | NetSuite | Design Phase |
-| <strong>ERP</strong> | Oracle EBS | Design Phase |
-| <strong>Notifications</strong> | Slack | Production |</p><h3>7.3 Business KPIs Supported</h3><p><strong>Operational Metrics:</strong>
+</ul><hr><h2>7. Key Business Capabilities</h2><h3>7.1 Platform Capabilities Matrix</h3><table>
+<thead><tr>
+<th>Capability</th>
+<th>Maturity</th>
+<th>Complexity</th>
+<th>Business Value</th>
+</tr></thead><tbody>
+<tr>
+<td>------------</td>
+<td>----------</td>
+<td>------------</td>
+<td>----------------</td>
+</tr>
+<tr>
+<td>Order Management</td>
+<td>Production</td>
+<td>Medium</td>
+<td>High</td>
+</tr>
+<tr>
+<td>Service Provisioning</td>
+<td>Production</td>
+<td>High</td>
+<td>High</td>
+</tr>
+<tr>
+<td>Usage Mediation</td>
+<td>Production</td>
+<td>High</td>
+<td>Critical</td>
+</tr>
+<tr>
+<td>Usage Rating</td>
+<td>Production</td>
+<td>High</td>
+<td>Critical</td>
+</tr>
+<tr>
+<td>Billing</td>
+<td>Production</td>
+<td>High</td>
+<td>Critical</td>
+</tr>
+<tr>
+<td>Invoicing</td>
+<td>Production</td>
+<td>Medium</td>
+<td>High</td>
+</tr>
+<tr>
+<td>Payment Processing</td>
+<td>Production</td>
+<td>Medium</td>
+<td>High</td>
+</tr>
+<tr>
+<td>Tax Compliance (CFDI)</td>
+<td>Production</td>
+<td>High</td>
+<td>Critical (Mexico)</td>
+</tr>
+<tr>
+<td>Revenue Recognition</td>
+<td>Production</td>
+<td>Medium</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Financial Integration</td>
+<td>Production</td>
+<td>Medium</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Multi-Tenant</td>
+<td>Production</td>
+<td>High</td>
+<td>High</td>
+</tr>
+</tbody></table><h3>7.2 Integration Capabilities</h3><p><strong>Supported Integrations:</strong></p><table>
+<thead><tr>
+<th>Category</th>
+<th>Systems</th>
+<th>Status</th>
+</tr></thead><tbody>
+<tr>
+<td>----------</td>
+<td>---------</td>
+<td>--------</td>
+</tr>
+<tr>
+<td><strong>CRM</strong></td>
+<td>Salesforce</td>
+<td>Production</td>
+</tr>
+<tr>
+<td><strong>Provisioning</strong></td>
+<td>Nokia, ServiceNow</td>
+<td>Production</td>
+</tr>
+<tr>
+<td><strong>Tax</strong></td>
+<td>PAC Providers (Mexico)</td>
+<td>Production</td>
+</tr>
+<tr>
+<td><strong>Tax</strong></td>
+<td>Avalara</td>
+<td>Design Phase</td>
+</tr>
+<tr>
+<td><strong>Payment</strong></td>
+<td>Stripe, PayPal</td>
+<td>Production</td>
+</tr>
+<tr>
+<td><strong>Payment</strong></td>
+<td>Mexican Banks</td>
+<td>Production</td>
+</tr>
+<tr>
+<td><strong>ERP</strong></td>
+<td>QuickBooks</td>
+<td>Production</td>
+</tr>
+<tr>
+<td><strong>ERP</strong></td>
+<td>NetSuite</td>
+<td>Design Phase</td>
+</tr>
+<tr>
+<td><strong>ERP</strong></td>
+<td>Oracle EBS</td>
+<td>Design Phase</td>
+</tr>
+<tr>
+<td><strong>Notifications</strong></td>
+<td>Slack</td>
+<td>Production</td>
+</tr>
+</tbody></table><h3>7.3 Business KPIs Supported</h3><p><strong>Operational Metrics:</strong>
 <ul>
 <li>Orders processed per day</li>
 <li>Provisioning success rate</li>

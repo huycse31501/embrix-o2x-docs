@@ -144,25 +144,48 @@
     table {
         width: 100%;
         border-collapse: collapse;
-        margin: 20px 0;
+        margin: 25px 0;
         box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        border-radius: 8px;
+        overflow: hidden;
+        background: white;
+    }
+
+    thead {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     }
 
     th {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         color: white;
-        padding: 12px;
+        padding: 15px 12px;
         text-align: left;
         font-weight: 600;
+        text-transform: uppercase;
+        font-size: 0.85em;
+        letter-spacing: 0.5px;
     }
 
     td {
         padding: 12px;
-        border-bottom: 1px solid #f0f0f0;
+        border-bottom: 1px solid #e0e0e0;
+        vertical-align: top;
     }
 
-    tr:hover {
+    tbody tr:last-child td {
+        border-bottom: none;
+    }
+
+    tbody tr:hover {
         background: #f8f9fa;
+        transition: background 0.2s ease;
+    }
+
+    tbody tr:nth-child(even) {
+        background: #fafafa;
+    }
+
+    tbody tr:nth-child(even):hover {
+        background: #f0f0f0;
     }
 
     .info-box {
@@ -365,27 +388,146 @@
 │  │ Secrets Mgmt     │  │ Object Storage   │  │ Prometheus/Grafana   │  │
 │  └──────────────────┘  └──────────────────┘  └──────────────────────┘  │
 └─────────────────────────────────────────────────────────────────────────┘
-</code></pre><h3>Isolation Boundaries</h3><p>| Component | Isolation Level | Notes |
-|-----------|----------------|-------|
-| <strong>Business Data</strong> | ✅ Complete | Separate database per tenant |
-| <strong>Application Pods</strong> | ✅ Complete | Dedicated K8s deployments |
-| <strong>Compute Resources</strong> | ✅ Quota-based | K8s resource limits per namespace |
-| <strong>Network</strong> | ✅ Logical | Service mesh + ingress rules |
-| <strong>Secrets/Credentials</strong> | ✅ Logical | Vault namespaces per tenant |
-| <strong>Configuration</strong> | ✅ Logical | Tenant-specific Helm values |
-| <strong>Database Server</strong> | 🔄 Shared | Multi-database RDS instance |
-| <strong>Kubernetes Cluster</strong> | 🔄 Shared | Shared control plane & nodes |
-| <strong>Cache Layer</strong> | 🔄 Shared | Redis with key prefixing |
-| <strong>Message Queue</strong> | 🔄 Shared | ActiveMQ with queue isolation |
-| <strong>Monitoring</strong> | 🔄 Shared | Tenant labels for filtering |</p><hr><h2>Current Tenant Inventory</h2><h3>Active Tenants (as of Feb 2026)</h3><p>| Tenant ID | Tenant Name | Environment | Database | Primary Region | Status |
-|-----------|-------------|-------------|----------|----------------|--------|
-| TIDLT-100001 | coopeg-sbx | Sandbox | coredb-coopeg-sbx | us-east-1 | Active |
-| TIDLT-100002 | demo | Demo | coredb-demo | us-east-1 | Active |
-| TIDLT-100003 | dev | Development | enginedevdb | us-east-1 | Active |
-| TIDLT-100004 | shm | Production | coredb-shm | us-east-1 | Active |
-| TIDLT-100005 | urbanos | Development | coredb-urbanos | us-east-1 | Active |
-| TIDLT-100006 | coopeg-prd | Production | coredb-coopeg-prd | us-east-1 | Active |
-| TIDLT-100007 | coopegenergy | Production | coredb-coopegenergy | us-east-1 | Active |</p><h3>Tenant Naming Conventions</h3><p><strong>Tenant ID Format:</strong> <code>TIDLT-{6-digit-number}</code>
+</code></pre><h3>Isolation Boundaries</h3><table>
+<thead><tr>
+<th>Component</th>
+<th>Isolation Level</th>
+<th>Notes</th>
+</tr></thead><tbody>
+<tr>
+<td>-----------</td>
+<td>----------------</td>
+<td>-------</td>
+</tr>
+<tr>
+<td><strong>Business Data</strong></td>
+<td>✅ Complete</td>
+<td>Separate database per tenant</td>
+</tr>
+<tr>
+<td><strong>Application Pods</strong></td>
+<td>✅ Complete</td>
+<td>Dedicated K8s deployments</td>
+</tr>
+<tr>
+<td><strong>Compute Resources</strong></td>
+<td>✅ Quota-based</td>
+<td>K8s resource limits per namespace</td>
+</tr>
+<tr>
+<td><strong>Network</strong></td>
+<td>✅ Logical</td>
+<td>Service mesh + ingress rules</td>
+</tr>
+<tr>
+<td><strong>Secrets/Credentials</strong></td>
+<td>✅ Logical</td>
+<td>Vault namespaces per tenant</td>
+</tr>
+<tr>
+<td><strong>Configuration</strong></td>
+<td>✅ Logical</td>
+<td>Tenant-specific Helm values</td>
+</tr>
+<tr>
+<td><strong>Database Server</strong></td>
+<td>🔄 Shared</td>
+<td>Multi-database RDS instance</td>
+</tr>
+<tr>
+<td><strong>Kubernetes Cluster</strong></td>
+<td>🔄 Shared</td>
+<td>Shared control plane & nodes</td>
+</tr>
+<tr>
+<td><strong>Cache Layer</strong></td>
+<td>🔄 Shared</td>
+<td>Redis with key prefixing</td>
+</tr>
+<tr>
+<td><strong>Message Queue</strong></td>
+<td>🔄 Shared</td>
+<td>ActiveMQ with queue isolation</td>
+</tr>
+<tr>
+<td><strong>Monitoring</strong></td>
+<td>🔄 Shared</td>
+<td>Tenant labels for filtering</td>
+</tr>
+</tbody></table><hr><h2>Current Tenant Inventory</h2><h3>Active Tenants (as of Feb 2026)</h3><table>
+<thead><tr>
+<th>Tenant ID</th>
+<th>Tenant Name</th>
+<th>Environment</th>
+<th>Database</th>
+<th>Primary Region</th>
+<th>Status</th>
+</tr></thead><tbody>
+<tr>
+<td>-----------</td>
+<td>-------------</td>
+<td>-------------</td>
+<td>----------</td>
+<td>----------------</td>
+<td>--------</td>
+</tr>
+<tr>
+<td>TIDLT-100001</td>
+<td>coopeg-sbx</td>
+<td>Sandbox</td>
+<td>coredb-coopeg-sbx</td>
+<td>us-east-1</td>
+<td>Active</td>
+</tr>
+<tr>
+<td>TIDLT-100002</td>
+<td>demo</td>
+<td>Demo</td>
+<td>coredb-demo</td>
+<td>us-east-1</td>
+<td>Active</td>
+</tr>
+<tr>
+<td>TIDLT-100003</td>
+<td>dev</td>
+<td>Development</td>
+<td>enginedevdb</td>
+<td>us-east-1</td>
+<td>Active</td>
+</tr>
+<tr>
+<td>TIDLT-100004</td>
+<td>shm</td>
+<td>Production</td>
+<td>coredb-shm</td>
+<td>us-east-1</td>
+<td>Active</td>
+</tr>
+<tr>
+<td>TIDLT-100005</td>
+<td>urbanos</td>
+<td>Development</td>
+<td>coredb-urbanos</td>
+<td>us-east-1</td>
+<td>Active</td>
+</tr>
+<tr>
+<td>TIDLT-100006</td>
+<td>coopeg-prd</td>
+<td>Production</td>
+<td>coredb-coopeg-prd</td>
+<td>us-east-1</td>
+<td>Active</td>
+</tr>
+<tr>
+<td>TIDLT-100007</td>
+<td>coopegenergy</td>
+<td>Production</td>
+<td>coredb-coopegenergy</td>
+<td>us-east-1</td>
+<td>Active</td>
+</tr>
+</tbody></table><h3>Tenant Naming Conventions</h3><p><strong>Tenant ID Format:</strong> <code>TIDLT-{6-digit-number}</code>
 <ul>
 <li><code>TIDLT</code> = Tenant ID Prefix (Tenant Identifier)</li>
 <li>Sequential numbering starting from 100001</li>
@@ -1274,23 +1416,100 @@ aws rds create-db-snapshot \
 <li><strong>Integrations:</strong> QuickBooks, Stripe, Avalara</li>
 <li><strong>Special Notes:</strong> Standard configuration, no customizations</li>
 </ul>
-</code></pre><hr><h2>Configuration Management</h2><h3>Environment Variables Reference</h3><p><strong>Common Environment Variables (All Services):</strong></p><p>| Variable | Purpose | Example |
-|----------|---------|---------|
-| <code>TENANT_ID</code> | Unique tenant identifier | <code>TIDLT-100008</code> |
-| <code>LOGS_DIR</code> | Log file directory | <code>/logs</code> |
-| <code>LOG_LEVEL</code> | Logging verbosity | <code>INFO</code>, <code>DEBUG</code>, <code>WARN</code> |
-| <code>REDIS_HOST</code> | Redis cache endpoint | <code>master.cache-rg.us-east-1.cache.amazonaws.com</code> |
-| <code>REDIS_PORT</code> | Redis port | <code>6379</code> |
-| <code>AWS_S3_PUBLICURL</code> | S3 static assets URL | <code>https://embrix-static-files.s3.amazonaws.com</code> |
-| <code>AMQ_BROKER_URL</code> | ActiveMQ broker URL | <code>ssl://broker.mq.us-east-1.amazonaws.com:61617</code> |
-| <code>VAULT_API</code> | Vault interface URL | <code>http://tenant-vault-interface/</code> |</p><p><strong>Service-Specific Variables:</strong></p><p>| Service | Variable | Purpose |
-|---------|----------|---------|
-| All Core | <code>TAX_GATEWAY_URL</code> | Tax calculation service |
-| All Core | <code>PAYMENT_GATEWAY_URL</code> | Payment processing service |
-| All Core | <code>FINANCE_GATEWAY_URL</code> | Finance/ERP integration |
-| All Core | <code>PROVISIONING_GATEWAY_URL</code> | Service provisioning |
-| All Core | <code>CRM_GATEWAY_URL</code> | CRM integration |
-| Gateways | <code>DATA_DIR</code> | Data file storage | <code>/data</code> |</p><h3>Database Connection Configuration</h3><p><strong>JDBC URL Format:</strong>
+</code></pre><hr><h2>Configuration Management</h2><h3>Environment Variables Reference</h3><p><strong>Common Environment Variables (All Services):</strong></p><table>
+<thead><tr>
+<th>Variable</th>
+<th>Purpose</th>
+<th>Example</th>
+</tr></thead><tbody>
+<tr>
+<td>----------</td>
+<td>---------</td>
+<td>---------</td>
+</tr>
+<tr>
+<td><code>TENANT_ID</code></td>
+<td>Unique tenant identifier</td>
+<td><code>TIDLT-100008</code></td>
+</tr>
+<tr>
+<td><code>LOGS_DIR</code></td>
+<td>Log file directory</td>
+<td><code>/logs</code></td>
+</tr>
+<tr>
+<td><code>LOG_LEVEL</code></td>
+<td>Logging verbosity</td>
+<td><code>INFO</code>, <code>DEBUG</code>, <code>WARN</code></td>
+</tr>
+<tr>
+<td><code>REDIS_HOST</code></td>
+<td>Redis cache endpoint</td>
+<td><code>master.cache-rg.us-east-1.cache.amazonaws.com</code></td>
+</tr>
+<tr>
+<td><code>REDIS_PORT</code></td>
+<td>Redis port</td>
+<td><code>6379</code></td>
+</tr>
+<tr>
+<td><code>AWS_S3_PUBLICURL</code></td>
+<td>S3 static assets URL</td>
+<td><code>https://embrix-static-files.s3.amazonaws.com</code></td>
+</tr>
+<tr>
+<td><code>AMQ_BROKER_URL</code></td>
+<td>ActiveMQ broker URL</td>
+<td><code>ssl://broker.mq.us-east-1.amazonaws.com:61617</code></td>
+</tr>
+<tr>
+<td><code>VAULT_API</code></td>
+<td>Vault interface URL</td>
+<td><code>http://tenant-vault-interface/</code></td>
+</tr>
+</tbody></table><p><strong>Service-Specific Variables:</strong></p><table>
+<thead><tr>
+<th>Service</th>
+<th>Variable</th>
+<th>Purpose</th>
+</tr></thead><tbody>
+<tr>
+<td>---------</td>
+<td>----------</td>
+<td>---------</td>
+</tr>
+<tr>
+<td>All Core</td>
+<td><code>TAX_GATEWAY_URL</code></td>
+<td>Tax calculation service</td>
+</tr>
+<tr>
+<td>All Core</td>
+<td><code>PAYMENT_GATEWAY_URL</code></td>
+<td>Payment processing service</td>
+</tr>
+<tr>
+<td>All Core</td>
+<td><code>FINANCE_GATEWAY_URL</code></td>
+<td>Finance/ERP integration</td>
+</tr>
+<tr>
+<td>All Core</td>
+<td><code>PROVISIONING_GATEWAY_URL</code></td>
+<td>Service provisioning</td>
+</tr>
+<tr>
+<td>All Core</td>
+<td><code>CRM_GATEWAY_URL</code></td>
+<td>CRM integration</td>
+</tr>
+<tr>
+<td>Gateways</td>
+<td><code>DATA_DIR</code></td>
+<td>Data file storage</td>
+<td><code>/data</code></td>
+</tr>
+</tbody></table><h3>Database Connection Configuration</h3><p><strong>JDBC URL Format:</strong>
 <pre><code class="language-">jdbc:postgresql://&lt;host&gt;:&lt;port&gt;/&lt;database&gt;?stringtype=unspecified&sslmode=require
 </code></pre><p><strong>Connection Pool Settings (HikariCP):</strong>
 <pre><code class="language-yaml">spring:
@@ -1550,26 +1769,102 @@ kubectl port-forward svc/newclient-finance-gateway 8080:8080</p><h1>Test authent
 curl -X POST http://localhost:8080/api/newmerchant/authenticate \
   -H "X-Tenant-ID: TIDLT-100008"
 </code></pre><hr><h2>Monitoring & Observability</h2><h3>Key Metrics to Monitor</h3><p><strong>Application Metrics:</strong>
-| Metric | Threshold | Alert Level |
-|--------|-----------|-------------|
-| Pod CPU usage | > 80% for 5min | Warning |
-| Pod Memory usage | > 85% for 5min | Warning |
-| Pod restart count | > 3 in 1hr | Critical |
-| HTTP error rate (5xx) | > 5% for 5min | Critical |
-| HTTP latency (p95) | > 2s | Warning |
-| HTTP latency (p99) | > 5s | Critical |
-| Database connection pool | > 90% capacity | Warning |
-| Cache hit rate | < 70% | Warning |
-| Queue depth (ActiveMQ) | > 1000 msgs | Warning |
-| Disk usage | > 85% | Warning |</p><p><strong>Business Metrics:</strong>
-| Metric | Monitoring |
-|--------|-----------|
-| Orders created/hour | Track trends |
-| Bills generated/day | Track against expected |
-| Invoices sent/day | Track delivery rate |
-| Payments processed/hour | Track success rate |
-| Failed API calls | Track per endpoint |
-| Gateway integration failures | Alert on > 5% |</p><h3>Logging Standards</h3><p><strong>Log Levels:</strong>
+<table>
+<thead><tr>
+<th>Metric</th>
+<th>Threshold</th>
+<th>Alert Level</th>
+</tr></thead><tbody>
+<tr>
+<td>--------</td>
+<td>-----------</td>
+<td>-------------</td>
+</tr>
+<tr>
+<td>Pod CPU usage</td>
+<td>> 80% for 5min</td>
+<td>Warning</td>
+</tr>
+<tr>
+<td>Pod Memory usage</td>
+<td>> 85% for 5min</td>
+<td>Warning</td>
+</tr>
+<tr>
+<td>Pod restart count</td>
+<td>> 3 in 1hr</td>
+<td>Critical</td>
+</tr>
+<tr>
+<td>HTTP error rate (5xx)</td>
+<td>> 5% for 5min</td>
+<td>Critical</td>
+</tr>
+<tr>
+<td>HTTP latency (p95)</td>
+<td>> 2s</td>
+<td>Warning</td>
+</tr>
+<tr>
+<td>HTTP latency (p99)</td>
+<td>> 5s</td>
+<td>Critical</td>
+</tr>
+<tr>
+<td>Database connection pool</td>
+<td>> 90% capacity</td>
+<td>Warning</td>
+</tr>
+<tr>
+<td>Cache hit rate</td>
+<td>< 70%</td>
+<td>Warning</td>
+</tr>
+<tr>
+<td>Queue depth (ActiveMQ)</td>
+<td>> 1000 msgs</td>
+<td>Warning</td>
+</tr>
+<tr>
+<td>Disk usage</td>
+<td>> 85%</td>
+<td>Warning</td>
+</tr>
+</tbody></table><p><strong>Business Metrics:</strong>
+<table>
+<thead><tr>
+<th>Metric</th>
+<th>Monitoring</th>
+</tr></thead><tbody>
+<tr>
+<td>--------</td>
+<td>-----------</td>
+</tr>
+<tr>
+<td>Orders created/hour</td>
+<td>Track trends</td>
+</tr>
+<tr>
+<td>Bills generated/day</td>
+<td>Track against expected</td>
+</tr>
+<tr>
+<td>Invoices sent/day</td>
+<td>Track delivery rate</td>
+</tr>
+<tr>
+<td>Payments processed/hour</td>
+<td>Track success rate</td>
+</tr>
+<tr>
+<td>Failed API calls</td>
+<td>Track per endpoint</td>
+</tr>
+<tr>
+<td>Gateway integration failures</td>
+<td>Alert on > 5%</td>
+</tr>
+</tbody></table><h3>Logging Standards</h3><p><strong>Log Levels:</strong>
 <ul>
 <li><strong>ERROR:</strong> System errors, exceptions, integration failures</li>
 <li><strong>WARN:</strong> Deprecated API usage, slow queries, retry attempts</li>
@@ -1911,31 +2206,133 @@ redis-cli -h &lt;redis-host&gt; --scan --pattern "TIDLT-100008:session:*" | xarg
 </ol>
    - Run resource-intensive jobs during off-peak hours
    - Use spot instances for batch processing
-   - Implement job throttling</p><hr><h2>Appendices</h2><h3>Appendix A: Service Dependency Matrix</h3><p>| Service | Depends On |
-|---------|-----------|
-| service-sso | Database, Redis, Vault |
-| service-transactional | Database, Redis, service-sso, all gateways |
-| service-billing | Database, Redis, service-transactional, service-usage |
-| service-invoice | Database, Redis, S3, service-billing, finance-gateway |
-| service-payment | Database, Redis, service-billing, payment-gateway, finance-gateway |
-| service-revenue | Database, Redis, service-invoice, finance-gateway |
-| service-usage | Database, Redis, service-transactional |
-| service-mediation | Database, Redis, ActiveMQ, service-usage |
-| service-proxy | All core services |
-| finance-gateway | Database, Vault, External APIs (QuickBooks, NetSuite) |
-| payment-gateway | Database, Vault, External APIs (Stripe, Authorize.Net) |
-| tax-gateway | Database, Vault, External APIs (Avalara, TaxJar) |
-| provision-gateway | Database, Vault, External APIs (Broadsoft, etc.) |
-| crm-gateway | Database, Vault, External APIs (Salesforce, etc.) |</p><h3>Appendix B: Port Reference</h3><p>| Service | Port | Protocol | Purpose |
-|---------|------|----------|---------|
-| service-* | 8080 | HTTP | Application/API |
-| service-* | 8081 | HTTP | Actuator/Metrics |
-| *-gateway | 8080 | HTTP | Application/API |
-| PostgreSQL | 5432 | TCP | Database |
-| Redis | 6379 | TCP | Cache |
-| ActiveMQ | 61617 | TCP (SSL) | Message Queue |
-| ActiveMQ | 8161 | HTTP | Admin Console |
-| Vault | 8200 | HTTP | Secrets API |</p><h3>Appendix C: Helm Chart Repository Structure</h3><pre><code class="language-">embrix-o2x/
+   - Implement job throttling</p><hr><h2>Appendices</h2><h3>Appendix A: Service Dependency Matrix</h3><table>
+<thead><tr>
+<th>Service</th>
+<th>Depends On</th>
+</tr></thead><tbody>
+<tr>
+<td>---------</td>
+<td>-----------</td>
+</tr>
+<tr>
+<td>service-sso</td>
+<td>Database, Redis, Vault</td>
+</tr>
+<tr>
+<td>service-transactional</td>
+<td>Database, Redis, service-sso, all gateways</td>
+</tr>
+<tr>
+<td>service-billing</td>
+<td>Database, Redis, service-transactional, service-usage</td>
+</tr>
+<tr>
+<td>service-invoice</td>
+<td>Database, Redis, S3, service-billing, finance-gateway</td>
+</tr>
+<tr>
+<td>service-payment</td>
+<td>Database, Redis, service-billing, payment-gateway, finance-gateway</td>
+</tr>
+<tr>
+<td>service-revenue</td>
+<td>Database, Redis, service-invoice, finance-gateway</td>
+</tr>
+<tr>
+<td>service-usage</td>
+<td>Database, Redis, service-transactional</td>
+</tr>
+<tr>
+<td>service-mediation</td>
+<td>Database, Redis, ActiveMQ, service-usage</td>
+</tr>
+<tr>
+<td>service-proxy</td>
+<td>All core services</td>
+</tr>
+<tr>
+<td>finance-gateway</td>
+<td>Database, Vault, External APIs (QuickBooks, NetSuite)</td>
+</tr>
+<tr>
+<td>payment-gateway</td>
+<td>Database, Vault, External APIs (Stripe, Authorize.Net)</td>
+</tr>
+<tr>
+<td>tax-gateway</td>
+<td>Database, Vault, External APIs (Avalara, TaxJar)</td>
+</tr>
+<tr>
+<td>provision-gateway</td>
+<td>Database, Vault, External APIs (Broadsoft, etc.)</td>
+</tr>
+<tr>
+<td>crm-gateway</td>
+<td>Database, Vault, External APIs (Salesforce, etc.)</td>
+</tr>
+</tbody></table><h3>Appendix B: Port Reference</h3><table>
+<thead><tr>
+<th>Service</th>
+<th>Port</th>
+<th>Protocol</th>
+<th>Purpose</th>
+</tr></thead><tbody>
+<tr>
+<td>---------</td>
+<td>------</td>
+<td>----------</td>
+<td>---------</td>
+</tr>
+<tr>
+<td>service-*</td>
+<td>8080</td>
+<td>HTTP</td>
+<td>Application/API</td>
+</tr>
+<tr>
+<td>service-*</td>
+<td>8081</td>
+<td>HTTP</td>
+<td>Actuator/Metrics</td>
+</tr>
+<tr>
+<td>*-gateway</td>
+<td>8080</td>
+<td>HTTP</td>
+<td>Application/API</td>
+</tr>
+<tr>
+<td>PostgreSQL</td>
+<td>5432</td>
+<td>TCP</td>
+<td>Database</td>
+</tr>
+<tr>
+<td>Redis</td>
+<td>6379</td>
+<td>TCP</td>
+<td>Cache</td>
+</tr>
+<tr>
+<td>ActiveMQ</td>
+<td>61617</td>
+<td>TCP (SSL)</td>
+<td>Message Queue</td>
+</tr>
+<tr>
+<td>ActiveMQ</td>
+<td>8161</td>
+<td>HTTP</td>
+<td>Admin Console</td>
+</tr>
+<tr>
+<td>Vault</td>
+<td>8200</td>
+<td>HTTP</td>
+<td>Secrets API</td>
+</tr>
+</tbody></table><h3>Appendix C: Helm Chart Repository Structure</h3><pre><code class="language-">embrix-o2x/
 ├── core/
 │   ├── charts/
 │   │   ├── service-transactional/
@@ -2013,9 +2410,26 @@ redis-cli -h &lt;redis-host&gt; --scan --pattern "TIDLT-100008:session:*" | xarg
 <li><strong>HashiCorp Vault:</strong> Enterprise Support</li>
 <li><strong>QuickBooks API:</strong> Intuit Developer Support</li>
 <li><strong>Stripe:</strong> Stripe Support Portal</li>
-</ul><hr><h2>Document Change Log</h2><p>| Date | Version | Changes | Author |
-|------|---------|---------|--------|
-| 2026-02-10 | 1.0 | Initial comprehensive guide created | DevOps Team |</p><hr><p><strong>End of Document</strong>
+</ul><hr><h2>Document Change Log</h2><table>
+<thead><tr>
+<th>Date</th>
+<th>Version</th>
+<th>Changes</th>
+<th>Author</th>
+</tr></thead><tbody>
+<tr>
+<td>------</td>
+<td>---------</td>
+<td>---------</td>
+<td>--------</td>
+</tr>
+<tr>
+<td>2026-02-10</td>
+<td>1.0</td>
+<td>Initial comprehensive guide created</td>
+<td>DevOps Team</td>
+</tr>
+</tbody></table><hr><p><strong>End of Document</strong>
 </p>
         <footer>
             <p><strong>Embrix O2X Platform Documentation</strong></p>

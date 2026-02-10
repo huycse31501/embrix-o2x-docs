@@ -144,25 +144,48 @@
     table {
         width: 100%;
         border-collapse: collapse;
-        margin: 20px 0;
+        margin: 25px 0;
         box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        border-radius: 8px;
+        overflow: hidden;
+        background: white;
+    }
+
+    thead {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     }
 
     th {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         color: white;
-        padding: 12px;
+        padding: 15px 12px;
         text-align: left;
         font-weight: 600;
+        text-transform: uppercase;
+        font-size: 0.85em;
+        letter-spacing: 0.5px;
     }
 
     td {
         padding: 12px;
-        border-bottom: 1px solid #f0f0f0;
+        border-bottom: 1px solid #e0e0e0;
+        vertical-align: top;
     }
 
-    tr:hover {
+    tbody tr:last-child td {
+        border-bottom: none;
+    }
+
+    tbody tr:hover {
         background: #f8f9fa;
+        transition: background 0.2s ease;
+    }
+
+    tbody tr:nth-child(even) {
+        background: #fafafa;
+    }
+
+    tbody tr:nth-child(even):hover {
+        background: #f0f0f0;
     }
 
     .info-box {

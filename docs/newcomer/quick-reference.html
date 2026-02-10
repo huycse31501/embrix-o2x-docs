@@ -144,25 +144,48 @@
     table {
         width: 100%;
         border-collapse: collapse;
-        margin: 20px 0;
+        margin: 25px 0;
         box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        border-radius: 8px;
+        overflow: hidden;
+        background: white;
+    }
+
+    thead {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     }
 
     th {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         color: white;
-        padding: 12px;
+        padding: 15px 12px;
         text-align: left;
         font-weight: 600;
+        text-transform: uppercase;
+        font-size: 0.85em;
+        letter-spacing: 0.5px;
     }
 
     td {
         padding: 12px;
-        border-bottom: 1px solid #f0f0f0;
+        border-bottom: 1px solid #e0e0e0;
+        vertical-align: top;
     }
 
-    tr:hover {
+    tbody tr:last-child td {
+        border-bottom: none;
+    }
+
+    tbody tr:hover {
         background: #f8f9fa;
+        transition: background 0.2s ease;
+    }
+
+    tbody tr:nth-child(even) {
+        background: #fafafa;
+    }
+
+    tbody tr:nth-child(even):hover {
+        background: #f0f0f0;
     }
 
     .info-box {
@@ -313,24 +336,116 @@ External: Salesforce, Nokia, Banks, PAC Providers, ERP
 <li><strong>Gateway Pattern</strong>: Isolate external systems</li>
 <li><strong>GraphQL-First</strong>: Flexible API layer</li>
 <li><strong>Multi-Tenant</strong>: Database-per-tenant</li>
-</ul><hr><h2>📦 Module Quick Reference</h2><p>| Module | Purpose | Depends On | Port |
-|--------|---------|------------|------|
-| <code>common</code> | DTOs, Enums | - | N/A |
-| <code>engine</code> | Business Logic | common | N/A |
-| <code>oms-component</code> | Orchestration | engine, common | N/A |
-| <code>gateway-common</code> | Gateway Utils | common | N/A |
-| <code>jobs-common</code> | Batch Jobs | engine, common | N/A |
-| <code>crm_gateway</code> | Order Intake | engine, common, oms-component | 8080 |
-| <code>provision_gateway</code> | Provisioning | gateway-common | 8081 |
-| <code>tax-gateway</code> | Tax Calc | gateway-common | varies |
-| <code>payment-gateway</code> | Payments | gateway-common | varies |
-| <code>finance-gateway</code> | ERP Sync | gateway-common | varies |
-| <code>service-billing</code> | Billing | engine, common | varies |
-| <code>service-invoice</code> | Invoicing | engine, common | varies |
-| <code>service-usage</code> | Usage Data | engine, common | varies |
-| <code>service-payment</code> | Payment Mgmt | engine, common | varies |
-| <code>service-revenue</code> | Rev Rec | engine, common | varies |
-| <code>batch-process</code> | Batch Jobs | engine, common, jobs-common | varies |</p><hr><h2>🗄️ Database Quick Reference</h2><h3>Schemas:</h3>
+</ul><hr><h2>📦 Module Quick Reference</h2><table>
+<thead><tr>
+<th>Module</th>
+<th>Purpose</th>
+<th>Depends On</th>
+<th>Port</th>
+</tr></thead><tbody>
+<tr>
+<td>--------</td>
+<td>---------</td>
+<td>------------</td>
+<td>------</td>
+</tr>
+<tr>
+<td><code>common</code></td>
+<td>DTOs, Enums</td>
+<td>-</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td><code>engine</code></td>
+<td>Business Logic</td>
+<td>common</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td><code>oms-component</code></td>
+<td>Orchestration</td>
+<td>engine, common</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td><code>gateway-common</code></td>
+<td>Gateway Utils</td>
+<td>common</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td><code>jobs-common</code></td>
+<td>Batch Jobs</td>
+<td>engine, common</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td><code>crm_gateway</code></td>
+<td>Order Intake</td>
+<td>engine, common, oms-component</td>
+<td>8080</td>
+</tr>
+<tr>
+<td><code>provision_gateway</code></td>
+<td>Provisioning</td>
+<td>gateway-common</td>
+<td>8081</td>
+</tr>
+<tr>
+<td><code>tax-gateway</code></td>
+<td>Tax Calc</td>
+<td>gateway-common</td>
+<td>varies</td>
+</tr>
+<tr>
+<td><code>payment-gateway</code></td>
+<td>Payments</td>
+<td>gateway-common</td>
+<td>varies</td>
+</tr>
+<tr>
+<td><code>finance-gateway</code></td>
+<td>ERP Sync</td>
+<td>gateway-common</td>
+<td>varies</td>
+</tr>
+<tr>
+<td><code>service-billing</code></td>
+<td>Billing</td>
+<td>engine, common</td>
+<td>varies</td>
+</tr>
+<tr>
+<td><code>service-invoice</code></td>
+<td>Invoicing</td>
+<td>engine, common</td>
+<td>varies</td>
+</tr>
+<tr>
+<td><code>service-usage</code></td>
+<td>Usage Data</td>
+<td>engine, common</td>
+<td>varies</td>
+</tr>
+<tr>
+<td><code>service-payment</code></td>
+<td>Payment Mgmt</td>
+<td>engine, common</td>
+<td>varies</td>
+</tr>
+<tr>
+<td><code>service-revenue</code></td>
+<td>Rev Rec</td>
+<td>engine, common</td>
+<td>varies</td>
+</tr>
+<tr>
+<td><code>batch-process</code></td>
+<td>Batch Jobs</td>
+<td>engine, common, jobs-common</td>
+<td>varies</td>
+</tr>
+</tbody></table><hr><h2>🗄️ Database Quick Reference</h2><h3>Schemas:</h3>
 <pre><code class="language-sql">core_engine      -- Shared entities (account, subscription, user)
 core_oms         -- Orders (order, service_line, order_activity)
 core_billing     -- Financial (charge, invoice, payment)
@@ -359,17 +474,74 @@ WHERE status = 'OVERDUE' AND account_id = ?;</p><p>-- Find unbilled usage
 SELECT * FROM core_usage.usage_record 
 WHERE account_id = ? AND billed = false AND status = 'RATED';</p><p>-- Find account balance
 SELECT balance FROM core_engine.account WHERE id = ?;
-</code></pre><hr><h2>📨 ActiveMQ Queues</h2><p>| Queue | Purpose | Producer | Consumer |
-|-------|---------|----------|----------|
-| <code>OMS</code> | Order intake | Salesforce CRM | crm_gateway |
-| <code>OMS_ARCHIVE</code> | Audit trail | crm_gateway | Audit system |
-| <code>OMS_RESPONSE</code> | Order confirmations | crm_gateway | Salesforce CRM |
-| <code>PROVISIONING_RESPONSE</code> | Provision callback | Nokia/ServiceNow | crm_gateway |
-| <code>MCM_BILLING_OMS_RESPONSE</code> | MCM responses | Nokia | provision_gateway |
-| <code>MEDIATION</code> | CDR processing | Mediation system | service-mediation |
-| <code>USAGE</code> | Usage rating | Batch process | service-usage |
-| <code>BULK</code> | Bulk operations | service-proxy | batch-process |
-| <code>{OrchestratorName}</code> | Custom queues | Any | OmsComponent-based |</p><p><strong>Retry Policy</strong>: 7 retries, 250ms initial, 1.5x multiplier</p><hr><h2>🌐 GraphQL Endpoints</h2><h3>crm_gateway (Port 8080)</h3>
+</code></pre><hr><h2>📨 ActiveMQ Queues</h2><table>
+<thead><tr>
+<th>Queue</th>
+<th>Purpose</th>
+<th>Producer</th>
+<th>Consumer</th>
+</tr></thead><tbody>
+<tr>
+<td>-------</td>
+<td>---------</td>
+<td>----------</td>
+<td>----------</td>
+</tr>
+<tr>
+<td><code>OMS</code></td>
+<td>Order intake</td>
+<td>Salesforce CRM</td>
+<td>crm_gateway</td>
+</tr>
+<tr>
+<td><code>OMS_ARCHIVE</code></td>
+<td>Audit trail</td>
+<td>crm_gateway</td>
+<td>Audit system</td>
+</tr>
+<tr>
+<td><code>OMS_RESPONSE</code></td>
+<td>Order confirmations</td>
+<td>crm_gateway</td>
+<td>Salesforce CRM</td>
+</tr>
+<tr>
+<td><code>PROVISIONING_RESPONSE</code></td>
+<td>Provision callback</td>
+<td>Nokia/ServiceNow</td>
+<td>crm_gateway</td>
+</tr>
+<tr>
+<td><code>MCM_BILLING_OMS_RESPONSE</code></td>
+<td>MCM responses</td>
+<td>Nokia</td>
+<td>provision_gateway</td>
+</tr>
+<tr>
+<td><code>MEDIATION</code></td>
+<td>CDR processing</td>
+<td>Mediation system</td>
+<td>service-mediation</td>
+</tr>
+<tr>
+<td><code>USAGE</code></td>
+<td>Usage rating</td>
+<td>Batch process</td>
+<td>service-usage</td>
+</tr>
+<tr>
+<td><code>BULK</code></td>
+<td>Bulk operations</td>
+<td>service-proxy</td>
+<td>batch-process</td>
+</tr>
+<tr>
+<td><code>{OrchestratorName}</code></td>
+<td>Custom queues</td>
+<td>Any</td>
+<td>OmsComponent-based</td>
+</tr>
+</tbody></table><p><strong>Retry Policy</strong>: 7 retries, 250ms initial, 1.5x multiplier</p><hr><h2>🌐 GraphQL Endpoints</h2><h3>crm_gateway (Port 8080)</h3>
 <pre><code class="language-graphql"># Create Order
 mutation {
   createOrder(input: {...}) { id status }
@@ -499,15 +671,53 @@ class MyOrchestrator extends OmsComponent {
     void processError(Exchange exchange) {...}
 }
 // Queue auto-created: MyOrchestrator
-</code></pre><hr><h2>🚨 Troubleshooting</h2><p>| Problem | Check | Solution |
-|---------|-------|----------|
-| Build fails | Dependency order | Build common → engine first |
-| Can't connect to DB | Docker running | <code>docker ps</code> → restart if needed |
-| Vault secrets not found | Env vars | Set VAULT_URI, VAULT_TOKEN |
-| ActiveMQ connection failed | Broker running | Check port 61616, restart broker |
-| GraphQL 404 | Service started | Check logs, verify port |
-| JOOQ classes missing | Generate sources | <code>mvn generate-sources</code> |
-| Tests fail | Test DB | Check embedded PostgreSQL config |</p><hr><h2>📊 Business Flow Cheat Sheet</h2><h3>Order Processing:</h3>
+</code></pre><hr><h2>🚨 Troubleshooting</h2><table>
+<thead><tr>
+<th>Problem</th>
+<th>Check</th>
+<th>Solution</th>
+</tr></thead><tbody>
+<tr>
+<td>---------</td>
+<td>-------</td>
+<td>----------</td>
+</tr>
+<tr>
+<td>Build fails</td>
+<td>Dependency order</td>
+<td>Build common → engine first</td>
+</tr>
+<tr>
+<td>Can't connect to DB</td>
+<td>Docker running</td>
+<td><code>docker ps</code> → restart if needed</td>
+</tr>
+<tr>
+<td>Vault secrets not found</td>
+<td>Env vars</td>
+<td>Set VAULT_URI, VAULT_TOKEN</td>
+</tr>
+<tr>
+<td>ActiveMQ connection failed</td>
+<td>Broker running</td>
+<td>Check port 61616, restart broker</td>
+</tr>
+<tr>
+<td>GraphQL 404</td>
+<td>Service started</td>
+<td>Check logs, verify port</td>
+</tr>
+<tr>
+<td>JOOQ classes missing</td>
+<td>Generate sources</td>
+<td><code>mvn generate-sources</code></td>
+</tr>
+<tr>
+<td>Tests fail</td>
+<td>Test DB</td>
+<td>Check embedded PostgreSQL config</td>
+</tr>
+</tbody></table><hr><h2>📊 Business Flow Cheat Sheet</h2><h3>Order Processing:</h3>
 <pre><code class="language-">Salesforce CRM → crm_gateway.createOrder() → OMS queue → 
 Orchestrator → provision_gateway → Nokia → Callback → 
 service-billing → service-invoice → Customer notification
@@ -523,13 +733,43 @@ Auto-resume if needed → Customer notification
 <pre><code class="language-">Invoice → Generate CFDI XML → SFTP upload to PAC → 
 PAC stamps → SFTP download → Extract UUID → 
 Upload to S3 → Update invoice → Send to customer
-</code></pre><hr><h2>🔗 Useful URLs</h2><p>| Service | URL | Credentials |
-|---------|-----|-------------|
-| GraphQL Playground | http://localhost:8080/graphiql | OAuth2 token |
-| ActiveMQ Console | http://localhost:8161 | admin/admin |
-| Vault UI | http://localhost:8200/ui | Root token |
-| PostgreSQL | localhost:5432 | omsadmin/password |
-| Redis | localhost:6379 | (none) |</p><hr><h2>📞 Getting Help</h2><p><strong>Documentation</strong>:
+</code></pre><hr><h2>🔗 Useful URLs</h2><table>
+<thead><tr>
+<th>Service</th>
+<th>URL</th>
+<th>Credentials</th>
+</tr></thead><tbody>
+<tr>
+<td>---------</td>
+<td>-----</td>
+<td>-------------</td>
+</tr>
+<tr>
+<td>GraphQL Playground</td>
+<td>http://localhost:8080/graphiql</td>
+<td>OAuth2 token</td>
+</tr>
+<tr>
+<td>ActiveMQ Console</td>
+<td>http://localhost:8161</td>
+<td>admin/admin</td>
+</tr>
+<tr>
+<td>Vault UI</td>
+<td>http://localhost:8200/ui</td>
+<td>Root token</td>
+</tr>
+<tr>
+<td>PostgreSQL</td>
+<td>localhost:5432</td>
+<td>omsadmin/password</td>
+</tr>
+<tr>
+<td>Redis</td>
+<td>localhost:6379</td>
+<td>(none)</td>
+</tr>
+</tbody></table><hr><h2>📞 Getting Help</h2><p><strong>Documentation</strong>:
 <ul>
 <li>Full Guide: <code>NEWCOMER_GUIDE_INDEX.md</code></li>
 <li>Part 1: Business & Architecture</li>
