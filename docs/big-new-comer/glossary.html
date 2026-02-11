@@ -1,0 +1,1377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>📖 Glossary of Terms - Embrix O2X</title>
+    
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+        font-size: 16px;
+        line-height: 1.7;
+        color: #1f2937;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+        background-attachment: fixed;
+        padding: 20px;
+        min-height: 100vh;
+    }
+
+    .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        background: rgba(255, 255, 255, 0.98);
+        padding: 40px 50px;
+        border-radius: 24px;
+        box-shadow: 0 20px 60px rgba(0,0,0,0.2), 0 0 100px rgba(102, 126, 234, 0.3);
+        position: relative;
+        overflow: hidden;
+        backdrop-filter: blur(10px);
+    }
+
+    .container::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 8px;
+        background: linear-gradient(90deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+        box-shadow: 0 2px 10px rgba(102, 126, 234, 0.5);
+    }
+    
+    .container::after {
+        content: '';
+        position: absolute;
+        top: -50%;
+        right: -10%;
+        width: 40%;
+        height: 200%;
+        background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, transparent 100%);
+        transform: rotate(-15deg);
+        pointer-events: none;
+    }
+
+    .nav-header {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+        color: white;
+        padding: 25px 30px;
+        border-radius: 20px;
+        margin-bottom: 35px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3), inset 0 1px 0 rgba(255,255,255,0.2);
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .nav-header::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        right: -20%;
+        width: 40%;
+        height: 200%;
+        background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, transparent 100%);
+        transform: rotate(-15deg);
+    }
+
+    .nav-header h1 {
+        font-size: 1.5em;
+        margin-bottom: 5px;
+        font-weight: 700;
+        text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        position: relative;
+        z-index: 1;
+    }
+
+    .nav-links {
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+        position: relative;
+        z-index: 1;
+    }
+
+    .nav-links a {
+        color: white;
+        text-decoration: none;
+        padding: 10px 18px;
+        background: rgba(255,255,255,0.15);
+        border-radius: 10px;
+        transition: all 0.3s ease;
+        font-weight: 500;
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255,255,255,0.2);
+        font-size: 0.9em;
+    }
+    
+    .nav-links a::after {
+        display: none;
+    }
+
+    .nav-links a:hover {
+        background: white;
+        color: #667eea;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+
+    h1 {
+        color: white;
+        margin: 35px 0 25px 0;
+        padding: 20px 25px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        font-size: 1.9em;
+        font-weight: 700;
+        border-radius: 16px;
+        box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3), 0 0 60px rgba(102, 126, 234, 0.1);
+        border: 3px solid rgba(255, 255, 255, 0.2);
+        position: relative;
+        overflow: hidden;
+        transform: translateY(0);
+        transition: all 0.3s ease;
+    }
+    
+    h1::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+        transition: left 0.5s;
+    }
+    
+    h1:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 12px 35px rgba(102, 126, 234, 0.4), 0 0 80px rgba(102, 126, 234, 0.15);
+    }
+    
+    h1:hover::before {
+        left: 100%;
+    }
+
+    h2 {
+        color: #764ba2;
+        margin: 30px 0 20px 0;
+        padding: 16px 20px;
+        background: linear-gradient(135deg, rgba(118, 75, 162, 0.08) 0%, rgba(240, 147, 251, 0.08) 100%);
+        border-left: 6px solid #764ba2;
+        border-radius: 12px;
+        font-size: 1.6em;
+        font-weight: 700;
+        box-shadow: 0 4px 15px rgba(118, 75, 162, 0.15);
+        position: relative;
+        transition: all 0.3s ease;
+    }
+    
+    h2::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 0;
+        height: 3px;
+        background: linear-gradient(90deg, #764ba2 0%, #f093fb 100%);
+        transition: width 0.4s ease;
+    }
+    
+    h2:hover {
+        transform: translateX(5px);
+        box-shadow: 0 6px 20px rgba(118, 75, 162, 0.25);
+    }
+    
+    h2:hover::after {
+        width: 100%;
+    }
+
+    h3 {
+        color: #667eea;
+        margin: 25px 0 15px 0;
+        padding: 14px 18px;
+        background: white;
+        border: 2px solid #667eea;
+        border-radius: 10px;
+        font-size: 1.3em;
+        font-weight: 600;
+        box-shadow: 0 3px 10px rgba(102, 126, 234, 0.1);
+        transition: all 0.3s ease;
+    }
+    
+    h3:hover {
+        background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, transparent 100%);
+        border-color: #764ba2;
+        transform: translateX(3px);
+        box-shadow: 0 5px 15px rgba(102, 126, 234, 0.2);
+    }
+
+    h4 {
+        color: #764ba2;
+        margin: 20px 0 12px 0;
+        padding: 6px 0 6px 10px;
+        border-left: 2px solid #764ba2;
+        background: linear-gradient(90deg, rgba(118, 75, 162, 0.03) 0%, transparent 100%);
+        font-size: 1.1em;
+        font-weight: 600;
+        border-radius: 0 4px 4px 0;
+    }
+
+    h5 {
+        color: #667eea;
+        margin: 18px 0 10px 0;
+        padding: 4px 0 4px 8px;
+        border-left: 2px solid #667eea;
+        font-size: 1.05em;
+        font-weight: 600;
+        background: linear-gradient(90deg, rgba(102, 126, 234, 0.02) 0%, transparent 100%);
+        border-radius: 0 3px 3px 0;
+    }
+
+    h6 {
+        color: #764ba2;
+        margin: 15px 0 8px 0;
+        font-size: 0.95em;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    p {
+        margin: 16px 0;
+        line-height: 1.8;
+        font-size: 1em;
+        color: #374151;
+    }
+    
+    /* Better spacing for paragraphs after headings */
+    h1 + p, h2 + p, h3 + p, h4 + p {
+        margin-top: 12px;
+    }
+    
+    /* First paragraph after heading gets special treatment */
+    h1 + p, h2 + p {
+        font-size: 1.05em;
+        color: #4b5563;
+        font-weight: 400;
+    }
+
+    ul, ol {
+        margin: 20px 0;
+        padding-left: 15px;
+        list-style: none;
+    }
+
+    li {
+        margin: 12px 0;
+        line-height: 1.7;
+        font-size: 0.95em;
+        position: relative;
+        padding: 14px 18px 14px 50px;
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        border-left: 4px solid #667eea;
+        transition: all 0.3s ease;
+    }
+    
+    ul li::before {
+        content: '▸';
+        position: absolute;
+        left: 18px;
+        color: white;
+        font-weight: bold;
+        font-size: 1.3em;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        width: 24px;
+        height: 24px;
+        border-radius: 6px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        line-height: 1;
+        box-shadow: 0 2px 6px rgba(102, 126, 234, 0.3);
+    }
+    
+    ol {
+        counter-reset: item;
+    }
+    
+    ol li::before {
+        content: counter(item);
+        counter-increment: item;
+        position: absolute;
+        left: 18px;
+        color: white;
+        font-weight: 700;
+        font-size: 0.9em;
+        background: linear-gradient(135deg, #764ba2 0%, #f093fb 100%);
+        width: 24px;
+        height: 24px;
+        border-radius: 6px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 2px 6px rgba(118, 75, 162, 0.3);
+    }
+
+    li:hover {
+        transform: translateX(5px);
+        box-shadow: 0 4px 15px rgba(102, 126, 234, 0.15);
+        border-left-width: 6px;
+        background: linear-gradient(90deg, rgba(102, 126, 234, 0.03) 0%, white 100%);
+    }
+
+    /* Nested lists */
+    li ul, li ol {
+        margin: 12px 0 8px 0;
+        padding-left: 10px;
+    }
+
+    /* Nested list items - smaller styling */
+    li li {
+        font-size: 0.92em;
+        margin: 8px 0;
+        padding: 10px 14px 10px 40px;
+        box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+        border-left-color: #764ba2;
+    }
+    
+    li li::before {
+        width: 20px;
+        height: 20px;
+        font-size: 0.85em;
+        left: 12px;
+    }
+
+    li li:hover {
+        border-left-color: #f093fb;
+    }
+
+    code {
+        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        padding: 2px 6px;
+        border-radius: 4px;
+        font-family: 'Fira Code', 'Courier New', Consolas, monospace;
+        font-size: 0.85em;
+        color: #d63384;
+        border: 1px solid #dee2e6;
+        font-weight: 500;
+    }
+
+    /* Inline code with special highlighting */
+    p code, li code, td code {
+        position: relative;
+    }
+
+    p code::before, li code::before, td code::before {
+        content: '';
+        position: absolute;
+        inset: -2px;
+        border-radius: 5px;
+        background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+        z-index: -1;
+        opacity: 0;
+        transition: opacity 0.2s;
+    }
+
+    p code:hover::before, li code:hover::before, td code:hover::before {
+        opacity: 1;
+    }
+
+    pre {
+        background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+        color: #e2e8f0;
+        padding: 24px;
+        border-radius: 16px;
+        overflow-x: auto;
+        margin: 25px 0;
+        border: 2px solid #334155;
+        box-shadow: 0 8px 25px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.05);
+        font-family: 'Cascadia Code', 'Fira Code', 'SF Mono', 'Consolas', 'Liberation Mono', monospace;
+        font-size: 0.88em;
+        line-height: 1.7;
+        position: relative;
+        font-feature-settings: "liga" 0;
+        text-rendering: optimizeLegibility;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+    }
+    
+    pre::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 35px;
+        background: linear-gradient(135deg, rgba(102, 126, 234, 0.15) 0%, rgba(118, 75, 162, 0.15) 100%);
+        border-radius: 14px 14px 0 0;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    pre code {
+        background: none;
+        color: inherit;
+        padding: 0;
+        border: none;
+        font-family: inherit;
+        font-weight: normal;
+        font-size: 1em;
+        display: block;
+        padding-top: 35px;
+    }
+    
+    /* Ensure consistent styling for all code content inside pre blocks */
+    pre code * {
+        font-size: inherit !important;
+        line-height: inherit !important;
+        color: inherit !important;
+        font-family: inherit !important;
+    }
+
+    /* Hover effect */
+    pre:hover {
+        border-color: #667eea;
+        box-shadow: 0 12px 35px rgba(0,0,0,0.4), 0 0 0 2px rgba(102, 126, 234, 0.2);
+        transform: translateY(-2px);
+        transition: all 0.3s ease;
+    }
+
+    /* Code block header indicator with dots */
+    pre::after {
+        content: '';
+        position: absolute;
+        top: 14px;
+        left: 16px;
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        background: #ff5f56;
+        box-shadow: 20px 0 0 #ffbd2e, 40px 0 0 #27c93f;
+    }
+
+    blockquote {
+        border-left: 6px solid #667eea;
+        padding: 22px 28px 22px 60px;
+        margin: 25px 0;
+        color: #555;
+        font-style: italic;
+        font-size: 1em;
+        background: linear-gradient(135deg, rgba(102, 126, 234, 0.08) 0%, rgba(240, 147, 251, 0.05) 100%);
+        border-radius: 16px;
+        position: relative;
+        box-shadow: 0 4px 15px rgba(102, 126, 234, 0.1);
+        transition: all 0.3s ease;
+    }
+
+    blockquote::before {
+        content: '"';
+        position: absolute;
+        left: 18px;
+        top: 50%;
+        transform: translateY(-50%);
+        font-size: 3em;
+        color: rgba(102, 126, 234, 0.2);
+        font-family: Georgia, serif;
+        font-weight: 700;
+        line-height: 1;
+    }
+    
+    blockquote:hover {
+        border-left-color: #764ba2;
+        transform: translateX(5px);
+        box-shadow: 0 6px 20px rgba(102, 126, 234, 0.2);
+    }
+
+    table {
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 0;
+        margin: 25px 0;
+        box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+        border-radius: 16px;
+        overflow: hidden;
+        background: white;
+        font-size: 0.9em;
+        border: 2px solid rgba(102, 126, 234, 0.1);
+    }
+
+    thead {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        position: relative;
+    }
+    
+    thead::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 3px;
+        background: linear-gradient(90deg, #f093fb 0%, transparent 50%, #f093fb 100%);
+    }
+
+    th {
+        color: white;
+        padding: 16px 18px;
+        text-align: left;
+        font-weight: 700;
+        text-transform: uppercase;
+        font-size: 0.8em;
+        letter-spacing: 0.5px;
+        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+    }
+
+    td {
+        padding: 14px 18px;
+        border-bottom: 1px solid rgba(102, 126, 234, 0.08);
+        vertical-align: top;
+        line-height: 1.6;
+        transition: all 0.2s ease;
+    }
+
+    tbody tr:last-child td {
+        border-bottom: none;
+    }
+
+    tbody tr {
+        transition: all 0.3s ease;
+    }
+
+    tbody tr:hover {
+        background: linear-gradient(90deg, rgba(102, 126, 234, 0.08) 0%, rgba(240, 147, 251, 0.05) 100%);
+        transform: scale(1.01);
+        box-shadow: inset 4px 0 0 #667eea;
+    }
+
+    tbody tr:nth-child(even) {
+        background: rgba(102, 126, 234, 0.02);
+    }
+
+    tbody tr:nth-child(even):hover {
+        background: linear-gradient(90deg, rgba(102, 126, 234, 0.08) 0%, rgba(240, 147, 251, 0.05) 100%);
+    }
+    
+    /* Better code in tables */
+    td code {
+        font-size: 0.85em;
+        padding: 3px 7px;
+    }
+
+    .info-box {
+        background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+        border: 3px solid #2196f3;
+        padding: 24px;
+        margin: 30px 0;
+        border-radius: 16px;
+        box-shadow: 0 8px 25px rgba(33, 150, 243, 0.25);
+        position: relative;
+        overflow: hidden;
+        transition: all 0.3s ease;
+    }
+    
+    .info-box::before {
+        content: 'ℹ️';
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        font-size: 2em;
+        opacity: 0.3;
+    }
+    
+    .info-box:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 12px 35px rgba(33, 150, 243, 0.35);
+    }
+
+    .warning-box {
+        background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%);
+        border: 3px solid #ff9800;
+        padding: 24px;
+        margin: 30px 0;
+        border-radius: 16px;
+        box-shadow: 0 8px 25px rgba(255, 152, 0, 0.25);
+        position: relative;
+        overflow: hidden;
+        transition: all 0.3s ease;
+    }
+    
+    .warning-box::before {
+        content: '⚠️';
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        font-size: 2em;
+        opacity: 0.3;
+    }
+    
+    .warning-box:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 12px 35px rgba(255, 152, 0, 0.35);
+    }
+
+    .success-box {
+        background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+        border: 3px solid #4caf50;
+        padding: 24px;
+        margin: 30px 0;
+        border-radius: 16px;
+        box-shadow: 0 8px 25px rgba(76, 175, 80, 0.25);
+        position: relative;
+        overflow: hidden;
+        transition: all 0.3s ease;
+    }
+    
+    .success-box::before {
+        content: '✅';
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        font-size: 2em;
+        opacity: 0.3;
+    }
+    
+    .success-box:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 12px 35px rgba(76, 175, 80, 0.35);
+    }
+
+    /* Better colors for syntax in diagrams */
+    pre {
+        /* Box drawing characters in nice blue */
+        color: #93c5fd;
+    }
+
+    /* JSON/code syntax in pre blocks */
+    pre {
+        white-space: pre;
+        word-wrap: normal;
+    }
+
+    .toc {
+        background: #f8f9fa;
+        padding: 20px;
+        border-radius: 8px;
+        margin: 20px 0;
+        border-left: 4px solid #667eea;
+    }
+
+    .toc h2 {
+        color: #667eea;
+        border-bottom: none;
+        margin-bottom: 15px;
+    }
+
+    .toc ul {
+        list-style: none;
+        padding-left: 0;
+    }
+
+    .toc li {
+        margin: 8px 0;
+    }
+
+    .toc a {
+        color: #667eea;
+        text-decoration: none;
+        transition: color 0.3s;
+    }
+
+    .toc a:hover {
+        color: #764ba2;
+    }
+
+    hr {
+        border: none;
+        border-top: 2px solid #f0f0f0;
+        margin: 30px 0;
+    }
+
+    .badge {
+        display: inline-block;
+        background: #667eea;
+        color: white;
+        padding: 4px 10px;
+        border-radius: 12px;
+        font-size: 0.85em;
+        margin-left: 10px;
+    }
+
+    a {
+        color: #667eea;
+        text-decoration: none;
+        position: relative;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        padding: 2px 0;
+    }
+    
+    a::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 0;
+        height: 2px;
+        background: linear-gradient(90deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+        transition: width 0.3s ease;
+    }
+
+    a:hover {
+        color: #764ba2;
+    }
+    
+    a:hover::after {
+        width: 100%;
+    }
+    
+    /* Better display for metadata fields */
+    strong {
+        color: #374151;
+        font-weight: 600;
+    }
+    
+    /* Metadata field styling - each field on its own line */
+    .metadata-field {
+        margin: 8px 0;
+        padding: 8px 14px;
+        background: linear-gradient(90deg, rgba(102, 126, 234, 0.04) 0%, transparent 100%);
+        border-left: 3px solid #667eea;
+        border-radius: 0 4px 4px 0;
+        line-height: 1.7;
+        font-size: 0.95em;
+        display: block;
+        clear: both;
+    }
+    
+    .metadata-field strong {
+        color: #667eea;
+        font-weight: 600;
+        margin-right: 8px;
+        display: inline-block;
+        min-width: 100px;
+    }
+    
+    .metadata-field code {
+        font-size: 0.88em;
+    }
+
+    footer {
+        margin-top: 50px;
+        padding-top: 30px;
+        border-top: 2px solid #f0f0f0;
+        text-align: center;
+        color: #888;
+    }
+
+    @media print {
+        body {
+            background: white;
+        }
+        .nav-header, .nav-links {
+            display: none;
+        }
+        pre {
+            break-inside: avoid;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .container {
+            padding: 20px;
+        }
+        .nav-header {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+        .nav-links {
+            margin-top: 15px;
+        }
+        h1 {
+            font-size: 2em;
+        }
+        h2 {
+            font-size: 1.5em;
+        }
+    }
+</style>
+
+</head>
+<body>
+    <div class="container">
+        <div class="nav-header"><div><h1>Embrix O2X Documentation</h1><small>Navigate between guides</small></div><div class="nav-links"><a href="index.html">Home</a><a href="guide-index.html">Guide Index</a><a href="guide-index.html">Part 1-5</a><a href="quick-start.html">Quick Start</a><a href="quick-reference.html">Quick Ref</a><a href="complete-system-overview.html">Architecture</a><a href="api-reference.html">API Reference</a><a href="troubleshooting-guide.html">Troubleshooting</a></div></div>
+        
+<h1>Embrix O2X - Glossary</h1>
+
+<strong>Version</strong>: 3.1.9-SNAPSHOT  
+<strong>Last Updated</strong>: February 2026  
+<strong>Purpose</strong>: Complete definitions of terms, acronyms, and concepts
+
+<hr>
+
+<h2>Table of Contents</h2>
+
+<ol>
+<li><a href="#platform-terms">Platform Terms</a></li>
+<li><a href="#billing-and-finance">Billing and Finance</a></li>
+<li><a href="#technical-terms">Technical Terms</a></li>
+<li><a href="#architecture-patterns">Architecture Patterns</a></li>
+<li><a href="#business-domains">Business Domains</a></li>
+<li><a href="#acronyms-and-abbreviations">Acronyms and Abbreviations</a></li>
+</ol>
+
+<hr>
+
+<h2>Platform Terms</h2>
+
+<h3>Embrix O2X</h3>
+
+<strong>Definition</strong>: Order-to-X platform - an enterprise billing and order management system for telecommunications and service providers.
+<h3>Multi-Tenant</h3>
+
+<strong>Definition</strong>: Architecture model where a single instance of the application serves multiple customers (tenants), each with isolated data and configurations.
+<h3>Tenant</h3>
+
+<strong>Definition</strong>: A customer organization using the Embrix O2X platform. Each tenant has isolated data, configuration, and branding.
+<h3>Hub</h3>
+
+<strong>Definition</strong>: A domain-specific module in the engine that encapsulates business logic for a particular area (e.g., billingHub, customerHub).
+<h3>Engine</h3>
+
+<strong>Definition</strong>: The core shared library containing all business logic organized into hubs. Used by all services.
+<h3>Common</h3>
+
+<strong>Definition</strong>: Shared library containing DTOs, enums, and constants used across all modules.
+
+<hr>
+
+<h2>Billing and Finance</h2>
+
+<h3>Account</h3>
+
+<strong>Definition</strong>: A customer entity that receives services and bills. Can be Business (B2B) or Residential (B2C).
+<h3>Subscription</h3>
+
+<strong>Definition</strong>: A customer's active service instance with recurring charges, linked to a product and price offer.
+<h3>Order</h3>
+
+<strong>Definition</strong>: A request to add, modify, or cancel services for an account. Types include NEW, CHANGE, CANCEL, SUSPEND, RESUME.
+<h3>Invoice</h3>
+
+<strong>Definition</strong>: A bill sent to a customer detailing charges, taxes, and payment due. Statuses: DRAFT, OPEN, PARTIALLY_PAID, PAID, CANCELLED.
+<h3>Charge</h3>
+
+<strong>Definition</strong>: A line item representing a fee for services. Types: RECURRING, ONE_TIME, USAGE_BASED, ADJUSTMENT.
+<h3>Payment</h3>
+
+<strong>Definition</strong>: Money received from a customer, allocated to invoices to reduce balance.
+<h3>Payment Allocation</h3>
+
+<strong>Definition</strong>: The process of applying a payment amount to one or more invoices.
+<h3>Credit Balance</h3>
+
+<strong>Definition</strong>: Overpayment or credit amount that can be applied to future invoices.
+<h3>Proration</h3>
+
+<strong>Definition</strong>: Calculating partial charges when services start/end mid-billing cycle.
+<h3>Bill Cycle</h3>
+
+<strong>Definition</strong>: The recurring period for generating invoices (e.g., monthly, quarterly). Identified by bill_cycle_day (1-28).
+<h3>Bill Unit</h3>
+
+<strong>Definition</strong>: A billing entity that groups subscriptions for a single invoice.
+<h3>Price Offer</h3>
+
+<strong>Definition</strong>: The pricing configuration for a product, including recurring charges, one-time fees, and usage-based rates.
+<h3>Bundle</h3>
+
+<strong>Definition</strong>: A package of multiple products sold together, often at a discounted price.
+<h3>Discount</h3>
+
+<strong>Definition</strong>: Price reduction applied to charges. Types: PERCENTAGE, FIXED_AMOUNT, TIERED.
+
+<hr>
+
+<h2>Technical Terms</h2>
+
+<h3>JOOQ</h3>
+
+<strong>Definition</strong>: Java Object Oriented Querying - a type-safe database access library that generates Java code from database schemas.
+<h3>Flyway</h3>
+
+<strong>Definition</strong>: Database migration tool that version-controls schema changes through SQL scripts.
+<h3>GraphQL</h3>
+
+<strong>Definition</strong>: Query language for APIs allowing clients to request exactly the data they need.
+<h3>ActiveMQ</h3>
+
+<strong>Definition</strong>: Java message broker implementing JMS for asynchronous communication between services.
+<h3>Apache Camel</h3>
+
+<strong>Definition</strong>: Integration framework for routing and transformation of messages between systems.
+<h3>Vault (HashiCorp)</h3>
+
+<strong>Definition</strong>: Secrets management tool for storing sensitive configuration (passwords, API keys, certificates).
+<h3>Redis</h3>
+
+<strong>Definition</strong>: In-memory data store used for caching and session management.
+<h3>OAuth2</h3>
+
+<strong>Definition</strong>: Authorization framework allowing third-party applications to obtain limited access to services.
+<h3>JWT (JSON Web Token)</h3>
+
+<strong>Definition</strong>: Compact token format for securely transmitting information between parties as JSON.
+<h3>Groovy</h3>
+
+<strong>Definition</strong>: Dynamic JVM language with Java compatibility, used for business logic in Embrix O2X.
+<h3>DSL (Domain Specific Language)</h3>
+
+<strong>Definition</strong>: In JOOQ context, the fluent API for constructing type-safe SQL queries.
+
+<hr>
+
+<h2>Architecture Patterns</h2>
+
+<h3>Event-Driven Architecture</h3>
+
+<strong>Definition</strong>: Design pattern where components communicate through events (messages) rather than direct calls.
+<h3>Gateway Pattern</h3>
+
+<strong>Definition</strong>: An intermediary service that provides a single entry point for external system integration.
+<h3>Shared Engine Pattern</h3>
+
+<strong>Definition</strong>: Embrix O2X's approach of centralizing business logic in a shared library (engine) used by all services.
+<h3>Hub-Based Organization</h3>
+
+<strong>Definition</strong>: Organizing business logic into domain-specific modules (hubs) within the engine.
+<h3>OMS (Order Management System)</h3>
+
+<strong>Definition</strong>: Component library providing order orchestration framework using Apache Camel.
+<h3>Message Queue</h3>
+
+<strong>Definition</strong>: Asynchronous communication mechanism where messages are stored until processed by consumers.
+<h3>Dead Letter Queue (DLQ)</h3>
+
+<strong>Definition</strong>: Queue for messages that failed processing after maximum retry attempts.
+
+<hr>
+
+<h2>Business Domains</h2>
+
+<h3>AR (Accounts Receivable)</h3>
+
+<strong>Definition</strong>: Managing customer balances, payments, collections, and aging.
+<h3>Billing</h3>
+
+<strong>Definition</strong>: Process of calculating charges and generating invoices for customer accounts.
+<h3>Mediation</h3>
+
+<strong>Definition</strong>: Collecting, normalizing, and validating raw usage records (CDRs) from network elements.
+<h3>Rating</h3>
+
+<strong>Definition</strong>: Applying pricing rules to usage records to calculate charges.
+<h3>Usage</h3>
+
+<strong>Definition</strong>: Customer consumption of services (voice calls, data, SMS, API calls).
+<h3>CDR (Call Detail Record)</h3>
+
+<strong>Definition</strong>: Record of a telecommunications transaction (call, SMS, data session) including duration, destination, timestamps.
+<h3>Provisioning</h3>
+
+<strong>Definition</strong>: Activating services on network elements or equipment (e.g., activating fiber ONT, configuring SIP trunk).
+<h3>Revenue Recognition</h3>
+
+<strong>Definition</strong>: Accounting process of recording revenue according to standards (IFRS 15, ASC 606).
+<h3>Deferred Revenue</h3>
+
+<strong>Definition</strong>: Revenue collected but not yet earned (e.g., prepaid annual subscription).
+<h3>Collections</h3>
+
+<strong>Definition</strong>: Process of pursuing payment from customers with overdue balances.
+<h3>Dunning</h3>
+
+<strong>Definition</strong>: Systematic process of communicating with customers to collect overdue payments.
+
+<hr>
+
+<h2>Acronyms and Abbreviations</h2>
+
+<h3>API</h3>
+
+<strong>Application Programming Interface</strong> - Interface for software components to communicate.
+<h3>AR</h3>
+
+<strong>Accounts Receivable</strong> - Money owed to the company by customers.
+<h3>ASC 606</h3>
+
+<strong>Accounting Standards Codification 606</strong> - US GAAP revenue recognition standard.
+<h3>B2B</h3>
+
+<strong>Business-to-Business</strong> - Services sold to business customers.
+<h3>B2C</h3>
+
+<strong>Business-to-Consumer</strong> - Services sold to individual consumers.
+<h3>CDR</h3>
+
+<strong>Call Detail Record</strong> - Record of a telecommunications transaction.
+<h3>CFDI</h3>
+
+<strong>Comprobante Fiscal Digital por Internet</strong> - Mexican digital tax invoice.
+<h3>CRUD</h3>
+
+<strong>Create, Read, Update, Delete</strong> - Basic database operations.
+<h3>CRM</h3>
+
+<strong>Customer Relationship Management</strong> - System for managing customer interactions (e.g., Salesforce).
+<h3>DTO</h3>
+
+<strong>Data Transfer Object</strong> - Object carrying data between processes.
+<h3>E2E</h3>
+
+<strong>End-to-End</strong> - Complete process from start to finish.
+<h3>ERP</h3>
+
+<strong>Enterprise Resource Planning</strong> - Business process management software (e.g., QuickBooks, NetSuite).
+<h3>GL</h3>
+
+<strong>General Ledger</strong> - Complete record of financial transactions.
+<h3>IFRS 15</h3>
+
+<strong>International Financial Reporting Standard 15</strong> - International revenue recognition standard.
+<h3>IPTV</h3>
+
+<strong>Internet Protocol Television</strong> - Television content delivered over IP networks.
+<h3>IVA</h3>
+
+<strong>Impuesto al Valor Agregado</strong> - Value Added Tax (Mexico).
+<h3>JMS</h3>
+
+<strong>Java Message Service</strong> - Java API for message-oriented middleware.
+<h3>JWT</h3>
+
+<strong>JSON Web Token</strong> - Compact token format for authentication.
+<h3>MCM</h3>
+
+<strong>MCM Telecom</strong> - Major customer/tenant of Embrix O2X platform.
+<h3>MVNO</h3>
+
+<strong>Mobile Virtual Network Operator</strong> - Mobile provider without own network infrastructure.
+<h3>OAuth</h3>
+
+<strong>Open Authorization</strong> - Authorization framework for delegated access.
+<h3>OLT</h3>
+
+<strong>Optical Line Terminal</strong> - Equipment at service provider end of fiber network.
+<h3>ONT</h3>
+
+<strong>Optical Network Terminal</strong> - Equipment at customer premises for fiber internet.
+<h3>OMS</h3>
+
+<strong>Order Management System</strong> - System for processing and tracking orders.
+<h3>PAC</h3>
+
+<strong>Proveedor Autorizado de Certificación</strong> - Authorized certification provider (Mexico CFDI).
+<h3>PDF</h3>
+
+<strong>Portable Document Format</strong> - File format for documents.
+<h3>REST</h3>
+
+<strong>Representational State Transfer</strong> - Architectural style for web APIs.
+<h3>SaaS</h3>
+
+<strong>Software as a Service</strong> - Software delivery model where apps are hosted and made available over the internet.
+<h3>SIP</h3>
+
+<strong>Session Initiation Protocol</strong> - Signaling protocol for VoIP communications.
+<h3>SMS</h3>
+
+<strong>Short Message Service</strong> - Text messaging service.
+<h3>SSO</h3>
+
+<strong>Single Sign-On</strong> - Authentication allowing access to multiple systems with one login.
+<h3>STB</h3>
+
+<strong>Set-Top Box</strong> - Device for receiving television signals.
+<h3>UCaaS</h3>
+
+<strong>Unified Communications as a Service</strong> - Cloud-based communications platform.
+<h3>UUID</h3>
+
+<strong>Universally Unique Identifier</strong> - 128-bit unique identifier.
+<h3>VAT</h3>
+
+<strong>Value Added Tax</strong> - Consumption tax on goods and services.
+<h3>VoIP</h3>
+
+<strong>Voice over Internet Protocol</strong> - Technology for voice calls over internet.
+<h3>XML</h3>
+
+<strong>Extensible Markup Language</strong> - Markup language for encoding documents.
+
+<hr>
+
+<h2>Database Terms</h2>
+
+<h3>Schema</h3>
+
+<strong>Definition</strong>: Logical grouping of database objects (tables, views, functions). Embrix O2X uses multiple schemas: core_engine, core_billing, core_usage, etc.
+<h3>Partitioning</h3>
+
+<strong>Definition</strong>: Splitting large tables into smaller physical pieces for performance. Usage_record table is partitioned by date.
+<h3>Index</h3>
+
+<strong>Definition</strong>: Database structure improving query performance by providing fast access paths to data.
+<h3>Foreign Key</h3>
+
+<strong>Definition</strong>: Column referencing primary key of another table, enforcing referential integrity.
+<h3>Migration</h3>
+
+<strong>Definition</strong>: Version-controlled database schema change, managed by Flyway.
+<h3>Transaction</h3>
+
+<strong>Definition</strong>: Unit of work that must complete entirely or not at all (ACID properties).
+
+<hr>
+
+<h2>Integration Terms</h2>
+
+<h3>Webhook</h3>
+
+<strong>Definition</strong>: HTTP callback triggered by events, allowing real-time notifications to external systems.
+<h3>SFTP</h3>
+
+<strong>Definition</strong>: Secure File Transfer Protocol - Encrypted protocol for file transfer.
+<h3>Diameter Protocol</h3>
+
+<strong>Definition</strong>: AAA (Authentication, Authorization, Accounting) protocol for real-time charging in telecom networks.
+<h3>SOAP</h3>
+
+<strong>Definition</strong>: Simple Object Access Protocol - XML-based messaging protocol for web services.
+<h3>WSDL</h3>
+
+<strong>Definition</strong>: Web Services Description Language - XML description of web service interfaces.
+
+<hr>
+
+<h2>Service Names</h2>
+
+<h3>service-billing</h3>
+
+<strong>Definition</strong>: Microservice handling billing cycle execution and charge calculation.
+<h3>service-invoice</h3>
+
+<strong>Definition</strong>: Microservice generating invoice documents (PDF, HTML, XML).
+<h3>service-usage</h3>
+
+<strong>Definition</strong>: Microservice storing and querying usage data.
+<h3>service-mediation</h3>
+
+<strong>Definition</strong>: Microservice ingesting and normalizing raw CDRs.
+<h3>service-payment</h3>
+
+<strong>Definition</strong>: Microservice processing payments and managing payment methods.
+<h3>service-revenue</h3>
+
+<strong>Definition</strong>: Microservice handling revenue recognition and GL postings.
+<h3>service-transactional</h3>
+
+<strong>Definition</strong>: Microservice providing real-time GraphQL API for operations.
+<h3>service-sso</h3>
+
+<strong>Definition</strong>: Microservice handling authentication and authorization.
+<h3>service-proxy</h3>
+
+<strong>Definition</strong>: API gateway routing requests to appropriate services.
+<h3>batch-process</h3>
+
+<strong>Definition</strong>: Service running scheduled batch jobs (billing, usage processing, reports).
+<h3>crm_gateway</h3>
+
+<strong>Definition</strong>: Gateway integrating with CRM systems (Salesforce, MS Dynamics), main GraphQL API entry point.
+<h3>provision_gateway</h3>
+
+<strong>Definition</strong>: Gateway for service provisioning on network elements (Nokia, Cisco, ServiceNow).
+<h3>tax-gateway</h3>
+
+<strong>Definition</strong>: Gateway integrating with tax providers (Avalara, PAC for CFDI).
+<h3>payment-gateway</h3>
+
+<strong>Definition</strong>: Gateway integrating with payment processors (Braintree, Stripe, PayPal).
+<h3>finance-gateway</h3>
+
+<strong>Definition</strong>: Gateway integrating with ERP systems (QuickBooks, NetSuite, SAP).
+
+<hr>
+
+<h2>Customer Journey Terms</h2>
+
+<h3>Onboarding</h3>
+
+<strong>Definition</strong>: Process of setting up a new customer account, selecting services, and activating them.
+<h3>Activation</h3>
+
+<strong>Definition</strong>: Moment when ordered services become active and usable by customer.
+<h3>Suspension</h3>
+
+<strong>Definition</strong>: Temporary deactivation of services, typically due to non-payment.
+<h3>Churn</h3>
+
+<strong>Definition</strong>: Customer cancelling service and leaving the platform.
+<h3>Upsell</h3>
+
+<strong>Definition</strong>: Selling higher-tier or additional services to existing customer.
+<h3>Downsell</h3>
+
+<strong>Definition</strong>: Customer moving to lower-tier service.
+
+<hr>
+
+<h2>Performance Terms</h2>
+
+<h3>Throughput</h3>
+
+<strong>Definition</strong>: Number of transactions or operations processed per unit of time.
+<h3>Latency</h3>
+
+<strong>Definition</strong>: Time delay between request and response.
+<h3>Concurrency</h3>
+
+<strong>Definition</strong>: Number of simultaneous users or operations system can handle.
+<h3>Connection Pool</h3>
+
+<strong>Definition</strong>: Cache of database connections maintained for reuse to improve performance.
+<h3>Cache Hit</h3>
+
+<strong>Definition</strong>: When requested data is found in cache, avoiding database query.
+<h3>Cache Miss</h3>
+
+<strong>Definition</strong>: When requested data is not in cache, requiring database query.
+
+<hr>
+
+<h2>Quality Assurance Terms</h2>
+
+<h3>Unit Test</h3>
+
+<strong>Definition</strong>: Test of individual code component in isolation.
+<h3>Integration Test</h3>
+
+<strong>Definition</strong>: Test of interaction between multiple components or systems.
+<h3>E2E Test</h3>
+
+<strong>Definition</strong>: Test simulating complete user journey through entire system.
+<h3>Regression Test</h3>
+
+<strong>Definition</strong>: Re-running tests to ensure changes haven't broken existing functionality.
+<h3>Test Coverage</h3>
+
+<strong>Definition</strong>: Percentage of code exercised by tests.
+<h3>Mock</h3>
+
+<strong>Definition</strong>: Simulated object replacing real dependency in tests.
+<h3>Stub</h3>
+
+<strong>Definition</strong>: Simplified implementation of interface for testing purposes.
+
+<hr>
+
+<h2>Deployment Terms</h2>
+
+<h3>Docker</h3>
+
+<strong>Definition</strong>: Platform for developing, shipping, and running applications in containers.
+<h3>Kubernetes</h3>
+
+<strong>Definition</strong>: Container orchestration platform for automating deployment, scaling, and management.
+<h3>Helm</h3>
+
+<strong>Definition</strong>: Package manager for Kubernetes, used for deploying Embrix O2X services.
+<h3>Pod</h3>
+
+<strong>Definition</strong>: Smallest deployable unit in Kubernetes, containing one or more containers.
+<h3>Namespace</h3>
+
+<strong>Definition</strong>: Virtual cluster within Kubernetes for isolating resources.
+<h3>ConfigMap</h3>
+
+<strong>Definition</strong>: Kubernetes object storing configuration data as key-value pairs.
+<h3>Secret</h3>
+
+<strong>Definition</strong>: Kubernetes object storing sensitive data (passwords, tokens).
+<h3>Ingress</h3>
+
+<strong>Definition</strong>: Kubernetes resource managing external access to services.
+
+<hr>
+
+<h2>Business Metrics</h2>
+
+<h3>MRR</h3>
+
+<strong>Monthly Recurring Revenue</strong> - Predictable revenue from subscriptions.
+<h3>ARR</h3>
+
+<strong>Annual Recurring Revenue</strong> - MRR × 12.
+<h3>ARPU</h3>
+
+<strong>Average Revenue Per User</strong> - Total revenue / number of users.
+<h3>Churn Rate</h3>
+
+<strong>Definition</strong>: Percentage of customers cancelling service in a period.
+<h3>LTV</h3>
+
+<strong>Lifetime Value</strong> - Total revenue expected from customer over their lifetime.
+<h3>CAC</h3>
+
+<strong>Customer Acquisition Cost</strong> - Total sales and marketing cost / new customers acquired.
+
+<hr>
+
+<h2>Security Terms</h2>
+
+<h3>Authentication</h3>
+
+<strong>Definition</strong>: Verifying identity of user or system.
+<h3>Authorization</h3>
+
+<strong>Definition</strong>: Determining what authenticated user is allowed to do.
+<h3>Token</h3>
+
+<strong>Definition</strong>: Credential for accessing protected resources.
+<h3>Encryption</h3>
+
+<strong>Definition</strong>: Converting data to unreadable format for security.
+<h3>HTTPS</h3>
+
+<strong>Definition</strong>: HTTP over TLS/SSL for secure communication.
+<h3>TLS/SSL</h3>
+
+<strong>Definition</strong>: Cryptographic protocols providing secure communication over networks.
+<h3>PCI DSS</h3>
+
+<strong>Payment Card Industry Data Security Standard</strong> - Security standard for handling credit card data.
+
+<hr>
+
+<strong>Last Updated</strong>: February 2026 • Version 3.1.9-SNAPSHOT</p>
+        <footer>
+            <p><strong>Embrix O2X Platform Documentation</strong></p>
+            <p>Version 3.1.9-SNAPSHOT • Last Updated: February 2026</p>
+        </footer>
+    </div>
+</body>
+</html>

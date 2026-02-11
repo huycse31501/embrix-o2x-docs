@@ -1,0 +1,2936 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>⚙️ Complete Services Catalog - Embrix O2X</title>
+    
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+        font-size: 16px;
+        line-height: 1.7;
+        color: #1f2937;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+        background-attachment: fixed;
+        padding: 20px;
+        min-height: 100vh;
+    }
+
+    .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        background: rgba(255, 255, 255, 0.98);
+        padding: 40px 50px;
+        border-radius: 24px;
+        box-shadow: 0 20px 60px rgba(0,0,0,0.2), 0 0 100px rgba(102, 126, 234, 0.3);
+        position: relative;
+        overflow: hidden;
+        backdrop-filter: blur(10px);
+    }
+
+    .container::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 8px;
+        background: linear-gradient(90deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+        box-shadow: 0 2px 10px rgba(102, 126, 234, 0.5);
+    }
+    
+    .container::after {
+        content: '';
+        position: absolute;
+        top: -50%;
+        right: -10%;
+        width: 40%;
+        height: 200%;
+        background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, transparent 100%);
+        transform: rotate(-15deg);
+        pointer-events: none;
+    }
+
+    .nav-header {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+        color: white;
+        padding: 25px 30px;
+        border-radius: 20px;
+        margin-bottom: 35px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3), inset 0 1px 0 rgba(255,255,255,0.2);
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .nav-header::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        right: -20%;
+        width: 40%;
+        height: 200%;
+        background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, transparent 100%);
+        transform: rotate(-15deg);
+    }
+
+    .nav-header h1 {
+        font-size: 1.5em;
+        margin-bottom: 5px;
+        font-weight: 700;
+        text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        position: relative;
+        z-index: 1;
+    }
+
+    .nav-links {
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+        position: relative;
+        z-index: 1;
+    }
+
+    .nav-links a {
+        color: white;
+        text-decoration: none;
+        padding: 10px 18px;
+        background: rgba(255,255,255,0.15);
+        border-radius: 10px;
+        transition: all 0.3s ease;
+        font-weight: 500;
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255,255,255,0.2);
+        font-size: 0.9em;
+    }
+    
+    .nav-links a::after {
+        display: none;
+    }
+
+    .nav-links a:hover {
+        background: white;
+        color: #667eea;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+
+    h1 {
+        color: white;
+        margin: 35px 0 25px 0;
+        padding: 20px 25px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        font-size: 1.9em;
+        font-weight: 700;
+        border-radius: 16px;
+        box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3), 0 0 60px rgba(102, 126, 234, 0.1);
+        border: 3px solid rgba(255, 255, 255, 0.2);
+        position: relative;
+        overflow: hidden;
+        transform: translateY(0);
+        transition: all 0.3s ease;
+    }
+    
+    h1::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+        transition: left 0.5s;
+    }
+    
+    h1:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 12px 35px rgba(102, 126, 234, 0.4), 0 0 80px rgba(102, 126, 234, 0.15);
+    }
+    
+    h1:hover::before {
+        left: 100%;
+    }
+
+    h2 {
+        color: #764ba2;
+        margin: 30px 0 20px 0;
+        padding: 16px 20px;
+        background: linear-gradient(135deg, rgba(118, 75, 162, 0.08) 0%, rgba(240, 147, 251, 0.08) 100%);
+        border-left: 6px solid #764ba2;
+        border-radius: 12px;
+        font-size: 1.6em;
+        font-weight: 700;
+        box-shadow: 0 4px 15px rgba(118, 75, 162, 0.15);
+        position: relative;
+        transition: all 0.3s ease;
+    }
+    
+    h2::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 0;
+        height: 3px;
+        background: linear-gradient(90deg, #764ba2 0%, #f093fb 100%);
+        transition: width 0.4s ease;
+    }
+    
+    h2:hover {
+        transform: translateX(5px);
+        box-shadow: 0 6px 20px rgba(118, 75, 162, 0.25);
+    }
+    
+    h2:hover::after {
+        width: 100%;
+    }
+
+    h3 {
+        color: #667eea;
+        margin: 25px 0 15px 0;
+        padding: 14px 18px;
+        background: white;
+        border: 2px solid #667eea;
+        border-radius: 10px;
+        font-size: 1.3em;
+        font-weight: 600;
+        box-shadow: 0 3px 10px rgba(102, 126, 234, 0.1);
+        transition: all 0.3s ease;
+    }
+    
+    h3:hover {
+        background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, transparent 100%);
+        border-color: #764ba2;
+        transform: translateX(3px);
+        box-shadow: 0 5px 15px rgba(102, 126, 234, 0.2);
+    }
+
+    h4 {
+        color: #764ba2;
+        margin: 20px 0 12px 0;
+        padding: 6px 0 6px 10px;
+        border-left: 2px solid #764ba2;
+        background: linear-gradient(90deg, rgba(118, 75, 162, 0.03) 0%, transparent 100%);
+        font-size: 1.1em;
+        font-weight: 600;
+        border-radius: 0 4px 4px 0;
+    }
+
+    h5 {
+        color: #667eea;
+        margin: 18px 0 10px 0;
+        padding: 4px 0 4px 8px;
+        border-left: 2px solid #667eea;
+        font-size: 1.05em;
+        font-weight: 600;
+        background: linear-gradient(90deg, rgba(102, 126, 234, 0.02) 0%, transparent 100%);
+        border-radius: 0 3px 3px 0;
+    }
+
+    h6 {
+        color: #764ba2;
+        margin: 15px 0 8px 0;
+        font-size: 0.95em;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    p {
+        margin: 16px 0;
+        line-height: 1.8;
+        font-size: 1em;
+        color: #374151;
+    }
+    
+    /* Better spacing for paragraphs after headings */
+    h1 + p, h2 + p, h3 + p, h4 + p {
+        margin-top: 12px;
+    }
+    
+    /* First paragraph after heading gets special treatment */
+    h1 + p, h2 + p {
+        font-size: 1.05em;
+        color: #4b5563;
+        font-weight: 400;
+    }
+
+    ul, ol {
+        margin: 20px 0;
+        padding-left: 15px;
+        list-style: none;
+    }
+
+    li {
+        margin: 12px 0;
+        line-height: 1.7;
+        font-size: 0.95em;
+        position: relative;
+        padding: 14px 18px 14px 50px;
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        border-left: 4px solid #667eea;
+        transition: all 0.3s ease;
+    }
+    
+    ul li::before {
+        content: '▸';
+        position: absolute;
+        left: 18px;
+        color: white;
+        font-weight: bold;
+        font-size: 1.3em;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        width: 24px;
+        height: 24px;
+        border-radius: 6px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        line-height: 1;
+        box-shadow: 0 2px 6px rgba(102, 126, 234, 0.3);
+    }
+    
+    ol {
+        counter-reset: item;
+    }
+    
+    ol li::before {
+        content: counter(item);
+        counter-increment: item;
+        position: absolute;
+        left: 18px;
+        color: white;
+        font-weight: 700;
+        font-size: 0.9em;
+        background: linear-gradient(135deg, #764ba2 0%, #f093fb 100%);
+        width: 24px;
+        height: 24px;
+        border-radius: 6px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 2px 6px rgba(118, 75, 162, 0.3);
+    }
+
+    li:hover {
+        transform: translateX(5px);
+        box-shadow: 0 4px 15px rgba(102, 126, 234, 0.15);
+        border-left-width: 6px;
+        background: linear-gradient(90deg, rgba(102, 126, 234, 0.03) 0%, white 100%);
+    }
+
+    /* Nested lists */
+    li ul, li ol {
+        margin: 12px 0 8px 0;
+        padding-left: 10px;
+    }
+
+    /* Nested list items - smaller styling */
+    li li {
+        font-size: 0.92em;
+        margin: 8px 0;
+        padding: 10px 14px 10px 40px;
+        box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+        border-left-color: #764ba2;
+    }
+    
+    li li::before {
+        width: 20px;
+        height: 20px;
+        font-size: 0.85em;
+        left: 12px;
+    }
+
+    li li:hover {
+        border-left-color: #f093fb;
+    }
+
+    code {
+        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        padding: 2px 6px;
+        border-radius: 4px;
+        font-family: 'Fira Code', 'Courier New', Consolas, monospace;
+        font-size: 0.85em;
+        color: #d63384;
+        border: 1px solid #dee2e6;
+        font-weight: 500;
+    }
+
+    /* Inline code with special highlighting */
+    p code, li code, td code {
+        position: relative;
+    }
+
+    p code::before, li code::before, td code::before {
+        content: '';
+        position: absolute;
+        inset: -2px;
+        border-radius: 5px;
+        background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+        z-index: -1;
+        opacity: 0;
+        transition: opacity 0.2s;
+    }
+
+    p code:hover::before, li code:hover::before, td code:hover::before {
+        opacity: 1;
+    }
+
+    pre {
+        background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+        color: #e2e8f0;
+        padding: 24px;
+        border-radius: 16px;
+        overflow-x: auto;
+        margin: 25px 0;
+        border: 2px solid #334155;
+        box-shadow: 0 8px 25px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.05);
+        font-family: 'Cascadia Code', 'Fira Code', 'SF Mono', 'Consolas', 'Liberation Mono', monospace;
+        font-size: 0.88em;
+        line-height: 1.7;
+        position: relative;
+        font-feature-settings: "liga" 0;
+        text-rendering: optimizeLegibility;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+    }
+    
+    pre::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 35px;
+        background: linear-gradient(135deg, rgba(102, 126, 234, 0.15) 0%, rgba(118, 75, 162, 0.15) 100%);
+        border-radius: 14px 14px 0 0;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    pre code {
+        background: none;
+        color: inherit;
+        padding: 0;
+        border: none;
+        font-family: inherit;
+        font-weight: normal;
+        font-size: 1em;
+        display: block;
+        padding-top: 35px;
+    }
+    
+    /* Ensure consistent styling for all code content inside pre blocks */
+    pre code * {
+        font-size: inherit !important;
+        line-height: inherit !important;
+        color: inherit !important;
+        font-family: inherit !important;
+    }
+
+    /* Hover effect */
+    pre:hover {
+        border-color: #667eea;
+        box-shadow: 0 12px 35px rgba(0,0,0,0.4), 0 0 0 2px rgba(102, 126, 234, 0.2);
+        transform: translateY(-2px);
+        transition: all 0.3s ease;
+    }
+
+    /* Code block header indicator with dots */
+    pre::after {
+        content: '';
+        position: absolute;
+        top: 14px;
+        left: 16px;
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        background: #ff5f56;
+        box-shadow: 20px 0 0 #ffbd2e, 40px 0 0 #27c93f;
+    }
+
+    blockquote {
+        border-left: 6px solid #667eea;
+        padding: 22px 28px 22px 60px;
+        margin: 25px 0;
+        color: #555;
+        font-style: italic;
+        font-size: 1em;
+        background: linear-gradient(135deg, rgba(102, 126, 234, 0.08) 0%, rgba(240, 147, 251, 0.05) 100%);
+        border-radius: 16px;
+        position: relative;
+        box-shadow: 0 4px 15px rgba(102, 126, 234, 0.1);
+        transition: all 0.3s ease;
+    }
+
+    blockquote::before {
+        content: '"';
+        position: absolute;
+        left: 18px;
+        top: 50%;
+        transform: translateY(-50%);
+        font-size: 3em;
+        color: rgba(102, 126, 234, 0.2);
+        font-family: Georgia, serif;
+        font-weight: 700;
+        line-height: 1;
+    }
+    
+    blockquote:hover {
+        border-left-color: #764ba2;
+        transform: translateX(5px);
+        box-shadow: 0 6px 20px rgba(102, 126, 234, 0.2);
+    }
+
+    table {
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 0;
+        margin: 25px 0;
+        box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+        border-radius: 16px;
+        overflow: hidden;
+        background: white;
+        font-size: 0.9em;
+        border: 2px solid rgba(102, 126, 234, 0.1);
+    }
+
+    thead {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        position: relative;
+    }
+    
+    thead::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 3px;
+        background: linear-gradient(90deg, #f093fb 0%, transparent 50%, #f093fb 100%);
+    }
+
+    th {
+        color: white;
+        padding: 16px 18px;
+        text-align: left;
+        font-weight: 700;
+        text-transform: uppercase;
+        font-size: 0.8em;
+        letter-spacing: 0.5px;
+        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+    }
+
+    td {
+        padding: 14px 18px;
+        border-bottom: 1px solid rgba(102, 126, 234, 0.08);
+        vertical-align: top;
+        line-height: 1.6;
+        transition: all 0.2s ease;
+    }
+
+    tbody tr:last-child td {
+        border-bottom: none;
+    }
+
+    tbody tr {
+        transition: all 0.3s ease;
+    }
+
+    tbody tr:hover {
+        background: linear-gradient(90deg, rgba(102, 126, 234, 0.08) 0%, rgba(240, 147, 251, 0.05) 100%);
+        transform: scale(1.01);
+        box-shadow: inset 4px 0 0 #667eea;
+    }
+
+    tbody tr:nth-child(even) {
+        background: rgba(102, 126, 234, 0.02);
+    }
+
+    tbody tr:nth-child(even):hover {
+        background: linear-gradient(90deg, rgba(102, 126, 234, 0.08) 0%, rgba(240, 147, 251, 0.05) 100%);
+    }
+    
+    /* Better code in tables */
+    td code {
+        font-size: 0.85em;
+        padding: 3px 7px;
+    }
+
+    .info-box {
+        background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+        border: 3px solid #2196f3;
+        padding: 24px;
+        margin: 30px 0;
+        border-radius: 16px;
+        box-shadow: 0 8px 25px rgba(33, 150, 243, 0.25);
+        position: relative;
+        overflow: hidden;
+        transition: all 0.3s ease;
+    }
+    
+    .info-box::before {
+        content: 'ℹ️';
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        font-size: 2em;
+        opacity: 0.3;
+    }
+    
+    .info-box:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 12px 35px rgba(33, 150, 243, 0.35);
+    }
+
+    .warning-box {
+        background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%);
+        border: 3px solid #ff9800;
+        padding: 24px;
+        margin: 30px 0;
+        border-radius: 16px;
+        box-shadow: 0 8px 25px rgba(255, 152, 0, 0.25);
+        position: relative;
+        overflow: hidden;
+        transition: all 0.3s ease;
+    }
+    
+    .warning-box::before {
+        content: '⚠️';
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        font-size: 2em;
+        opacity: 0.3;
+    }
+    
+    .warning-box:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 12px 35px rgba(255, 152, 0, 0.35);
+    }
+
+    .success-box {
+        background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+        border: 3px solid #4caf50;
+        padding: 24px;
+        margin: 30px 0;
+        border-radius: 16px;
+        box-shadow: 0 8px 25px rgba(76, 175, 80, 0.25);
+        position: relative;
+        overflow: hidden;
+        transition: all 0.3s ease;
+    }
+    
+    .success-box::before {
+        content: '✅';
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        font-size: 2em;
+        opacity: 0.3;
+    }
+    
+    .success-box:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 12px 35px rgba(76, 175, 80, 0.35);
+    }
+
+    /* Better colors for syntax in diagrams */
+    pre {
+        /* Box drawing characters in nice blue */
+        color: #93c5fd;
+    }
+
+    /* JSON/code syntax in pre blocks */
+    pre {
+        white-space: pre;
+        word-wrap: normal;
+    }
+
+    .toc {
+        background: #f8f9fa;
+        padding: 20px;
+        border-radius: 8px;
+        margin: 20px 0;
+        border-left: 4px solid #667eea;
+    }
+
+    .toc h2 {
+        color: #667eea;
+        border-bottom: none;
+        margin-bottom: 15px;
+    }
+
+    .toc ul {
+        list-style: none;
+        padding-left: 0;
+    }
+
+    .toc li {
+        margin: 8px 0;
+    }
+
+    .toc a {
+        color: #667eea;
+        text-decoration: none;
+        transition: color 0.3s;
+    }
+
+    .toc a:hover {
+        color: #764ba2;
+    }
+
+    hr {
+        border: none;
+        border-top: 2px solid #f0f0f0;
+        margin: 30px 0;
+    }
+
+    .badge {
+        display: inline-block;
+        background: #667eea;
+        color: white;
+        padding: 4px 10px;
+        border-radius: 12px;
+        font-size: 0.85em;
+        margin-left: 10px;
+    }
+
+    a {
+        color: #667eea;
+        text-decoration: none;
+        position: relative;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        padding: 2px 0;
+    }
+    
+    a::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 0;
+        height: 2px;
+        background: linear-gradient(90deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+        transition: width 0.3s ease;
+    }
+
+    a:hover {
+        color: #764ba2;
+    }
+    
+    a:hover::after {
+        width: 100%;
+    }
+    
+    /* Better display for metadata fields */
+    strong {
+        color: #374151;
+        font-weight: 600;
+    }
+    
+    /* Metadata field styling - each field on its own line */
+    .metadata-field {
+        margin: 8px 0;
+        padding: 8px 14px;
+        background: linear-gradient(90deg, rgba(102, 126, 234, 0.04) 0%, transparent 100%);
+        border-left: 3px solid #667eea;
+        border-radius: 0 4px 4px 0;
+        line-height: 1.7;
+        font-size: 0.95em;
+        display: block;
+        clear: both;
+    }
+    
+    .metadata-field strong {
+        color: #667eea;
+        font-weight: 600;
+        margin-right: 8px;
+        display: inline-block;
+        min-width: 100px;
+    }
+    
+    .metadata-field code {
+        font-size: 0.88em;
+    }
+
+    footer {
+        margin-top: 50px;
+        padding-top: 30px;
+        border-top: 2px solid #f0f0f0;
+        text-align: center;
+        color: #888;
+    }
+
+    @media print {
+        body {
+            background: white;
+        }
+        .nav-header, .nav-links {
+            display: none;
+        }
+        pre {
+            break-inside: avoid;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .container {
+            padding: 20px;
+        }
+        .nav-header {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+        .nav-links {
+            margin-top: 15px;
+        }
+        h1 {
+            font-size: 2em;
+        }
+        h2 {
+            font-size: 1.5em;
+        }
+    }
+</style>
+
+</head>
+<body>
+    <div class="container">
+        <div class="nav-header"><div><h1>Embrix O2X Documentation</h1><small>Navigate between guides</small></div><div class="nav-links"><a href="index.html">Home</a><a href="guide-index.html">Guide Index</a><a href="guide-index.html">Part 1-5</a><a href="quick-start.html">Quick Start</a><a href="quick-reference.html">Quick Ref</a><a href="complete-system-overview.html">Architecture</a><a href="api-reference.html">API Reference</a><a href="troubleshooting-guide.html">Troubleshooting</a></div></div>
+        
+<h1>Embrix O2X - Complete Services Catalog</h1>
+
+<strong>Version</strong>: 3.1.9-SNAPSHOT  
+<strong>Last Updated</strong>: February 2026  
+<strong>Purpose</strong>: Comprehensive inventory of all platform services, gateways, and infrastructure components
+
+<hr>
+
+<h2>Table of Contents</h2>
+
+<ol>
+<li><a href="#architecture-overview">Architecture Overview</a></li>
+<li><a href="#core-services">Core Services (11 Services)</a></li>
+<li><a href="#gateway-services">Gateway Services (6 Gateways)</a></li>
+<li><a href="#batch--job-processing">Batch & Job Processing</a></li>
+<li><a href="#infrastructure-components">Infrastructure Components</a></li>
+<li><a href="#service-communication-patterns">Service Communication Patterns</a></li>
+<li><a href="#deployment-architecture">Deployment Architecture</a></li>
+<li><a href="#service-dependencies">Service Dependencies</a></li>
+</ol>
+
+<hr>
+
+<h2>Architecture Overview</h2>
+
+<h3>Layered Service Architecture</h3>
+
+<pre><code class="language-">┌─────────────────────────────────────────────────────────────────────┐
+│                    EXTERNAL SYSTEMS LAYER                            │
+│  Salesforce | QuickBooks | NetSuite | Stripe | Avalara | ServiceNow│
+└────────────┬────────────────────────────────────────────────┬────────┘
+             │                                                │
+             ▼                                                ▼
+┌─────────────────────────────────────────────────────────────────────┐
+│                      GATEWAY LAYER (6 Gateways)                      │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ crm-gateway (8080)       │ provision-gateway (8081)         │   │
+│  │ payment-gateway (8083)   │ tax-gateway (8082)               │   │
+│  │ finance-gateway (8084)   │ diameter-gateway (8085)          │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│  Purpose: External system isolation & canonical data mapping        │
+└────────────┬────────────────────────────────────────────────┬────────┘
+             │                                                │
+             ▼                                                ▼
+┌─────────────────────────────────────────────────────────────────────┐
+│              MESSAGING & ORCHESTRATION LAYER                         │
+│                   ActiveMQ Message Broker                            │
+│  Queues: OMS | PROVISIONING | MEDIATION | USAGE | BILLING          │
+└────────────┬────────────────────────────────────────────────┬────────┘
+             │                                                │
+             ▼                                                ▼
+┌─────────────────────────────────────────────────────────────────────┐
+│                    CORE SERVICES LAYER (11 Services)                 │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ service-transactional (8080) - Main business logic API      │   │
+│  │ service-billing (8080)       - Billing operations           │   │
+│  │ service-invoice (8080)       - Invoice generation           │   │
+│  │ service-payment (8080)       - Payment processing           │   │
+│  │ service-revenue (8080)       - Revenue recognition          │   │
+│  │ service-usage (8080)         - Usage data management        │   │
+│  │ service-mediation (8080)     - CDR processing               │   │
+│  │ service-sso (8080)           - Authentication/Authorization │   │
+│  │ service-proxy (8080)         - API Gateway/GraphQL endpoint │   │
+│  │ batch-process (8080)         - Scheduled batch jobs         │   │
+│  │ jobs-common (8080)           - Job framework                │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+└────────────┬────────────────────────────────────────────────┬────────┘
+             │                                                │
+             ▼                                                ▼
+┌─────────────────────────────────────────────────────────────────────┐
+│                  FOUNDATION LAYER (Shared Libraries)                 │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ engine         - Business logic hubs (11 hubs)              │   │
+│  │ common         - DTOs, enums, shared models                 │   │
+│  │ oms-component  - Orchestration framework                    │   │
+│  │ gateway-common - Gateway integration utilities              │   │
+│  │ jobs-common    - Batch processing framework                 │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+└────────────┬────────────────────────────────────────────────┬────────┘
+             │                                                │
+             ▼                                                ▼
+┌─────────────────────────────────────────────────────────────────────┐
+│                    INFRASTRUCTURE LAYER                              │
+│  PostgreSQL 10.5 | Redis 6.x | ActiveMQ 5.15.9 | Vault | S3        │
+└─────────────────────────────────────────────────────────────────────┘
+</code></pre>
+<h3>Service Count Summary</h3>
+
+<table>
+<thead><tr>
+<th>Layer</th>
+<th>Count</th>
+<th>Components</th>
+</tr></thead><tbody>
+<tr>
+<td>-------</td>
+<td>-------</td>
+<td>------------</td>
+</tr>
+<tr>
+<td><strong>Core Services</strong></td>
+<td>11</td>
+<td>Transactional, Billing, Invoice, Payment, Revenue, Usage, Mediation, SSO, Proxy, Batch, Jobs</td>
+</tr>
+<tr>
+<td><strong>Gateway Services</strong></td>
+<td>6</td>
+<td>CRM, Provision, Payment, Tax, Finance, Diameter</td>
+</tr>
+<tr>
+<td><strong>Foundation Libraries</strong></td>
+<td>5</td>
+<td>Engine, Common, OMS-Component, Gateway-Common, Jobs-Common</td>
+</tr>
+<tr>
+<td><strong>Infrastructure</strong></td>
+<td>5</td>
+<td>PostgreSQL, Redis, ActiveMQ, Vault, S3</td>
+</tr>
+<tr>
+<td><strong>External Integrations</strong></td>
+<td>10+</td>
+<td>Salesforce, ServiceNow, QuickBooks, NetSuite, Stripe, Avalara, Banks, PACs, Nokia, Cisco</td>
+</tr>
+</tbody></table>
+
+<hr>
+
+<h2>Core Services</h2>
+
+<h3>1. service-transactional</h3>
+
+<strong>Purpose</strong>: Main business logic API and GraphQL endpoint for customer, order, and subscription management
+<strong>Port</strong>: 8080  
+<strong>Technology</strong>: Spring Boot 2.1.4, GraphQL Java 5.0.2  
+<strong>Database</strong>: PostgreSQL (tenant-specific database)
+<strong>Key Responsibilities</strong>:
+<ul>
+<li>Customer account management (create, update, query)</li>
+<li>Order intake and orchestration</li>
+<li>Subscription lifecycle management</li>
+<li>Product catalog queries</li>
+<li>Bundle configuration</li>
+<li>GraphQL API surface (primary external interface)</li>
+</ul>
+<strong>Key Dependencies</strong>:
+<ul>
+<li>Engine (all hubs, especially customerHub, billingHub)</li>
+<li>Common (DTOs, enums)</li>
+<li>OMS-Component (order orchestration)</li>
+<li>service-sso (authentication)</li>
+<li>All gateways (via HTTP REST)</li>
+</ul>
+<strong>GraphQL Operations</strong>:
+<pre><code class="language-graphql"># Customer Management
+mutation { processNewAccount(input: {...}) { accountId } }
+query { getAccount(id: "ACC-001") { id balance subscriptions {...} } }
+
+# Order Management
+mutation { createOrder(input: {...}) { orderId status } }
+query { searchOrders(filter: {...}) { orders {...} } }
+
+# Subscription Management
+mutation { createSubscription(input: {...}) { subscriptionId } }
+query { getSubscriptionById(id: "SUB-001") { status priceOffer serviceUnits } }
+
+# Product Catalog
+query { searchPackages(filter: {...}) { packages {...} } }
+query { getBundleIdByPackageId(packageId: "PKG-001") { bundles {...} } }
+</code></pre>
+<strong>Configuration</strong>:
+<pre><code class="language-yaml"># Helm values (service-transactional.yaml)
+app:
+  tenantId: TIDLT-100008
+  tenantName: tenant-name
+  postgres:
+    url: jdbc:postgresql://rds-endpoint/coredb-tenant
+  vault:
+    api: http://tenant-vault-interface/
+  envMap:
+    - name: TAX_GATEWAY_URL
+      value: http://tenant-tax-gateway
+    - name: PAYMENT_GATEWAY_URL
+      value: http://tenant-payment-gateway
+    - name: FINANCE_GATEWAY_URL
+      value: http://tenant-finance-gateway
+</code></pre>
+
+<hr>
+
+<h3>2. service-billing</h3>
+
+<strong>Purpose</strong>: Billing cycle execution, charge generation, and proration calculations
+<strong>Port</strong>: 8080  
+<strong>Technology</strong>: Spring Boot 2.1.4, Groovy 2.4.15  
+<strong>Database</strong>: PostgreSQL (core_billing schema)
+<strong>Key Responsibilities</strong>:
+<ul>
+<li>Execute billing cycles (monthly, custom)</li>
+<li>Generate recurring charges</li>
+<li>Calculate prorated charges (mid-cycle changes)</li>
+<li>Apply discounts and promotions</li>
+<li>Aggregate usage charges</li>
+<li>Create bill units (pre-invoice)</li>
+<li>Trigger invoice generation</li>
+</ul>
+<strong>Key Dependencies</strong>:
+<ul>
+<li>Engine (billingHub, pricingHub, revenueHub)</li>
+<li>service-transactional (subscription data)</li>
+<li>service-usage (usage data aggregation)</li>
+<li>tax-gateway (tax calculation)</li>
+</ul>
+<strong>Business Logic Examples</strong>:
+<pre><code class="language-groovy">// Proration calculation
+def calculateProration(Subscription sub, ProrationModel model) {
+    // DAYS_IN_MONTH model
+    def daysInMonth = sub.startDate.lengthOfMonth()
+    def daysActive = ChronoUnit.DAYS.between(sub.startDate, sub.endDate) + 1
+    def prorationFactor = daysActive / daysInMonth
+    return sub.monthlyCharge * prorationFactor
+}
+
+// Volume discount application
+def applyVolumeDiscount(List&lt;Charge&gt; charges, DiscountTier tier) {
+    def totalVolume = charges.sum { it.quantity }
+    def discountPercent = tier.getDiscountForVolume(totalVolume)
+    return charges.sum { it.amount } * (1 - discountPercent)
+}
+</code></pre>
+<strong>GraphQL Operations</strong>:
+<pre><code class="language-graphql">mutation {
+  runBillingCycle(input: {
+    billCycleDay: 1
+    billingPeriodStart: "2024-01-01"
+    billingPeriodEnd: "2024-01-31"
+  }) {
+    totalAccountsBilled
+    totalChargesGenerated
+    totalAmount
+    errors { accountId errorMessage }
+  }
+}
+
+mutation {
+  calculateProration(input: {
+    subscriptionId: "SUB-123"
+    startDate: "2024-01-16"
+    endDate: "2024-01-31"
+    monthlyCharge: 30.00
+    prorationModel: DAYS_IN_MONTH
+  }) {
+    proratedAmount  # Returns 15.48
+    daysActive      # 16
+    daysInPeriod    # 31
+  }
+}
+</code></pre>
+<strong>Batch Jobs</strong>:
+<ul>
+<li>Daily billing cycle execution (2 AM)</li>
+<li>Recurring charge generation</li>
+<li>Discount application</li>
+<li>Bill unit creation</li>
+</ul>
+
+<hr>
+
+<h3>3. service-invoice</h3>
+
+<strong>Purpose</strong>: Invoice document generation (PDF, HTML, XML), template management, and distribution
+<strong>Port</strong>: 8080  
+<strong>Technology</strong>: Spring Boot 2.1.4, iText 7.1.5, Thymeleaf 3.0.11  
+<strong>Database</strong>: PostgreSQL (core_billing schema)
+<strong>Key Responsibilities</strong>:
+<ul>
+<li>Generate invoice documents (PDF, HTML, XML)</li>
+<li>Apply invoice templates (Thymeleaf)</li>
+<li>Calculate tax totals</li>
+<li>Upload invoices to S3</li>
+<li>Send invoice emails</li>
+<li>Generate receipts</li>
+<li>CFDI XML generation (Mexican invoicing)</li>
+</ul>
+<strong>Document Generation Flow</strong>:
+<pre><code class="language-">[1] Retrieve Data
+    ├─→ Account details
+    ├─→ All charges for period
+    ├─→ Tax calculations
+    └─→ Payment history
+
+[2] Apply Template
+    ├─→ Select Thymeleaf template
+    ├─→ Inject data into template
+    └─→ Generate HTML
+
+[3] Convert to PDF
+    ├─→ iText processes HTML
+    ├─→ Apply styling
+    └─→ Generate PDF bytes
+
+[4] Upload to S3
+    ├─→ Bucket: {tenant}-invoices
+    ├─→ Key: invoices/2024/01/ACC-1001/INV-2024-001.pdf
+    └─→ Get public URL
+
+[5] Update Database
+    ├─→ invoice.pdfUrl = S3 URL
+    └─→ invoice.status = SENT
+
+[6] Send Notification
+    └─→ Email to customer with download link
+</code></pre>
+<strong>GraphQL Operations</strong>:
+<pre><code class="language-graphql">mutation {
+  generateInvoice(input: {
+    accountId: "ACC-1001"
+    billingPeriodStart: "2024-01-01"
+    billingPeriodEnd: "2024-01-31"
+    format: PDF
+    templateName: "invoice_standard"
+  }) {
+    invoiceId
+    pdfUrl
+    totalAmount
+  }
+}
+
+mutation {
+  regenerateInvoice(input: {
+    invoiceId: "INV-2024-001"
+    reason: "Corrected tax calculation"
+  }) {
+    newInvoiceId
+    pdfUrl
+  }
+}
+</code></pre>
+<strong>Template Structure</strong>:
+<pre><code class="language-html">&lt;!-- Thymeleaf invoice template --&gt;
+&lt;!DOCTYPE html&gt;
+&lt;html xmlns:th="http://www.thymeleaf.org"&gt;
+&lt;head&gt;
+    &lt;title th:text="${invoice.invoiceNumber}"&gt;Invoice&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;div class="invoice-header"&gt;
+        &lt;h1 th:text="${invoice.invoiceNumber}"&gt;INV-2024-001&lt;/h1&gt;
+        &lt;p&gt;Date: &lt;span th:text="${invoice.invoiceDate}"&gt;2024-01-31&lt;/span&gt;&lt;/p&gt;
+    &lt;/div&gt;
+    &lt;div class="charges"&gt;
+        &lt;table&gt;
+            &lt;tr th:each="charge : ${invoice.charges}"&gt;
+                &lt;td th:text="${charge.description}"&gt;Service&lt;/td&gt;
+                &lt;td th:text="${charge.amount}"&gt;100.00&lt;/td&gt;
+            &lt;/tr&gt;
+        &lt;/table&gt;
+    &lt;/div&gt;
+    &lt;div class="total"&gt;
+        &lt;strong&gt;Total: &lt;span th:text="${invoice.totalAmount}"&gt;150.00&lt;/span&gt;&lt;/strong&gt;
+    &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+
+<hr>
+
+<h3>4. service-payment</h3>
+
+<strong>Purpose</strong>: Payment method management, payment processing, and allocation to invoices
+<strong>Port</strong>: 8080  
+<strong>Technology</strong>: Spring Boot 2.1.4  
+<strong>Database</strong>: PostgreSQL (core_billing schema)
+<strong>Key Responsibilities</strong>:
+<ul>
+<li>Process manual payments</li>
+<li>Auto-charge from stored payment methods</li>
+<li>Allocate payments to invoices</li>
+<li>Update account balances</li>
+<li>Process refunds</li>
+<li>Bank file processing (batch payments)</li>
+<li>Payment method tokenization (via payment-gateway)</li>
+</ul>
+<strong>Payment Processing Flow</strong>:
+<pre><code class="language-">[1] Validate Payment
+    ├─→ Check payment amount &gt; 0
+    ├─→ Verify payment method active
+    └─→ Validate account exists
+
+[2] Call Payment Gateway
+    ├─→ payment-gateway.processPayment()
+    ├─→ External processor (Stripe, PayPal, bank)
+    └─→ Receive transaction result
+
+[3] Record Payment
+    ├─→ Create payment record in database
+    │   - payment_id: PAY-2024-001
+    │   - amount: 752.84
+    │   - external_transaction_id: ch_stripe_789
+    │   - status: COMPLETED
+    └─→ Payment date: now()
+
+[4] Allocate to Invoices
+    ├─→ Find invoices specified or oldest pending
+    ├─→ For each invoice (oldest first):
+    │   ├─→ Calculate allocation amount
+    │   │   allocation = min(remaining_payment, invoice.balance)
+    │   ├─→ Create payment_allocation record
+    │   ├─→ Update invoice.amount_paid += allocation
+    │   ├─→ Update invoice.balance -= allocation
+    │   └─→ If invoice.balance == 0: invoice.status = PAID
+    └─→ Remaining payment → account credit
+
+[5] Update Account Balance
+    ├─→ account.balance += payment.amount
+    ├─→ Create balance_impact record for audit
+    └─→ If balance was negative and now &gt;= 0:
+        trigger auto-resume (EP-5480)
+
+[6] Notification
+    ├─→ Send payment confirmation email
+    └─→ Update customer portal
+</code></pre>
+<strong>GraphQL Operations</strong>:
+<pre><code class="language-graphql">mutation {
+  processPayment(input: {
+    accountId: "ACC-1001"
+    amount: 752.84
+    paymentMethodId: "pm_stripe_12345"
+    paymentType: CREDIT_CARD
+    invoiceIds: ["INV-2024-001"]
+  }) {
+    paymentId
+    status
+    transactionId
+  }
+}
+
+mutation {
+  applyPayment(input: {
+    accountId: "ACC-12345"
+    amount: 26705.00
+    currencyCode: "USD"
+    paymentProfileId: "profile_xyz"
+    invoiceIds: ["INV-202602-00123"]
+  }) {
+    paymentId
+    allocations {
+      invoiceId
+      amount
+    }
+    remainingBalance
+  }
+}
+
+mutation {
+  refundPayment(input: {
+    paymentId: "PAY-2024-001"
+    amount: 752.84
+    reason: "Service cancelled"
+  }) {
+    refundId
+    status
+  }
+}
+</code></pre>
+<strong>Bank File Processing</strong>:
+<pre><code class="language-groovy">// Process bank payment files (scheduled job)
+@Scheduled(cron = "0 */15 * * * *")  // Every 15 minutes
+void processPaymentFiles() {
+    // Check S3 for new payment files
+    List&lt;S3Object&gt; files = s3Client.listObjects(
+        bucket: "${tenant}-payments",
+        prefix: "input/"
+    )
+    
+    files.each { file -&gt;
+        if (!isProcessed(file.key)) {
+            // Download file
+            InputStream content = s3Client.getObject(file)
+            
+            // Parse CSV (Banamex, Bancomer, Santander formats)
+            List&lt;Payment&gt; payments = parsePaymentFile(content)
+            
+            // Process each payment
+            payments.each { payment -&gt;
+                paymentService.processPayment(payment)
+            }
+            
+            // Mark as processed
+            markFileProcessed(file.key)
+        }
+    }
+}
+</code></pre>
+
+<hr>
+
+<h3>5. service-revenue</h3>
+
+<strong>Purpose</strong>: GAAP-compliant revenue recognition (IFRS 15, ASC 606)
+<strong>Port</strong>: 8080  
+<strong>Technology</strong>: Spring Boot 2.1.4  
+<strong>Database</strong>: PostgreSQL (core_revenue schema)
+<strong>Key Responsibilities</strong>:
+<ul>
+<li>Create revenue recognition schedules</li>
+<li>Monthly revenue recognition execution</li>
+<li>Deferred revenue tracking</li>
+<li>Performance obligation management</li>
+<li>Journal entry generation</li>
+<li>ERP synchronization (via finance-gateway)</li>
+</ul>
+<strong>Revenue Recognition Models</strong>:
+<ul>
+<li><strong>STRAIGHT_LINE</strong>: Even distribution over period</li>
+<li><strong>MONTHLY_STRAIGHT_LINE_AMORTIZATION</strong>: Monthly recognition for annual contracts</li>
+<li><strong>MILESTONE_BASED</strong>: Recognition on completion milestones</li>
+<li><strong>USAGE_BASED</strong>: Recognition as usage occurs</li>
+</ul>
+<strong>Revenue Recognition Flow</strong>:
+<pre><code class="language-">[1] Charge Created
+    └─→ service-billing creates charge for $1,200
+
+[2] Analyze Revenue Model
+    ├─→ Charge type: RECURRING
+    ├─→ Recognition model: STRAIGHT_LINE
+    └─→ Period: 12 months
+
+[3] Create Deferred Revenue
+    ├─→ deferred_revenue.total_amount = 1200.00
+    ├─→ deferred_revenue.recognized_amount = 0.00
+    ├─→ deferred_revenue.remaining_amount = 1200.00
+    ├─→ recognition_start = 2024-01-01
+    └─→ recognition_end = 2024-12-31
+
+[4] Daily Recognition Job (runs nightly)
+    ├─→ For each active deferred revenue:
+    │   ├─→ Calculate daily amount: 1200 / 365 = 3.29
+    │   ├─→ Create journal entry:
+    │   │   Debit: Deferred Revenue 3.29
+    │   │   Credit: Revenue 3.29
+    │   ├─→ Update recognized_amount += 3.29
+    │   └─→ Update remaining_amount -= 3.29
+    └─→ Export to finance-gateway
+
+[5] Monthly Reporting
+    └─→ Revenue recognized in January: 3.29 * 31 = 101.99
+</code></pre>
+<strong>GraphQL Operations</strong>:
+<pre><code class="language-graphql">query {
+  getRevenueSchedule(input: {
+    chargeId: "CHG-2024-001"
+  }) {
+    totalAmount
+    recognizedAmount
+    remainingAmount
+    recognitionStartDate
+    recognitionEndDate
+    monthlyBreakdown {
+      month
+      amount
+    }
+  }
+}
+
+mutation {
+  recognizeRevenue(input: {
+    accountingPeriod: "2024-01"
+  }) {
+    journalEntriesCreated
+    totalAmountRecognized
+    deferredRevenueBalance
+  }
+}
+</code></pre>
+<strong>Batch Jobs</strong>:
+<ul>
+<li>Daily revenue recognition (1 AM)</li>
+<li>Monthly journal entry export</li>
+<li>Deferred revenue reporting</li>
+</ul>
+
+<hr>
+
+<h3>6. service-usage</h3>
+
+<strong>Purpose</strong>: Usage data repository, usage rating engine, and quota management
+<strong>Port</strong>: 8080  
+<strong>Technology</strong>: Spring Boot 2.1.4  
+<strong>Database</strong>: PostgreSQL (core_usage schema - partitioned by month)
+<strong>Key Responsibilities</strong>:
+<ul>
+<li>Store usage records (CDRs)</li>
+<li>Rate usage according to pricing plans</li>
+<li>Track quotas and balances</li>
+<li>Calculate overage charges</li>
+<li>Aggregate usage for billing</li>
+<li>Re-rate usage records (corrections)</li>
+<li>Real-time prepaid rating</li>
+</ul>
+<strong>Database Schema</strong> (Partitioned):
+<pre><code class="language-sql">-- Parent table (partitioned by usage_date)
+CREATE TABLE core_usage.usage_record (
+    id VARCHAR(50),
+    account_id VARCHAR(50) NOT NULL,
+    subscription_id VARCHAR(50),
+    source_id VARCHAR(100) NOT NULL,  -- IMSI, phone, IP
+    usage_date DATE NOT NULL,
+    start_time TIMESTAMP NOT NULL,
+    end_time TIMESTAMP,
+    duration INTEGER,  -- Seconds
+    volume BIGINT,     -- Bytes
+    destination VARCHAR(100),
+    service_type VARCHAR(50) NOT NULL,  -- VOICE_CALL, SMS, DATA
+    call_type VARCHAR(50),  -- LOCAL, LONG_DISTANCE, INTERNATIONAL
+    rated_amount NUMERIC(19,4) DEFAULT 0,
+    rating_plan_id VARCHAR(50),
+    status VARCHAR(20) NOT NULL,  -- UNRATED, RATED, BILLED
+    billed BOOLEAN DEFAULT false,
+    created_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (id, usage_date)
+) PARTITION BY RANGE (usage_date);
+
+-- Monthly partitions
+CREATE TABLE core_usage.usage_record_2024_01 
+PARTITION OF core_usage.usage_record
+FOR VALUES FROM ('2024-01-01') TO ('2024-02-01');
+</code></pre>
+<strong>Rating Flow</strong>:
+<pre><code class="language-">[1] Retrieve Usage Record (status: UNRATED)
+[2] Get customer's price offer
+    └─→ PLAN: Mobile Unlimited Voice
+        - Included: 1000 minutes/month
+        - Overage: $0.10/minute
+[3] Check usage accumulator
+    └─→ Usage so far: 450 minutes
+        This call: 10 minutes
+        New total: 460 minutes
+[4] Rate the call
+    └─→ 460 &lt; 1000 (within quota)
+        Rated amount: $0.00
+[5] Update usage record
+    └─→ ratedAmount: 0.00
+        status: RATED
+[6] Update accumulator
+    └─→ monthly_voice_minutes: 460
+[7] Check quota threshold
+    └─→ If &gt; 80%: Send notification
+</code></pre>
+<strong>GraphQL Operations</strong>:
+<pre><code class="language-graphql">query {
+  searchUsageRecords(filter: {
+    accountId: "ACC-1001"
+    startDate: "2024-01-01"
+    endDate: "2024-01-31"
+    serviceType: VOICE_CALL
+    status: RATED
+  }) {
+    records {
+      startTime
+      duration
+      destination
+      ratedAmount
+    }
+    totalRecords
+    totalAmount
+  }
+}
+
+query {
+  getUsageSummary(input: {
+    accountId: "ACC-1001"
+    period: "2024-01"
+  }) {
+    voiceMinutes
+    smsCount
+    dataGB
+    totalCharges
+    quotaStatus {
+      usageType
+      used
+      limit
+      remaining
+    }
+  }
+}
+
+mutation {
+  reRateUsageRecords(input: {
+    usageRecordIds: ["USAGE-001", "USAGE-002"]
+    newRatingPlanId: "PLAN-CORRECTED"
+    reason: "Applied correct pricing tier"
+  }) {
+    recordsUpdated
+    totalAdjustment
+  }
+}
+</code></pre>
+
+<hr>
+
+<h3>7. service-mediation</h3>
+
+<strong>Purpose</strong>: CDR (Call Detail Record) ingestion, normalization, and enrichment
+<strong>Port</strong>: 8080  
+<strong>Technology</strong>: Spring Boot 2.1.4, Apache Camel 2.23.1  
+<strong>Database</strong>: PostgreSQL (core_mediation schema)
+<strong>Key Responsibilities</strong>:
+<ul>
+<li>Ingest CDR files from network elements</li>
+<li>Parse various CDR formats (CSV, XML, JSON)</li>
+<li>Normalize to canonical format</li>
+<li>Enrich with account/subscription data</li>
+<li>Deduplicate records</li>
+<li>Push to usage rating queue</li>
+<li>Error handling and reconciliation</li>
+</ul>
+<strong>Mediation Process</strong>:
+<pre><code class="language-">[1] CDR File Detection
+    ├─→ Network element places file on SFTP
+    └─→ File: mcm_voice_20240115_001.csv
+
+[2] File Ingestion (Apache Camel route)
+    ├─→ from("sftp://cdr-server/outbound")
+    └─→ to("activemq://MEDIATION")
+
+[3] Normalization
+    ├─→ Map vendor-specific fields to canonical
+    │   Network Field → Canonical Field
+    │   ├─→ calling_number → sourceId
+    │   ├─→ called_number → destination
+    │   ├─→ call_start → startTime
+    │   ├─→ call_duration → duration
+    │   └─→ call_type → serviceType
+    └─→ Validate data quality
+
+[4] Enrichment
+    ├─→ Lookup account by sourceId (IMSI, phone, IP)
+    ├─→ Lookup subscription
+    ├─→ Classify call type (local, LD, intl)
+    └─→ Add metadata
+
+[5] Deduplication
+    ├─→ Check if CDR already processed (by unique ID)
+    └─→ Skip duplicates
+
+[6] Storage
+    ├─→ Insert into usage_record table
+    └─→ Status: UNRATED
+
+[7] Trigger Rating
+    └─→ Push to USAGE queue for rating
+</code></pre>
+<strong>Apache Camel Routes</strong>:
+<pre><code class="language-groovy">// SFTP polling route
+from("sftp://cdr-server/outbound" +
+     "?username=cdr-user&password=RAW(secret)" +
+     "&delay=60000&delete=true")
+    .log("Processing CDR file: ${header.CamelFileName}")
+    .to("activemq:MEDIATION")
+
+// Mediation processing route
+from("activemq:MEDIATION")
+    .process(normalizationProcessor)
+    .process(enrichmentProcessor)
+    .process(deduplicationProcessor)
+    .to("jpa://UsageRecord")
+    .to("activemq:USAGE")
+</code></pre>
+<strong>CDR Format Examples</strong>:
+<strong>Raw CDR (Network Format)</strong>:
+<pre><code class="language-csv">2024-01-15 10:30:00,5215551234567,5215557654321,00:10:00,VOICE
+2024-01-15 10:35:00,5215551234567,5215557654322,00:05:30,VOICE
+</code></pre>
+<strong>Canonical Format</strong>:
+<pre><code class="language-json">{
+  "id": "USAGE-2024-001",
+  "accountId": "ACC-1001",
+  "subscriptionId": "SUB-123",
+  "sourceId": "5215551234567",
+  "startTime": "2024-01-15T10:30:00Z",
+  "endTime": "2024-01-15T10:40:00Z",
+  "duration": 600,
+  "volume": null,
+  "destination": "5215557654321",
+  "serviceType": "VOICE_CALL",
+  "callType": "LOCAL",
+  "ratedAmount": 0.00,
+  "status": "UNRATED"
+}
+</code></pre>
+
+<hr>
+
+<h3>8. service-sso</h3>
+
+<strong>Purpose</strong>: Single Sign-On, authentication, authorization, and user management
+<strong>Port</strong>: 8080  
+<strong>Technology</strong>: Spring Boot 2.1.4, Spring Security OAuth2, JWT  
+<strong>Database</strong>: PostgreSQL (core_config schema)
+<strong>Key Responsibilities</strong>:
+<ul>
+<li>User authentication (login/logout)</li>
+<li>OAuth2 token generation</li>
+<li>JWT token validation</li>
+<li>Role-based access control (RBAC)</li>
+<li>Permission management</li>
+<li>Session management (Redis)</li>
+<li>Password reset flows</li>
+<li>Multi-factor authentication (MFA)</li>
+</ul>
+<strong>Authentication Flow</strong>:
+<pre><code class="language-">[1] Login Request
+    POST /oauth/token
+    Body: { username, password, grant_type: "password" }
+
+[2] Validate Credentials
+    ├─→ Query user from database
+    ├─→ Verify password (BCrypt)
+    └─→ Check account status (ACTIVE)
+
+[3] Generate Tokens
+    ├─→ Access Token (JWT, expires in 1 hour)
+    ├─→ Refresh Token (expires in 30 days)
+    └─→ Store session in Redis
+
+[4] Return Tokens
+    {
+      "access_token": "eyJhbGciOiJIUzI1Ni...",
+      "refresh_token": "abc123...",
+      "token_type": "Bearer",
+      "expires_in": 3600
+    }
+
+[5] API Requests
+    Authorization: Bearer eyJhbGciOiJIUzI1Ni...
+</code></pre>
+<strong>JWT Token Structure</strong>:
+<pre><code class="language-json">{
+  "header": {
+    "alg": "HS256",
+    "typ": "JWT"
+  },
+  "payload": {
+    "sub": "user@example.com",
+    "userId": "USR-001",
+    "tenantId": "TIDLT-100008",
+    "roles": ["ADMIN", "BILLING_MANAGER"],
+    "permissions": ["VIEW_BILLS", "APPLY_PAYMENT", "CREATE_ORDER"],
+    "iat": 1707657600,
+    "exp": 1707661200
+  }
+}
+</code></pre>
+<strong>API Endpoints</strong>:
+<pre><code class="language-bash"># Login
+POST /oauth/token
+Content-Type: application/x-www-form-urlencoded
+Authorization: Basic &lt;client_credentials&gt;
+Body: grant_type=password&username=user@example.com&password=secret
+
+# Refresh Token
+POST /oauth/token
+Body: grant_type=refresh_token&refresh_token=abc123...
+
+# Validate Token
+GET /oauth/check_token?token=eyJhbGciOiJIUzI1Ni...
+
+# Logout
+POST /logout
+Authorization: Bearer &lt;access_token&gt;
+</code></pre>
+
+<hr>
+
+<h3>9. service-proxy</h3>
+
+<strong>Purpose</strong>: API Gateway, GraphQL endpoint aggregation, request routing, and rate limiting
+<strong>Port</strong>: 8080  
+<strong>Technology</strong>: Spring Boot 2.1.4, Spring Cloud Gateway, GraphQL  
+<strong>Database</strong>: Not primary (uses other services)
+<strong>Key Responsibilities</strong>:
+<ul>
+<li>Route API requests to appropriate services</li>
+<li>Aggregate GraphQL queries across services</li>
+<li>Rate limiting and throttling</li>
+<li>Request/response transformation</li>
+<li>Circuit breaker patterns</li>
+<li>API versioning</li>
+<li>Cross-cutting concerns (logging, metrics)</li>
+</ul>
+<strong>Routing Configuration</strong>:
+<pre><code class="language-yaml">spring:
+  cloud:
+    gateway:
+      routes:
+        - id: billing_route
+          uri: http://tenant-service-billing:8080
+          predicates:
+            - Path=/api/billing/**
+          filters:
+            - StripPrefix=2
+            
+        - id: payment_route
+          uri: http://tenant-service-payment:8080
+          predicates:
+            - Path=/api/payment/**
+          filters:
+            - StripPrefix=2
+            - name: RateLimiter
+              args:
+                redis-rate-limiter.replenishRate: 100
+                redis-rate-limiter.burstCapacity: 200
+</code></pre>
+<strong>GraphQL Aggregation</strong>:
+<pre><code class="language-graphql"># Single query spanning multiple services
+query {
+  # Resolved by service-transactional
+  getAccount(id: "ACC-001") {
+    id
+    balance
+    
+    # Resolved by service-billing
+    bills {
+      id
+      amount
+      status
+    }
+    
+    # Resolved by service-invoice
+    invoices {
+      id
+      pdfUrl
+      totalAmount
+    }
+    
+    # Resolved by service-payment
+    payments {
+      id
+      amount
+      transactionId
+    }
+  }
+}
+</code></pre>
+
+<hr>
+
+<h3>10. batch-process</h3>
+
+<strong>Purpose</strong>: Scheduled batch jobs execution framework
+<strong>Port</strong>: 8080  
+<strong>Technology</strong>: Spring Boot 2.1.4, Spring Batch  
+<strong>Database</strong>: PostgreSQL (job metadata)
+<strong>Key Responsibilities</strong>:
+<ul>
+<li>Execute scheduled billing cycles</li>
+<li>Run revenue recognition jobs</li>
+<li>Process payment files</li>
+<li>Generate reports</li>
+<li>Data archival</li>
+<li>Cleanup old data</li>
+</ul>
+<strong>Key Batch Jobs</strong>:
+<pre><code class="language-groovy">// Daily Billing Cycle
+@Scheduled(cron = "0 0 2 * * *")  // 2 AM daily
+void executeDailyBillingCycle() {
+    Integer today = LocalDate.now().getDayOfMonth()
+    List&lt;Account&gt; accounts = findAccountsByBillCycleDay(today)
+    
+    log.info("Starting billing for ${accounts.size()} accounts")
+    
+    accounts.eachParallel { account -&gt;
+        try {
+            billingService.billAccount(account)
+        } catch (Exception e) {
+            log.error("Billing failed for ${account.id}", e)
+        }
+    }
+}
+
+// Usage Rating Batch
+@Scheduled(cron = "0 0 * * * *")  // Hourly
+void processUnratedUsage() {
+    List&lt;UsageRecord&gt; unrated = findUnratedUsageRecords()
+    
+    log.info("Rating ${unrated.size()} usage records")
+    
+    unrated.collate(1000).each { batch -&gt;
+        usageService.rateUsageBatch(batch)
+    }
+}
+
+// Revenue Recognition
+@Scheduled(cron = "0 0 1 * * *")  // 1 AM daily
+void recognizeRevenue() {
+    LocalDate today = LocalDate.now()
+    List&lt;DeferredRevenue&gt; active = findActiveDeferredRevenue(today)
+    
+    active.each { deferredRevenue -&gt;
+        BigDecimal dailyAmount = calculateDailyAmount(deferredRevenue)
+        createJournalEntry(deferredRevenue, dailyAmount)
+        updateDeferredRevenue(deferredRevenue, dailyAmount)
+    }
+}
+
+// Payment File Processing
+@Scheduled(cron = "0 */15 * * * *")  // Every 15 minutes
+void processPaymentFiles() {
+    List&lt;S3Object&gt; files = s3Client.listObjects(
+        bucket: "${tenant}-payments",
+        prefix: "input/"
+    )
+    
+    files.each { file -&gt;
+        if (!isProcessed(file.key)) {
+            List&lt;Payment&gt; payments = parsePaymentFile(file)
+            payments.each { payment -&gt;
+                paymentService.processPayment(payment)
+            }
+            markFileProcessed(file.key)
+        }
+    }
+}
+</code></pre>
+
+<hr>
+
+<h3>11. jobs-common</h3>
+
+<strong>Purpose</strong>: Job framework library and job orchestration
+<strong>Port</strong>: 8080  
+<strong>Technology</strong>: Spring Boot 2.1.4  
+<strong>Database</strong>: PostgreSQL (job_schedule, job_execution tables)
+<strong>Key Responsibilities</strong>:
+<ul>
+<li>Job scheduling management</li>
+<li>Job execution tracking</li>
+<li>Job status monitoring</li>
+<li>Job retry logic</li>
+<li>Job failure alerts</li>
+<li>Job dependency management</li>
+</ul>
+<strong>Job Configuration</strong>:
+<pre><code class="language-sql">-- Job schedule table
+CREATE TABLE core_config.job_schedule (
+    id VARCHAR(50) PRIMARY KEY,
+    tenant_id VARCHAR(50) NOT NULL,
+    job_name VARCHAR(255) NOT NULL,
+    job_class VARCHAR(255) NOT NULL,
+    cron_expression VARCHAR(255),
+    enabled BOOLEAN DEFAULT true,
+    last_execution TIMESTAMP,
+    next_execution TIMESTAMP,
+    status VARCHAR(50)
+);
+
+-- Job execution history
+CREATE TABLE core_config.job_execution (
+    id VARCHAR(50) PRIMARY KEY,
+    job_schedule_id VARCHAR(50),
+    start_time TIMESTAMP NOT NULL,
+    end_time TIMESTAMP,
+    status VARCHAR(50),
+    error_message TEXT,
+    records_processed INTEGER,
+    tenant_id VARCHAR(50)
+);
+</code></pre>
+
+<hr>
+
+<h2>Gateway Services</h2>
+
+<h3>1. crm-gateway</h3>
+
+<strong>Purpose</strong>: CRM system integration (Salesforce, Microsoft Dynamics)
+<strong>Port</strong>: 8080  
+<strong>Technology</strong>: Spring Boot 2.1.4  
+<strong>Integrations</strong>: Salesforce, Microsoft Dynamics CRM
+<strong>Key Responsibilities</strong>:
+<ul>
+<li>Receive orders from CRM systems</li>
+<li>Push order status updates to CRM</li>
+<li>Customer data synchronization</li>
+<li>Opportunity tracking</li>
+<li>Lead management</li>
+<li>Order intake queue processing</li>
+</ul>
+<strong>Integration Flow</strong>:
+<pre><code class="language-">Salesforce → CRM Gateway → OMS Queue → service-transactional
+                ↓
+          Status Updates
+                ↓
+         Salesforce (via API)
+</code></pre>
+<strong>Salesforce Integration</strong>:
+<pre><code class="language-groovy">@Service
+class SalesforceIntegrationService {
+    
+    @Autowired
+    VaultService vaultService
+    
+    def authenticate(String tenantId) {
+        Map&lt;String, String&gt; creds = vaultService.getSecret(
+            "secret/tenant/${tenantName}/salesforce"
+        )
+        
+        // OAuth2 authentication
+        def response = restTemplate.postForObject(
+            "${creds.instance_url}/services/oauth2/token",
+            [
+                grant_type: "password",
+                client_id: creds.client_id,
+                client_secret: creds.client_secret,
+                username: creds.username,
+                password: creds.password
+            ],
+            SalesforceAuthResponse.class
+        )
+        
+        return response.access_token
+    }
+    
+    def createOrder(Order order, String accessToken) {
+        // Create order in Salesforce
+        def sfOrder = mapToSalesforceFormat(order)
+        
+        def response = restTemplate.postForObject(
+            "${instanceUrl}/services/data/v52.0/sobjects/Order/",
+            sfOrder,
+            SalesforceResponse.class,
+            ["Authorization": "Bearer ${accessToken}"]
+        )
+        
+        return response.id
+    }
+}
+</code></pre>
+<strong>ActiveMQ Queue Processing</strong>:
+<pre><code class="language-groovy">@Component
+class OmsProcessor {
+    
+    @JmsListener(destination = "OMS")
+    void processOrder(String orderJson) {
+        Order order = objectMapper.readValue(orderJson, Order.class)
+        
+        // Validate order
+        validateOrder(order)
+        
+        // Map to internal format
+        OrderDTO internalOrder = mapToInternalFormat(order)
+        
+        // Call service-transactional
+        orderService.createOrder(internalOrder)
+        
+        // Publish to provisioning queue
+        activemqTemplate.send("PROVISIONING", internalOrder)
+    }
+}
+</code></pre>
+
+<hr>
+
+<h3>2. provision-gateway</h3>
+
+<strong>Purpose</strong>: Service provisioning and network element integration
+<strong>Port</strong>: 8081  
+<strong>Technology</strong>: Spring Boot 2.1.4  
+<strong>Integrations</strong>: Nokia, ServiceNow, Cisco, Broadsoft
+<strong>Key Responsibilities</strong>:
+<ul>
+<li>Network service provisioning</li>
+<li>Equipment configuration</li>
+<li>Service activation/deactivation</li>
+<li>Number porting</li>
+<li>Service suspension/resume</li>
+<li>Work order management (ServiceNow)</li>
+</ul>
+<strong>Provisioning Flow</strong>:
+<pre><code class="language-">Order → provision-gateway → Nokia/ServiceNow API
+           ↓
+     Async Callback
+           ↓
+  PROVISIONING_RESPONSE queue
+           ↓
+    service-transactional
+           ↓
+  Update subscription status
+</code></pre>
+<strong>Nokia Integration Example</strong>:
+<pre><code class="language-groovy">@Service
+class NokiaProvisioningService {
+    
+    def provisionService(ProvisioningRequest request) {
+        // Map to Nokia format
+        def nokiaRequest = [
+            action: "ACTIVATE",
+            serviceId: request.serviceId,
+            customerId: request.accountId,
+            serviceType: request.serviceType,
+            parameters: [
+                ipAddress: assignIPAddress(),
+                vlan: request.vlanId,
+                speedLimit: request.bandwidthMbps,
+                qos: request.qosClass
+            ]
+        ]
+        
+        // Call Nokia API
+        def response = restTemplate.postForObject(
+            "${nokiaBaseUrl}/api/v1/services/provision",
+            nokiaRequest,
+            NokiaProvisioningResponse.class,
+            ["X-API-Key": nokiaApiKey]
+        )
+        
+        // Return provisioning ID
+        return response.provisioningId
+    }
+    
+    // Receive async callback
+    @PostMapping("/callback/nokia")
+    def handleNokiaCallback(@RequestBody NokiaCallback callback) {
+        // Parse callback
+        def status = callback.status
+        def provisioningId = callback.provisioningId
+        
+        // Publish to response queue
+        def response = [
+            provisioningId: provisioningId,
+            status: status,
+            timestamp: LocalDateTime.now()
+        ]
+        
+        activemqTemplate.send("PROVISIONING_RESPONSE", response)
+    }
+}
+</code></pre>
+
+<hr>
+
+<h3>3. payment-gateway</h3>
+
+<strong>Purpose</strong>: Payment processor integration (Stripe, PayPal, Authorize.Net, Bank files)
+<strong>Port</strong>: 8083  
+<strong>Technology</strong>: Spring Boot 2.1.4  
+<strong>Integrations</strong>: Stripe, PayPal, Braintree, Authorize.Net, Bank SFTP
+<strong>Key Responsibilities</strong>:
+<ul>
+<li>Process credit card payments</li>
+<li>Tokenize payment methods (PCI compliance)</li>
+<li>Process ACH/bank transfers</li>
+<li>Handle payment webhooks</li>
+<li>Process refunds</li>
+<li>Bank file reconciliation</li>
+</ul>
+<strong>Stripe Integration</strong>:
+<pre><code class="language-groovy">@Service
+class StripePaymentService {
+    
+    @Autowired
+    VaultService vaultService
+    
+    def processPayment(PaymentRequest request) {
+        // Get Stripe credentials from Vault
+        Map&lt;String, String&gt; creds = vaultService.getSecret(
+            "secret/tenant/${tenantName}/stripe"
+        )
+        
+        Stripe.apiKey = creds.api_key
+        
+        // Create payment intent
+        def params = [
+            amount: (request.amount * 100).longValue(),  // Cents
+            currency: request.currencyCode.toLowerCase(),
+            payment_method: request.paymentMethodToken,
+            confirm: true,
+            description: request.description
+        ]
+        
+        PaymentIntent intent = PaymentIntent.create(params)
+        
+        // Return canonical response
+        return [
+            transactionId: intent.id,
+            status: mapStripeStatus(intent.status),
+            amount: request.amount,
+            authCode: intent.charges.data[0].authorizationCode
+        ]
+    }
+    
+    // Webhook handler
+    @PostMapping("/webhook/stripe")
+    def handleStripeWebhook(@RequestBody String payload,
+                           @RequestHeader("Stripe-Signature") String signature) {
+        
+        Event event = Webhook.constructEvent(
+            payload, signature, webhookSecret
+        )
+        
+        switch (event.type) {
+            case "payment_intent.succeeded":
+                handlePaymentSuccess(event.dataObjectDeserializer.object)
+                break
+            case "payment_intent.payment_failed":
+                handlePaymentFailure(event.dataObjectDeserializer.object)
+                break
+            case "charge.refunded":
+                handleRefund(event.dataObjectDeserializer.object)
+                break
+        }
+    }
+}
+</code></pre>
+<strong>Braintree Vault (Card Tokenization)</strong>:
+<pre><code class="language-groovy">@RestController
+@RequestMapping("/braintreevault")
+class BrainTreeVaultController {
+    
+    @PostMapping("/creditcard")
+    def tokenizeCard(@RequestBody CardRequest request) {
+        // Create Braintree customer
+        CustomerRequest customerRequest = new CustomerRequest()
+            .firstName(request.firstName)
+            .lastName(request.lastName)
+            .email(request.email)
+        
+        Result&lt;Customer&gt; customerResult = gateway.customer().create(customerRequest)
+        
+        // Create payment method
+        PaymentMethodRequest methodRequest = new PaymentMethodRequest()
+            .customerId(customerResult.target.id)
+            .cardNumber(request.cardNumber)
+            .expirationMonth(request.expiryMonth)
+            .expirationYear(request.expiryYear)
+            .cvv(request.cvv)
+        
+        Result&lt;PaymentMethod&gt; methodResult = gateway.paymentMethod().create(methodRequest)
+        
+        // Return secure token (no card data stored)
+        return [
+            paymentMethodToken: methodResult.target.token,
+            last4: methodResult.target.last4,
+            cardType: methodResult.target.cardType
+        ]
+    }
+}
+</code></pre>
+
+<hr>
+
+<h3>4. tax-gateway</h3>
+
+<strong>Purpose</strong>: Tax calculation and compliance (Avalara, Mexican CFDI)
+<strong>Port</strong>: 8082  
+<strong>Technology</strong>: Spring Boot 2.1.4  
+<strong>Integrations</strong>: Avalara, Internal Tax Engine, PAC Providers (Mexico)
+<strong>Key Responsibilities</strong>:
+<ul>
+<li>Calculate sales tax</li>
+<li>Multi-jurisdiction tax support</li>
+<li>CFDI XML generation (Mexico)</li>
+<li>PAC stamping integration</li>
+<li>Tax exemption management</li>
+<li>Tax reporting</li>
+</ul>
+<strong>Avalara Integration</strong>:
+<pre><code class="language-groovy">@Service
+class AvalaraTaxService {
+    
+    def calculateTax(TaxCalculationRequest request) {
+        // Get Avalara credentials
+        Map&lt;String, String&gt; creds = vaultService.getSecret(
+            "secret/tenant/${tenantName}/avalara"
+        )
+        
+        // Build Avalara request
+        def avalaraRequest = [
+            companyCode: creds.company_code,
+            type: "SalesInvoice",
+            customerCode: request.customerId,
+            date: LocalDate.now().toString(),
+            addresses: [
+                shipFrom: [
+                    line1: request.originAddress.street,
+                    city: request.originAddress.city,
+                    region: request.originAddress.state,
+                    country: request.originAddress.country,
+                    postalCode: request.originAddress.zipCode
+                ],
+                shipTo: [
+                    line1: request.destinationAddress.street,
+                    city: request.destinationAddress.city,
+                    region: request.destinationAddress.state,
+                    country: request.destinationAddress.country,
+                    postalCode: request.destinationAddress.zipCode
+                ]
+            ],
+            lines: request.lineItems.collect { item -&gt;
+                [
+                    number: item.lineNumber,
+                    quantity: item.quantity,
+                    amount: item.amount,
+                    taxCode: item.taxCode,
+                    itemCode: item.itemId,
+                    description: item.description
+                ]
+            }
+        ]
+        
+        // Call Avalara API
+        def response = restTemplate.postForObject(
+            "${avalaraBaseUrl}/api/v2/transactions/create",
+            avalaraRequest,
+            AvalaraResponse.class,
+            [
+                "Authorization": "Basic ${base64Encode(creds.account_id + ':' + creds.license_key)}",
+                "Content-Type": "application/json"
+            ]
+        )
+        
+        // Map to canonical response
+        return [
+            totalTax: response.totalTax,
+            taxByJurisdiction: response.summary.map { summary -&gt;
+                [
+                    jurisdiction: summary.jurisName,
+                    rate: summary.rate,
+                    tax: summary.tax,
+                    taxType: summary.taxType
+                ]
+            },
+            lineItemTaxes: response.lines.collect { line -&gt;
+                [
+                    lineNumber: line.lineNumber,
+                    taxAmount: line.tax,
+                    details: line.details
+                ]
+            }
+        ]
+    }
+}
+</code></pre>
+<strong>Mexican CFDI Integration</strong>:
+<pre><code class="language-groovy">@Service
+class CFDIService {
+    
+    def generateCFDI(Invoice invoice) {
+        // Generate CFDI XML
+        def cfdiXml = buildCFDIXml(invoice)
+        
+        // Upload to PAC via SFTP
+        def pacSftpConfig = getPacSftpConfig()
+        
+        sftpClient.connect(pacSftpConfig.host, pacSftpConfig.port)
+        sftpClient.login(pacSftpConfig.username, pacSftpConfig.password)
+        sftpClient.put(cfdiXml, "/upload/${invoice.invoiceId}.xml")
+        sftpClient.disconnect()
+        
+        // PAC will stamp and return via SFTP
+        // Poll for stamped XML
+        def stampedXml = pollForStampedXml(invoice.invoiceId)
+        
+        // Extract UUID from stamped XML
+        def uuid = extractUUID(stampedXml)
+        
+        // Update invoice with UUID
+        invoice.uuid = uuid
+        invoice.stampedDate = LocalDateTime.now()
+        invoiceRepository.save(invoice)
+        
+        // Upload to S3 for customer access
+        s3Client.putObject(
+            "${tenant}-invoices",
+            "cfdi/${invoice.invoiceId}.xml",
+            stampedXml
+        )
+    }
+}
+</code></pre>
+
+<hr>
+
+<h3>5. finance-gateway</h3>
+
+<strong>Purpose</strong>: ERP and accounting system integration (QuickBooks, NetSuite, SAP)
+<strong>Port</strong>: 8084  
+<strong>Technology</strong>: Spring Boot 2.1.4  
+<strong>Integrations</strong>: QuickBooks Online, NetSuite, Oracle EBS, SAP
+<strong>Key Responsibilities</strong>:
+<ul>
+<li>Sync invoices to ERP</li>
+<li>Create journal entries</li>
+<li>Post GL transactions</li>
+<li>Customer/account sync</li>
+<li>Payment reconciliation</li>
+<li>Chart of accounts mapping</li>
+</ul>
+<strong>QuickBooks Integration</strong>:
+<pre><code class="language-groovy">@Service
+class QuickBooksIntegrationService {
+    
+    def syncInvoice(Invoice invoice) {
+        // Get OAuth2 tokens from Vault
+        def tokens = getOAuth2Tokens()
+        
+        // Build QuickBooks invoice
+        def qbInvoice = [
+            DocNumber: invoice.invoiceNumber,
+            TxnDate: invoice.invoiceDate.toString(),
+            DueDate: invoice.dueDate.toString(),
+            CustomerRef: [
+                value: getQuickBooksCustomerId(invoice.accountId)
+            ],
+            Line: invoice.charges.collect { charge -&gt;
+                [
+                    DetailType: "SalesItemLineDetail",
+                    Amount: charge.amount,
+                    Description: charge.description,
+                    SalesItemLineDetail: [
+                        ItemRef: [
+                            value: getQuickBooksItemId(charge.chargeType)
+                        ],
+                        Qty: charge.quantity ?: 1,
+                        UnitPrice: charge.amount / (charge.quantity ?: 1)
+                    ]
+                ]
+            }
+        ]
+        
+        // Add tax line
+        qbInvoice.Line &lt;&lt; [
+            DetailType: "TaxLineDetail",
+            Amount: invoice.taxTotal,
+            TaxLineDetail: [
+                TaxCodeRef: [
+                    value: getTaxCodeId()
+                ]
+            ]
+        ]
+        
+        // Call QuickBooks API
+        def response = restTemplate.postForObject(
+            "https://quickbooks.api.intuit.com/v3/company/${realmId}/invoice",
+            qbInvoice,
+            QuickBooksInvoiceResponse.class,
+            [
+                "Authorization": "Bearer ${tokens.access_token}",
+                "Accept": "application/json",
+                "Content-Type": "application/json"
+            ]
+        )
+        
+        // Store external ID
+        invoice.externalInvoiceId = response.Invoice.Id
+        invoiceRepository.save(invoice)
+    }
+    
+    def createJournalEntry(RevenueJournal journal) {
+        // Build QuickBooks journal entry
+        def qbJournal = [
+            TxnDate: journal.recognizedDate.toString(),
+            Line: [
+                [
+                    DetailType: "JournalEntryLineDetail",
+                    Amount: journal.amount,
+                    Description: "Revenue recognition - ${journal.id}",
+                    JournalEntryLineDetail: [
+                        PostingType: "Debit",
+                        AccountRef: [
+                            value: getDeferredRevenueAccountId()
+                        ]
+                    ]
+                ],
+                [
+                    DetailType: "JournalEntryLineDetail",
+                    Amount: journal.amount,
+                    Description: "Revenue recognition - ${journal.id}",
+                    JournalEntryLineDetail: [
+                        PostingType: "Credit",
+                        AccountRef: [
+                            value: getRevenueAccountId()
+                        ]
+                    ]
+                ]
+            ]
+        ]
+        
+        // Post journal entry
+        def response = restTemplate.postForObject(
+            "https://quickbooks.api.intuit.com/v3/company/${realmId}/journalentry",
+            qbJournal,
+            QuickBooksJournalResponse.class,
+            ["Authorization": "Bearer ${accessToken}"]
+        )
+        
+        // Update journal with external ID
+        journal.externalJournalId = response.JournalEntry.Id
+        journalRepository.save(journal)
+    }
+}
+</code></pre>
+<strong>NetSuite Integration (OAuth1)</strong>:
+<pre><code class="language-groovy">@Service
+class NetSuiteIntegrationService {
+    
+    def authenticate() {
+        // Get OAuth1 credentials from Vault
+        def creds = vaultService.getSecret("secret/tenant/${tenantName}/netsuite")
+        
+        // OAuth1 signing
+        def consumer = new DefaultOAuthConsumer(
+            creds.consumer_key,
+            creds.consumer_secret
+        )
+        consumer.setTokenWithSecret(creds.token_id, creds.token_secret)
+        
+        return consumer
+    }
+    
+    def createInvoice(Invoice invoice) {
+        def consumer = authenticate()
+        
+        // Build NetSuite SOAP request
+        def soapRequest = buildNetSuiteSoapRequest(invoice)
+        
+        // Sign request
+        HttpPost request = new HttpPost("${netsuiteUrl}/services/NetSuitePort_2020_2")
+        request.setEntity(new StringEntity(soapRequest))
+        consumer.sign(request)
+        
+        // Execute request
+        def response = httpClient.execute(request)
+        def responseBody = EntityUtils.toString(response.entity)
+        
+        // Parse response
+        def netsuiteInvoiceId = parseNetSuiteInvoiceId(responseBody)
+        
+        // Store external ID
+        invoice.externalInvoiceId = netsuiteInvoiceId
+        invoiceRepository.save(invoice)
+    }
+}
+</code></pre>
+
+<hr>
+
+<h3>6. diameter-gateway</h3>
+
+<strong>Purpose</strong>: Real-time charging and quota management for mobile networks
+<strong>Port</strong>: 8085  
+<strong>Technology</strong>: Spring Boot 2.1.4, Diameter Protocol  
+<strong>Integrations</strong>: Mobile network elements (OCS, PCRF)
+<strong>Key Responsibilities</strong>:
+<ul>
+<li>Real-time prepaid balance checks</li>
+<li>Quota reservations</li>
+<li>Credit control</li>
+<li>Session management</li>
+<li>Real-time charging events</li>
+<li>Diameter protocol handling</li>
+</ul>
+<strong>Diameter Protocol Flow</strong>:
+<pre><code class="language-">[1] Mobile Network → Credit-Control-Request (CCR)
+    ├─→ Session establishment
+    ├─→ Requested service units
+    └─→ Subscriber ID (MSISDN/IMSI)
+
+[2] diameter-gateway processes
+    ├─→ Lookup subscriber account
+    ├─→ Check prepaid balance
+    ├─→ Reserve quota
+    └─→ Calculate granted units
+
+[3] diameter-gateway → Credit-Control-Answer (CCA)
+    ├─→ Granted service units
+    ├─→ Validity time
+    └─→ Result code (SUCCESS/INSUFFICIENT_BALANCE)
+
+[4] Network element uses service
+
+[5] Mobile Network → CCR (Interim update)
+    └─→ Used service units
+
+[6] diameter-gateway updates
+    ├─→ Deduct from balance
+    └─→ Check remaining quota
+
+[7] Mobile Network → CCR (Termination)
+    └─→ Final usage
+
+[8] diameter-gateway finalizes
+    ├─→ Release reserved quota
+    └─→ Final balance deduction
+</code></pre>
+
+<hr>
+
+<h2>Batch & Job Processing</h2>
+
+<h3>Scheduled Jobs Summary</h3>
+
+<table>
+<thead><tr>
+<th>Job Name</th>
+<th>Schedule</th>
+<th>Service</th>
+<th>Purpose</th>
+</tr></thead><tbody>
+<tr>
+<td>----------</td>
+<td>----------</td>
+<td>---------</td>
+<td>---------</td>
+</tr>
+<tr>
+<td><strong>Daily Billing Cycle</strong></td>
+<td>2 AM Daily</td>
+<td>batch-process</td>
+<td>Execute billing for accounts with matching bill_cycle_day</td>
+</tr>
+<tr>
+<td><strong>Usage Rating</strong></td>
+<td>Hourly</td>
+<td>batch-process</td>
+<td>Rate unrated usage records</td>
+</tr>
+<tr>
+<td><strong>Revenue Recognition</strong></td>
+<td>1 AM Daily</td>
+<td>batch-process</td>
+<td>Recognize daily revenue for deferred revenue</td>
+</tr>
+<tr>
+<td><strong>Payment File Processing</strong></td>
+<td>Every 15 min</td>
+<td>batch-process</td>
+<td>Process bank payment files from S3</td>
+</tr>
+<tr>
+<td><strong>Invoice Generation</strong></td>
+<td>After billing</td>
+<td>batch-process</td>
+<td>Generate invoices from completed bills</td>
+</tr>
+<tr>
+<td><strong>Collections Processing</strong></td>
+<td>10 AM Daily</td>
+<td>batch-process</td>
+<td>Check overdue invoices, send reminders</td>
+</tr>
+<tr>
+<td><strong>Data Archival</strong></td>
+<td>3 AM Weekly</td>
+<td>batch-process</td>
+<td>Archive old usage/transaction data</td>
+</tr>
+<tr>
+<td><strong>Report Generation</strong></td>
+<td>Variable</td>
+<td>batch-process</td>
+<td>Generate scheduled reports</td>
+</tr>
+</tbody></table>
+
+<hr>
+
+<h2>Infrastructure Components</h2>
+
+<h3>1. PostgreSQL 10.5+</h3>
+
+<strong>Purpose</strong>: Primary relational database
+<strong>Deployment</strong>: AWS RDS Multi-AZ  
+<strong>Endpoint</strong>: <code>embrix-rds-dev-db.chg5bgdk4yyp.us-east-1.rds.amazonaws.com:5432</code>
+<strong>Database Layout</strong> (Multi-Tenant):
+<pre><code class="language-">PostgreSQL RDS Instance
+├── coredb-urbanos       (Tenant: urbanos)
+├── coredb-coopeg-sbx    (Tenant: coopeg-sbx)
+├── coredb-coopeg-prd    (Tenant: coopeg-prd)
+├── coredb-demo          (Tenant: demo)
+├── coredb-shm           (Tenant: shm)
+├── coredb-coopegenergy  (Tenant: coopegenergy)
+└── enginedevdb          (Tenant: dev)
+
+Each database contains:
+├── core_engine schema   (Accounts, Subscriptions)
+├── core_oms schema      (Orders, Service Lines)
+├── core_billing schema  (Charges, Invoices, Payments)
+├── core_pricing schema  (Products, Price Offers)
+├── core_usage schema    (Usage Records - partitioned by month)
+├── core_revenue schema  (Journal Entries, Deferred Revenue)
+├── core_mediation schema (CDR Files, Processing Status)
+└── core_config schema   (Tenant Config, Merchants, Users)
+</code></pre>
+<strong>Key Features</strong>:
+<ul>
+<li>Monthly partitioning for usage_record table</li>
+<li>Connection pooling (HikariCP)</li>
+<li>Read replicas for reporting</li>
+<li>Automated backups (7-day retention)</li>
+</ul>
+
+<hr>
+
+<h3>2. Redis 6.x</h3>
+
+<strong>Purpose</strong>: Caching and session management
+<strong>Deployment</strong>: AWS ElastiCache  
+<strong>Endpoint</strong>: <code>master.{env}-cache-rg.8fxuvv.use1.cache.amazonaws.com:6379</code>
+<strong>Use Cases</strong>:
+<ul>
+<li>Session storage (SSO tokens)</li>
+<li>Pricing catalog cache</li>
+<li>Real-time usage quota cache</li>
+<li>Rate limiting counters</li>
+<li>Temporary computation results</li>
+</ul>
+<strong>Key Prefixing</strong>:
+<pre><code class="language-">{tenant-id}:session:{session-id}
+{tenant-id}:cache:pricing:{product-id}
+{tenant-id}:cache:account:{account-id}
+{tenant-id}:quota:{subscription-id}
+{tenant-id}:rate-limit:{user-id}
+</code></pre>
+
+<hr>
+
+<h3>3. ActiveMQ 5.15.9</h3>
+
+<strong>Purpose</strong>: Message broker for async processing
+<strong>Deployment</strong>: AWS Amazon MQ  
+<strong>Endpoint</strong>: <code>ssl://b-{broker-id}.mq.us-east-1.amazonaws.com:61617</code>
+<strong>Key Queues</strong>:
+<pre><code class="language-"># Order Processing
+OMS                          - Order intake from CRM
+OMS_ARCHIVE                  - Order audit trail
+OMS_RESPONSE                 - Order confirmations back to CRM
+PROVISIONING                 - Provisioning requests
+PROVISIONING_RESPONSE        - Provisioning callbacks
+MCM_BILLING_OMS_RESPONSE     - MCM-specific responses
+
+# Usage Processing
+MEDIATION                    - CDR file processing
+USAGE                        - Usage rating
+
+# Billing
+BILLING                      - Billing cycle triggers
+INVOICE                      - Invoice generation
+
+# Batch Processing
+BULK                         - Bulk operations
+</code></pre>
+<strong>Retry Policy</strong>:
+<pre><code class="language-yaml">maxRetries: 7
+initialDelay: 250ms
+backoffMultiplier: 1.5x
+</code></pre>
+
+<hr>
+
+<h3>4. HashiCorp Vault</h3>
+
+<strong>Purpose</strong>: Secrets management
+<strong>Deployment</strong>: Kubernetes pods  
+<strong>Endpoint</strong>: <code>http://{tenant}-vault-interface/</code>
+<strong>Secret Structure</strong>:
+<pre><code class="language-">secret/
+└── tenant/
+    └── {tenant-name}/
+        ├── info                    # Tenant metadata
+        ├── license/onboarding      # License keys
+        ├── quickbooks/             # QuickBooks OAuth2 tokens
+        ├── netsuite/               # NetSuite OAuth1 credentials
+        ├── stripe/                 # Stripe API keys
+        ├── avalara/                # Avalara credentials
+        ├── authorize-net/          # Payment processor credentials
+        └── salesforce/             # Salesforce credentials
+</code></pre>
+
+<hr>
+
+<h3>5. AWS S3</h3>
+
+<strong>Purpose</strong>: Object storage for documents and files
+<strong>Buckets</strong>:
+<pre><code class="language-">embrix-static-files          - Templates, static assets
+embrix-{env}-data/           - Tenant data
+  ├── {tenant-id}/
+  │   ├── invoices/          - Invoice PDFs
+  │   ├── reports/           - Generated reports
+  │   ├── exports/           - Data exports
+  │   └── imports/           - Data imports
+</code></pre>
+
+<hr>
+
+<h2>Service Communication Patterns</h2>
+
+<h3>1. Synchronous (REST/GraphQL)</h3>
+
+<pre><code class="language-">service-proxy (GraphQL) → service-transactional (REST)
+service-transactional → service-billing (GraphQL)
+service-transactional → tax-gateway (REST)
+service-transactional → payment-gateway (REST)
+</code></pre>
+<h3>2. Asynchronous (ActiveMQ)</h3>
+
+<pre><code class="language-">crm-gateway → OMS queue → service-transactional
+service-transactional → PROVISIONING queue → provision-gateway
+provision-gateway → PROVISIONING_RESPONSE queue → service-transactional
+mediation platform → MEDIATION queue → service-mediation
+service-mediation → USAGE queue → service-usage
+</code></pre>
+<h3>3. Database Direct</h3>
+
+<pre><code class="language-">All services → PostgreSQL (tenant database)
+All services → Redis (caching/session)
+</code></pre>
+
+<hr>
+
+<h2>Deployment Architecture</h2>
+
+<h3>Kubernetes (EKS) Deployment</h3>
+
+<strong>Namespace Strategy</strong>: Tenant-prefixed service names in shared namespace
+<strong>Example Deployment (tenant: urbanos)</strong>:
+<pre><code class="language-yaml"># service-transactional deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: urbanos-service-transactional
+  namespace: default
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: urbanos-service-transactional
+      tenant: urbanos
+  template:
+    spec:
+      containers:
+      - name: service-transactional
+        image: embrix/service-transactional:v2.5.0
+        ports:
+        - containerPort: 8080
+        env:
+        - name: TENANT_ID
+          value: "TIDLT-100005"
+        - name: POSTGRES_URL
+          value: "jdbc:postgresql://rds-endpoint/coredb-urbanos"
+        - name: VAULT_API
+          value: "http://urbanos-vault-interface/"
+        resources:
+          requests:
+            cpu: 1000m
+            memory: 2Gi
+          limits:
+            cpu: 2000m
+            memory: 4Gi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: urbanos-service-transactional
+spec:
+  selector:
+    app: urbanos-service-transactional
+  ports:
+  - port: 8080
+    targetPort: 8080
+</code></pre>
+<strong>Per-Tenant Resources</strong>:
+<pre><code class="language-">{tenant}-service-transactional (2-4 pods)
+{tenant}-service-billing (2-3 pods)
+{tenant}-service-invoice (2-3 pods)
+{tenant}-service-payment (2-4 pods)
+{tenant}-service-revenue (2 pods)
+{tenant}-service-usage (2-4 pods)
+{tenant}-service-mediation (2-3 pods)
+{tenant}-service-sso (2 pods)
+{tenant}-service-proxy (3-5 pods)
+{tenant}-batch-process (1-2 pods)
+{tenant}-jobs-common (1-2 pods)
+{tenant}-payment-gateway (2 pods)
+{tenant}-tax-gateway (2 pods)
+{tenant}-finance-gateway (2 pods)
+{tenant}-provision-gateway (2 pods)
+{tenant}-crm-gateway (2 pods)
+{tenant}-diameter-gateway (2 pods)
+</code></pre>
+
+<hr>
+
+<h2>Service Dependencies</h2>
+
+<h3>Dependency Matrix</h3>
+
+<table>
+<thead><tr>
+<th>Service</th>
+<th>Depends On</th>
+</tr></thead><tbody>
+<tr>
+<td>---------</td>
+<td>-----------</td>
+</tr>
+<tr>
+<td>service-sso</td>
+<td>PostgreSQL, Redis, Vault</td>
+</tr>
+<tr>
+<td>service-transactional</td>
+<td>service-sso, PostgreSQL, Redis, all gateways</td>
+</tr>
+<tr>
+<td>service-billing</td>
+<td>service-transactional, service-usage, tax-gateway</td>
+</tr>
+<tr>
+<td>service-invoice</td>
+<td>service-billing, S3, finance-gateway</td>
+</tr>
+<tr>
+<td>service-payment</td>
+<td>service-billing, payment-gateway, finance-gateway</td>
+</tr>
+<tr>
+<td>service-revenue</td>
+<td>service-invoice, finance-gateway</td>
+</tr>
+<tr>
+<td>service-usage</td>
+<td>service-transactional, PostgreSQL (partitioned)</td>
+</tr>
+<tr>
+<td>service-mediation</td>
+<td>ActiveMQ, service-usage, SFTP servers</td>
+</tr>
+<tr>
+<td>service-proxy</td>
+<td>All core services</td>
+</tr>
+<tr>
+<td>batch-process</td>
+<td>All core services, ActiveMQ</td>
+</tr>
+<tr>
+<td>jobs-common</td>
+<td>PostgreSQL, job metadata</td>
+</tr>
+<tr>
+<td>payment-gateway</td>
+<td>Vault, External APIs (Stripe, PayPal)</td>
+</tr>
+<tr>
+<td>tax-gateway</td>
+<td>Vault, External APIs (Avalara)</td>
+</tr>
+<tr>
+<td>finance-gateway</td>
+<td>Vault, External APIs (QuickBooks, NetSuite)</td>
+</tr>
+<tr>
+<td>provision-gateway</td>
+<td>Vault, External APIs (Nokia, ServiceNow)</td>
+</tr>
+<tr>
+<td>crm-gateway</td>
+<td>Vault, External APIs (Salesforce), ActiveMQ</td>
+</tr>
+<tr>
+<td>diameter-gateway</td>
+<td>Network elements (via Diameter protocol)</td>
+</tr>
+</tbody></table>
+
+<hr>
+
+<h2>Summary</h2>
+
+<h3>Service Inventory</h3>
+
+<strong>Total Services</strong>: 17
+<ul>
+<li><strong>Core Services</strong>: 11</li>
+<li><strong>Gateway Services</strong>: 6</li>
+</ul>
+<strong>Total Infrastructure Components</strong>: 5
+<ul>
+<li>PostgreSQL, Redis, ActiveMQ, Vault, S3</li>
+</ul>
+<strong>Total External Integrations</strong>: 10+
+<ul>
+<li>Salesforce, ServiceNow, QuickBooks, NetSuite, Oracle EBS, SAP, Stripe, PayPal, Avalara, Nokia, Cisco, Banks, PAC Providers</li>
+</ul>
+<strong>Technology Stack</strong>:
+<ul>
+<li><strong>Backend</strong>: Java 8, Groovy 2.4.15, Spring Boot 2.1.4</li>
+<li><strong>API</strong>: GraphQL Java 5.0.2, REST</li>
+<li><strong>Data</strong>: PostgreSQL 10.5, JOOQ 3.11.10, Flyway 5.2.4</li>
+<li><strong>Messaging</strong>: Apache Camel 2.23.1, ActiveMQ 5.15.9</li>
+<li><strong>Security</strong>: Vault 2.0.2, OAuth2, JWT</li>
+<li><strong>Documents</strong>: iText 7.1.5, Thymeleaf 3.0.11</li>
+<li><strong>Infrastructure</strong>: Kubernetes (EKS), Helm, Docker, AWS</li>
+</ul>
+
+<hr>
+
+<strong>End of Complete Services Catalog</strong></p>
+        <footer>
+            <p><strong>Embrix O2X Platform Documentation</strong></p>
+            <p>Version 3.1.9-SNAPSHOT • Last Updated: February 2026</p>
+        </footer>
+    </div>
+</body>
+</html>

@@ -1,14 +1,10 @@
-#!/usr/bin/env python3
-"""
-Convert Embrix O2X Markdown Documentation to HTML
-"""
-
-import re
-import os
-from pathlib import Path
-
-# CSS template for all HTML pages
-CSS_TEMPLATE = """
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Embrix O2X Documentation Portal - Embrix O2X</title>
+    
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -813,501 +809,109 @@ CSS_TEMPLATE = """
         }
     }
 </style>
-"""
 
-def convert_markdown_to_html(markdown_text, title, nav_links=None):
-    """Convert markdown text to HTML with styling"""
-    
-    # STEP 1: Extract and protect code blocks from further processing
-    code_blocks = []
-    code_block_placeholder = "___CODE_BLOCK_{}_PLACEHOLDER___"
-    
-    def extract_code_block(match):
-        lang = match.group(1) or ''
-        code = match.group(2)
-        # Escape HTML entities
-        code = code.replace('<', '&lt;').replace('>', '&gt;')
-        # Store the processed code block
-        block_html = f'<pre><code class="language-{lang}">{code}</code></pre>'
-        placeholder = code_block_placeholder.format(len(code_blocks))
-        code_blocks.append(block_html)
-        return placeholder
-    
-    # Extract all code blocks (```)
-    markdown_text = re.sub(r'```(\w+)?\n(.*?)```', 
-                          extract_code_block, 
-                          markdown_text, flags=re.DOTALL)
-    
-    # STEP 2: Now process headers (safe because code blocks are protected)
-    # Headers (must process from most specific to least specific to avoid conflicts)
-    markdown_text = re.sub(r'^###### (.*?)$', r'<h6>\1</h6>', markdown_text, flags=re.MULTILINE)
-    markdown_text = re.sub(r'^##### (.*?)$', r'<h5>\1</h5>', markdown_text, flags=re.MULTILINE)
-    markdown_text = re.sub(r'^#### (.*?)$', r'<h4>\1</h4>', markdown_text, flags=re.MULTILINE)
-    markdown_text = re.sub(r'^### (.*?)$', r'<h3>\1</h3>', markdown_text, flags=re.MULTILINE)
-    markdown_text = re.sub(r'^## (.*?)$', r'<h2>\1</h2>', markdown_text, flags=re.MULTILINE)
-    markdown_text = re.sub(r'^# (.*?)$', r'<h1>\1</h1>', markdown_text, flags=re.MULTILINE)
-    
-    # CRITICAL: Mark metadata fields BEFORE bold processing
-    # This ensures Location:, Artifact:, Purpose: etc. get proper wrapping
-    # Pattern matches: **FieldName:** followed by any content until end of line
-    # Use [^\r\n]* instead of .* to avoid matching across line boundaries
-    metadata_pattern = r'^\*\*(Location|Artifact|Purpose|Port|Technology|Internal Name|Why (?:Important|Critical)|What is|Key (?:Operations|Concepts|Jobs|Features)|GraphQL Operations):\*\*[ \t]*([^\r\n]*)$'
-    
-    def metadata_replacer(match):
-        field_name = match.group(1)
-        field_value = match.group(2).strip()
-        return f'{{{{METADATA_START}}}}{field_name}{{{{METADATA_MID}}}}{field_value}{{{{METADATA_END}}}}'
-    
-    markdown_text = re.sub(
-        metadata_pattern,
-        metadata_replacer,
-        markdown_text,
-        flags=re.MULTILINE
-    )
-    
-    # Bold and italic
-    markdown_text = re.sub(r'\*\*(.*?)\*\*', r'<strong>\1</strong>', markdown_text)
-    markdown_text = re.sub(r'\*(.*?)\*', r'<em>\1</em>', markdown_text)
-    
-    # Inline code
-    markdown_text = re.sub(r'`([^`]+)`', r'<code>\1</code>', markdown_text)
-    
-    # Links
-    markdown_text = re.sub(r'\[([^\]]+)\]\(([^\)]+)\)', r'<a href="\2">\1</a>', markdown_text)
-    
-    # Tables and Lists - Process with proper nesting
-    lines = markdown_text.split('\n')
-    result = []
-    in_list = False
-    in_ordered_list = False
-    in_table = False
-    is_header_row = True
-    current_list_item = []  # Buffer for multi-line list items
-    
-    def flush_list_item():
-        """Flush buffered list item content"""
-        if current_list_item:
-            content = '<br>'.join(current_list_item)
-            result.append(f'<li>{content}</li>')
-            current_list_item.clear()
-    
-    for i, line in enumerate(lines):
-        stripped = line.strip()
-        indent_level = len(line) - len(line.lstrip())
-        
-        # Detect metadata field markers - these should be isolated
-        if '{{METADATA_START}}' in line:
-            # Close any open lists before metadata field
-            if in_list or in_ordered_list:
-                flush_list_item()
-            if in_list:
-                result.append('</ul>')
-                in_list = False
-            if in_ordered_list:
-                result.append('</ol>')
-                in_ordered_list = False
-            if in_table:
-                result.append('</tbody></table>')
-                in_table = False
-            
-            # Add metadata field line as-is
-            result.append(line)
-            continue
-        
-        # Table detection
-        if stripped.startswith('|') and stripped.endswith('|'):
-            # Skip separator rows (e.g., |---|---|)
-            if re.match(r'^\s*\|[\s\-:]+\|\s*$', line):
-                is_header_row = False
-                continue
-            
-            # Close any open lists
-            if in_list or in_ordered_list:
-                flush_list_item()
-            if in_list:
-                result.append('</ul>')
-                in_list = False
-            if in_ordered_list:
-                result.append('</ol>')
-                in_ordered_list = False
-            
-            if not in_table:
-                result.append('<table>')
-                in_table = True
-                is_header_row = True
-            
-            # Parse table row
-            cells = [cell.strip() for cell in stripped.split('|')[1:-1]]
-            
-            if is_header_row:
-                result.append('<thead><tr>')
-                for cell in cells:
-                    result.append(f'<th>{cell}</th>')
-                result.append('</tr></thead><tbody>')
-                is_header_row = False
-            else:
-                result.append('<tr>')
-                for cell in cells:
-                    result.append(f'<td>{cell}</td>')
-                result.append('</tr>')
-        
-        # Ordered list (not indented)
-        elif re.match(r'^\d+\. ', line) and indent_level == 0:
-            if in_table:
-                result.append('</tbody></table>')
-                in_table = False
-            
-            # Flush previous list item
-            if in_ordered_list:
-                flush_list_item()
-            
-            # Close unordered list if switching types
-            if in_list:
-                result.append('</ul>')
-                in_list = False
-            
-            # Start ordered list if needed
-            if not in_ordered_list:
-                result.append('<ol>')
-                in_ordered_list = True
-            
-            # Extract list item content
-            list_item_text = re.sub(r'^\d+\. ', '', line)
-            current_list_item.append(list_item_text)
-        
-        # Unordered list (not indented)
-        elif re.match(r'^- ', line) and indent_level == 0:
-            if in_table:
-                result.append('</tbody></table>')
-                in_table = False
-            
-            # Flush previous list item
-            if in_list:
-                flush_list_item()
-            
-            # Close ordered list if switching types
-            if in_ordered_list:
-                flush_list_item()
-                result.append('</ol>')
-                in_ordered_list = False
-            
-            # Start unordered list if needed
-            if not in_list:
-                result.append('<ul>')
-                in_list = True
-            
-            current_list_item.append(line[2:])
-        
-        # Indented content (nested bullets or continuation)
-        elif indent_level > 0 and (in_list or in_ordered_list) and stripped:
-            # This is nested content of the current list item
-            if stripped.startswith('- '):
-                # Nested bullet point
-                current_list_item.append(f'<ul><li>{stripped[2:]}</li></ul>')
-            else:
-                # Continuation of list item
-                current_list_item.append(stripped)
-        
-        # Empty line within list - might be separating items
-        elif not stripped and (in_list or in_ordered_list):
-            # Keep empty lines within lists (don't close yet)
-            continue
-        
-        # Non-list content
-        else:
-            # Close any open structures
-            if in_table:
-                result.append('</tbody></table>')
-                in_table = False
-            if in_list or in_ordered_list:
-                flush_list_item()
-            if in_list:
-                result.append('</ul>')
-                in_list = False
-            if in_ordered_list:
-                result.append('</ol>')
-                in_ordered_list = False
-            
-            if stripped:  # Only add non-empty lines
-                result.append(line)
-    
-    # Close any remaining open structures
-    if in_list or in_ordered_list:
-        flush_list_item()
-    if in_table:
-        result.append('</tbody></table>')
-    if in_list:
-        result.append('</ul>')
-    if in_ordered_list:
-        result.append('</ol>')
-    
-    markdown_text = '\n'.join(result)
-    
-    # Horizontal rules
-    markdown_text = re.sub(r'^---+$', '<hr>', markdown_text, flags=re.MULTILINE)
-    
-    # Paragraphs - split on double newlines but not inside lists/tables
-    markdown_text = re.sub(r'\n\n+', '\n</p>\n<p>\n', markdown_text)
-    markdown_text = '<p>' + markdown_text + '</p>'
-    
-    # Clean up empty paragraphs and malformed tags
-    markdown_text = re.sub(r'<p>\s*</p>', '', markdown_text)
-    markdown_text = re.sub(r'<p>\s*(<h[1-6]>)', r'\n\1', markdown_text)
-    markdown_text = re.sub(r'(</h[1-6]>)\s*</p>', r'\1\n', markdown_text)
-    markdown_text = re.sub(r'<p>\s*(<pre>)', r'\n\1', markdown_text)
-    markdown_text = re.sub(r'(</pre>)\s*</p>', r'\1\n', markdown_text)
-    markdown_text = re.sub(r'<p>\s*(<ul>|<ol>|<hr>|<table>)', r'\n\1', markdown_text)
-    markdown_text = re.sub(r'(</ul>|</ol>|<hr>|</table>)\s*</p>', r'\1\n', markdown_text)
-    markdown_text = re.sub(r'<p>\s*(<thead>|<tbody>)', r'\1', markdown_text)
-    markdown_text = re.sub(r'(</thead>|</tbody>)\s*</p>', r'\1', markdown_text)
-    
-    # CRITICAL: Convert metadata markers to proper div wrappers AFTER paragraph processing
-    # Handle cases with paragraph wrapper
-    markdown_text = re.sub(
-        r'<p>\s*{{METADATA_START}}([^{]+){{METADATA_MID}}([^{]*){{METADATA_END}}\s*</p>',
-        r'<div class="metadata-field"><strong>\1:</strong> \2</div>',
-        markdown_text
-    )
-    # Also handle cases without paragraph wrapper
-    markdown_text = re.sub(
-        r'{{METADATA_START}}([^{]+){{METADATA_MID}}([^{]*){{METADATA_END}}',
-        r'<div class="metadata-field"><strong>\1:</strong> \2</div>',
-        markdown_text
-    )
-    # Clean up any remaining paragraph tags around metadata fields
-    markdown_text = re.sub(r'<p>\s*(<div class="metadata-field">)', r'\1', markdown_text)
-    markdown_text = re.sub(r'(</div>)\s*</p>', r'\1', markdown_text)
-    
-    
-    # Add spacing after headers
-    markdown_text = re.sub(r'(</h[1-6]>)', r'\1\n', markdown_text)
-    
-    # Add spacing around hr
-    markdown_text = re.sub(r'<hr>', r'\n<hr>\n', markdown_text)
-    
-    # STEP 3: Restore code blocks (protected content)
-    for i, code_block in enumerate(code_blocks):
-        placeholder = code_block_placeholder.format(i)
-        markdown_text = markdown_text.replace(placeholder, code_block)
-    
-    # Build navigation
-    nav_html = ""
-    if nav_links:
-        nav_html = '<div class="nav-header">'
-        nav_html += '<div><h1>Embrix O2X Documentation</h1><small>Navigate between guides</small></div>'
-        nav_html += '<div class="nav-links">'
-        for link_title, link_url in nav_links:
-            nav_html += f'<a href="{link_url}">{link_title}</a>'
-        nav_html += '</div></div>'
-    
-    # Build full HTML
-    html = f"""<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{title} - Embrix O2X</title>
-    {CSS_TEMPLATE}
 </head>
 <body>
     <div class="container">
-        {nav_html}
-        {markdown_text}
+        <div class="nav-header"><div><h1>Embrix O2X Documentation</h1><small>Navigate between guides</small></div><div class="nav-links"><a href="index.html">Home</a><a href="guide-index.html">Guide Index</a><a href="guide-index.html">Part 1-5</a><a href="quick-start.html">Quick Start</a><a href="quick-reference.html">Quick Ref</a><a href="complete-system-overview.html">Architecture</a><a href="api-reference.html">API Reference</a><a href="troubleshooting-guide.html">Troubleshooting</a></div></div>
+        
+<h1>Embrix O2X Knowledge Hub</h1>
+
+Welcome to the <strong>Embrix O2X Platform Knowledge Hub</strong> - your comprehensive guide to mastering our enterprise-grade Order-to-Cash management system.
+
+<hr>
+
+<h2>Getting Started</h2>
+
+New to Embrix O2X? Start with these essential resources:
+<ul>
+<li><a href="quick-start.html">Quick Start Guide</a> - Get up and running quickly</li>
+<li><a href="guide-index.html">Complete Newcomer's Guide Index</a> - Your structured learning path</li>
+<li><a href="business-scenarios.html">Business Scenarios & Workflows</a> - Real-world use cases and examples</li>
+</ul>
+
+<hr>
+
+<h2>Learning Path</h2>
+
+Follow this recommended sequence to master the platform:
+<ol>
+<li><a href="part1-business-architecture.html">Part 1: Business & Architecture</a> - Understand the business domain and high-level architecture</li>
+<li><a href="part2-technical-deep-dive.html">Part 2: Technical Deep Dive</a> - Explore technical architecture and design patterns</li>
+<li><a href="part3-services-development.html">Part 3: Services & Development</a> - Master microservices and backend development</li>
+<li><a href="part4-frontend-ui.html">Part 4: Frontend Applications & User Interfaces</a> - Learn UI architecture and frontend patterns</li>
+<li><a href="part5-message-queues.html">Part 5: Message Queue Architecture & Integration</a> - Understand async messaging and integration</li>
+</ol>
+
+<hr>
+
+<h2>Architecture Documentation</h2>
+
+Deep dive into system architecture and design:
+<ul>
+<li><a href="complete-system-overview.html">Complete System Overview</a> - High-level system architecture and components</li>
+<li><a href="multi-tenant-architecture.html">Multi-Tenant Architecture</a> - Multi-tenancy design patterns and implementation</li>
+<li><a href="database-architecture.html">Database Architecture</a> - Data modeling, schema design, and database patterns</li>
+<li><a href="frontend-ui-architecture.html">Frontend & UI Architecture</a> - UI/UX patterns, components, and design system</li>
+</ul>
+
+<hr>
+
+<h2>System Reference</h2>
+
+Comprehensive documentation of all system components:
+<ul>
+<li><a href="complete-system-documentation.html">Complete System Documentation</a> - Full system documentation</li>
+<li><a href="complete-system-inventory.html">Complete System Inventory</a> - All components, services, and dependencies</li>
+<li><a href="complete-services-catalog.html">Complete Services Catalog</a> - Detailed service descriptions and APIs</li>
+</ul>
+
+<hr>
+
+<h2>Development Resources</h2>
+
+Essential resources for developers:
+<ul>
+<li><a href="api-reference.html">API Reference</a> - Complete REST API documentation</li>
+<li><a href="frontend-guide.html">Frontend Development Guide</a> - Frontend development best practices</li>
+<li><a href="quick-reference.html">Quick Reference Guide</a> - Commands, snippets, and quick tips</li>
+<li><a href="contributing.html">Contributing Guide</a> - How to contribute to the project</li>
+</ul>
+
+<hr>
+
+<h2>Troubleshooting & Support</h2>
+
+Get help when you need it:
+<ul>
+<li><a href="troubleshooting-guide.html">Troubleshooting Guide</a> - Common issues and solutions</li>
+<li><a href="glossary.html">Glossary of Terms</a> - Technical terminology and definitions</li>
+</ul>
+
+<hr>
+
+<h2>Platform Information</h2>
+
+<strong>Version:</strong> 3.1.9-SNAPSHOT  
+<strong>Last Updated:</strong> February 2026  
+<strong>Technology Stack:</strong> Spring Boot, React, PostgreSQL, RabbitMQ, Redis  
+<strong>Architecture:</strong> Microservices, Multi-tenant, Event-driven
+<div class="metadata-field"><strong>Key Features:</strong> </div>
+<ul>
+<li>Multi-tenant SaaS platform</li>
+<li>Comprehensive Order-to-Cash workflow</li>
+<li>Real-time event processing</li>
+<li>Advanced pricing and taxation engines</li>
+<li>Self-service portal and admin interfaces</li>
+</ul>
+
+<hr>
+
+Happy learning! Start your journey with the <a href="guide-index.html">Complete Newcomer's Guide Index</a>.</p>
         <footer>
             <p><strong>Embrix O2X Platform Documentation</strong></p>
             <p>Version 3.1.9-SNAPSHOT • Last Updated: February 2026</p>
         </footer>
     </div>
 </body>
-</html>"""
-    
-    return html
-
-def main():
-    """Convert all markdown guides to HTML"""
-    
-    # Navigation links for all pages - will be at top of every page
-    nav_links = [
-        ("Home", "index.html"),
-        ("Guide Index", "guide-index.html"),
-        ("Part 1-5", "guide-index.html"),
-        ("Quick Start", "quick-start.html"),
-        ("Quick Ref", "quick-reference.html"),
-        ("Architecture", "complete-system-overview.html"),
-        ("API Reference", "api-reference.html"),
-        ("Troubleshooting", "troubleshooting-guide.html"),
-    ]
-    
-    # Files to convert - Knowledge Hub content only (no deployment docs)
-    files_to_convert = [
-        # Newcomer Guide Parts (from root and docs/newcomer-4/)
-        ("docs/newcomer-4/NEWCOMER_GUIDE_INDEX.md", "guide-index.html", "📚 Complete Newcomer's Guide Index"),
-        ("docs/newcomer-4/NEWCOMER_GUIDE_PART1_BUSINESS_AND_ARCHITECTURE.md", "part1-business-architecture.html", "Part 1: Business & Architecture"),
-        ("docs/newcomer-4/NEWCOMER_GUIDE_PART2_TECHNICAL_DEEP_DIVE.md", "part2-technical-deep-dive.html", "Part 2: Technical Deep Dive"),
-        ("NEWCOMER_GUIDE_PART3_SERVICES_AND_DEVELOPMENT.md", "part3-services-development.html", "Part 3: Services & Development"),
-        ("docs/newcomer-4/NEWCOMER_GUIDE_PART4_FRONTEND_AND_UI.md", "part4-frontend-ui.html", "Part 4: Frontend Applications & User Interfaces"),
-        ("docs/newcomer-4/NEWCOMER_GUIDE_PART5_MESSAGE_QUEUES_AND_INTEGRATION.md", "part5-message-queues.html", "Part 5: Message Queue Architecture & Integration"),
-        
-        # Quick Start and Reference Guides
-        ("docs/newcomer-4/QUICK_START.md", "quick-start.html", "🎯 Quick Start Guide"),
-        ("docs/newcomer-4/QUICK_REFERENCE_GUIDE.md", "quick-reference.html", "📖 Quick Reference Guide"),
-        
-        # Business and Workflow Guides
-        ("docs/newcomer-4/BUSINESS_SCENARIOS_AND_WORKFLOWS.md", "business-scenarios.html", "💼 Business Scenarios & Workflows"),
-        
-        # Architecture Documentation
-        ("docs/newcomer-4/MULTI_TENANT_ARCHITECTURE.md", "multi-tenant-architecture.html", "🏢 Multi-Tenant Architecture"),
-        ("docs/newcomer-4/DATABASE_ARCHITECTURE_COMPLETE.md", "database-architecture.html", "🗄️ Database Architecture - Complete Guide"),
-        ("docs/newcomer-4/FRONTEND_UI_ARCHITECTURE.md", "frontend-ui-architecture.html", "🎨 Frontend & UI Architecture"),
-        
-        # System Documentation
-        ("docs/newcomer-4/COMPLETE_SYSTEM_OVERVIEW.md", "complete-system-overview.html", "🌐 Complete System Overview"),
-        ("docs/newcomer-4/COMPLETE_SYSTEM_DOCUMENTATION.md", "complete-system-documentation.html", "📋 Complete System Documentation"),
-        ("docs/newcomer-4/COMPLETE_SYSTEM_INVENTORY.md", "complete-system-inventory.html", "📦 Complete System Inventory"),
-        ("docs/newcomer-4/COMPLETE_SERVICES_CATALOG.md", "complete-services-catalog.html", "⚙️ Complete Services Catalog"),
-        
-        # Development Guides
-        ("docs/newcomer-4/API_REFERENCE.md", "api-reference.html", "🔌 API Reference"),
-        ("docs/newcomer-4/FRONTEND_GUIDE.md", "frontend-guide.html", "💻 Frontend Development Guide"),
-        ("docs/newcomer-4/CONTRIBUTING.md", "contributing.html", "🤝 Contributing Guide"),
-        
-        # Troubleshooting and Reference
-        ("docs/newcomer-4/TROUBLESHOOTING_GUIDE.md", "troubleshooting-guide.html", "🔧 Troubleshooting Guide"),
-        ("docs/newcomer-4/GLOSSARY.md", "glossary.html", "📖 Glossary of Terms"),
-    ]
-    
-    # Output directory - docs/big-new-comer
-    output_dir = Path("docs/big-new-comer")
-    output_dir.mkdir(parents=True, exist_ok=True)
-    
-    converted_count = 0
-    skipped_count = 0
-    
-    for md_file, html_file, title in files_to_convert:
-        md_path = Path(md_file)
-        if not md_path.exists():
-            print(f"Warning: {md_file} not found, skipping...")
-            skipped_count += 1
-            continue
-        
-        print(f"Converting {md_file} -> {html_file}...")
-        
-        with open(md_path, 'r', encoding='utf-8') as f:
-            markdown_content = f.read()
-        
-        html_content = convert_markdown_to_html(markdown_content, title, nav_links)
-        
-        output_path = output_dir / html_file
-        with open(output_path, 'w', encoding='utf-8') as f:
-            f.write(html_content)
-        
-        print(f"[OK] Created {output_path}")
-        converted_count += 1
-    
-    # Create index.html with beautiful landing page
-    print("\nCreating index page...")
-    index_content = """# Embrix O2X Knowledge Hub
-
-Welcome to the **Embrix O2X Platform Knowledge Hub** - your comprehensive guide to mastering our enterprise-grade Order-to-Cash management system.
-
----
-
-## Getting Started
-
-New to Embrix O2X? Start with these essential resources:
-
-- [Quick Start Guide](quick-start.html) - Get up and running quickly
-- [Complete Newcomer's Guide Index](guide-index.html) - Your structured learning path
-- [Business Scenarios & Workflows](business-scenarios.html) - Real-world use cases and examples
-
----
-
-## Learning Path
-
-Follow this recommended sequence to master the platform:
-
-1. [Part 1: Business & Architecture](part1-business-architecture.html) - Understand the business domain and high-level architecture
-2. [Part 2: Technical Deep Dive](part2-technical-deep-dive.html) - Explore technical architecture and design patterns
-3. [Part 3: Services & Development](part3-services-development.html) - Master microservices and backend development
-4. [Part 4: Frontend Applications & User Interfaces](part4-frontend-ui.html) - Learn UI architecture and frontend patterns
-5. [Part 5: Message Queue Architecture & Integration](part5-message-queues.html) - Understand async messaging and integration
-
----
-
-## Architecture Documentation
-
-Deep dive into system architecture and design:
-
-- [Complete System Overview](complete-system-overview.html) - High-level system architecture and components
-- [Multi-Tenant Architecture](multi-tenant-architecture.html) - Multi-tenancy design patterns and implementation
-- [Database Architecture](database-architecture.html) - Data modeling, schema design, and database patterns
-- [Frontend & UI Architecture](frontend-ui-architecture.html) - UI/UX patterns, components, and design system
-
----
-
-## System Reference
-
-Comprehensive documentation of all system components:
-
-- [Complete System Documentation](complete-system-documentation.html) - Full system documentation
-- [Complete System Inventory](complete-system-inventory.html) - All components, services, and dependencies
-- [Complete Services Catalog](complete-services-catalog.html) - Detailed service descriptions and APIs
-
----
-
-## Development Resources
-
-Essential resources for developers:
-
-- [API Reference](api-reference.html) - Complete REST API documentation
-- [Frontend Development Guide](frontend-guide.html) - Frontend development best practices
-- [Quick Reference Guide](quick-reference.html) - Commands, snippets, and quick tips
-- [Contributing Guide](contributing.html) - How to contribute to the project
-
----
-
-## Troubleshooting & Support
-
-Get help when you need it:
-
-- [Troubleshooting Guide](troubleshooting-guide.html) - Common issues and solutions
-- [Glossary of Terms](glossary.html) - Technical terminology and definitions
-
----
-
-## Platform Information
-
-**Version:** 3.1.9-SNAPSHOT  
-**Last Updated:** February 2026  
-**Technology Stack:** Spring Boot, React, PostgreSQL, RabbitMQ, Redis  
-**Architecture:** Microservices, Multi-tenant, Event-driven
-
-**Key Features:**
-- Multi-tenant SaaS platform
-- Comprehensive Order-to-Cash workflow
-- Real-time event processing
-- Advanced pricing and taxation engines
-- Self-service portal and admin interfaces
-
----
-
-Happy learning! Start your journey with the [Complete Newcomer's Guide Index](guide-index.html).
-"""
-    
-    index_html = convert_markdown_to_html(index_content, "Embrix O2X Documentation Portal", nav_links)
-    index_path = output_dir / "index.html"
-    with open(index_path, 'w', encoding='utf-8') as f:
-        f.write(index_html)
-    
-    print(f"[OK] Created {index_path}")
-    
-    print("\n" + "="*60)
-    print(f"SUCCESS! Converted {converted_count} files")
-    if skipped_count > 0:
-        print(f"Warning: Skipped {skipped_count} files (not found)")
-    print(f"Output directory: {output_dir.absolute()}")
-    print(f"Open: {index_path.absolute()}")
-    print("="*60)
-
-if __name__ == "__main__":
-    main()
+</html>

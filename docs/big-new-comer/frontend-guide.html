@@ -1,0 +1,1853 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>💻 Frontend Development Guide - Embrix O2X</title>
+    
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+        font-size: 16px;
+        line-height: 1.7;
+        color: #1f2937;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+        background-attachment: fixed;
+        padding: 20px;
+        min-height: 100vh;
+    }
+
+    .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        background: rgba(255, 255, 255, 0.98);
+        padding: 40px 50px;
+        border-radius: 24px;
+        box-shadow: 0 20px 60px rgba(0,0,0,0.2), 0 0 100px rgba(102, 126, 234, 0.3);
+        position: relative;
+        overflow: hidden;
+        backdrop-filter: blur(10px);
+    }
+
+    .container::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 8px;
+        background: linear-gradient(90deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+        box-shadow: 0 2px 10px rgba(102, 126, 234, 0.5);
+    }
+    
+    .container::after {
+        content: '';
+        position: absolute;
+        top: -50%;
+        right: -10%;
+        width: 40%;
+        height: 200%;
+        background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, transparent 100%);
+        transform: rotate(-15deg);
+        pointer-events: none;
+    }
+
+    .nav-header {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+        color: white;
+        padding: 25px 30px;
+        border-radius: 20px;
+        margin-bottom: 35px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3), inset 0 1px 0 rgba(255,255,255,0.2);
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .nav-header::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        right: -20%;
+        width: 40%;
+        height: 200%;
+        background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, transparent 100%);
+        transform: rotate(-15deg);
+    }
+
+    .nav-header h1 {
+        font-size: 1.5em;
+        margin-bottom: 5px;
+        font-weight: 700;
+        text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        position: relative;
+        z-index: 1;
+    }
+
+    .nav-links {
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+        position: relative;
+        z-index: 1;
+    }
+
+    .nav-links a {
+        color: white;
+        text-decoration: none;
+        padding: 10px 18px;
+        background: rgba(255,255,255,0.15);
+        border-radius: 10px;
+        transition: all 0.3s ease;
+        font-weight: 500;
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255,255,255,0.2);
+        font-size: 0.9em;
+    }
+    
+    .nav-links a::after {
+        display: none;
+    }
+
+    .nav-links a:hover {
+        background: white;
+        color: #667eea;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+
+    h1 {
+        color: white;
+        margin: 35px 0 25px 0;
+        padding: 20px 25px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        font-size: 1.9em;
+        font-weight: 700;
+        border-radius: 16px;
+        box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3), 0 0 60px rgba(102, 126, 234, 0.1);
+        border: 3px solid rgba(255, 255, 255, 0.2);
+        position: relative;
+        overflow: hidden;
+        transform: translateY(0);
+        transition: all 0.3s ease;
+    }
+    
+    h1::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+        transition: left 0.5s;
+    }
+    
+    h1:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 12px 35px rgba(102, 126, 234, 0.4), 0 0 80px rgba(102, 126, 234, 0.15);
+    }
+    
+    h1:hover::before {
+        left: 100%;
+    }
+
+    h2 {
+        color: #764ba2;
+        margin: 30px 0 20px 0;
+        padding: 16px 20px;
+        background: linear-gradient(135deg, rgba(118, 75, 162, 0.08) 0%, rgba(240, 147, 251, 0.08) 100%);
+        border-left: 6px solid #764ba2;
+        border-radius: 12px;
+        font-size: 1.6em;
+        font-weight: 700;
+        box-shadow: 0 4px 15px rgba(118, 75, 162, 0.15);
+        position: relative;
+        transition: all 0.3s ease;
+    }
+    
+    h2::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 0;
+        height: 3px;
+        background: linear-gradient(90deg, #764ba2 0%, #f093fb 100%);
+        transition: width 0.4s ease;
+    }
+    
+    h2:hover {
+        transform: translateX(5px);
+        box-shadow: 0 6px 20px rgba(118, 75, 162, 0.25);
+    }
+    
+    h2:hover::after {
+        width: 100%;
+    }
+
+    h3 {
+        color: #667eea;
+        margin: 25px 0 15px 0;
+        padding: 14px 18px;
+        background: white;
+        border: 2px solid #667eea;
+        border-radius: 10px;
+        font-size: 1.3em;
+        font-weight: 600;
+        box-shadow: 0 3px 10px rgba(102, 126, 234, 0.1);
+        transition: all 0.3s ease;
+    }
+    
+    h3:hover {
+        background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, transparent 100%);
+        border-color: #764ba2;
+        transform: translateX(3px);
+        box-shadow: 0 5px 15px rgba(102, 126, 234, 0.2);
+    }
+
+    h4 {
+        color: #764ba2;
+        margin: 20px 0 12px 0;
+        padding: 6px 0 6px 10px;
+        border-left: 2px solid #764ba2;
+        background: linear-gradient(90deg, rgba(118, 75, 162, 0.03) 0%, transparent 100%);
+        font-size: 1.1em;
+        font-weight: 600;
+        border-radius: 0 4px 4px 0;
+    }
+
+    h5 {
+        color: #667eea;
+        margin: 18px 0 10px 0;
+        padding: 4px 0 4px 8px;
+        border-left: 2px solid #667eea;
+        font-size: 1.05em;
+        font-weight: 600;
+        background: linear-gradient(90deg, rgba(102, 126, 234, 0.02) 0%, transparent 100%);
+        border-radius: 0 3px 3px 0;
+    }
+
+    h6 {
+        color: #764ba2;
+        margin: 15px 0 8px 0;
+        font-size: 0.95em;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    p {
+        margin: 16px 0;
+        line-height: 1.8;
+        font-size: 1em;
+        color: #374151;
+    }
+    
+    /* Better spacing for paragraphs after headings */
+    h1 + p, h2 + p, h3 + p, h4 + p {
+        margin-top: 12px;
+    }
+    
+    /* First paragraph after heading gets special treatment */
+    h1 + p, h2 + p {
+        font-size: 1.05em;
+        color: #4b5563;
+        font-weight: 400;
+    }
+
+    ul, ol {
+        margin: 20px 0;
+        padding-left: 15px;
+        list-style: none;
+    }
+
+    li {
+        margin: 12px 0;
+        line-height: 1.7;
+        font-size: 0.95em;
+        position: relative;
+        padding: 14px 18px 14px 50px;
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        border-left: 4px solid #667eea;
+        transition: all 0.3s ease;
+    }
+    
+    ul li::before {
+        content: '▸';
+        position: absolute;
+        left: 18px;
+        color: white;
+        font-weight: bold;
+        font-size: 1.3em;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        width: 24px;
+        height: 24px;
+        border-radius: 6px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        line-height: 1;
+        box-shadow: 0 2px 6px rgba(102, 126, 234, 0.3);
+    }
+    
+    ol {
+        counter-reset: item;
+    }
+    
+    ol li::before {
+        content: counter(item);
+        counter-increment: item;
+        position: absolute;
+        left: 18px;
+        color: white;
+        font-weight: 700;
+        font-size: 0.9em;
+        background: linear-gradient(135deg, #764ba2 0%, #f093fb 100%);
+        width: 24px;
+        height: 24px;
+        border-radius: 6px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 2px 6px rgba(118, 75, 162, 0.3);
+    }
+
+    li:hover {
+        transform: translateX(5px);
+        box-shadow: 0 4px 15px rgba(102, 126, 234, 0.15);
+        border-left-width: 6px;
+        background: linear-gradient(90deg, rgba(102, 126, 234, 0.03) 0%, white 100%);
+    }
+
+    /* Nested lists */
+    li ul, li ol {
+        margin: 12px 0 8px 0;
+        padding-left: 10px;
+    }
+
+    /* Nested list items - smaller styling */
+    li li {
+        font-size: 0.92em;
+        margin: 8px 0;
+        padding: 10px 14px 10px 40px;
+        box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+        border-left-color: #764ba2;
+    }
+    
+    li li::before {
+        width: 20px;
+        height: 20px;
+        font-size: 0.85em;
+        left: 12px;
+    }
+
+    li li:hover {
+        border-left-color: #f093fb;
+    }
+
+    code {
+        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        padding: 2px 6px;
+        border-radius: 4px;
+        font-family: 'Fira Code', 'Courier New', Consolas, monospace;
+        font-size: 0.85em;
+        color: #d63384;
+        border: 1px solid #dee2e6;
+        font-weight: 500;
+    }
+
+    /* Inline code with special highlighting */
+    p code, li code, td code {
+        position: relative;
+    }
+
+    p code::before, li code::before, td code::before {
+        content: '';
+        position: absolute;
+        inset: -2px;
+        border-radius: 5px;
+        background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+        z-index: -1;
+        opacity: 0;
+        transition: opacity 0.2s;
+    }
+
+    p code:hover::before, li code:hover::before, td code:hover::before {
+        opacity: 1;
+    }
+
+    pre {
+        background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+        color: #e2e8f0;
+        padding: 24px;
+        border-radius: 16px;
+        overflow-x: auto;
+        margin: 25px 0;
+        border: 2px solid #334155;
+        box-shadow: 0 8px 25px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.05);
+        font-family: 'Cascadia Code', 'Fira Code', 'SF Mono', 'Consolas', 'Liberation Mono', monospace;
+        font-size: 0.88em;
+        line-height: 1.7;
+        position: relative;
+        font-feature-settings: "liga" 0;
+        text-rendering: optimizeLegibility;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+    }
+    
+    pre::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 35px;
+        background: linear-gradient(135deg, rgba(102, 126, 234, 0.15) 0%, rgba(118, 75, 162, 0.15) 100%);
+        border-radius: 14px 14px 0 0;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    pre code {
+        background: none;
+        color: inherit;
+        padding: 0;
+        border: none;
+        font-family: inherit;
+        font-weight: normal;
+        font-size: 1em;
+        display: block;
+        padding-top: 35px;
+    }
+    
+    /* Ensure consistent styling for all code content inside pre blocks */
+    pre code * {
+        font-size: inherit !important;
+        line-height: inherit !important;
+        color: inherit !important;
+        font-family: inherit !important;
+    }
+
+    /* Hover effect */
+    pre:hover {
+        border-color: #667eea;
+        box-shadow: 0 12px 35px rgba(0,0,0,0.4), 0 0 0 2px rgba(102, 126, 234, 0.2);
+        transform: translateY(-2px);
+        transition: all 0.3s ease;
+    }
+
+    /* Code block header indicator with dots */
+    pre::after {
+        content: '';
+        position: absolute;
+        top: 14px;
+        left: 16px;
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        background: #ff5f56;
+        box-shadow: 20px 0 0 #ffbd2e, 40px 0 0 #27c93f;
+    }
+
+    blockquote {
+        border-left: 6px solid #667eea;
+        padding: 22px 28px 22px 60px;
+        margin: 25px 0;
+        color: #555;
+        font-style: italic;
+        font-size: 1em;
+        background: linear-gradient(135deg, rgba(102, 126, 234, 0.08) 0%, rgba(240, 147, 251, 0.05) 100%);
+        border-radius: 16px;
+        position: relative;
+        box-shadow: 0 4px 15px rgba(102, 126, 234, 0.1);
+        transition: all 0.3s ease;
+    }
+
+    blockquote::before {
+        content: '"';
+        position: absolute;
+        left: 18px;
+        top: 50%;
+        transform: translateY(-50%);
+        font-size: 3em;
+        color: rgba(102, 126, 234, 0.2);
+        font-family: Georgia, serif;
+        font-weight: 700;
+        line-height: 1;
+    }
+    
+    blockquote:hover {
+        border-left-color: #764ba2;
+        transform: translateX(5px);
+        box-shadow: 0 6px 20px rgba(102, 126, 234, 0.2);
+    }
+
+    table {
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 0;
+        margin: 25px 0;
+        box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+        border-radius: 16px;
+        overflow: hidden;
+        background: white;
+        font-size: 0.9em;
+        border: 2px solid rgba(102, 126, 234, 0.1);
+    }
+
+    thead {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        position: relative;
+    }
+    
+    thead::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 3px;
+        background: linear-gradient(90deg, #f093fb 0%, transparent 50%, #f093fb 100%);
+    }
+
+    th {
+        color: white;
+        padding: 16px 18px;
+        text-align: left;
+        font-weight: 700;
+        text-transform: uppercase;
+        font-size: 0.8em;
+        letter-spacing: 0.5px;
+        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+    }
+
+    td {
+        padding: 14px 18px;
+        border-bottom: 1px solid rgba(102, 126, 234, 0.08);
+        vertical-align: top;
+        line-height: 1.6;
+        transition: all 0.2s ease;
+    }
+
+    tbody tr:last-child td {
+        border-bottom: none;
+    }
+
+    tbody tr {
+        transition: all 0.3s ease;
+    }
+
+    tbody tr:hover {
+        background: linear-gradient(90deg, rgba(102, 126, 234, 0.08) 0%, rgba(240, 147, 251, 0.05) 100%);
+        transform: scale(1.01);
+        box-shadow: inset 4px 0 0 #667eea;
+    }
+
+    tbody tr:nth-child(even) {
+        background: rgba(102, 126, 234, 0.02);
+    }
+
+    tbody tr:nth-child(even):hover {
+        background: linear-gradient(90deg, rgba(102, 126, 234, 0.08) 0%, rgba(240, 147, 251, 0.05) 100%);
+    }
+    
+    /* Better code in tables */
+    td code {
+        font-size: 0.85em;
+        padding: 3px 7px;
+    }
+
+    .info-box {
+        background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+        border: 3px solid #2196f3;
+        padding: 24px;
+        margin: 30px 0;
+        border-radius: 16px;
+        box-shadow: 0 8px 25px rgba(33, 150, 243, 0.25);
+        position: relative;
+        overflow: hidden;
+        transition: all 0.3s ease;
+    }
+    
+    .info-box::before {
+        content: 'ℹ️';
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        font-size: 2em;
+        opacity: 0.3;
+    }
+    
+    .info-box:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 12px 35px rgba(33, 150, 243, 0.35);
+    }
+
+    .warning-box {
+        background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%);
+        border: 3px solid #ff9800;
+        padding: 24px;
+        margin: 30px 0;
+        border-radius: 16px;
+        box-shadow: 0 8px 25px rgba(255, 152, 0, 0.25);
+        position: relative;
+        overflow: hidden;
+        transition: all 0.3s ease;
+    }
+    
+    .warning-box::before {
+        content: '⚠️';
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        font-size: 2em;
+        opacity: 0.3;
+    }
+    
+    .warning-box:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 12px 35px rgba(255, 152, 0, 0.35);
+    }
+
+    .success-box {
+        background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+        border: 3px solid #4caf50;
+        padding: 24px;
+        margin: 30px 0;
+        border-radius: 16px;
+        box-shadow: 0 8px 25px rgba(76, 175, 80, 0.25);
+        position: relative;
+        overflow: hidden;
+        transition: all 0.3s ease;
+    }
+    
+    .success-box::before {
+        content: '✅';
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        font-size: 2em;
+        opacity: 0.3;
+    }
+    
+    .success-box:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 12px 35px rgba(76, 175, 80, 0.35);
+    }
+
+    /* Better colors for syntax in diagrams */
+    pre {
+        /* Box drawing characters in nice blue */
+        color: #93c5fd;
+    }
+
+    /* JSON/code syntax in pre blocks */
+    pre {
+        white-space: pre;
+        word-wrap: normal;
+    }
+
+    .toc {
+        background: #f8f9fa;
+        padding: 20px;
+        border-radius: 8px;
+        margin: 20px 0;
+        border-left: 4px solid #667eea;
+    }
+
+    .toc h2 {
+        color: #667eea;
+        border-bottom: none;
+        margin-bottom: 15px;
+    }
+
+    .toc ul {
+        list-style: none;
+        padding-left: 0;
+    }
+
+    .toc li {
+        margin: 8px 0;
+    }
+
+    .toc a {
+        color: #667eea;
+        text-decoration: none;
+        transition: color 0.3s;
+    }
+
+    .toc a:hover {
+        color: #764ba2;
+    }
+
+    hr {
+        border: none;
+        border-top: 2px solid #f0f0f0;
+        margin: 30px 0;
+    }
+
+    .badge {
+        display: inline-block;
+        background: #667eea;
+        color: white;
+        padding: 4px 10px;
+        border-radius: 12px;
+        font-size: 0.85em;
+        margin-left: 10px;
+    }
+
+    a {
+        color: #667eea;
+        text-decoration: none;
+        position: relative;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        padding: 2px 0;
+    }
+    
+    a::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 0;
+        height: 2px;
+        background: linear-gradient(90deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+        transition: width 0.3s ease;
+    }
+
+    a:hover {
+        color: #764ba2;
+    }
+    
+    a:hover::after {
+        width: 100%;
+    }
+    
+    /* Better display for metadata fields */
+    strong {
+        color: #374151;
+        font-weight: 600;
+    }
+    
+    /* Metadata field styling - each field on its own line */
+    .metadata-field {
+        margin: 8px 0;
+        padding: 8px 14px;
+        background: linear-gradient(90deg, rgba(102, 126, 234, 0.04) 0%, transparent 100%);
+        border-left: 3px solid #667eea;
+        border-radius: 0 4px 4px 0;
+        line-height: 1.7;
+        font-size: 0.95em;
+        display: block;
+        clear: both;
+    }
+    
+    .metadata-field strong {
+        color: #667eea;
+        font-weight: 600;
+        margin-right: 8px;
+        display: inline-block;
+        min-width: 100px;
+    }
+    
+    .metadata-field code {
+        font-size: 0.88em;
+    }
+
+    footer {
+        margin-top: 50px;
+        padding-top: 30px;
+        border-top: 2px solid #f0f0f0;
+        text-align: center;
+        color: #888;
+    }
+
+    @media print {
+        body {
+            background: white;
+        }
+        .nav-header, .nav-links {
+            display: none;
+        }
+        pre {
+            break-inside: avoid;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .container {
+            padding: 20px;
+        }
+        .nav-header {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+        .nav-links {
+            margin-top: 15px;
+        }
+        h1 {
+            font-size: 2em;
+        }
+        h2 {
+            font-size: 1.5em;
+        }
+    }
+</style>
+
+</head>
+<body>
+    <div class="container">
+        <div class="nav-header"><div><h1>Embrix O2X Documentation</h1><small>Navigate between guides</small></div><div class="nav-links"><a href="index.html">Home</a><a href="guide-index.html">Guide Index</a><a href="guide-index.html">Part 1-5</a><a href="quick-start.html">Quick Start</a><a href="quick-reference.html">Quick Ref</a><a href="complete-system-overview.html">Architecture</a><a href="api-reference.html">API Reference</a><a href="troubleshooting-guide.html">Troubleshooting</a></div></div>
+        
+<h1>Embrix O2X - Frontend Development Guide</h1>
+
+<strong>Version</strong>: 3.1.9-SNAPSHOT  
+<strong>Last Updated</strong>: February 2026  
+<strong>Purpose</strong>: Complete guide to frontend applications and UI development
+
+<hr>
+
+<h2>Table of Contents</h2>
+
+<ol>
+<li><a href="#frontend-architecture-overview">Frontend Architecture Overview</a></li>
+<li><a href="#application-inventory">Application Inventory</a></li>
+<li><a href="#technology-stack">Technology Stack</a></li>
+<li><a href="#getting-started">Getting Started</a></li>
+<li><a href="#project-structure">Project Structure</a></li>
+<li><a href="#state-management">State Management</a></li>
+<li><a href="#api-integration">API Integration</a></li>
+<li><a href="#component-development">Component Development</a></li>
+<li><a href="#styling-and-theming">Styling and Theming</a></li>
+<li><a href="#routing-and-navigation">Routing and Navigation</a></li>
+<li><a href="#forms-and-validation">Forms and Validation</a></li>
+<li><a href="#authentication-and-authorization">Authentication and Authorization</a></li>
+<li><a href="#testing">Testing</a></li>
+<li><a href="#build-and-deployment">Build and Deployment</a></li>
+<li><a href="#best-practices">Best Practices</a></li>
+</ol>
+
+<hr>
+
+<h2>Frontend Architecture Overview</h2>
+
+<h3>Applications Overview</h3>
+
+Embrix O2X includes 4 React-based applications:
+<pre><code class="language-">┌─────────────────────────────────────────────────────────┐
+│                    Frontend Layer                        │
+├─────────────────────────────────────────────────────────┤
+│  ui-core         │ Main admin/operations application     │
+│  selfcare        │ Customer self-service portal          │
+│  embrix-lite     │ Lightweight admin interface           │
+│  ui (Congero)    │ Customer onboarding application       │
+└─────────────────────────────────────────────────────────┘
+         │                      │
+         ▼                      ▼
+┌─────────────────────────────────────────────────────────┐
+│              Backend API Layer                           │
+│  - crm_gateway (GraphQL)                                 │
+│  - service-transactional (GraphQL)                       │
+│  - service-proxy (API Gateway)                           │
+└─────────────────────────────────────────────────────────┘
+</code></pre>
+
+<hr>
+
+<h2>Application Inventory</h2>
+
+<h3>1. ui-core (Main Admin Application)</h3>
+
+<strong>Path</strong>: <code>/ui-core</code> (~2,364 files)  
+<strong>Purpose</strong>: Primary operations and administration interface  
+<strong>React Version</strong>: 16.12.0  
+<strong>Port</strong>: 3000
+<div class="metadata-field"><strong>Key Features:</strong> </div>
+<ul>
+<li>Account management</li>
+<li>Order processing</li>
+<li>Billing operations</li>
+<li>Invoice generation and management</li>
+<li>Payment processing</li>
+<li>Usage tracking and analysis</li>
+<li>Revenue recognition</li>
+<li>Pricing and bundle management</li>
+<li>User and tenant management</li>
+<li>Job scheduling and monitoring</li>
+<li>Report generation</li>
+</ul>
+<strong>Main Modules:</strong>
+<pre><code class="language-">ui-core/src/
+├── api/                    # 774 API modules (GraphQL/REST)
+├── components/             # 525 shared UI components
+├── containers/             # Page-level containers
+│   ├── Dashboard/
+│   ├── CustomerPage/
+│   ├── OrderPage/
+│   ├── BillingManagement/
+│   ├── Invoice/
+│   ├── PaymentsPage/
+│   ├── UsageManagement/
+│   ├── RevenueConfiguration/
+│   ├── PricingManagement/
+│   ├── UserManagement/
+│   └── TenantManagement/
+├── config/                 # Apollo, auth, routing
+├── constantsApp/           # Constants, enums, routes
+└── utils/                  # Utilities, helpers
+</code></pre>
+
+<hr>
+
+<h3>2. selfcare (Customer Portal)</h3>
+
+<strong>Path</strong>: <code>/selfcare</code> (~615 files)  
+<strong>Purpose</strong>: Customer self-service interface  
+<strong>React Version</strong>: 16.8.6  
+<strong>Port</strong>: 3001
+<div class="metadata-field"><strong>Key Features:</strong> </div>
+<ul>
+<li>View account information and balance</li>
+<li>View and pay invoices</li>
+<li>View usage history</li>
+<li>Manage payment methods</li>
+<li>View and manage subscriptions</li>
+<li>View transaction history</li>
+<li>Download invoices and receipts</li>
+</ul>
+<strong>Main Modules:</strong>
+<pre><code class="language-">selfcare/src/
+├── api/                    # 9 API modules
+├── components/             # Shared components
+├── containers/             # 287 container files
+│   ├── Dashboard/
+│   ├── Billing/
+│   ├── Payments/
+│   ├── Usage/
+│   ├── Account/
+│   └── Profile/
+├── config/                 # Configuration
+└── i18next/                # Internationalization (en, es)
+</code></pre>
+
+<hr>
+
+<h3>3. embrix-lite (Lightweight Admin)</h3>
+
+<strong>Path</strong>: <code>/embrix-lite</code> (~243 files)  
+<strong>Purpose</strong>: Simplified administration interface  
+<strong>React Version</strong>: 16.8.6  
+<strong>Port</strong>: 3002
+<div class="metadata-field"><strong>Key Features:</strong> </div>
+<ul>
+<li>Order management</li>
+<li>Tenant configuration</li>
+<li>User management</li>
+<li>Basic reporting</li>
+</ul>
+<strong>Main Modules:</strong>
+<pre><code class="language-">embrix-lite/src/
+├── api/                    # API modules
+├── components/             # Components
+├── containers/             # Containers
+│   ├── Dashboard/
+│   ├── Orders/
+│   ├── TenantConfig/
+│   └── UserManagement/
+└── config/                 # Configuration
+</code></pre>
+
+<hr>
+
+<h3>4. ui (Congero Request)</h3>
+
+<strong>Path</strong>: <code>/ui</code> (~225 files)  
+<strong>Purpose</strong>: Customer onboarding application  
+<strong>React Version</strong>: 16.13.1  
+<strong>Port</strong>: 3003
+<div class="metadata-field"><strong>Key Features:</strong> </div>
+<ul>
+<li>New customer signup</li>
+<li>Package selection</li>
+<li>Account creation</li>
+</ul>
+
+<hr>
+
+<h2>Technology Stack</h2>
+
+<h3>Core Framework</h3>
+
+<table>
+<thead><tr>
+<th>Technology</th>
+<th>Version</th>
+<th>Purpose</th>
+</tr></thead><tbody>
+<tr>
+<td>------------</td>
+<td>---------</td>
+<td>---------</td>
+</tr>
+<tr>
+<td><strong>React</strong></td>
+<td>16.8.6 - 16.13.1</td>
+<td>UI framework</td>
+</tr>
+<tr>
+<td><strong>React Scripts</strong></td>
+<td>3.0.1 - 3.2.0</td>
+<td>Build tooling (CRA)</td>
+</tr>
+<tr>
+<td><strong>Redux</strong></td>
+<td>4.0.x</td>
+<td>State management</td>
+</tr>
+<tr>
+<td><strong>Redux-Saga</strong></td>
+<td>1.x</td>
+<td>Side effects management</td>
+</tr>
+<tr>
+<td><strong>React Router</strong></td>
+<td>5.0.1</td>
+<td>Client-side routing</td>
+</tr>
+</tbody></table>
+<h3>API Integration</h3>
+
+<table>
+<thead><tr>
+<th>Technology</th>
+<th>Version</th>
+<th>Purpose</th>
+</tr></thead><tbody>
+<tr>
+<td>------------</td>
+<td>---------</td>
+<td>---------</td>
+</tr>
+<tr>
+<td><strong>Apollo Client</strong></td>
+<td>2.x</td>
+<td>GraphQL client</td>
+</tr>
+<tr>
+<td><strong>graphql</strong></td>
+<td>14.x</td>
+<td>GraphQL query language</td>
+</tr>
+<tr>
+<td><strong>axios</strong></td>
+<td>0.18.x</td>
+<td>HTTP client</td>
+</tr>
+</tbody></table>
+<h3>UI Libraries</h3>
+
+<table>
+<thead><tr>
+<th>Library</th>
+<th>Purpose</th>
+</tr></thead><tbody>
+<tr>
+<td>---------</td>
+<td>---------</td>
+</tr>
+<tr>
+<td><strong>reactstrap</strong></td>
+<td>Bootstrap 4 React components</td>
+</tr>
+<tr>
+<td><strong>antd</strong></td>
+<td>Ant Design components</td>
+</tr>
+<tr>
+<td><strong>styled-components</strong></td>
+<td>CSS-in-JS styling</td>
+</tr>
+<tr>
+<td><strong>react-select</strong></td>
+<td>Advanced select inputs</td>
+</tr>
+<tr>
+<td><strong>react-datepicker</strong></td>
+<td>Date picking</td>
+</tr>
+<tr>
+<td><strong>react-toastify</strong></td>
+<td>Toast notifications</td>
+</tr>
+<tr>
+<td><strong>apexcharts</strong></td>
+<td>Charts and graphs</td>
+</tr>
+</tbody></table>
+<h3>Forms and Validation</h3>
+
+<table>
+<thead><tr>
+<th>Library</th>
+<th>Purpose</th>
+</tr></thead><tbody>
+<tr>
+<td>---------</td>
+<td>---------</td>
+</tr>
+<tr>
+<td><strong>formik</strong></td>
+<td>Form state management</td>
+</tr>
+<tr>
+<td><strong>yup</strong></td>
+<td>Schema validation</td>
+</tr>
+</tbody></table>
+<h3>Development Tools</h3>
+
+<table>
+<thead><tr>
+<th>Tool</th>
+<th>Purpose</th>
+</tr></thead><tbody>
+<tr>
+<td>------</td>
+<td>---------</td>
+</tr>
+<tr>
+<td><strong>ESLint</strong></td>
+<td>Code linting</td>
+</tr>
+<tr>
+<td><strong>Prettier</strong></td>
+<td>Code formatting</td>
+</tr>
+<tr>
+<td><strong>Storybook</strong></td>
+<td>Component development</td>
+</tr>
+<tr>
+<td><strong>husky</strong></td>
+<td>Git hooks</td>
+</tr>
+<tr>
+<td><strong>lint-staged</strong></td>
+<td>Pre-commit linting</td>
+</tr>
+</tbody></table>
+
+<hr>
+
+<h2>Getting Started</h2>
+
+<h3>Prerequisites</h3>
+
+<pre><code class="language-bash"># Node.js (v12.x or higher)
+node --version
+
+# npm or yarn
+npm --version
+</code></pre>
+<h3>Setup ui-core</h3>
+
+<pre><code class="language-bash"># Navigate to ui-core
+cd ui-core
+
+# Install dependencies
+npm install
+
+# Create environment file
+cp .env.example .env
+
+# Update .env with your configuration
+REACT_APP_APOLLO_API_URL=http://localhost:8080/graphql
+
+# Start development server
+npm start
+
+# Application will open at http://localhost:3000
+</code></pre>
+<h3>Setup selfcare</h3>
+
+<pre><code class="language-bash">cd selfcare
+npm install
+npm start
+# Opens at http://localhost:3001
+</code></pre>
+<h3>Setup embrix-lite</h3>
+
+<pre><code class="language-bash">cd embrix-lite
+yarn install
+yarn start
+# Opens at http://localhost:3002
+</code></pre>
+
+<hr>
+
+<h2>Project Structure</h2>
+
+<h3>Typical Application Structure</h3>
+
+<pre><code class="language-">app/
+├── public/                 # Static files
+│   ├── index.html
+│   ├── favicon.ico
+│   └── env-config.js       # Runtime configuration
+├── src/
+│   ├── api/                # API layer
+│   │   ├── account.js
+│   │   ├── order.js
+│   │   └── invoice.js
+│   ├── components/         # Reusable components
+│   │   ├── Button/
+│   │   ├── Card/
+│   │   ├── Table/
+│   │   └── Form/
+│   ├── containers/         # Page containers
+│   │   ├── App/
+│   │   ├── Dashboard/
+│   │   └── CustomerPage/
+│   ├── config/             # Configuration
+│   │   ├── ApolloClient.js
+│   │   ├── history.js
+│   │   └── store.js
+│   ├── constantsApp/       # Constants
+│   │   ├── RouteNames.js
+│   │   └── enums.js
+│   ├── i18n/               # Internationalization
+│   │   ├── en.json
+│   │   └── es.json
+│   ├── styles/             # Global styles
+│   │   ├── global.scss
+│   │   └── variables.scss
+│   ├── utils/              # Utilities
+│   │   ├── request.js
+│   │   ├── formatters.js
+│   │   └── validators.js
+│   ├── index.js            # Entry point
+│   └── serviceWorker.js    # PWA support
+├── package.json
+├── .env                    # Environment variables
+└── README.md
+</code></pre>
+
+<hr>
+
+<h2>State Management</h2>
+
+<h3>Redux Store Structure</h3>
+
+<pre><code class="language-javascript">// store structure
+{
+  auth: {
+    user: { ... },
+    token: "...",
+    isAuthenticated: true
+  },
+  accounts: {
+    list: [ ... ],
+    selected: { ... },
+    loading: false,
+    error: null
+  },
+  orders: {
+    list: [ ... ],
+    selected: { ... },
+    loading: false
+  },
+  invoices: { ... },
+  // ... other slices
+}
+</code></pre>
+<h3>Redux Setup (configureStore.js)</h3>
+
+<pre><code class="language-javascript">import { createStore, applyMiddleware, compose } from 'redux';
+import createSagaMiddleware from 'redux-saga';
+import { routerMiddleware } from 'connected-react-router';
+import { createBrowserHistory } from 'history';
+import rootReducer from './reducers';
+import rootSaga from './sagas';
+
+export const history = createBrowserHistory();
+
+export default function configureStore(initialState = {}) {
+  const sagaMiddleware = createSagaMiddleware();
+  
+  const middlewares = [
+    sagaMiddleware,
+    routerMiddleware(history)
+  ];
+  
+  const enhancers = [applyMiddleware(...middlewares)];
+  
+  const composeEnhancers =
+    window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+  
+  const store = createStore(
+    rootReducer(history),
+    initialState,
+    composeEnhancers(...enhancers)
+  );
+  
+  sagaMiddleware.run(rootSaga);
+  
+  return store;
+}
+</code></pre>
+<h3>Redux Saga Example</h3>
+
+<pre><code class="language-javascript">// sagas/accountSaga.js
+import { call, put, takeLatest } from 'redux-saga/effects';
+import { FETCH_ACCOUNTS, fetchAccountsSuccess, fetchAccountsFailure } from '../actions/accountActions';
+import { searchAccounts } from '../api/account';
+
+function* fetchAccountsSaga(action) {
+  try {
+    const response = yield call(searchAccounts, action.payload);
+    yield put(fetchAccountsSuccess(response.data));
+  } catch (error) {
+    yield put(fetchAccountsFailure(error.message));
+  }
+}
+
+export default function* accountSaga() {
+  yield takeLatest(FETCH_ACCOUNTS, fetchAccountsSaga);
+}
+</code></pre>
+<h3>Redux Reducer Example</h3>
+
+<pre><code class="language-javascript">// reducers/accountReducer.js
+import { 
+  FETCH_ACCOUNTS, 
+  FETCH_ACCOUNTS_SUCCESS, 
+  FETCH_ACCOUNTS_FAILURE 
+} from '../actions/accountActions';
+
+const initialState = {
+  list: [],
+  selected: null,
+  loading: false,
+  error: null
+};
+
+export default function accountReducer(state = initialState, action) {
+  switch (action.type) {
+    case FETCH_ACCOUNTS:
+      return {
+        ...state,
+        loading: true,
+        error: null
+      };
+    
+    case FETCH_ACCOUNTS_SUCCESS:
+      return {
+        ...state,
+        list: action.payload,
+        loading: false
+      };
+    
+    case FETCH_ACCOUNTS_FAILURE:
+      return {
+        ...state,
+        loading: false,
+        error: action.payload
+      };
+    
+    default:
+      return state;
+  }
+}
+</code></pre>
+
+<hr>
+
+<h2>API Integration</h2>
+
+<h3>Apollo Client Setup</h3>
+
+<pre><code class="language-javascript">// config/ApolloClient.js
+import { ApolloClient } from 'apollo-client';
+import { HttpLink } from 'apollo-link-http';
+import { InMemoryCache } from 'apollo-cache-inmemory';
+import { setContext } from 'apollo-link-context';
+
+const httpLink = new HttpLink({
+  uri: process.env.REACT_APP_APOLLO_API_URL || 'http://localhost:8080/graphql'
+});
+
+const authLink = setContext((_, { headers }) =&gt; {
+  const token = localStorage.getItem('token');
+  return {
+    headers: {
+      ...headers,
+      authorization: token ? `Bearer ${token}` : ''
+    }
+  };
+});
+
+const client = new ApolloClient({
+  link: authLink.concat(httpLink),
+  cache: new InMemoryCache()
+});
+
+export default client;
+</code></pre>
+<h3>GraphQL Query Example</h3>
+
+<pre><code class="language-javascript">// api/account.js
+import { gql } from 'apollo-boost';
+import client from '../config/ApolloClient';
+
+export const SEARCH_ACCOUNTS = gql`
+  query SearchAccounts($filter: AccountFilter) {
+    searchAccounts(filter: $filter) {
+      totalElements
+      content {
+        accountId
+        accountName
+        status
+        balance
+      }
+    }
+  }
+`;
+
+export const searchAccounts = async (filter) =&gt; {
+  return await client.query({
+    query: SEARCH_ACCOUNTS,
+    variables: { filter }
+  });
+};
+</code></pre>
+<h3>Using Apollo in Components</h3>
+
+<pre><code class="language-javascript">import { useQuery, useMutation } from '@apollo/react-hooks';
+import { SEARCH_ACCOUNTS, CREATE_ACCOUNT } from '../../api/account';
+
+const AccountList = () =&gt; {
+  const { data, loading, error } = useQuery(SEARCH_ACCOUNTS, {
+    variables: {
+      filter: { status: 'ACTIVE' }
+    }
+  });
+  
+  const [createAccount] = useMutation(CREATE_ACCOUNT);
+  
+  const handleCreate = async (accountData) =&gt; {
+    try {
+      const result = await createAccount({
+        variables: { account: accountData }
+      });
+      console.log('Account created:', result.data);
+    } catch (err) {
+      console.error('Error:', err);
+    }
+  };
+  
+  if (loading) return &lt;Spinner /&gt;;
+  if (error) return &lt;Error message={error.message} /&gt;;
+  
+  return (
+    &lt;div&gt;
+      {data.searchAccounts.content.map(account =&gt; (
+        &lt;AccountCard key={account.accountId} account={account} /&gt;
+      ))}
+    &lt;/div&gt;
+  );
+};
+</code></pre>
+
+<hr>
+
+<h2>Component Development</h2>
+
+<h3>Functional Component Example</h3>
+
+<pre><code class="language-javascript">import React, { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
+import { Button, Card, CardBody, CardHeader } from 'reactstrap';
+import './AccountCard.scss';
+
+const AccountCard = ({ account, onSelect, onEdit }) =&gt; {
+  const [expanded, setExpanded] = useState(false);
+  
+  useEffect(() =&gt; {
+    // Component mounted
+    console.log('Account card mounted:', account.accountId);
+    
+    return () =&gt; {
+      // Component unmounted
+      console.log('Account card unmounted');
+    };
+  }, [account.accountId]);
+  
+  const handleClick = () =&gt; {
+    setExpanded(!expanded);
+    onSelect && onSelect(account);
+  };
+  
+  return (
+    &lt;Card className="account-card"&gt;
+      &lt;CardHeader onClick={handleClick}&gt;
+        &lt;h4&gt;{account.accountName}&lt;/h4&gt;
+        &lt;span className={`status-badge status-${account.status.toLowerCase()}`}&gt;
+          {account.status}
+        &lt;/span&gt;
+      &lt;/CardHeader&gt;
+      {expanded && (
+        &lt;CardBody&gt;
+          &lt;p&gt;Account ID: {account.accountId}&lt;/p&gt;
+          &lt;p&gt;Balance: ${account.balance.toFixed(2)}&lt;/p&gt;
+          &lt;Button color="primary" onClick={() =&gt; onEdit(account)}&gt;
+            Edit
+          &lt;/Button&gt;
+        &lt;/CardBody&gt;
+      )}
+    &lt;/Card&gt;
+  );
+};
+
+AccountCard.propTypes = {
+  account: PropTypes.shape({
+    accountId: PropTypes.string.isRequired,
+    accountName: PropTypes.string.isRequired,
+    status: PropTypes.string.isRequired,
+    balance: PropTypes.number.isRequired
+  }).isRequired,
+  onSelect: PropTypes.func,
+  onEdit: PropTypes.func
+};
+
+AccountCard.defaultProps = {
+  onSelect: null,
+  onEdit: null
+};
+
+export default AccountCard;
+</code></pre>
+<h3>Styled Components Example</h3>
+
+<pre><code class="language-javascript">import styled from 'styled-components';
+
+export const AccountCardWrapper = styled.div`
+  background: white;
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 16px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  
+  &:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  }
+`;
+
+export const StatusBadge = styled.span`
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: bold;
+  
+  &.status-active {
+    background: #28a745;
+    color: white;
+  }
+  
+  &.status-suspended {
+    background: #ffc107;
+    color: black;
+  }
+`;
+</code></pre>
+
+<hr>
+
+<h2>Forms and Validation</h2>
+
+<h3>Formik with Yup Example</h3>
+
+<pre><code class="language-javascript">import React from 'react';
+import { Formik, Form, Field, ErrorMessage } from 'formik';
+import * as Yup from 'yup';
+import { Button, FormGroup, Label, Input } from 'reactstrap';
+
+const AccountSchema = Yup.object().shape({
+  accountName: Yup.string()
+    .min(2, 'Too short!')
+    .max(100, 'Too long!')
+    .required('Required'),
+  email: Yup.string()
+    .email('Invalid email')
+    .required('Required'),
+  phone: Yup.string()
+    .matches(/^[\d\s\-\+\(\)]+$/, 'Invalid phone number')
+    .required('Required')
+});
+
+const AccountForm = ({ initialValues, onSubmit }) =&gt; {
+  return (
+    &lt;Formik
+      initialValues={initialValues}
+      validationSchema={AccountSchema}
+      onSubmit={onSubmit}
+    &gt;
+      {({ errors, touched, isSubmitting }) =&gt; (
+        &lt;Form&gt;
+          &lt;FormGroup&gt;
+            &lt;Label for="accountName"&gt;Account Name&lt;/Label&gt;
+            &lt;Field
+              name="accountName"
+              as={Input}
+              invalid={errors.accountName && touched.accountName}
+            /&gt;
+            &lt;ErrorMessage name="accountName" component="div" className="invalid-feedback" /&gt;
+          &lt;/FormGroup&gt;
+          
+          &lt;FormGroup&gt;
+            &lt;Label for="email"&gt;Email&lt;/Label&gt;
+            &lt;Field
+              name="email"
+              type="email"
+              as={Input}
+              invalid={errors.email && touched.email}
+            /&gt;
+            &lt;ErrorMessage name="email" component="div" className="invalid-feedback" /&gt;
+          &lt;/FormGroup&gt;
+          
+          &lt;Button type="submit" color="primary" disabled={isSubmitting}&gt;
+            {isSubmitting ? 'Submitting...' : 'Submit'}
+          &lt;/Button&gt;
+        &lt;/Form&gt;
+      )}
+    &lt;/Formik&gt;
+  );
+};
+
+export default AccountForm;
+</code></pre>
+
+<hr>
+
+<h2>Routing and Navigation</h2>
+
+<h3>Route Configuration</h3>
+
+<pre><code class="language-javascript">// containers/App/routes.js
+import React from 'react';
+import { Route, Switch } from 'react-router-dom';
+import PrivateRoute from '../../components/PrivateRoute';
+
+import Dashboard from '../Dashboard';
+import AccountList from '../CustomerPage/AccountList';
+import AccountDetail from '../CustomerPage/AccountDetail';
+import OrderList from '../OrderPage/OrderList';
+import InvoiceList from '../Invoice/InvoiceList';
+import Login from '../Login';
+import NotFound from '../NotFound';
+
+const Routes = () =&gt; (
+  &lt;Switch&gt;
+    &lt;Route exact path="/login" component={Login} /&gt;
+    &lt;PrivateRoute exact path="/" component={Dashboard} /&gt;
+    &lt;PrivateRoute exact path="/accounts" component={AccountList} /&gt;
+    &lt;PrivateRoute path="/accounts/:id" component={AccountDetail} /&gt;
+    &lt;PrivateRoute path="/orders" component={OrderList} /&gt;
+    &lt;PrivateRoute path="/invoices" component={InvoiceList} /&gt;
+    &lt;Route component={NotFound} /&gt;
+  &lt;/Switch&gt;
+);
+
+export default Routes;
+</code></pre>
+<h3>Private Route Component</h3>
+
+<pre><code class="language-javascript">import React from 'react';
+import { Route, Redirect } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+
+const PrivateRoute = ({ component: Component, ...rest }) =&gt; {
+  const isAuthenticated = useSelector(state =&gt; state.auth.isAuthenticated);
+  
+  return (
+    &lt;Route
+      {...rest}
+      render={props =&gt;
+        isAuthenticated ? (
+          &lt;Component {...props} /&gt;
+        ) : (
+          &lt;Redirect to={{ pathname: '/login', state: { from: props.location } }} /&gt;
+        )
+      }
+    /&gt;
+  );
+};
+
+export default PrivateRoute;
+</code></pre>
+
+<hr>
+
+<h2>Authentication and Authorization</h2>
+
+<h3>Login Flow</h3>
+
+<pre><code class="language-javascript">// containers/Login/index.js
+import React from 'react';
+import { useDispatch } from 'react-redux';
+import { useHistory } from 'react-router-dom';
+import { Formik, Form, Field } from 'formik';
+import { login } from '../../api/auth';
+import { setAuthToken } from '../../actions/authActions';
+
+const Login = () =&gt; {
+  const dispatch = useDispatch();
+  const history = useHistory();
+  
+  const handleSubmit = async (values, { setSubmitting, setErrors }) =&gt; {
+    try {
+      const response = await login(values.username, values.password);
+      const { token, user } = response.data;
+      
+      // Store token
+      localStorage.setItem('token', token);
+      
+      // Update Redux store
+      dispatch(setAuthToken(token, user));
+      
+      // Redirect to dashboard
+      history.push('/');
+    } catch (error) {
+      setErrors({ submit: 'Invalid credentials' });
+    } finally {
+      setSubmitting(false);
+    }
+  };
+  
+  return (
+    &lt;div className="login-page"&gt;
+      &lt;Formik
+        initialValues={{ username: '', password: '' }}
+        onSubmit={handleSubmit}
+      &gt;
+        {({ errors, isSubmitting }) =&gt; (
+          &lt;Form&gt;
+            &lt;Field name="username" placeholder="Username" /&gt;
+            &lt;Field name="password" type="password" placeholder="Password" /&gt;
+            {errors.submit && &lt;div className="error"&gt;{errors.submit}&lt;/div&gt;}
+            &lt;button type="submit" disabled={isSubmitting}&gt;
+              Login
+            &lt;/button&gt;
+          &lt;/Form&gt;
+        )}
+      &lt;/Formik&gt;
+    &lt;/div&gt;
+  );
+};
+
+export default Login;
+</code></pre>
+
+<hr>
+
+<h2>Testing</h2>
+
+<h3>Unit Test Example (Jest + React Testing Library)</h3>
+
+<pre><code class="language-javascript">import React from 'react';
+import { render, screen, fireEvent } from '@testing-library/react';
+import '@testing-library/jest-dom';
+import AccountCard from './AccountCard';
+
+describe('AccountCard', () =&gt; {
+  const mockAccount = {
+    accountId: 'ACC-001',
+    accountName: 'TechCorp',
+    status: 'ACTIVE',
+    balance: 1500.00
+  };
+  
+  it('renders account information', () =&gt; {
+    render(&lt;AccountCard account={mockAccount} /&gt;);
+    
+    expect(screen.getByText('TechCorp')).toBeInTheDocument();
+    expect(screen.getByText('ACTIVE')).toBeInTheDocument();
+  });
+  
+  it('calls onSelect when clicked', () =&gt; {
+    const handleSelect = jest.fn();
+    render(&lt;AccountCard account={mockAccount} onSelect={handleSelect} /&gt;);
+    
+    fireEvent.click(screen.getByText('TechCorp'));
+    
+    expect(handleSelect).toHaveBeenCalledWith(mockAccount);
+  });
+});
+</code></pre>
+
+<hr>
+
+<h2>Build and Deployment</h2>
+
+<h3>Build for Production</h3>
+
+<pre><code class="language-bash"># Build ui-core
+cd ui-core
+npm run build
+
+# Output in build/ directory
+</code></pre>
+<h3>Environment Variables</h3>
+
+<pre><code class="language-bash"># .env.production
+REACT_APP_APOLLO_API_URL=https://api.embrix.com/graphql
+REACT_APP_ENV=production
+</code></pre>
+<h3>Deploy to S3</h3>
+
+<pre><code class="language-bash">aws s3 sync build/ s3://embrix-ui-core/ --delete
+aws cloudfront create-invalidation --distribution-id XXXXX --paths "/*"
+</code></pre>
+
+<hr>
+
+<h2>Best Practices</h2>
+
+<ol>
+<li><strong>Keep components small and focused</strong></li>
+<li><strong>Use functional components and hooks</strong></li>
+<li><strong>Implement proper error boundaries</strong></li>
+<li><strong>Use PropTypes for type checking</strong></li>
+<li><strong>Memoize expensive computations</strong></li>
+<li><strong>Lazy load routes and components</strong></li>
+<li><strong>Implement proper loading states</strong></li>
+<li><strong>Handle errors gracefully</strong></li>
+<li><strong>Use environment variables for configuration</strong></li>
+<li><strong>Follow accessibility guidelines</strong></li>
+</ol>
+
+<hr>
+
+<strong>Last Updated</strong>: February 2026 • Version 3.1.9-SNAPSHOT</p>
+        <footer>
+            <p><strong>Embrix O2X Platform Documentation</strong></p>
+            <p>Version 3.1.9-SNAPSHOT • Last Updated: February 2026</p>
+        </footer>
+    </div>
+</body>
+</html>

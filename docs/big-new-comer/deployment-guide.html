@@ -1,0 +1,1001 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🚀 Deployment Guide - Embrix O2X</title>
+    
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+        font-size: 16px;
+        line-height: 1.7;
+        color: #1f2937;
+        background: linear-gradient(135deg, #f5f7fa 0%, #e9ecef 100%);
+        background-attachment: fixed;
+        padding: 20px;
+    }
+
+    .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        background: white;
+        padding: 40px 50px;
+        border-radius: 16px;
+        box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .container::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 5px;
+        background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+    }
+
+    .nav-header {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 20px;
+        border-radius: 8px;
+        margin-bottom: 30px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+    }
+
+    .nav-header h1 {
+        font-size: 1.4em;
+        margin-bottom: 5px;
+        font-weight: 600;
+    }
+
+    .nav-links {
+        display: flex;
+        gap: 15px;
+        flex-wrap: wrap;
+    }
+
+    .nav-links a {
+        color: white;
+        text-decoration: none;
+        padding: 8px 16px;
+        background: rgba(255,255,255,0.2);
+        border-radius: 5px;
+        transition: background 0.3s;
+    }
+
+    .nav-links a:hover {
+        background: rgba(255,255,255,0.3);
+    }
+
+    h1 {
+        color: #667eea;
+        margin: 35px 0 20px 0;
+        padding: 12px 0 12px 18px;
+        border-left: 5px solid #667eea;
+        border-bottom: 2px solid #667eea;
+        background: linear-gradient(90deg, rgba(102, 126, 234, 0.05) 0%, rgba(255,255,255,0) 100%);
+        font-size: 1.8em;
+        font-weight: 700;
+        border-radius: 0 8px 0 0;
+    }
+
+    h2 {
+        color: #764ba2;
+        margin: 30px 0 18px 0;
+        padding: 10px 0 10px 15px;
+        border-left: 4px solid #764ba2;
+        border-bottom: 2px solid #f0f0f0;
+        background: linear-gradient(90deg, rgba(118, 75, 162, 0.03) 0%, rgba(255,255,255,0) 100%);
+        font-size: 1.5em;
+        font-weight: 700;
+        border-radius: 0 6px 0 0;
+    }
+
+    h3 {
+        color: #667eea;
+        margin: 25px 0 15px 0;
+        padding: 8px 0 8px 12px;
+        border-left: 3px solid #667eea;
+        background: linear-gradient(90deg, rgba(102, 126, 234, 0.04) 0%, transparent 100%);
+        font-size: 1.25em;
+        font-weight: 600;
+        border-radius: 0 6px 6px 0;
+    }
+
+    h4 {
+        color: #764ba2;
+        margin: 20px 0 12px 0;
+        padding: 6px 0 6px 10px;
+        border-left: 2px solid #764ba2;
+        background: linear-gradient(90deg, rgba(118, 75, 162, 0.03) 0%, transparent 100%);
+        font-size: 1.1em;
+        font-weight: 600;
+        border-radius: 0 4px 4px 0;
+    }
+
+    h5 {
+        color: #667eea;
+        margin: 18px 0 10px 0;
+        padding: 4px 0 4px 8px;
+        border-left: 2px solid #667eea;
+        font-size: 1.05em;
+        font-weight: 600;
+        background: linear-gradient(90deg, rgba(102, 126, 234, 0.02) 0%, transparent 100%);
+        border-radius: 0 3px 3px 0;
+    }
+
+    h6 {
+        color: #764ba2;
+        margin: 15px 0 8px 0;
+        font-size: 0.95em;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    p {
+        margin: 12px 0;
+        line-height: 1.7;
+        font-size: 0.95em;
+        color: #374151;
+    }
+    
+    /* Better spacing for paragraphs after headings */
+    h1 + p, h2 + p, h3 + p, h4 + p {
+        margin-top: 10px;
+    }
+
+    ul, ol {
+        margin: 20px 0;
+        padding-left: 35px;
+    }
+
+    li {
+        margin: 10px 0;
+        line-height: 1.7;
+        font-size: 0.95em;
+        position: relative;
+        padding-left: 8px;
+    }
+
+    ul li::marker {
+        color: #667eea;
+        font-weight: bold;
+        font-size: 1.1em;
+    }
+
+    ol li::marker {
+        color: #764ba2;
+        font-weight: bold;
+        font-size: 1em;
+    }
+
+    /* Better list item styling */
+    li {
+        background: linear-gradient(90deg, rgba(102, 126, 234, 0.02) 0%, transparent 100%);
+        border-left: 2px solid transparent;
+        padding: 8px 8px 8px 12px;
+        border-radius: 0 4px 4px 0;
+        transition: all 0.2s ease;
+    }
+
+    li:hover {
+        background: linear-gradient(90deg, rgba(102, 126, 234, 0.05) 0%, transparent 100%);
+        border-left-color: #667eea;
+        padding-left: 16px;
+    }
+
+    /* Nested lists */
+    li ul, li ol {
+        margin: 8px 0 8px 10px;
+    }
+
+    /* Nested list items - smaller styling */
+    li li {
+        font-size: 0.92em;
+        margin: 6px 0;
+        background: linear-gradient(90deg, rgba(118, 75, 162, 0.02) 0%, transparent 100%);
+    }
+
+    li li:hover {
+        background: linear-gradient(90deg, rgba(118, 75, 162, 0.05) 0%, transparent 100%);
+        border-left-color: #764ba2;
+    }
+
+    code {
+        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        padding: 2px 6px;
+        border-radius: 4px;
+        font-family: 'Fira Code', 'Courier New', Consolas, monospace;
+        font-size: 0.85em;
+        color: #d63384;
+        border: 1px solid #dee2e6;
+        font-weight: 500;
+    }
+
+    /* Inline code with special highlighting */
+    p code, li code, td code {
+        position: relative;
+    }
+
+    p code::before, li code::before, td code::before {
+        content: '';
+        position: absolute;
+        inset: -2px;
+        border-radius: 5px;
+        background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+        z-index: -1;
+        opacity: 0;
+        transition: opacity 0.2s;
+    }
+
+    p code:hover::before, li code:hover::before, td code:hover::before {
+        opacity: 1;
+    }
+
+    pre {
+        background: #1e293b;
+        color: #e2e8f0;
+        padding: 16px 18px;
+        border-radius: 8px;
+        overflow-x: auto;
+        margin: 18px 0;
+        border: 1px solid #334155;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+        font-family: 'Cascadia Code', 'Fira Code', 'SF Mono', 'Consolas', 'Liberation Mono', monospace;
+        font-size: 0.85em;
+        line-height: 1.6;
+        position: relative;
+        font-feature-settings: "liga" 0;
+        text-rendering: optimizeLegibility;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+    }
+
+    pre code {
+        background: none;
+        color: inherit;
+        padding: 0;
+        border: none;
+        font-family: inherit;
+        font-weight: normal;
+        font-size: 1em;
+        display: block;
+    }
+    
+    /* Ensure consistent styling for all code content inside pre blocks */
+    pre code * {
+        font-size: inherit !important;
+        line-height: inherit !important;
+        color: inherit !important;
+        font-family: inherit !important;
+    }
+
+    /* Hover effect */
+    pre:hover {
+        border-color: #475569;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.12);
+        transition: all 0.3s ease;
+    }
+
+    /* Code block header indicator */
+    pre::after {
+        content: 'CODE';
+        position: absolute;
+        top: 8px;
+        right: 12px;
+        font-size: 0.65em;
+        color: #64748b;
+        font-weight: 600;
+        letter-spacing: 0.05em;
+        opacity: 0.5;
+    }
+
+    blockquote {
+        border-left: 4px solid #667eea;
+        padding: 15px 20px;
+        margin: 20px 0;
+        color: #555;
+        font-style: italic;
+        font-size: 0.95em;
+        background: linear-gradient(90deg, rgba(102, 126, 234, 0.05) 0%, rgba(255,255,255,0) 100%);
+        border-radius: 0 6px 6px 0;
+        position: relative;
+    }
+
+    blockquote::before {
+        content: '"';
+        position: absolute;
+        left: -10px;
+        top: -10px;
+        font-size: 4em;
+        color: rgba(102, 126, 234, 0.1);
+        font-family: Georgia, serif;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 20px 0;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+        border-radius: 8px;
+        overflow: hidden;
+        background: white;
+        font-size: 0.9em;
+    }
+
+    thead {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    }
+
+    th {
+        color: white;
+        padding: 12px 15px;
+        text-align: left;
+        font-weight: 600;
+        text-transform: uppercase;
+        font-size: 0.82em;
+        letter-spacing: 0.3px;
+    }
+
+    td {
+        padding: 10px 15px;
+        border-bottom: 1px solid #e5e7eb;
+        vertical-align: top;
+        line-height: 1.6;
+    }
+
+    tbody tr:last-child td {
+        border-bottom: none;
+    }
+
+    tbody tr:hover {
+        background: rgba(102, 126, 234, 0.04);
+        transition: background 0.2s ease;
+    }
+
+    tbody tr:nth-child(even) {
+        background: rgba(102, 126, 234, 0.02);
+    }
+
+    tbody tr:nth-child(even):hover {
+        background: rgba(102, 126, 234, 0.05);
+    }
+    
+    /* Better code in tables */
+    td code {
+        font-size: 0.85em;
+        padding: 2px 6px;
+    }
+
+    .info-box {
+        background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+        border-left: 5px solid #2196f3;
+        padding: 20px;
+        margin: 25px 0;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(33, 150, 243, 0.2);
+    }
+
+    .warning-box {
+        background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%);
+        border-left: 5px solid #ff9800;
+        padding: 20px;
+        margin: 25px 0;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(255, 152, 0, 0.2);
+    }
+
+    .success-box {
+        background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+        border-left: 5px solid #4caf50;
+        padding: 20px;
+        margin: 25px 0;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(76, 175, 80, 0.2);
+    }
+
+    /* Better colors for syntax in diagrams */
+    pre {
+        /* Box drawing characters in nice blue */
+        color: #93c5fd;
+    }
+
+    /* JSON/code syntax in pre blocks */
+    pre {
+        white-space: pre;
+        word-wrap: normal;
+    }
+
+    .toc {
+        background: #f8f9fa;
+        padding: 20px;
+        border-radius: 8px;
+        margin: 20px 0;
+        border-left: 4px solid #667eea;
+    }
+
+    .toc h2 {
+        color: #667eea;
+        border-bottom: none;
+        margin-bottom: 15px;
+    }
+
+    .toc ul {
+        list-style: none;
+        padding-left: 0;
+    }
+
+    .toc li {
+        margin: 8px 0;
+    }
+
+    .toc a {
+        color: #667eea;
+        text-decoration: none;
+        transition: color 0.3s;
+    }
+
+    .toc a:hover {
+        color: #764ba2;
+    }
+
+    hr {
+        border: none;
+        border-top: 2px solid #f0f0f0;
+        margin: 30px 0;
+    }
+
+    .badge {
+        display: inline-block;
+        background: #667eea;
+        color: white;
+        padding: 4px 10px;
+        border-radius: 12px;
+        font-size: 0.85em;
+        margin-left: 10px;
+    }
+
+    a {
+        color: #667eea;
+        text-decoration: none;
+        transition: color 0.3s;
+    }
+
+    a:hover {
+        color: #764ba2;
+        text-decoration: underline;
+    }
+    
+    /* Better display for metadata fields */
+    strong {
+        color: #374151;
+        font-weight: 600;
+    }
+    
+    /* Metadata field styling - each field on its own line */
+    .metadata-field {
+        margin: 8px 0;
+        padding: 8px 14px;
+        background: linear-gradient(90deg, rgba(102, 126, 234, 0.04) 0%, transparent 100%);
+        border-left: 3px solid #667eea;
+        border-radius: 0 4px 4px 0;
+        line-height: 1.7;
+        font-size: 0.95em;
+        display: block;
+        clear: both;
+    }
+    
+    .metadata-field strong {
+        color: #667eea;
+        font-weight: 600;
+        margin-right: 8px;
+        display: inline-block;
+        min-width: 100px;
+    }
+    
+    .metadata-field code {
+        font-size: 0.88em;
+    }
+
+    footer {
+        margin-top: 50px;
+        padding-top: 30px;
+        border-top: 2px solid #f0f0f0;
+        text-align: center;
+        color: #888;
+    }
+
+    @media print {
+        body {
+            background: white;
+        }
+        .nav-header, .nav-links {
+            display: none;
+        }
+        pre {
+            break-inside: avoid;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .container {
+            padding: 20px;
+        }
+        .nav-header {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+        .nav-links {
+            margin-top: 15px;
+        }
+        h1 {
+            font-size: 2em;
+        }
+        h2 {
+            font-size: 1.5em;
+        }
+    }
+</style>
+
+</head>
+<body>
+    <div class="container">
+        <div class="nav-header"><div><h1>Embrix O2X Documentation</h1><small>Navigate between guides</small></div><div class="nav-links"><a href="index.html">🏠 Home</a><a href="guide-index.html">📚 Guide Index</a><a href="part1-business-architecture.html">Part 1</a><a href="part2-technical-deep-dive.html">Part 2</a><a href="part3-services-development.html">Part 3</a><a href="part4-frontend-ui.html">Part 4</a><a href="part5-message-queues.html">Part 5</a><a href="quick-start.html">🎯 Quick Start</a><a href="quick-reference.html">📖 Quick Ref</a><a href="troubleshooting-guide.html">🔧 Troubleshooting</a></div></div>
+        
+<h1>Deploy Documentation to GitLab Pages</h1>
+
+<h2>https://gitlab.com/embrix-o2x</h2>
+
+This guide will help you deploy the Embrix O2X HTML documentation to GitLab Pages.
+
+<hr>
+
+<h2>📋 Prerequisites Checklist</h2>
+
+<ul>
+<li>[x] HTML documentation files generated in <code>docs/newcomer/</code></li>
+<li>[x] <code>.gitlab-ci.yml</code> file created</li>
+<li>[x] <code>convert_to_html.py</code> script ready</li>
+<li>[ ] GitLab repository exists</li>
+<li>[ ] Git configured locally</li>
+<li>[ ] GitLab authentication set up</li>
+</ul>
+
+<hr>
+
+<h2>🎯 Option 1: If GitLab Repository Already Exists</h2>
+
+<h3>Step 1A: Clone the Repository</h3>
+
+<pre><code class="language-bash"># Navigate to your projects directory
+cd c:\Users\quang\IdeaProjects
+
+# Clone the repository (replace &lt;project-name&gt; with actual project name)
+git clone https://gitlab.com/embrix-o2x/&lt;project-name&gt;.git
+
+# Example:
+# git clone https://gitlab.com/embrix-o2x/embrix-o2x.git
+</code></pre>
+<h3>Step 1B: Copy Documentation Files</h3>
+
+<pre><code class="language-bash"># Copy all your documentation files to the cloned repository
+cd c:\Users\quang\IdeaProjects\&lt;project-name&gt;
+
+# Copy the files
+xcopy /E /I c:\Users\quang\IdeaProjects\embrix-o2x\docs\newcomer docs\newcomer
+copy c:\Users\quang\IdeaProjects\embrix-o2x\.gitlab-ci.yml .
+copy c:\Users\quang\IdeaProjects\embrix-o2x\convert_to_html.py .
+copy c:\Users\quang\IdeaProjects\embrix-o2x\NEWCOMER_GUIDE_*.md .
+copy c:\Users\quang\IdeaProjects\embrix-o2x\QUICK_REFERENCE_GUIDE.md .
+copy c:\Users\quang\IdeaProjects\embrix-o2x\GITLAB_PAGES_SETUP.md .
+</code></pre>
+<h3>Step 1C: Commit and Push</h3>
+
+<pre><code class="language-bash"># Add all files
+git add .
+
+# Commit with descriptive message
+git commit -m "Add comprehensive HTML documentation with GitLab Pages deployment
+
+- Added newcomer guides (Parts 1-3) in HTML format
+- Added multi-tenant architecture complete guide
+- Added quick reference guide
+- Added complete guide index with reading paths
+- Configured GitLab CI/CD for automatic deployment
+- Included Python converter script for markdown to HTML
+- Added setup documentation and troubleshooting"
+
+# Push to GitLab
+git push origin main
+# Or if your default branch is master:
+# git push origin master
+</code></pre>
+
+<hr>
+
+<h2>🎯 Option 2: If This IS Your GitLab Repository</h2>
+
+<h3>Step 2A: Initialize Git Repository</h3>
+
+<pre><code class="language-bash"># Navigate to your project
+cd c:\Users\quang\IdeaProjects\embrix-o2x
+
+# Initialize git repository
+git init
+
+# Add GitLab remote (replace &lt;project-name&gt; with actual project name)
+git remote add origin https://gitlab.com/embrix-o2x/&lt;project-name&gt;.git
+
+# Verify remote was added
+git remote -v
+</code></pre>
+<h3>Step 2B: Create .gitignore File</h3>
+
+<pre><code class="language-bash"># Create .gitignore to exclude unnecessary files
+# This file should already exist, but if not:
+</code></pre>
+Create <code>.gitignore</code> with this content:
+<pre><code class="language-"># Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+*.egg-info/
+dist/
+build/
+
+# IDE
+.idea/
+*.iml
+.vscode/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Build artifacts
+target/
+*.class
+*.jar
+*.war
+*.ear
+
+# Logs
+*.log
+
+# Temp files
+*.tmp
+*.bak
+*.backup
+
+# Don't ignore docs
+!docs/
+</code></pre>
+<h3>Step 2C: Add and Commit All Files</h3>
+
+<pre><code class="language-bash"># Check what will be committed
+git status
+
+# Add all documentation files
+git add .gitlab-ci.yml
+git add convert_to_html.py
+git add GITLAB_PAGES_SETUP.md
+git add DEPLOYMENT_GUIDE.md
+git add docs/
+git add NEWCOMER_GUIDE_*.md
+git add QUICK_REFERENCE_GUIDE.md
+git add NEWCOMER_GUIDE_INDEX.md
+
+# If you want to commit everything (be careful!):
+# git add .
+
+# Commit
+git commit -m "Initial commit: Add comprehensive documentation with GitLab Pages
+
+- Complete newcomer guides (3 parts)
+- Multi-tenant architecture guide
+- Quick reference guide
+- GitLab Pages CI/CD configuration
+- Python HTML converter
+- Setup and deployment documentation"
+
+# Push to GitLab (first time)
+git push -u origin main
+# Or for master branch:
+# git push -u origin master
+</code></pre>
+
+<hr>
+
+<h2>🔐 GitLab Authentication</h2>
+
+<h3>If you need to authenticate:</h3>
+
+<strong>Option A: HTTPS with Personal Access Token</strong>
+<ol>
+<li>Go to GitLab: https://gitlab.com/embrix-o2x</li>
+<li>Click your avatar → <strong>Settings</strong> → <strong>Access Tokens</strong></li>
+<li>Create token with scopes: <code>api</code>, <code>read_repository</code>, <code>write_repository</code></li>
+<li>Copy the token</li>
+<li>When prompted for password during <code>git push</code>, use the token</li>
+</ol>
+<strong>Option B: SSH Key</strong>
+<pre><code class="language-bash"># Generate SSH key (if you don't have one)
+ssh-keygen -t ed25519 -C "your_email@example.com"
+
+# Copy the public key
+cat ~/.ssh/id_ed25519.pub
+
+# Add to GitLab:
+# 1. Go to GitLab → Settings → SSH Keys
+# 2. Paste the public key
+# 3. Click "Add key"
+
+# Change remote to SSH
+git remote set-url origin git@gitlab.com:embrix-o2x/&lt;project-name&gt;.git
+</code></pre>
+
+<hr>
+
+<h2>🚀 After Pushing to GitLab</h2>
+
+<h3>Step 3: Monitor Pipeline</h3>
+
+<ol>
+<li><strong>Go to your GitLab project</strong>: https://gitlab.com/embrix-o2x/<project-name></li>
+<li><strong>Navigate to CI/CD → Pipelines</strong><br><ul><li>You should see a pipeline running</li></ul><br><ul><li>Click on the pipeline to see details</li></ul></li>
+<li><strong>Check the <code>pages</code> job</strong><br><ul><li>Click on the <code>pages</code> job in the pipeline</li></ul><br><ul><li>View the logs to ensure conversion succeeded</li></ul><br><ul><li>Look for: <code>[SUCCESS] All files converted successfully!</code></li></ul></li>
+<li><strong>Wait for completion</strong><br><ul><li>Pipeline should take 1-3 minutes</li></ul><br><ul><li>Status will show ✓ (passed) or ✗ (failed)</li></ul></li>
+</ol>
+<h3>Step 4: Access Your Documentation</h3>
+
+<ol>
+<li><strong>Get your Pages URL</strong>:<br><ul><li>Go to <strong>Settings → Pages</strong></li></ul><br><ul><li>Your URL will be displayed there</li></ul></li>
+<li><strong>Your documentation will be at</strong>:<br><pre><code class="language-">   https://embrix-o2x.gitlab.io/&lt;project-name&gt;/
+   </code></pre><br><strong>For example</strong>:<br><ul><li>If project name is <code>embrix-o2x</code>: https://embrix-o2x.gitlab.io/embrix-o2x/</li></ul><br><ul><li>If project name is <code>documentation</code>: https://embrix-o2x.gitlab.io/documentation/</li></ul></li>
+<li><strong>Direct links to guides</strong>:<br><pre><code class="language-">   Main Index:
+   https://embrix-o2x.gitlab.io/&lt;project-name&gt;/
+
+   Complete Guide Index:
+   https://embrix-o2x.gitlab.io/&lt;project-name&gt;/guide-index.html
+
+   Part 1:
+   https://embrix-o2x.gitlab.io/&lt;project-name&gt;/part1-business-architecture.html
+
+   Part 2:
+   https://embrix-o2x.gitlab.io/&lt;project-name&gt;/part2-technical-deep-dive.html
+
+   Part 3:
+   https://embrix-o2x.gitlab.io/&lt;project-name&gt;/part3-services-development.html
+
+   Multi-Tenant Guide:
+   https://embrix-o2x.gitlab.io/&lt;project-name&gt;/multi-tenant-complete-guide.html
+
+   Quick Reference:
+   https://embrix-o2x.gitlab.io/&lt;project-name&gt;/quick-reference.html
+   </code></pre></li>
+</ol>
+
+<hr>
+
+<h2>✅ Verification Steps</h2>
+
+<h3>After deployment, verify:</h3>
+
+<pre><code class="language-bash"># 1. Check pipeline status
+# Go to: https://gitlab.com/embrix-o2x/&lt;project-name&gt;/-/pipelines
+
+# 2. Check Pages settings
+# Go to: https://gitlab.com/embrix-o2x/&lt;project-name&gt;/-/settings/pages
+
+# 3. Access documentation
+# Open: https://embrix-o2x.gitlab.io/&lt;project-name&gt;/
+
+# 4. Test navigation
+# Click through all the links on the index page
+# Verify all pages load correctly
+# Check that styles are applied
+</code></pre>
+<h3>Checklist:</h3>
+
+<ul>
+<li>[ ] Pipeline ran successfully (green checkmark)</li>
+<li>[ ] Pages URL is accessible</li>
+<li>[ ] Index page loads correctly</li>
+<li>[ ] All navigation links work</li>
+<li>[ ] Styles are applied correctly</li>
+<li>[ ] All 7 HTML files are accessible</li>
+<li>[ ] Mobile view works (test on phone)</li>
+</ul>
+
+<hr>
+
+<h2>🔄 Updating Documentation</h2>
+
+When you update the markdown files:
+<pre><code class="language-bash"># 1. Edit your markdown files
+# Example: NEWCOMER_GUIDE_PART1_BUSINESS_AND_ARCHITECTURE.md
+
+# 2. (Optional) Test locally
+python convert_to_html.py
+# Open docs/newcomer/index.html in browser to verify
+
+# 3. Commit changes
+git add .
+git commit -m "Update documentation: [describe what changed]"
+
+# 4. Push to GitLab
+git push origin main
+
+# 5. Wait for automatic deployment (1-3 minutes)
+# Documentation will automatically update!
+</code></pre>
+
+<hr>
+
+<h2>🎯 Project Name Discovery</h2>
+
+If you're not sure what your project name is:
+<strong>Method 1: Check GitLab Web Interface</strong>
+<ol>
+<li>Go to https://gitlab.com/embrix-o2x</li>
+<li>Look at the list of projects</li>
+<li>The project name will be in the URL: <code>https://gitlab.com/embrix-o2x/<PROJECT-NAME></code></li>
+</ol>
+<strong>Method 2: If you have GitLab CLI</strong>
+<pre><code class="language-bash"># List all projects in embrix-o2x group
+glab repo list
+</code></pre>
+<strong>Method 3: Check with Git</strong>
+<pre><code class="language-bash"># If already cloned
+git remote -v
+# Will show: origin  https://gitlab.com/embrix-o2x/&lt;PROJECT-NAME&gt;.git
+</code></pre>
+
+<hr>
+
+<h2>🚨 Troubleshooting</h2>
+
+<h3>Issue: "Repository not found"</h3>
+
+<strong>Solution</strong>:
+<ol>
+<li>Verify repository exists at https://gitlab.com/embrix-o2x/<project-name></li>
+<li>Check you have access (you should see the project when logged in)</li>
+<li>Verify the remote URL: <code>git remote -v</code></li>
+</ol>
+<h3>Issue: "Authentication failed"</h3>
+
+<strong>Solution</strong>:
+<ol>
+<li>Use Personal Access Token instead of password</li>
+<li>Or set up SSH keys (see authentication section above)</li>
+</ol>
+<h3>Issue: "Pipeline failed"</h3>
+
+<strong>Solution</strong>:
+<ol>
+<li>Check pipeline logs: CI/CD → Pipelines → Click failed pipeline</li>
+<li>Common issues:<br><ul><li>Missing <code>convert_to_html.py</code> file</li></ul><br><ul><li>Missing markdown source files</li></ul><br><ul><li>Python syntax errors</li></ul></li>
+</ol>
+<strong>Fix</strong>: Ensure all files are committed and pushed
+<h3>Issue: "Pages not accessible"</h3>
+
+<strong>Solution</strong>:
+<ol>
+<li>Wait 5-10 minutes after first deployment</li>
+<li>Check Settings → Pages to ensure Pages is enabled</li>
+<li>Verify pipeline succeeded (green checkmark)</li>
+<li>Check if project is private (Pages may be private too)</li>
+</ol>
+<h3>Issue: "Styles not loading"</h3>
+
+<strong>Solution</strong>:
+<ul>
+<li>All styles are embedded in HTML, so this shouldn't happen</li>
+<li>Clear browser cache (Ctrl+F5)</li>
+<li>Check browser console for errors (F12)</li>
+</ul>
+
+<hr>
+
+<h2>📞 Need Help?</h2>
+
+<h3>Resources:</h3>
+
+<ul>
+<li><strong>GitLab Pages Docs</strong>: https://docs.gitlab.com/ee/user/project/pages/</li>
+<li><strong>This Project's Setup Guide</strong>: <code>GITLAB_PAGES_SETUP.md</code></li>
+<li><strong>GitLab Support</strong>: https://about.gitlab.com/support/</li>
+</ul>
+<h3>Common Commands Reference:</h3>
+
+<pre><code class="language-bash"># Check status
+git status
+
+# Check remotes
+git remote -v
+
+# Check current branch
+git branch
+
+# Pull latest changes
+git pull origin main
+
+# Push changes
+git push origin main
+
+# View commit history
+git log --oneline
+
+# See what changed
+git diff
+</code></pre>
+
+<hr>
+
+<h2>🎉 Success Indicators</h2>
+
+When everything is working:
+✅ Pipeline shows green checkmark  
+✅ Pages URL is accessible  
+✅ All 7 HTML documents load  
+✅ Navigation between pages works  
+✅ Styles render correctly  
+✅ Mobile responsive  
+✅ Can share URL with team  
+<strong>Your documentation is now live!</strong> 🚀
+
+<hr>
+
+<h2>📱 Sharing with Team</h2>
+
+Once deployed, share these links:
+<strong>For Everyone</strong>:
+<pre><code class="language-">Main Documentation: https://embrix-o2x.gitlab.io/&lt;project-name&gt;/
+</code></pre>
+<strong>For New Developers</strong>:
+<pre><code class="language-">Start here: https://embrix-o2x.gitlab.io/&lt;project-name&gt;/guide-index.html
+</code></pre>
+<strong>For DevOps/Architects</strong>:
+<pre><code class="language-">Multi-Tenant Guide: https://embrix-o2x.gitlab.io/&lt;project-name&gt;/multi-tenant-complete-guide.html
+</code></pre>
+<strong>For Quick Reference</strong>:
+<pre><code class="language-">Cheat Sheet: https://embrix-o2x.gitlab.io/&lt;project-name&gt;/quick-reference.html
+</code></pre>
+
+<hr>
+
+<strong>Good luck with your deployment! 🎊</strong>
+If you encounter any issues, check the troubleshooting section or refer to <code>GITLAB_PAGES_SETUP.md</code>.</p>
+        <footer>
+            <p><strong>Embrix O2X Platform Documentation</strong></p>
+            <p>Version 3.1.9-SNAPSHOT • Last Updated: February 2026</p>
+        </footer>
+    </div>
+</body>
+</html>

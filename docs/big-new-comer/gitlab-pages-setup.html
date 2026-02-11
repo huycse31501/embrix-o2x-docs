@@ -1,0 +1,934 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🦊 GitLab Pages Setup - Embrix O2X</title>
+    
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+        font-size: 16px;
+        line-height: 1.7;
+        color: #1f2937;
+        background: linear-gradient(135deg, #f5f7fa 0%, #e9ecef 100%);
+        background-attachment: fixed;
+        padding: 20px;
+    }
+
+    .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        background: white;
+        padding: 40px 50px;
+        border-radius: 16px;
+        box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .container::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 5px;
+        background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+    }
+
+    .nav-header {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 20px;
+        border-radius: 8px;
+        margin-bottom: 30px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+    }
+
+    .nav-header h1 {
+        font-size: 1.4em;
+        margin-bottom: 5px;
+        font-weight: 600;
+    }
+
+    .nav-links {
+        display: flex;
+        gap: 15px;
+        flex-wrap: wrap;
+    }
+
+    .nav-links a {
+        color: white;
+        text-decoration: none;
+        padding: 8px 16px;
+        background: rgba(255,255,255,0.2);
+        border-radius: 5px;
+        transition: background 0.3s;
+    }
+
+    .nav-links a:hover {
+        background: rgba(255,255,255,0.3);
+    }
+
+    h1 {
+        color: #667eea;
+        margin: 35px 0 20px 0;
+        padding: 12px 0 12px 18px;
+        border-left: 5px solid #667eea;
+        border-bottom: 2px solid #667eea;
+        background: linear-gradient(90deg, rgba(102, 126, 234, 0.05) 0%, rgba(255,255,255,0) 100%);
+        font-size: 1.8em;
+        font-weight: 700;
+        border-radius: 0 8px 0 0;
+    }
+
+    h2 {
+        color: #764ba2;
+        margin: 30px 0 18px 0;
+        padding: 10px 0 10px 15px;
+        border-left: 4px solid #764ba2;
+        border-bottom: 2px solid #f0f0f0;
+        background: linear-gradient(90deg, rgba(118, 75, 162, 0.03) 0%, rgba(255,255,255,0) 100%);
+        font-size: 1.5em;
+        font-weight: 700;
+        border-radius: 0 6px 0 0;
+    }
+
+    h3 {
+        color: #667eea;
+        margin: 25px 0 15px 0;
+        padding: 8px 0 8px 12px;
+        border-left: 3px solid #667eea;
+        background: linear-gradient(90deg, rgba(102, 126, 234, 0.04) 0%, transparent 100%);
+        font-size: 1.25em;
+        font-weight: 600;
+        border-radius: 0 6px 6px 0;
+    }
+
+    h4 {
+        color: #764ba2;
+        margin: 20px 0 12px 0;
+        padding: 6px 0 6px 10px;
+        border-left: 2px solid #764ba2;
+        background: linear-gradient(90deg, rgba(118, 75, 162, 0.03) 0%, transparent 100%);
+        font-size: 1.1em;
+        font-weight: 600;
+        border-radius: 0 4px 4px 0;
+    }
+
+    h5 {
+        color: #667eea;
+        margin: 18px 0 10px 0;
+        padding: 4px 0 4px 8px;
+        border-left: 2px solid #667eea;
+        font-size: 1.05em;
+        font-weight: 600;
+        background: linear-gradient(90deg, rgba(102, 126, 234, 0.02) 0%, transparent 100%);
+        border-radius: 0 3px 3px 0;
+    }
+
+    h6 {
+        color: #764ba2;
+        margin: 15px 0 8px 0;
+        font-size: 0.95em;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    p {
+        margin: 12px 0;
+        line-height: 1.7;
+        font-size: 0.95em;
+        color: #374151;
+    }
+    
+    /* Better spacing for paragraphs after headings */
+    h1 + p, h2 + p, h3 + p, h4 + p {
+        margin-top: 10px;
+    }
+
+    ul, ol {
+        margin: 20px 0;
+        padding-left: 35px;
+    }
+
+    li {
+        margin: 10px 0;
+        line-height: 1.7;
+        font-size: 0.95em;
+        position: relative;
+        padding-left: 8px;
+    }
+
+    ul li::marker {
+        color: #667eea;
+        font-weight: bold;
+        font-size: 1.1em;
+    }
+
+    ol li::marker {
+        color: #764ba2;
+        font-weight: bold;
+        font-size: 1em;
+    }
+
+    /* Better list item styling */
+    li {
+        background: linear-gradient(90deg, rgba(102, 126, 234, 0.02) 0%, transparent 100%);
+        border-left: 2px solid transparent;
+        padding: 8px 8px 8px 12px;
+        border-radius: 0 4px 4px 0;
+        transition: all 0.2s ease;
+    }
+
+    li:hover {
+        background: linear-gradient(90deg, rgba(102, 126, 234, 0.05) 0%, transparent 100%);
+        border-left-color: #667eea;
+        padding-left: 16px;
+    }
+
+    /* Nested lists */
+    li ul, li ol {
+        margin: 8px 0 8px 10px;
+    }
+
+    /* Nested list items - smaller styling */
+    li li {
+        font-size: 0.92em;
+        margin: 6px 0;
+        background: linear-gradient(90deg, rgba(118, 75, 162, 0.02) 0%, transparent 100%);
+    }
+
+    li li:hover {
+        background: linear-gradient(90deg, rgba(118, 75, 162, 0.05) 0%, transparent 100%);
+        border-left-color: #764ba2;
+    }
+
+    code {
+        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        padding: 2px 6px;
+        border-radius: 4px;
+        font-family: 'Fira Code', 'Courier New', Consolas, monospace;
+        font-size: 0.85em;
+        color: #d63384;
+        border: 1px solid #dee2e6;
+        font-weight: 500;
+    }
+
+    /* Inline code with special highlighting */
+    p code, li code, td code {
+        position: relative;
+    }
+
+    p code::before, li code::before, td code::before {
+        content: '';
+        position: absolute;
+        inset: -2px;
+        border-radius: 5px;
+        background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+        z-index: -1;
+        opacity: 0;
+        transition: opacity 0.2s;
+    }
+
+    p code:hover::before, li code:hover::before, td code:hover::before {
+        opacity: 1;
+    }
+
+    pre {
+        background: #1e293b;
+        color: #e2e8f0;
+        padding: 16px 18px;
+        border-radius: 8px;
+        overflow-x: auto;
+        margin: 18px 0;
+        border: 1px solid #334155;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+        font-family: 'Cascadia Code', 'Fira Code', 'SF Mono', 'Consolas', 'Liberation Mono', monospace;
+        font-size: 0.85em;
+        line-height: 1.6;
+        position: relative;
+        font-feature-settings: "liga" 0;
+        text-rendering: optimizeLegibility;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+    }
+
+    pre code {
+        background: none;
+        color: inherit;
+        padding: 0;
+        border: none;
+        font-family: inherit;
+        font-weight: normal;
+        font-size: 1em;
+        display: block;
+    }
+    
+    /* Ensure consistent styling for all code content inside pre blocks */
+    pre code * {
+        font-size: inherit !important;
+        line-height: inherit !important;
+        color: inherit !important;
+        font-family: inherit !important;
+    }
+
+    /* Hover effect */
+    pre:hover {
+        border-color: #475569;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.12);
+        transition: all 0.3s ease;
+    }
+
+    /* Code block header indicator */
+    pre::after {
+        content: 'CODE';
+        position: absolute;
+        top: 8px;
+        right: 12px;
+        font-size: 0.65em;
+        color: #64748b;
+        font-weight: 600;
+        letter-spacing: 0.05em;
+        opacity: 0.5;
+    }
+
+    blockquote {
+        border-left: 4px solid #667eea;
+        padding: 15px 20px;
+        margin: 20px 0;
+        color: #555;
+        font-style: italic;
+        font-size: 0.95em;
+        background: linear-gradient(90deg, rgba(102, 126, 234, 0.05) 0%, rgba(255,255,255,0) 100%);
+        border-radius: 0 6px 6px 0;
+        position: relative;
+    }
+
+    blockquote::before {
+        content: '"';
+        position: absolute;
+        left: -10px;
+        top: -10px;
+        font-size: 4em;
+        color: rgba(102, 126, 234, 0.1);
+        font-family: Georgia, serif;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 20px 0;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+        border-radius: 8px;
+        overflow: hidden;
+        background: white;
+        font-size: 0.9em;
+    }
+
+    thead {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    }
+
+    th {
+        color: white;
+        padding: 12px 15px;
+        text-align: left;
+        font-weight: 600;
+        text-transform: uppercase;
+        font-size: 0.82em;
+        letter-spacing: 0.3px;
+    }
+
+    td {
+        padding: 10px 15px;
+        border-bottom: 1px solid #e5e7eb;
+        vertical-align: top;
+        line-height: 1.6;
+    }
+
+    tbody tr:last-child td {
+        border-bottom: none;
+    }
+
+    tbody tr:hover {
+        background: rgba(102, 126, 234, 0.04);
+        transition: background 0.2s ease;
+    }
+
+    tbody tr:nth-child(even) {
+        background: rgba(102, 126, 234, 0.02);
+    }
+
+    tbody tr:nth-child(even):hover {
+        background: rgba(102, 126, 234, 0.05);
+    }
+    
+    /* Better code in tables */
+    td code {
+        font-size: 0.85em;
+        padding: 2px 6px;
+    }
+
+    .info-box {
+        background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+        border-left: 5px solid #2196f3;
+        padding: 20px;
+        margin: 25px 0;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(33, 150, 243, 0.2);
+    }
+
+    .warning-box {
+        background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%);
+        border-left: 5px solid #ff9800;
+        padding: 20px;
+        margin: 25px 0;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(255, 152, 0, 0.2);
+    }
+
+    .success-box {
+        background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+        border-left: 5px solid #4caf50;
+        padding: 20px;
+        margin: 25px 0;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(76, 175, 80, 0.2);
+    }
+
+    /* Better colors for syntax in diagrams */
+    pre {
+        /* Box drawing characters in nice blue */
+        color: #93c5fd;
+    }
+
+    /* JSON/code syntax in pre blocks */
+    pre {
+        white-space: pre;
+        word-wrap: normal;
+    }
+
+    .toc {
+        background: #f8f9fa;
+        padding: 20px;
+        border-radius: 8px;
+        margin: 20px 0;
+        border-left: 4px solid #667eea;
+    }
+
+    .toc h2 {
+        color: #667eea;
+        border-bottom: none;
+        margin-bottom: 15px;
+    }
+
+    .toc ul {
+        list-style: none;
+        padding-left: 0;
+    }
+
+    .toc li {
+        margin: 8px 0;
+    }
+
+    .toc a {
+        color: #667eea;
+        text-decoration: none;
+        transition: color 0.3s;
+    }
+
+    .toc a:hover {
+        color: #764ba2;
+    }
+
+    hr {
+        border: none;
+        border-top: 2px solid #f0f0f0;
+        margin: 30px 0;
+    }
+
+    .badge {
+        display: inline-block;
+        background: #667eea;
+        color: white;
+        padding: 4px 10px;
+        border-radius: 12px;
+        font-size: 0.85em;
+        margin-left: 10px;
+    }
+
+    a {
+        color: #667eea;
+        text-decoration: none;
+        transition: color 0.3s;
+    }
+
+    a:hover {
+        color: #764ba2;
+        text-decoration: underline;
+    }
+    
+    /* Better display for metadata fields */
+    strong {
+        color: #374151;
+        font-weight: 600;
+    }
+    
+    /* Metadata field styling - each field on its own line */
+    .metadata-field {
+        margin: 8px 0;
+        padding: 8px 14px;
+        background: linear-gradient(90deg, rgba(102, 126, 234, 0.04) 0%, transparent 100%);
+        border-left: 3px solid #667eea;
+        border-radius: 0 4px 4px 0;
+        line-height: 1.7;
+        font-size: 0.95em;
+        display: block;
+        clear: both;
+    }
+    
+    .metadata-field strong {
+        color: #667eea;
+        font-weight: 600;
+        margin-right: 8px;
+        display: inline-block;
+        min-width: 100px;
+    }
+    
+    .metadata-field code {
+        font-size: 0.88em;
+    }
+
+    footer {
+        margin-top: 50px;
+        padding-top: 30px;
+        border-top: 2px solid #f0f0f0;
+        text-align: center;
+        color: #888;
+    }
+
+    @media print {
+        body {
+            background: white;
+        }
+        .nav-header, .nav-links {
+            display: none;
+        }
+        pre {
+            break-inside: avoid;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .container {
+            padding: 20px;
+        }
+        .nav-header {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+        .nav-links {
+            margin-top: 15px;
+        }
+        h1 {
+            font-size: 2em;
+        }
+        h2 {
+            font-size: 1.5em;
+        }
+    }
+</style>
+
+</head>
+<body>
+    <div class="container">
+        <div class="nav-header"><div><h1>Embrix O2X Documentation</h1><small>Navigate between guides</small></div><div class="nav-links"><a href="index.html">🏠 Home</a><a href="guide-index.html">📚 Guide Index</a><a href="part1-business-architecture.html">Part 1</a><a href="part2-technical-deep-dive.html">Part 2</a><a href="part3-services-development.html">Part 3</a><a href="part4-frontend-ui.html">Part 4</a><a href="part5-message-queues.html">Part 5</a><a href="quick-start.html">🎯 Quick Start</a><a href="quick-reference.html">📖 Quick Ref</a><a href="troubleshooting-guide.html">🔧 Troubleshooting</a></div></div>
+        
+<h1>GitLab Pages Setup Guide - Embrix O2X Documentation</h1>
+
+<h2>🌐 What is GitLab Pages?</h2>
+
+GitLab Pages allows you to host static websites directly from your GitLab repository. Your documentation will be accessible at:
+<pre><code class="language-">https://&lt;namespace&gt;.gitlab.io/&lt;project-name&gt;/
+</code></pre>
+For example:
+<ul>
+<li>If namespace is <code>embrix</code> and project is <code>embrix-o2x</code></li>
+<li>URL will be: <code>https://embrix.gitlab.io/embrix-o2x/</code></li>
+</ul>
+<h2>📋 Prerequisites</h2>
+
+<ul>
+<li>[x] GitLab repository for embrix-o2x project</li>
+<li>[x] Access to repository settings (Maintainer or Owner role)</li>
+<li>[x] Documentation files committed to repository</li>
+</ul>
+<h2>🚀 Quick Setup (3 Steps)</h2>
+
+<h3>Step 1: Commit Documentation Files</h3>
+
+<pre><code class="language-bash"># Make sure you're in the project root
+cd c:\Users\quang\IdeaProjects\embrix-o2x
+
+# Add all documentation files
+git add .gitlab-ci.yml
+git add convert_to_html.py
+git add docs/newcomer/
+git add NEWCOMER_GUIDE_*.md
+git add QUICK_REFERENCE_GUIDE.md
+git add NEWCOMER_GUIDE_INDEX.md
+
+# Commit
+git commit -m "Add HTML documentation and GitLab Pages configuration"
+
+# Push to GitLab
+git push origin main
+</code></pre>
+<h3>Step 2: Enable GitLab Pages</h3>
+
+<ol>
+<li>Go to your GitLab project</li>
+<li>Navigate to <strong>Settings</strong> → <strong>Pages</strong></li>
+<li>GitLab Pages should automatically be enabled after the first pipeline runs</li>
+<li>Wait for the pipeline to complete (check <strong>CI/CD</strong> → <strong>Pipelines</strong>)</li>
+</ol>
+<h3>Step 3: Access Your Documentation</h3>
+
+Once the pipeline succeeds:
+<ol>
+<li>Go to <strong>Settings</strong> → <strong>Pages</strong></li>
+<li>Copy your Pages URL (e.g., <code>https://embrix.gitlab.io/embrix-o2x/</code>)</li>
+<li>Open the URL in your browser</li>
+<li>Share with your team! 🎉</li>
+</ol>
+<h2>📁 Repository Structure</h2>
+
+<pre><code class="language-">embrix-o2x/
+├── .gitlab-ci.yml                              # GitLab CI/CD configuration
+├── convert_to_html.py                          # Python converter script
+├── docs/
+│   └── newcomer/                               # Generated HTML files
+│       ├── index.html
+│       ├── guide-index.html
+│       ├── part1-business-architecture.html
+│       ├── part2-technical-deep-dive.html
+│       ├── part3-services-development.html
+│       └── quick-reference.html
+├── NEWCOMER_GUIDE_INDEX.md                     # Source markdown files
+├── NEWCOMER_GUIDE_PART1_*.md
+├── NEWCOMER_GUIDE_PART2_*.md
+├── NEWCOMER_GUIDE_PART3_*.md
+└── QUICK_REFERENCE_GUIDE.md
+</code></pre>
+<h2>🔄 How It Works</h2>
+
+<h3>Automatic Deployment</h3>
+
+The <code>.gitlab-ci.yml</code> file is configured to:
+<ol>
+<li><strong>Trigger</strong>: On every push to <code>main</code> or <code>master</code> branch</li>
+<li><strong>Convert</strong>: Run <code>python convert_to_html.py</code> to generate HTML from markdown</li>
+<li><strong>Deploy</strong>: Copy HTML files to <code>public/</code> directory</li>
+<li><strong>Publish</strong>: GitLab automatically serves content from <code>public/</code></li>
+</ol>
+<h3>Pipeline Process</h3>
+
+<pre><code class="language-">Push to main/master
+    ↓
+GitLab CI/CD Triggered
+    ↓
+Python Script Runs
+    ↓
+Markdown → HTML Conversion
+    ↓
+Files Copied to public/
+    ↓
+GitLab Pages Deployed
+    ↓
+Documentation Live! 🎉
+</code></pre>
+<h2>🎯 GitLab Pages URL Structure</h2>
+
+Your documentation will be accessible at these URLs:
+<pre><code class="language-">Main Landing Page:
+https://&lt;namespace&gt;.gitlab.io/&lt;project&gt;/
+
+Complete Guide Index:
+https://&lt;namespace&gt;.gitlab.io/&lt;project&gt;/guide-index.html
+
+Part 1:
+https://&lt;namespace&gt;.gitlab.io/&lt;project&gt;/part1-business-architecture.html
+
+Part 2:
+https://&lt;namespace&gt;.gitlab.io/&lt;project&gt;/part2-technical-deep-dive.html
+
+Part 3:
+https://&lt;namespace&gt;.gitlab.io/&lt;project&gt;/part3-services-development.html
+
+Quick Reference:
+https://&lt;namespace&gt;.gitlab.io/&lt;project&gt;/quick-reference.html
+</code></pre>
+<h2>🔧 Configuration Options</h2>
+
+<h3>Option 1: Deploy Only on Documentation Changes</h3>
+
+Edit <code>.gitlab-ci.yml</code>:
+<pre><code class="language-yaml">pages:
+  only:
+    changes:
+      - docs/**/*
+      - "*.md"
+      - convert_to_html.py
+</code></pre>
+This will only trigger deployment when documentation files change.
+<h3>Option 2: Manual Deployment</h3>
+
+Edit <code>.gitlab-ci.yml</code>:
+<pre><code class="language-yaml">pages:
+  when: manual  # Add this line
+</code></pre>
+This requires manual approval to deploy.
+<h3>Option 3: Custom Domain</h3>
+
+If you want a custom domain (e.g., <code>docs.embrix.com</code>):
+<ol>
+<li>Go to <strong>Settings</strong> → <strong>Pages</strong></li>
+<li>Click <strong>New Domain</strong></li>
+<li>Add your domain and configure DNS</li>
+<li>GitLab will provide DNS records to configure</li>
+</ol>
+<h2>📊 Monitoring Deployment</h2>
+
+<h3>Check Pipeline Status</h3>
+
+<ol>
+<li>Go to <strong>CI/CD</strong> → <strong>Pipelines</strong></li>
+<li>Click on the latest pipeline</li>
+<li>View the <code>pages</code> job</li>
+<li>Check logs for any errors</li>
+</ol>
+<h3>View Deployment History</h3>
+
+<ol>
+<li>Go to <strong>Deployments</strong> → <strong>Environments</strong></li>
+<li>See all Pages deployments</li>
+<li>Rollback if needed</li>
+</ol>
+<h2>🔐 Access Control</h2>
+
+<h3>Public Access (Default)</h3>
+
+Documentation is publicly accessible to anyone with the URL.
+<h3>Private Access</h3>
+
+If your GitLab project is private, Pages will be:
+<ul>
+<li>✅ Accessible to project members</li>
+<li>❌ Not accessible to public</li>
+</ul>
+To make Pages public while keeping repo private:
+<ol>
+<li>Go to <strong>Settings</strong> → <strong>General</strong></li>
+<li>Expand <strong>Visibility, project features, permissions</strong></li>
+<li>Enable <strong>Pages</strong> under project features</li>
+<li>Set Pages access level</li>
+</ol>
+<h2>🚨 Troubleshooting</h2>
+
+<h3>Issue: Pipeline Fails</h3>
+
+<strong>Check:</strong>
+<ul>
+<li>Python 3.9 is available</li>
+<li><code>convert_to_html.py</code> script has no errors</li>
+<li>All markdown files exist</li>
+</ul>
+<strong>Solution:</strong>
+<pre><code class="language-bash"># Test locally first
+python convert_to_html.py
+</code></pre>
+<h3>Issue: Pages Not Accessible</h3>
+
+<strong>Check:</strong>
+<ul>
+<li>Pipeline completed successfully</li>
+<li><code>public/</code> directory was created</li>
+<li>Files are in <code>public/</code> (check pipeline artifacts)</li>
+</ul>
+<strong>Solution:</strong>
+<ul>
+<li>Wait 5-10 minutes after first deployment</li>
+<li>Check <strong>Settings</strong> → <strong>Pages</strong> for status</li>
+</ul>
+<h3>Issue: 404 Error</h3>
+
+<strong>Check:</strong>
+<ul>
+<li><code>index.html</code> exists in <code>public/</code> directory</li>
+<li>File paths are correct in HTML</li>
+</ul>
+<strong>Solution:</strong>
+<pre><code class="language-bash"># Verify files in pipeline artifacts
+# Go to pipeline → pages job → Browse artifacts
+</code></pre>
+<h3>Issue: Styles Not Loading</h3>
+
+<strong>Check:</strong>
+<ul>
+<li>CSS is embedded in HTML (not external files)</li>
+<li>HTML files are in same directory</li>
+</ul>
+<strong>Solution:</strong>
+<ul>
+<li>All styles are embedded, so this shouldn't happen</li>
+<li>Check browser console for errors</li>
+</ul>
+<h2>📱 Sharing Documentation</h2>
+
+<h3>Internal Team</h3>
+
+Share the GitLab Pages URL:
+<pre><code class="language-">https://embrix.gitlab.io/embrix-o2x/
+</code></pre>
+<h3>External Partners</h3>
+
+Options:
+<ol>
+<li>Make Pages public (if allowed)</li>
+<li>Export as ZIP and email</li>
+<li>Print to PDF and share</li>
+<li>Set up temporary access</li>
+</ol>
+<h3>Mobile Access</h3>
+
+The documentation is responsive and works perfectly on:
+<ul>
+<li>📱 Mobile phones</li>
+<li>📱 Tablets</li>
+<li>💻 Desktops</li>
+<li>🖨️ Print</li>
+</ul>
+<h2>🔄 Updating Documentation</h2>
+
+<h3>Update Process</h3>
+
+<pre><code class="language-bash"># 1. Edit markdown files
+vim NEWCOMER_GUIDE_PART1_BUSINESS_AND_ARCHITECTURE.md
+
+# 2. (Optional) Test locally
+python convert_to_html.py
+# Open docs/newcomer/index.html in browser
+
+# 3. Commit and push
+git add .
+git commit -m "Update documentation: [description]"
+git push origin main
+
+# 4. Wait for pipeline to complete
+# 5. Changes are live!
+</code></pre>
+<h3>Automatic Updates</h3>
+
+Every push to <code>main</code>/<code>master</code> automatically:
+<ul>
+<li>✅ Converts markdown to HTML</li>
+<li>✅ Deploys to GitLab Pages</li>
+<li>✅ Updates live documentation</li>
+</ul>
+<h2>📈 Analytics (Optional)</h2>
+
+<h3>Add Google Analytics</h3>
+
+Edit <code>convert_to_html.py</code> and add to <code>CSS_TEMPLATE</code>:
+<pre><code class="language-html">&lt;!-- Google Analytics --&gt;
+&lt;script async src="https://www.googletagmanager.com/gtag/js?id=GA_MEASUREMENT_ID"&gt;&lt;/script&gt;
+&lt;script&gt;
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'GA_MEASUREMENT_ID');
+&lt;/script&gt;
+</code></pre>
+<h2>🎯 Best Practices</h2>
+
+<ol>
+<li><strong>Keep Markdown Updated</strong> - Edit markdown, not HTML directly</li>
+<li><strong>Test Locally First</strong> - Run converter before committing</li>
+<li><strong>Descriptive Commits</strong> - Clear commit messages for documentation changes</li>
+<li><strong>Review Before Merge</strong> - Use merge requests for major updates</li>
+<li><strong>Monitor Pipelines</strong> - Ensure deployments succeed</li>
+</ol>
+<h2>📞 Getting Help</h2>
+
+<h3>GitLab Support</h3>
+
+<ul>
+<li><strong>Documentation</strong>: https://docs.gitlab.com/ee/user/project/pages/</li>
+<li><strong>Forum</strong>: https://forum.gitlab.com/</li>
+<li><strong>Support</strong>: Help → Support (in GitLab)</li>
+</ul>
+<h3>Team Resources</h3>
+
+<ul>
+<li>Pipeline logs: <strong>CI/CD</strong> → <strong>Pipelines</strong> → Select pipeline → <code>pages</code> job</li>
+<li>Artifacts: Pipeline → <code>pages</code> job → <strong>Browse</strong></li>
+<li>Settings: <strong>Settings</strong> → <strong>Pages</strong></li>
+</ul>
+<h2>✅ Verification Checklist</h2>
+
+Before considering setup complete:
+<ul>
+<li>[ ] <code>.gitlab-ci.yml</code> committed to repository</li>
+<li>[ ] <code>convert_to_html.py</code> committed</li>
+<li>[ ] All markdown files committed</li>
+<li>[ ] HTML files generated in <code>docs/newcomer/</code></li>
+<li>[ ] Pipeline ran successfully</li>
+<li>[ ] GitLab Pages enabled in settings</li>
+<li>[ ] Documentation accessible via URL</li>
+<li>[ ] All navigation links work</li>
+<li>[ ] Styles load correctly</li>
+<li>[ ] Mobile responsive</li>
+<li>[ ] Team can access</li>
+</ul>
+<h2>🎉 Success!</h2>
+
+Once setup is complete, your team can access the documentation at:
+<strong>Main URL</strong>: <code>https://<namespace>.gitlab.io/<project>/</code>
+Share this URL with:
+<ul>
+<li>✅ New developers for onboarding</li>
+<li>✅ Business analysts for product understanding</li>
+<li>✅ Technical evaluators for architecture review</li>
+<li>✅ QA engineers for test scenarios</li>
+<li>✅ Project managers for scope understanding</li>
+</ul>
+
+<hr>
+
+<strong>Last Updated</strong>: February 2026  
+<strong>Maintained By</strong>: Development Team  
+<strong>Version</strong>: 3.1.9-SNAPSHOT
+<strong>Questions?</strong> Contact the development team or check GitLab Pages documentation.</p>
+        <footer>
+            <p><strong>Embrix O2X Platform Documentation</strong></p>
+            <p>Version 3.1.9-SNAPSHOT • Last Updated: February 2026</p>
+        </footer>
+    </div>
+</body>
+</html>

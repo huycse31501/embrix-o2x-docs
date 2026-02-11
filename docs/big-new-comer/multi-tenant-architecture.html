@@ -1,14 +1,10 @@
-#!/usr/bin/env python3
-"""
-Convert Embrix O2X Markdown Documentation to HTML
-"""
-
-import re
-import os
-from pathlib import Path
-
-# CSS template for all HTML pages
-CSS_TEMPLATE = """
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🏢 Multi-Tenant Architecture - Embrix O2X</title>
+    
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -813,501 +809,498 @@ CSS_TEMPLATE = """
         }
     }
 </style>
-"""
 
-def convert_markdown_to_html(markdown_text, title, nav_links=None):
-    """Convert markdown text to HTML with styling"""
-    
-    # STEP 1: Extract and protect code blocks from further processing
-    code_blocks = []
-    code_block_placeholder = "___CODE_BLOCK_{}_PLACEHOLDER___"
-    
-    def extract_code_block(match):
-        lang = match.group(1) or ''
-        code = match.group(2)
-        # Escape HTML entities
-        code = code.replace('<', '&lt;').replace('>', '&gt;')
-        # Store the processed code block
-        block_html = f'<pre><code class="language-{lang}">{code}</code></pre>'
-        placeholder = code_block_placeholder.format(len(code_blocks))
-        code_blocks.append(block_html)
-        return placeholder
-    
-    # Extract all code blocks (```)
-    markdown_text = re.sub(r'```(\w+)?\n(.*?)```', 
-                          extract_code_block, 
-                          markdown_text, flags=re.DOTALL)
-    
-    # STEP 2: Now process headers (safe because code blocks are protected)
-    # Headers (must process from most specific to least specific to avoid conflicts)
-    markdown_text = re.sub(r'^###### (.*?)$', r'<h6>\1</h6>', markdown_text, flags=re.MULTILINE)
-    markdown_text = re.sub(r'^##### (.*?)$', r'<h5>\1</h5>', markdown_text, flags=re.MULTILINE)
-    markdown_text = re.sub(r'^#### (.*?)$', r'<h4>\1</h4>', markdown_text, flags=re.MULTILINE)
-    markdown_text = re.sub(r'^### (.*?)$', r'<h3>\1</h3>', markdown_text, flags=re.MULTILINE)
-    markdown_text = re.sub(r'^## (.*?)$', r'<h2>\1</h2>', markdown_text, flags=re.MULTILINE)
-    markdown_text = re.sub(r'^# (.*?)$', r'<h1>\1</h1>', markdown_text, flags=re.MULTILINE)
-    
-    # CRITICAL: Mark metadata fields BEFORE bold processing
-    # This ensures Location:, Artifact:, Purpose: etc. get proper wrapping
-    # Pattern matches: **FieldName:** followed by any content until end of line
-    # Use [^\r\n]* instead of .* to avoid matching across line boundaries
-    metadata_pattern = r'^\*\*(Location|Artifact|Purpose|Port|Technology|Internal Name|Why (?:Important|Critical)|What is|Key (?:Operations|Concepts|Jobs|Features)|GraphQL Operations):\*\*[ \t]*([^\r\n]*)$'
-    
-    def metadata_replacer(match):
-        field_name = match.group(1)
-        field_value = match.group(2).strip()
-        return f'{{{{METADATA_START}}}}{field_name}{{{{METADATA_MID}}}}{field_value}{{{{METADATA_END}}}}'
-    
-    markdown_text = re.sub(
-        metadata_pattern,
-        metadata_replacer,
-        markdown_text,
-        flags=re.MULTILINE
-    )
-    
-    # Bold and italic
-    markdown_text = re.sub(r'\*\*(.*?)\*\*', r'<strong>\1</strong>', markdown_text)
-    markdown_text = re.sub(r'\*(.*?)\*', r'<em>\1</em>', markdown_text)
-    
-    # Inline code
-    markdown_text = re.sub(r'`([^`]+)`', r'<code>\1</code>', markdown_text)
-    
-    # Links
-    markdown_text = re.sub(r'\[([^\]]+)\]\(([^\)]+)\)', r'<a href="\2">\1</a>', markdown_text)
-    
-    # Tables and Lists - Process with proper nesting
-    lines = markdown_text.split('\n')
-    result = []
-    in_list = False
-    in_ordered_list = False
-    in_table = False
-    is_header_row = True
-    current_list_item = []  # Buffer for multi-line list items
-    
-    def flush_list_item():
-        """Flush buffered list item content"""
-        if current_list_item:
-            content = '<br>'.join(current_list_item)
-            result.append(f'<li>{content}</li>')
-            current_list_item.clear()
-    
-    for i, line in enumerate(lines):
-        stripped = line.strip()
-        indent_level = len(line) - len(line.lstrip())
-        
-        # Detect metadata field markers - these should be isolated
-        if '{{METADATA_START}}' in line:
-            # Close any open lists before metadata field
-            if in_list or in_ordered_list:
-                flush_list_item()
-            if in_list:
-                result.append('</ul>')
-                in_list = False
-            if in_ordered_list:
-                result.append('</ol>')
-                in_ordered_list = False
-            if in_table:
-                result.append('</tbody></table>')
-                in_table = False
-            
-            # Add metadata field line as-is
-            result.append(line)
-            continue
-        
-        # Table detection
-        if stripped.startswith('|') and stripped.endswith('|'):
-            # Skip separator rows (e.g., |---|---|)
-            if re.match(r'^\s*\|[\s\-:]+\|\s*$', line):
-                is_header_row = False
-                continue
-            
-            # Close any open lists
-            if in_list or in_ordered_list:
-                flush_list_item()
-            if in_list:
-                result.append('</ul>')
-                in_list = False
-            if in_ordered_list:
-                result.append('</ol>')
-                in_ordered_list = False
-            
-            if not in_table:
-                result.append('<table>')
-                in_table = True
-                is_header_row = True
-            
-            # Parse table row
-            cells = [cell.strip() for cell in stripped.split('|')[1:-1]]
-            
-            if is_header_row:
-                result.append('<thead><tr>')
-                for cell in cells:
-                    result.append(f'<th>{cell}</th>')
-                result.append('</tr></thead><tbody>')
-                is_header_row = False
-            else:
-                result.append('<tr>')
-                for cell in cells:
-                    result.append(f'<td>{cell}</td>')
-                result.append('</tr>')
-        
-        # Ordered list (not indented)
-        elif re.match(r'^\d+\. ', line) and indent_level == 0:
-            if in_table:
-                result.append('</tbody></table>')
-                in_table = False
-            
-            # Flush previous list item
-            if in_ordered_list:
-                flush_list_item()
-            
-            # Close unordered list if switching types
-            if in_list:
-                result.append('</ul>')
-                in_list = False
-            
-            # Start ordered list if needed
-            if not in_ordered_list:
-                result.append('<ol>')
-                in_ordered_list = True
-            
-            # Extract list item content
-            list_item_text = re.sub(r'^\d+\. ', '', line)
-            current_list_item.append(list_item_text)
-        
-        # Unordered list (not indented)
-        elif re.match(r'^- ', line) and indent_level == 0:
-            if in_table:
-                result.append('</tbody></table>')
-                in_table = False
-            
-            # Flush previous list item
-            if in_list:
-                flush_list_item()
-            
-            # Close ordered list if switching types
-            if in_ordered_list:
-                flush_list_item()
-                result.append('</ol>')
-                in_ordered_list = False
-            
-            # Start unordered list if needed
-            if not in_list:
-                result.append('<ul>')
-                in_list = True
-            
-            current_list_item.append(line[2:])
-        
-        # Indented content (nested bullets or continuation)
-        elif indent_level > 0 and (in_list or in_ordered_list) and stripped:
-            # This is nested content of the current list item
-            if stripped.startswith('- '):
-                # Nested bullet point
-                current_list_item.append(f'<ul><li>{stripped[2:]}</li></ul>')
-            else:
-                # Continuation of list item
-                current_list_item.append(stripped)
-        
-        # Empty line within list - might be separating items
-        elif not stripped and (in_list or in_ordered_list):
-            # Keep empty lines within lists (don't close yet)
-            continue
-        
-        # Non-list content
-        else:
-            # Close any open structures
-            if in_table:
-                result.append('</tbody></table>')
-                in_table = False
-            if in_list or in_ordered_list:
-                flush_list_item()
-            if in_list:
-                result.append('</ul>')
-                in_list = False
-            if in_ordered_list:
-                result.append('</ol>')
-                in_ordered_list = False
-            
-            if stripped:  # Only add non-empty lines
-                result.append(line)
-    
-    # Close any remaining open structures
-    if in_list or in_ordered_list:
-        flush_list_item()
-    if in_table:
-        result.append('</tbody></table>')
-    if in_list:
-        result.append('</ul>')
-    if in_ordered_list:
-        result.append('</ol>')
-    
-    markdown_text = '\n'.join(result)
-    
-    # Horizontal rules
-    markdown_text = re.sub(r'^---+$', '<hr>', markdown_text, flags=re.MULTILINE)
-    
-    # Paragraphs - split on double newlines but not inside lists/tables
-    markdown_text = re.sub(r'\n\n+', '\n</p>\n<p>\n', markdown_text)
-    markdown_text = '<p>' + markdown_text + '</p>'
-    
-    # Clean up empty paragraphs and malformed tags
-    markdown_text = re.sub(r'<p>\s*</p>', '', markdown_text)
-    markdown_text = re.sub(r'<p>\s*(<h[1-6]>)', r'\n\1', markdown_text)
-    markdown_text = re.sub(r'(</h[1-6]>)\s*</p>', r'\1\n', markdown_text)
-    markdown_text = re.sub(r'<p>\s*(<pre>)', r'\n\1', markdown_text)
-    markdown_text = re.sub(r'(</pre>)\s*</p>', r'\1\n', markdown_text)
-    markdown_text = re.sub(r'<p>\s*(<ul>|<ol>|<hr>|<table>)', r'\n\1', markdown_text)
-    markdown_text = re.sub(r'(</ul>|</ol>|<hr>|</table>)\s*</p>', r'\1\n', markdown_text)
-    markdown_text = re.sub(r'<p>\s*(<thead>|<tbody>)', r'\1', markdown_text)
-    markdown_text = re.sub(r'(</thead>|</tbody>)\s*</p>', r'\1', markdown_text)
-    
-    # CRITICAL: Convert metadata markers to proper div wrappers AFTER paragraph processing
-    # Handle cases with paragraph wrapper
-    markdown_text = re.sub(
-        r'<p>\s*{{METADATA_START}}([^{]+){{METADATA_MID}}([^{]*){{METADATA_END}}\s*</p>',
-        r'<div class="metadata-field"><strong>\1:</strong> \2</div>',
-        markdown_text
-    )
-    # Also handle cases without paragraph wrapper
-    markdown_text = re.sub(
-        r'{{METADATA_START}}([^{]+){{METADATA_MID}}([^{]*){{METADATA_END}}',
-        r'<div class="metadata-field"><strong>\1:</strong> \2</div>',
-        markdown_text
-    )
-    # Clean up any remaining paragraph tags around metadata fields
-    markdown_text = re.sub(r'<p>\s*(<div class="metadata-field">)', r'\1', markdown_text)
-    markdown_text = re.sub(r'(</div>)\s*</p>', r'\1', markdown_text)
-    
-    
-    # Add spacing after headers
-    markdown_text = re.sub(r'(</h[1-6]>)', r'\1\n', markdown_text)
-    
-    # Add spacing around hr
-    markdown_text = re.sub(r'<hr>', r'\n<hr>\n', markdown_text)
-    
-    # STEP 3: Restore code blocks (protected content)
-    for i, code_block in enumerate(code_blocks):
-        placeholder = code_block_placeholder.format(i)
-        markdown_text = markdown_text.replace(placeholder, code_block)
-    
-    # Build navigation
-    nav_html = ""
-    if nav_links:
-        nav_html = '<div class="nav-header">'
-        nav_html += '<div><h1>Embrix O2X Documentation</h1><small>Navigate between guides</small></div>'
-        nav_html += '<div class="nav-links">'
-        for link_title, link_url in nav_links:
-            nav_html += f'<a href="{link_url}">{link_title}</a>'
-        nav_html += '</div></div>'
-    
-    # Build full HTML
-    html = f"""<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{title} - Embrix O2X</title>
-    {CSS_TEMPLATE}
 </head>
 <body>
     <div class="container">
-        {nav_html}
-        {markdown_text}
+        <div class="nav-header"><div><h1>Embrix O2X Documentation</h1><small>Navigate between guides</small></div><div class="nav-links"><a href="index.html">Home</a><a href="guide-index.html">Guide Index</a><a href="guide-index.html">Part 1-5</a><a href="quick-start.html">Quick Start</a><a href="quick-reference.html">Quick Ref</a><a href="complete-system-overview.html">Architecture</a><a href="api-reference.html">API Reference</a><a href="troubleshooting-guide.html">Troubleshooting</a></div></div>
+        
+<h1>Multi-Tenant Architecture - Embrix O2X</h1>
+
+<h2>Executive Summary</h2>
+
+<strong>Architecture Pattern:</strong> <strong>Deployment-Level Multi-Tenancy</strong> (also known as "Instance-per-Tenant" or "Dedicated Deployment")
+Each tenant gets:
+<ul>
+<li>✅ Dedicated Kubernetes deployment</li>
+<li>✅ Dedicated database (<code>coredb-{tenant-name}</code>)</li>
+<li>✅ Dedicated service instances (core services, gateways)</li>
+<li>✅ Shared infrastructure (Kubernetes cluster, AWS resources)</li>
+</ul>
+<h2>Current Tenants</h2>
+
+Based on Helm configurations found:
+<table>
+<thead><tr>
+<th>Tenant ID</th>
+<th>Tenant Name</th>
+<th>Environment</th>
+<th>Database</th>
+</tr></thead><tbody>
+<tr>
+<td>-----------</td>
+<td>-------------</td>
+<td>-------------</td>
+<td>----------</td>
+</tr>
+<tr>
+<td>TIDLT-100001</td>
+<td>coopeg-sbx</td>
+<td>Sandbox</td>
+<td><code>coredb-coopeg-sbx</code></td>
+</tr>
+<tr>
+<td>TIDLT-100002</td>
+<td>demo</td>
+<td>Demo</td>
+<td><code>coredb-demo</code></td>
+</tr>
+<tr>
+<td>TIDLT-100003</td>
+<td>dev</td>
+<td>Development</td>
+<td><code>enginedevdb</code></td>
+</tr>
+<tr>
+<td>TIDLT-100004</td>
+<td>shm</td>
+<td>Production</td>
+<td><code>coredb-shm</code></td>
+</tr>
+<tr>
+<td>TIDLT-100005</td>
+<td>urbanos</td>
+<td>Development</td>
+<td><code>coredb-urbanos</code></td>
+</tr>
+<tr>
+<td>TIDLT-100006</td>
+<td>coopeg-prd</td>
+<td>Production</td>
+<td><code>coredb-coopeg-prd</code></td>
+</tr>
+<tr>
+<td>TIDLT-100007</td>
+<td>coopegenergy</td>
+<td>Production</td>
+<td><code>coredb-coopegenergy</code></td>
+</tr>
+</tbody></table>
+<h2>Architecture Layers</h2>
+
+<h3>1. Database Layer</h3>
+
+<h4>Shared RDS Instance</h4>
+
+<pre><code class="language-">embrix-rds-dev-db.chg5bgdk4yyp.us-east-1.rds.amazonaws.com
+├── coredb-urbanos (TIDLT-100005)
+├── coredb-coopeg-sbx (TIDLT-100001)
+├── coredb-coopegenergy (TIDLT-100007)
+├── enginedevdb (TIDLT-100003)
+└── ... (one database per tenant)
+</code></pre>
+<strong>Key Points:</strong>
+<ul>
+<li>✅ Database-per-tenant isolation</li>
+<li>✅ Single PostgreSQL RDS instance hosting multiple tenant databases</li>
+<li>✅ No <code>tenant_id</code> columns in business tables (full schema isolation)</li>
+<li>✅ Shared configuration schema: <code>core_config</code> (contains tenant metadata)</li>
+</ul>
+<h4>Schema Structure</h4>
+
+<strong>Business Data (Isolated per Tenant):</strong>
+<ul>
+<li><code>account</code>, <code>subscription</code>, <code>order</code>, <code>invoice</code>, <code>payment</code>, etc.</li>
+<li>No tenant_id needed - full database isolation</li>
+</ul>
+<strong>Configuration Data (Shared <code>core_config</code> schema):</strong>
+<pre><code class="language-sql">core_config.tenant
+  ├── id (VARCHAR) - e.g., TIDLT-100005
+  ├── name (VARCHAR) - e.g., urbanos
+  ├── vaulturi, vaultpath - Vault credentials
+  └── licensekey
+
+core_config.tenant_merchants
+  ├── id (VARCHAR) - References tenant.id
+  ├── tenant_id (VARCHAR)
+  ├── name (VARCHAR) - Merchant name (NETSUITE, QUICKBOOKS, etc.)
+  ├── type (VARCHAR) - Gateway type
+  ├── status (VARCHAR) - ACTIVE/INACTIVE
+  └── authtype (VARCHAR) - OAUTH1, OAUTH2, etc.
+
+core_config.oauth1_attributes
+core_config.oauth2_attributes
+core_config.finance_gateway_attributes
+core_config.payment_gateway_attributes
+core_config.tax_gateway_attributes
+core_config.selfcare_config (tenantid column)
+</code></pre>
+<h3>2. Kubernetes Deployment Layer</h3>
+
+<h4>Service Naming Convention</h4>
+
+<pre><code class="language-">{tenant-name}-{service-name}
+
+Examples:
+  urbanos-service-transactional
+  urbanos-service-billing
+  urbanos-payment-gateway
+  urbanos-finance-gateway
+  coopeg-prd-service-transactional
+  coopeg-prd-tax-gateway
+</code></pre>
+<h4>Deployed Services per Tenant</h4>
+
+Each tenant gets their own instances of:
+<ul>
+<li><strong>Core Services:</strong><br><ul><li><code>service-transactional</code> (Customer, Order, Subscription)</li></ul><br><ul><li><code>service-billing</code> (Billing, Invoicing)</li></ul><br><ul><li><code>service-invoice</code></li></ul><br><ul><li><code>service-payment</code></li></ul><br><ul><li><code>service-revenue</code></li></ul><br><ul><li><code>service-usage</code> (Rating, Mediation)</li></ul><br><ul><li><code>service-mediation</code></li></ul><br><ul><li><code>service-sso</code> (Authentication)</li></ul><br><ul><li><code>service-proxy</code> (API Gateway)</li></ul><br><ul><li><code>batch-process</code></li></ul><br><ul><li><code>jobs-common</code></li></ul></li>
+<li><strong>Gateway Services:</strong><br><ul><li><code>payment-gateway</code> (Payment processing integrations)</li></ul><br><ul><li><code>tax-gateway</code> (Tax calculation integrations)</li></ul><br><ul><li><code>finance-gateway</code> (ERP/Finance integrations)</li></ul><br><ul><li><code>provision-gateway</code> (Service provisioning)</li></ul><br><ul><li><code>crm-gateway</code> (CRM integrations)</li></ul></li>
+</ul>
+<h3>3. Application Configuration</h3>
+
+<h4>Tenant Context Injection</h4>
+
+<strong>Via Environment Variables (Helm values):</strong>
+<pre><code class="language-yaml">app:
+  tenantId: TIDLT-100005
+  tenantName: urbanos
+  postgres:
+    url: jdbc:postgresql://.../coredb-urbanos
+  vault:
+    api: http://urbanos-vault-interface/
+</code></pre>
+<strong>In Application Code:</strong>
+<pre><code class="language-groovy">@Value('${tenant.id}')
+private String tenantId
+
+@Value('${TENANT_ID}')
+private String tenant_id
+</code></pre>
+<strong>Spring Security Context:</strong>
+<pre><code class="language-groovy">MDC.put('Tenant ID', getContext().authentication?.principal as String)
+</code></pre>
+<h4>Service-to-Service Communication</h4>
+
+Services within the same tenant deployment communicate via internal Kubernetes service names:
+<pre><code class="language-yaml">TAX_GATEWAY_URL: http://urbanos-tax-gateway
+PAYMENT_GATEWAY_URL: http://urbanos-payment-gateway
+FINANCE_GATEWAY_URL: http://urbanos-finance-gateway
+PROVISIONING_GATEWAY_URL: http://urbanos-provision-gateway
+CRM_GATEWAY_URL: http://urbanos-crm-gateway
+</code></pre>
+<h3>4. Gateway Multi-Tenant Configuration</h3>
+
+<h4>Merchant Configuration Lookup</h4>
+
+Gateways retrieve tenant-specific merchant configurations from shared <code>core_config</code>:
+<pre><code class="language-groovy">// From TenantRepositoryServiceImpl
+Tenant findByTenantId(String id, MerchantType gateway_type) {
+    jdbcTemplate.query(
+        "SELECT * FROM ${TABLE_TENANT_MERCHANT_ACCOUNTS} " +
+        "WHERE id='${id}' AND type='${gateway_type.name()}' AND status='ACTIVE'",
+        new TenantMerchantsRowMapper()
+    )
+}
+</code></pre>
+<h4>Example: QuickBooks OAuth2 (Finance Gateway)</h4>
+
+<ol>
+<li>Finance gateway receives request with <code>tenantId=TIDLT-100005</code></li>
+<li>Queries <code>core_config.tenant_merchants</code> for finance gateway config</li>
+<li>Retrieves OAuth2 attributes from <code>core_config.oauth2_attributes</code></li>
+<li>Fetches credentials from Vault: <code>http://urbanos-vault-interface/</code></li>
+<li>Performs QuickBooks API call with tenant-specific credentials</li>
+</ol>
+<strong>Files:</strong>
+<ul>
+<li><code>gateway-common/src/main/groovy/com/embrix/gateway/common/service/impl/TenantRepositoryServiceImpl.groovy</code></li>
+<li><code>finance-gateway/src/main/groovy/.../AuthenticationServiceImpl.groovy</code></li>
+</ul>
+<h3>5. Frontend Layer</h3>
+
+<h4>No Tenant Selection in UI</h4>
+
+Frontend applications (<code>ui-core</code>, <code>selfcare</code>) do not:
+<ul>
+<li>❌ Pass tenant ID in headers</li>
+<li>❌ Have tenant selection dropdowns</li>
+<li>❌ Use tenant-specific URLs</li>
+</ul>
+<strong>Reason:</strong> Each deployment is already tenant-specific. The backend knows its tenant from environment configuration.
+<h4>Tenant Configuration API</h4>
+
+<pre><code class="language-graphql">query {
+  getTenantConfig(input: {id: "TIDLT-100005"}) {
+    tenantId
+    tenantName
+    selfCareConfig {
+      # Tenant-specific branding/settings
+    }
+  }
+}
+</code></pre>
+<strong>Files:</strong>
+<ul>
+<li><code>ui-core/src/api/tenant/getTenantConfig.js</code></li>
+<li><code>selfcare/src/api/getTenantSelfCareConfig.js</code></li>
+</ul>
+<h2>Advantages of This Architecture</h2>
+
+<h3>✅ Strong Data Isolation</h3>
+
+<ul>
+<li>Complete database separation</li>
+<li>No risk of cross-tenant data leaks</li>
+<li>Simplified compliance/auditing</li>
+</ul>
+<h3>✅ Performance Isolation</h3>
+
+<ul>
+<li>One tenant's load doesn't impact others</li>
+<li>Dedicated resources per tenant</li>
+<li>Independent scaling</li>
+</ul>
+<h3>✅ Customization Flexibility</h3>
+
+<ul>
+<li>Can deploy different versions per tenant</li>
+<li>Tenant-specific configuration without code changes</li>
+<li>Easy A/B testing for specific tenants</li>
+</ul>
+<h3>✅ Simplified Development</h3>
+
+<ul>
+<li>No <code>tenant_id</code> filtering in business logic</li>
+<li>No complex query interceptors</li>
+<li>Easier to test (no tenant context mocking)</li>
+</ul>
+<h3>✅ Independent Operations</h3>
+
+<ul>
+<li>Deploy/upgrade tenants independently</li>
+<li>Rollback single tenant without affecting others</li>
+<li>Different maintenance windows per tenant</li>
+</ul>
+<h2>Challenges & Considerations</h2>
+
+<h3>⚠️ Infrastructure Cost</h3>
+
+<ul>
+<li>Higher resource usage (one deployment per tenant)</li>
+<li>More Kubernetes pods to manage</li>
+<li>Database licensing considerations</li>
+</ul>
+<h3>⚠️ Operational Complexity</h3>
+
+<ul>
+<li>More deployments to monitor</li>
+<li>More CI/CD pipelines to maintain</li>
+<li>Helm chart management per tenant</li>
+</ul>
+<h3>⚠️ Onboarding Process</h3>
+
+<ul>
+<li>New tenant requires:<br>1. Database creation<br>2. Helm values configuration<br>3. Kubernetes deployment<br>4. Vault setup<br>5. DNS/ingress configuration</li>
+</ul>
+<h3>⚠️ Shared Resources</h3>
+
+<ul>
+<li>Single RDS instance (potential bottleneck)</li>
+<li>Shared Kubernetes cluster</li>
+<li>Shared Redis/ElastiCache</li>
+<li>Shared ActiveMQ broker</li>
+</ul>
+<h2>Multi-Tenant Onboarding Flow</h2>
+
+<h3>Adding a New Tenant</h3>
+
+<strong>1. Database Setup</strong>
+<pre><code class="language-sql">-- On shared RDS instance
+CREATE DATABASE "coredb-newtenant";
+
+-- Run migrations
+flyway migrate -schemas=public,core_config
+</code></pre>
+<strong>2. Tenant Configuration</strong>
+<pre><code class="language-sql">-- Insert into core_config.tenant
+INSERT INTO core_config.tenant (id, name, vaulturi, vaultpath, licensekey)
+VALUES ('TIDLT-100008', 'newtenant', 'http://vault', 'tenant/newtenant', 'license-key');
+
+-- Configure merchants
+INSERT INTO core_config.tenant_merchants (id, tenant_id, name, type, status, authtype)
+VALUES ('TIDLT-100008', 'TIDLT-100008', 'QUICKBOOKS', 'FINANCE_GATEWAY', 'ACTIVE', 'OAUTH2');
+</code></pre>
+<strong>3. Helm Configuration</strong>
+<pre><code class="language-bash"># Create helm values files
+mkdir -p core/helm_values/newtenant
+mkdir -p finance-gateway/helm_values/newtenant
+mkdir -p payment-gateway/helm_values/newtenant
+mkdir -p tax-gateway/helm_values/newtenant
+# ... etc for all services
+</code></pre>
+<strong>4. Deploy Services</strong>
+<pre><code class="language-bash">helm install newtenant-service-transactional ./core/service-transactional \
+  -f core/helm_values/newtenant/service-transactional.yaml
+
+helm install newtenant-finance-gateway ./finance-gateway \
+  -f finance-gateway/helm_values/newtenant/finance-gateway.yaml
+# ... etc
+</code></pre>
+<strong>5. Vault Setup</strong>
+<pre><code class="language-bash"># Store tenant-specific secrets
+vault kv put secret/tenant/newtenant/quickbooks \
+  clientId=xxx \
+  clientSecret=xxx \
+  accessToken=xxx \
+  refreshToken=xxx
+</code></pre>
+<h2>Key Files Reference</h2>
+
+<h3>Backend Services</h3>
+
+<table>
+<thead><tr>
+<th>Component</th>
+<th>File</th>
+<th>Purpose</th>
+</tr></thead><tbody>
+<tr>
+<td>-----------</td>
+<td>------</td>
+<td>---------</td>
+</tr>
+<tr>
+<td>Tenant Service</td>
+<td><code>engine/src/main/groovy/com/embrix/core/engine/opsHub/tenantOnboarding/service/impl/PGTenantService.groovy</code></td>
+<td>CRUD operations for tenants</td>
+</tr>
+<tr>
+<td>Tenant Repository</td>
+<td><code>gateway-common/src/main/groovy/com/embrix/gateway/common/service/impl/TenantRepositoryServiceImpl.groovy</code></td>
+<td>Gateway tenant config lookup</td>
+</tr>
+<tr>
+<td>Self-Care Config</td>
+<td><code>engine/src/main/groovy/com/embrix/core/engine/selfCareHub/service/impl/PGSelfCareConfigService.groovy</code></td>
+<td>Self-care portal configuration</td>
+</tr>
+</tbody></table>
+<h3>Database</h3>
+
+<table>
+<thead><tr>
+<th>Component</th>
+<th>File</th>
+<th>Purpose</th>
+</tr></thead><tbody>
+<tr>
+<td>-----------</td>
+<td>------</td>
+<td>---------</td>
+</tr>
+<tr>
+<td>Schema</td>
+<td><code>gateway-common/src/test/resources/db/migration/V1__init_schema.sql</code></td>
+<td>Tenant tables definition</td>
+</tr>
+<tr>
+<td>Baseline</td>
+<td><code>engine/db/scripts/baseline-3.1.8.sql</code></td>
+<td>Full schema baseline</td>
+</tr>
+</tbody></table>
+<h3>Configuration</h3>
+
+<table>
+<thead><tr>
+<th>Component</th>
+<th>Location</th>
+<th>Purpose</th>
+</tr></thead><tbody>
+<tr>
+<td>-----------</td>
+<td>----------</td>
+<td>---------</td>
+</tr>
+<tr>
+<td>Helm Values</td>
+<td><code>{service}/helm_values/{tenant}/</code></td>
+<td>Tenant-specific deployment config</td>
+</tr>
+<tr>
+<td>Application Config</td>
+<td><code>engine/src/main/resources/config/application.yml</code></td>
+<td>Spring Boot configuration</td>
+</tr>
+</tbody></table>
+<h3>Frontend</h3>
+
+<table>
+<thead><tr>
+<th>Component</th>
+<th>File</th>
+<th>Purpose</th>
+</tr></thead><tbody>
+<tr>
+<td>-----------</td>
+<td>------</td>
+<td>---------</td>
+</tr>
+<tr>
+<td>Tenant API</td>
+<td><code>ui-core/src/api/tenant/getTenantConfig.js</code></td>
+<td>Fetch tenant configuration</td>
+</tr>
+<tr>
+<td>Self-Care API</td>
+<td><code>selfcare/src/api/getTenantSelfCareConfig.js</code></td>
+<td>Self-care settings</td>
+</tr>
+<tr>
+<td>Tenant Management UI</td>
+<td><code>ui-core/src/containers/TenantManagement/</code></td>
+<td>Admin interface for tenant setup</td>
+</tr>
+</tbody></table>
+<h2>Recommendations</h2>
+
+<h3>For Current Architecture</h3>
+
+<ol>
+<li><strong>Document Tenant Onboarding Process</strong><br><ul><li>Create automated scripts for tenant provisioning</li></ul><br><ul><li>Standardize Helm values templates</li></ul><br><ul><li>Automate database setup</li></ul></li>
+<li><strong>Monitor Resource Usage</strong><br><ul><li>Track per-tenant resource consumption</li></ul><br><ul><li>Consider dedicated RDS instances for high-volume tenants</li></ul><br><ul><li>Implement resource quotas per tenant namespace</li></ul></li>
+<li><strong>Version Management</strong><br><ul><li>Maintain tenant-to-version mapping</li></ul><br><ul><li>Document upgrade procedures per tenant</li></ul><br><ul><li>Implement blue-green deployment for critical tenants</li></ul></li>
+<li><strong>Backup & DR</strong><br><ul><li>Per-tenant backup schedules</li></ul><br><ul><li>Document restore procedures</li></ul><br><ul><li>Test disaster recovery for each tenant</li></ul></li>
+</ol>
+<h3>If Scaling to Many Tenants</h3>
+
+Consider hybrid approach:
+<ul>
+<li><strong>Tier 1 (Enterprise):</strong> Dedicated deployment (current approach)</li>
+<li><strong>Tier 2 (SMB):</strong> Shared deployment with row-level tenant_id filtering</li>
+<li><strong>Tier 3 (Free/Trial):</strong> Highly shared, limited resources</li>
+</ul>
+This would require:
+<ul>
+<li>Adding <code>tenant_id</code> columns to business tables</li>
+<li>Implementing row-level security (Hibernate filters, JPA interceptors)</li>
+<li>Tenant context management (ThreadLocal, request scope)</li>
+<li>Multi-tenancy middleware layer</li>
+</ul>
+<h2>Conclusion</h2>
+
+The current architecture provides strong tenant isolation through <strong>deployment-level multi-tenancy</strong>, which is appropriate for:
+<ul>
+<li>✅ Small to medium number of tenants (< 50)</li>
+<li>✅ Enterprise customers requiring dedicated resources</li>
+<li>✅ Compliance requirements needing strict data separation</li>
+<li>✅ Customers with varying SLA requirements</li>
+</ul>
+The trade-off is operational complexity and infrastructure cost, which scales linearly with tenant count.</p>
         <footer>
             <p><strong>Embrix O2X Platform Documentation</strong></p>
             <p>Version 3.1.9-SNAPSHOT • Last Updated: February 2026</p>
         </footer>
     </div>
 </body>
-</html>"""
-    
-    return html
-
-def main():
-    """Convert all markdown guides to HTML"""
-    
-    # Navigation links for all pages - will be at top of every page
-    nav_links = [
-        ("Home", "index.html"),
-        ("Guide Index", "guide-index.html"),
-        ("Part 1-5", "guide-index.html"),
-        ("Quick Start", "quick-start.html"),
-        ("Quick Ref", "quick-reference.html"),
-        ("Architecture", "complete-system-overview.html"),
-        ("API Reference", "api-reference.html"),
-        ("Troubleshooting", "troubleshooting-guide.html"),
-    ]
-    
-    # Files to convert - Knowledge Hub content only (no deployment docs)
-    files_to_convert = [
-        # Newcomer Guide Parts (from root and docs/newcomer-4/)
-        ("docs/newcomer-4/NEWCOMER_GUIDE_INDEX.md", "guide-index.html", "📚 Complete Newcomer's Guide Index"),
-        ("docs/newcomer-4/NEWCOMER_GUIDE_PART1_BUSINESS_AND_ARCHITECTURE.md", "part1-business-architecture.html", "Part 1: Business & Architecture"),
-        ("docs/newcomer-4/NEWCOMER_GUIDE_PART2_TECHNICAL_DEEP_DIVE.md", "part2-technical-deep-dive.html", "Part 2: Technical Deep Dive"),
-        ("NEWCOMER_GUIDE_PART3_SERVICES_AND_DEVELOPMENT.md", "part3-services-development.html", "Part 3: Services & Development"),
-        ("docs/newcomer-4/NEWCOMER_GUIDE_PART4_FRONTEND_AND_UI.md", "part4-frontend-ui.html", "Part 4: Frontend Applications & User Interfaces"),
-        ("docs/newcomer-4/NEWCOMER_GUIDE_PART5_MESSAGE_QUEUES_AND_INTEGRATION.md", "part5-message-queues.html", "Part 5: Message Queue Architecture & Integration"),
-        
-        # Quick Start and Reference Guides
-        ("docs/newcomer-4/QUICK_START.md", "quick-start.html", "🎯 Quick Start Guide"),
-        ("docs/newcomer-4/QUICK_REFERENCE_GUIDE.md", "quick-reference.html", "📖 Quick Reference Guide"),
-        
-        # Business and Workflow Guides
-        ("docs/newcomer-4/BUSINESS_SCENARIOS_AND_WORKFLOWS.md", "business-scenarios.html", "💼 Business Scenarios & Workflows"),
-        
-        # Architecture Documentation
-        ("docs/newcomer-4/MULTI_TENANT_ARCHITECTURE.md", "multi-tenant-architecture.html", "🏢 Multi-Tenant Architecture"),
-        ("docs/newcomer-4/DATABASE_ARCHITECTURE_COMPLETE.md", "database-architecture.html", "🗄️ Database Architecture - Complete Guide"),
-        ("docs/newcomer-4/FRONTEND_UI_ARCHITECTURE.md", "frontend-ui-architecture.html", "🎨 Frontend & UI Architecture"),
-        
-        # System Documentation
-        ("docs/newcomer-4/COMPLETE_SYSTEM_OVERVIEW.md", "complete-system-overview.html", "🌐 Complete System Overview"),
-        ("docs/newcomer-4/COMPLETE_SYSTEM_DOCUMENTATION.md", "complete-system-documentation.html", "📋 Complete System Documentation"),
-        ("docs/newcomer-4/COMPLETE_SYSTEM_INVENTORY.md", "complete-system-inventory.html", "📦 Complete System Inventory"),
-        ("docs/newcomer-4/COMPLETE_SERVICES_CATALOG.md", "complete-services-catalog.html", "⚙️ Complete Services Catalog"),
-        
-        # Development Guides
-        ("docs/newcomer-4/API_REFERENCE.md", "api-reference.html", "🔌 API Reference"),
-        ("docs/newcomer-4/FRONTEND_GUIDE.md", "frontend-guide.html", "💻 Frontend Development Guide"),
-        ("docs/newcomer-4/CONTRIBUTING.md", "contributing.html", "🤝 Contributing Guide"),
-        
-        # Troubleshooting and Reference
-        ("docs/newcomer-4/TROUBLESHOOTING_GUIDE.md", "troubleshooting-guide.html", "🔧 Troubleshooting Guide"),
-        ("docs/newcomer-4/GLOSSARY.md", "glossary.html", "📖 Glossary of Terms"),
-    ]
-    
-    # Output directory - docs/big-new-comer
-    output_dir = Path("docs/big-new-comer")
-    output_dir.mkdir(parents=True, exist_ok=True)
-    
-    converted_count = 0
-    skipped_count = 0
-    
-    for md_file, html_file, title in files_to_convert:
-        md_path = Path(md_file)
-        if not md_path.exists():
-            print(f"Warning: {md_file} not found, skipping...")
-            skipped_count += 1
-            continue
-        
-        print(f"Converting {md_file} -> {html_file}...")
-        
-        with open(md_path, 'r', encoding='utf-8') as f:
-            markdown_content = f.read()
-        
-        html_content = convert_markdown_to_html(markdown_content, title, nav_links)
-        
-        output_path = output_dir / html_file
-        with open(output_path, 'w', encoding='utf-8') as f:
-            f.write(html_content)
-        
-        print(f"[OK] Created {output_path}")
-        converted_count += 1
-    
-    # Create index.html with beautiful landing page
-    print("\nCreating index page...")
-    index_content = """# Embrix O2X Knowledge Hub
-
-Welcome to the **Embrix O2X Platform Knowledge Hub** - your comprehensive guide to mastering our enterprise-grade Order-to-Cash management system.
-
----
-
-## Getting Started
-
-New to Embrix O2X? Start with these essential resources:
-
-- [Quick Start Guide](quick-start.html) - Get up and running quickly
-- [Complete Newcomer's Guide Index](guide-index.html) - Your structured learning path
-- [Business Scenarios & Workflows](business-scenarios.html) - Real-world use cases and examples
-
----
-
-## Learning Path
-
-Follow this recommended sequence to master the platform:
-
-1. [Part 1: Business & Architecture](part1-business-architecture.html) - Understand the business domain and high-level architecture
-2. [Part 2: Technical Deep Dive](part2-technical-deep-dive.html) - Explore technical architecture and design patterns
-3. [Part 3: Services & Development](part3-services-development.html) - Master microservices and backend development
-4. [Part 4: Frontend Applications & User Interfaces](part4-frontend-ui.html) - Learn UI architecture and frontend patterns
-5. [Part 5: Message Queue Architecture & Integration](part5-message-queues.html) - Understand async messaging and integration
-
----
-
-## Architecture Documentation
-
-Deep dive into system architecture and design:
-
-- [Complete System Overview](complete-system-overview.html) - High-level system architecture and components
-- [Multi-Tenant Architecture](multi-tenant-architecture.html) - Multi-tenancy design patterns and implementation
-- [Database Architecture](database-architecture.html) - Data modeling, schema design, and database patterns
-- [Frontend & UI Architecture](frontend-ui-architecture.html) - UI/UX patterns, components, and design system
-
----
-
-## System Reference
-
-Comprehensive documentation of all system components:
-
-- [Complete System Documentation](complete-system-documentation.html) - Full system documentation
-- [Complete System Inventory](complete-system-inventory.html) - All components, services, and dependencies
-- [Complete Services Catalog](complete-services-catalog.html) - Detailed service descriptions and APIs
-
----
-
-## Development Resources
-
-Essential resources for developers:
-
-- [API Reference](api-reference.html) - Complete REST API documentation
-- [Frontend Development Guide](frontend-guide.html) - Frontend development best practices
-- [Quick Reference Guide](quick-reference.html) - Commands, snippets, and quick tips
-- [Contributing Guide](contributing.html) - How to contribute to the project
-
----
-
-## Troubleshooting & Support
-
-Get help when you need it:
-
-- [Troubleshooting Guide](troubleshooting-guide.html) - Common issues and solutions
-- [Glossary of Terms](glossary.html) - Technical terminology and definitions
-
----
-
-## Platform Information
-
-**Version:** 3.1.9-SNAPSHOT  
-**Last Updated:** February 2026  
-**Technology Stack:** Spring Boot, React, PostgreSQL, RabbitMQ, Redis  
-**Architecture:** Microservices, Multi-tenant, Event-driven
-
-**Key Features:**
-- Multi-tenant SaaS platform
-- Comprehensive Order-to-Cash workflow
-- Real-time event processing
-- Advanced pricing and taxation engines
-- Self-service portal and admin interfaces
-
----
-
-Happy learning! Start your journey with the [Complete Newcomer's Guide Index](guide-index.html).
-"""
-    
-    index_html = convert_markdown_to_html(index_content, "Embrix O2X Documentation Portal", nav_links)
-    index_path = output_dir / "index.html"
-    with open(index_path, 'w', encoding='utf-8') as f:
-        f.write(index_html)
-    
-    print(f"[OK] Created {index_path}")
-    
-    print("\n" + "="*60)
-    print(f"SUCCESS! Converted {converted_count} files")
-    if skipped_count > 0:
-        print(f"Warning: Skipped {skipped_count} files (not found)")
-    print(f"Output directory: {output_dir.absolute()}")
-    print(f"Open: {index_path.absolute()}")
-    print("="*60)
-
-if __name__ == "__main__":
-    main()
+</html>

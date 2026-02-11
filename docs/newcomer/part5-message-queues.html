@@ -1,0 +1,2140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Part 5: Message Queue Architecture & Integration - Embrix O2X</title>
+    
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+        font-size: 16px;
+        line-height: 1.7;
+        color: #1f2937;
+        background: linear-gradient(135deg, #f5f7fa 0%, #e9ecef 100%);
+        background-attachment: fixed;
+        padding: 20px;
+    }
+
+    .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        background: white;
+        padding: 40px 50px;
+        border-radius: 16px;
+        box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .container::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 5px;
+        background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+    }
+
+    .nav-header {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 20px;
+        border-radius: 8px;
+        margin-bottom: 30px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+    }
+
+    .nav-header h1 {
+        font-size: 1.4em;
+        margin-bottom: 5px;
+        font-weight: 600;
+    }
+
+    .nav-links {
+        display: flex;
+        gap: 15px;
+        flex-wrap: wrap;
+    }
+
+    .nav-links a {
+        color: white;
+        text-decoration: none;
+        padding: 8px 16px;
+        background: rgba(255,255,255,0.2);
+        border-radius: 5px;
+        transition: background 0.3s;
+    }
+
+    .nav-links a:hover {
+        background: rgba(255,255,255,0.3);
+    }
+
+    h1 {
+        color: #667eea;
+        margin: 35px 0 20px 0;
+        padding: 12px 0 12px 18px;
+        border-left: 5px solid #667eea;
+        border-bottom: 2px solid #667eea;
+        background: linear-gradient(90deg, rgba(102, 126, 234, 0.05) 0%, rgba(255,255,255,0) 100%);
+        font-size: 1.8em;
+        font-weight: 700;
+        border-radius: 0 8px 0 0;
+    }
+
+    h2 {
+        color: #764ba2;
+        margin: 30px 0 18px 0;
+        padding: 10px 0 10px 15px;
+        border-left: 4px solid #764ba2;
+        border-bottom: 2px solid #f0f0f0;
+        background: linear-gradient(90deg, rgba(118, 75, 162, 0.03) 0%, rgba(255,255,255,0) 100%);
+        font-size: 1.5em;
+        font-weight: 700;
+        border-radius: 0 6px 0 0;
+    }
+
+    h3 {
+        color: #667eea;
+        margin: 25px 0 15px 0;
+        padding: 8px 0 8px 12px;
+        border-left: 3px solid #667eea;
+        background: linear-gradient(90deg, rgba(102, 126, 234, 0.04) 0%, transparent 100%);
+        font-size: 1.25em;
+        font-weight: 600;
+        border-radius: 0 6px 6px 0;
+    }
+
+    h4 {
+        color: #764ba2;
+        margin: 20px 0 12px 0;
+        padding: 6px 0 6px 10px;
+        border-left: 2px solid #764ba2;
+        background: linear-gradient(90deg, rgba(118, 75, 162, 0.03) 0%, transparent 100%);
+        font-size: 1.1em;
+        font-weight: 600;
+        border-radius: 0 4px 4px 0;
+    }
+
+    h5 {
+        color: #667eea;
+        margin: 18px 0 10px 0;
+        padding: 4px 0 4px 8px;
+        border-left: 2px solid #667eea;
+        font-size: 1.05em;
+        font-weight: 600;
+        background: linear-gradient(90deg, rgba(102, 126, 234, 0.02) 0%, transparent 100%);
+        border-radius: 0 3px 3px 0;
+    }
+
+    h6 {
+        color: #764ba2;
+        margin: 15px 0 8px 0;
+        font-size: 0.95em;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    p {
+        margin: 12px 0;
+        line-height: 1.7;
+        font-size: 0.95em;
+        color: #374151;
+    }
+    
+    /* Better spacing for paragraphs after headings */
+    h1 + p, h2 + p, h3 + p, h4 + p {
+        margin-top: 10px;
+    }
+
+    ul, ol {
+        margin: 20px 0;
+        padding-left: 35px;
+    }
+
+    li {
+        margin: 10px 0;
+        line-height: 1.7;
+        font-size: 0.95em;
+        position: relative;
+        padding-left: 8px;
+    }
+
+    ul li::marker {
+        color: #667eea;
+        font-weight: bold;
+        font-size: 1.1em;
+    }
+
+    ol li::marker {
+        color: #764ba2;
+        font-weight: bold;
+        font-size: 1em;
+    }
+
+    /* Better list item styling */
+    li {
+        background: linear-gradient(90deg, rgba(102, 126, 234, 0.02) 0%, transparent 100%);
+        border-left: 2px solid transparent;
+        padding: 8px 8px 8px 12px;
+        border-radius: 0 4px 4px 0;
+        transition: all 0.2s ease;
+    }
+
+    li:hover {
+        background: linear-gradient(90deg, rgba(102, 126, 234, 0.05) 0%, transparent 100%);
+        border-left-color: #667eea;
+        padding-left: 16px;
+    }
+
+    /* Nested lists */
+    li ul, li ol {
+        margin: 8px 0 8px 10px;
+    }
+
+    /* Nested list items - smaller styling */
+    li li {
+        font-size: 0.92em;
+        margin: 6px 0;
+        background: linear-gradient(90deg, rgba(118, 75, 162, 0.02) 0%, transparent 100%);
+    }
+
+    li li:hover {
+        background: linear-gradient(90deg, rgba(118, 75, 162, 0.05) 0%, transparent 100%);
+        border-left-color: #764ba2;
+    }
+
+    code {
+        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        padding: 2px 6px;
+        border-radius: 4px;
+        font-family: 'Fira Code', 'Courier New', Consolas, monospace;
+        font-size: 0.85em;
+        color: #d63384;
+        border: 1px solid #dee2e6;
+        font-weight: 500;
+    }
+
+    /* Inline code with special highlighting */
+    p code, li code, td code {
+        position: relative;
+    }
+
+    p code::before, li code::before, td code::before {
+        content: '';
+        position: absolute;
+        inset: -2px;
+        border-radius: 5px;
+        background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+        z-index: -1;
+        opacity: 0;
+        transition: opacity 0.2s;
+    }
+
+    p code:hover::before, li code:hover::before, td code:hover::before {
+        opacity: 1;
+    }
+
+    pre {
+        background: #1e293b;
+        color: #e2e8f0;
+        padding: 16px 18px;
+        border-radius: 8px;
+        overflow-x: auto;
+        margin: 18px 0;
+        border: 1px solid #334155;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+        font-family: 'Cascadia Code', 'Fira Code', 'SF Mono', 'Consolas', 'Liberation Mono', monospace;
+        font-size: 0.85em;
+        line-height: 1.6;
+        position: relative;
+        font-feature-settings: "liga" 0;
+        text-rendering: optimizeLegibility;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+    }
+
+    pre code {
+        background: none;
+        color: inherit;
+        padding: 0;
+        border: none;
+        font-family: inherit;
+        font-weight: normal;
+        font-size: 1em;
+        display: block;
+    }
+    
+    /* Ensure consistent styling for all code content inside pre blocks */
+    pre code * {
+        font-size: inherit !important;
+        line-height: inherit !important;
+        color: inherit !important;
+        font-family: inherit !important;
+    }
+
+    /* Hover effect */
+    pre:hover {
+        border-color: #475569;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.12);
+        transition: all 0.3s ease;
+    }
+
+    /* Code block header indicator */
+    pre::after {
+        content: 'CODE';
+        position: absolute;
+        top: 8px;
+        right: 12px;
+        font-size: 0.65em;
+        color: #64748b;
+        font-weight: 600;
+        letter-spacing: 0.05em;
+        opacity: 0.5;
+    }
+
+    blockquote {
+        border-left: 4px solid #667eea;
+        padding: 15px 20px;
+        margin: 20px 0;
+        color: #555;
+        font-style: italic;
+        font-size: 0.95em;
+        background: linear-gradient(90deg, rgba(102, 126, 234, 0.05) 0%, rgba(255,255,255,0) 100%);
+        border-radius: 0 6px 6px 0;
+        position: relative;
+    }
+
+    blockquote::before {
+        content: '"';
+        position: absolute;
+        left: -10px;
+        top: -10px;
+        font-size: 4em;
+        color: rgba(102, 126, 234, 0.1);
+        font-family: Georgia, serif;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 20px 0;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+        border-radius: 8px;
+        overflow: hidden;
+        background: white;
+        font-size: 0.9em;
+    }
+
+    thead {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    }
+
+    th {
+        color: white;
+        padding: 12px 15px;
+        text-align: left;
+        font-weight: 600;
+        text-transform: uppercase;
+        font-size: 0.82em;
+        letter-spacing: 0.3px;
+    }
+
+    td {
+        padding: 10px 15px;
+        border-bottom: 1px solid #e5e7eb;
+        vertical-align: top;
+        line-height: 1.6;
+    }
+
+    tbody tr:last-child td {
+        border-bottom: none;
+    }
+
+    tbody tr:hover {
+        background: rgba(102, 126, 234, 0.04);
+        transition: background 0.2s ease;
+    }
+
+    tbody tr:nth-child(even) {
+        background: rgba(102, 126, 234, 0.02);
+    }
+
+    tbody tr:nth-child(even):hover {
+        background: rgba(102, 126, 234, 0.05);
+    }
+    
+    /* Better code in tables */
+    td code {
+        font-size: 0.85em;
+        padding: 2px 6px;
+    }
+
+    .info-box {
+        background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+        border-left: 5px solid #2196f3;
+        padding: 20px;
+        margin: 25px 0;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(33, 150, 243, 0.2);
+    }
+
+    .warning-box {
+        background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%);
+        border-left: 5px solid #ff9800;
+        padding: 20px;
+        margin: 25px 0;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(255, 152, 0, 0.2);
+    }
+
+    .success-box {
+        background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+        border-left: 5px solid #4caf50;
+        padding: 20px;
+        margin: 25px 0;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(76, 175, 80, 0.2);
+    }
+
+    /* Better colors for syntax in diagrams */
+    pre {
+        /* Box drawing characters in nice blue */
+        color: #93c5fd;
+    }
+
+    /* JSON/code syntax in pre blocks */
+    pre {
+        white-space: pre;
+        word-wrap: normal;
+    }
+
+    .toc {
+        background: #f8f9fa;
+        padding: 20px;
+        border-radius: 8px;
+        margin: 20px 0;
+        border-left: 4px solid #667eea;
+    }
+
+    .toc h2 {
+        color: #667eea;
+        border-bottom: none;
+        margin-bottom: 15px;
+    }
+
+    .toc ul {
+        list-style: none;
+        padding-left: 0;
+    }
+
+    .toc li {
+        margin: 8px 0;
+    }
+
+    .toc a {
+        color: #667eea;
+        text-decoration: none;
+        transition: color 0.3s;
+    }
+
+    .toc a:hover {
+        color: #764ba2;
+    }
+
+    hr {
+        border: none;
+        border-top: 2px solid #f0f0f0;
+        margin: 30px 0;
+    }
+
+    .badge {
+        display: inline-block;
+        background: #667eea;
+        color: white;
+        padding: 4px 10px;
+        border-radius: 12px;
+        font-size: 0.85em;
+        margin-left: 10px;
+    }
+
+    a {
+        color: #667eea;
+        text-decoration: none;
+        transition: color 0.3s;
+    }
+
+    a:hover {
+        color: #764ba2;
+        text-decoration: underline;
+    }
+    
+    /* Better display for metadata fields */
+    strong {
+        color: #374151;
+        font-weight: 600;
+    }
+    
+    /* Metadata field styling - each field on its own line */
+    .metadata-field {
+        margin: 8px 0;
+        padding: 8px 14px;
+        background: linear-gradient(90deg, rgba(102, 126, 234, 0.04) 0%, transparent 100%);
+        border-left: 3px solid #667eea;
+        border-radius: 0 4px 4px 0;
+        line-height: 1.7;
+        font-size: 0.95em;
+        display: block;
+        clear: both;
+    }
+    
+    .metadata-field strong {
+        color: #667eea;
+        font-weight: 600;
+        margin-right: 8px;
+        display: inline-block;
+        min-width: 100px;
+    }
+    
+    .metadata-field code {
+        font-size: 0.88em;
+    }
+
+    footer {
+        margin-top: 50px;
+        padding-top: 30px;
+        border-top: 2px solid #f0f0f0;
+        text-align: center;
+        color: #888;
+    }
+
+    @media print {
+        body {
+            background: white;
+        }
+        .nav-header, .nav-links {
+            display: none;
+        }
+        pre {
+            break-inside: avoid;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .container {
+            padding: 20px;
+        }
+        .nav-header {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+        .nav-links {
+            margin-top: 15px;
+        }
+        h1 {
+            font-size: 2em;
+        }
+        h2 {
+            font-size: 1.5em;
+        }
+    }
+</style>
+
+</head>
+<body>
+    <div class="container">
+        <div class="nav-header"><div><h1>Embrix O2X Documentation</h1><small>Navigate between guides</small></div><div class="nav-links"><a href="index.html">Home</a><a href="guide-index.html">Guide Index</a><a href="part1-business-architecture.html">Part 1</a><a href="part2-technical-deep-dive.html">Part 2</a><a href="part3-services-development.html">Part 3</a><a href="part4-frontend-ui.html">Part 4</a><a href="part5-message-queues.html">Part 5</a><a href="business-scenarios.html">Scenarios</a><a href="multi-tenant-complete-guide.html">Multi-Tenant</a><a href="quick-reference.html">Quick Ref</a><a href="documentation-enhancement-summary.html">Enhancement</a><a href="complete-system-documentation.html">Complete Doc</a></div></div>
+        
+<h1>Embrix O2X Platform - Newcomer's Guide (Part 5)</h1>
+
+<h2>Message Queue Architecture & Integration Patterns</h2>
+
+<strong>Version</strong>: 3.1.9-SNAPSHOT  
+<strong>Last Updated</strong>: February 2026  
+<strong>Prerequisites</strong>: Read Parts 1-4 first  
+<strong>Target Audience</strong>: Backend developers, integration engineers, DevOps engineers
+
+<hr>
+
+<h2>Table of Contents - Part 5</h2>
+
+<ol>
+<li><a href="#1-message-queue-architecture-overview">Message Queue Architecture Overview</a></li>
+<li><a href="#2-activemq-infrastructure">ActiveMQ Infrastructure</a></li>
+<li><a href="#3-complete-queue-inventory">Complete Queue Inventory</a></li>
+<li><a href="#4-message-flow-patterns">Message Flow Patterns</a></li>
+<li><a href="#5-error-handling--retry-mechanisms">Error Handling & Retry Mechanisms</a></li>
+<li><a href="#6-message-formats--examples">Message Formats & Examples</a></li>
+<li><a href="#7-performance--monitoring">Performance & Monitoring</a></li>
+<li><a href="#8-development-guide">Development Guide</a></li>
+<li><a href="#9-troubleshooting">Troubleshooting</a></li>
+<li><a href="#10-best-practices">Best Practices</a></li>
+</ol>
+
+<hr>
+
+<h2>1. Message Queue Architecture Overview</h2>
+
+<h3>1.1 Why Message Queues?</h3>
+
+<strong>Embrix O2X uses message queues (ActiveMQ) as the backbone for asynchronous processing</strong>, enabling:
+<table>
+<thead><tr>
+<th>Benefit</th>
+<th>Description</th>
+<th>Example Use Case</th>
+</tr></thead><tbody>
+<tr>
+<td>---------</td>
+<td>-------------</td>
+<td>------------------</td>
+</tr>
+<tr>
+<td><strong>Decoupling</strong></td>
+<td>Services don't need to know about each other</td>
+<td>CRM system sends orders; gateway processes independently</td>
+</tr>
+<tr>
+<td><strong>Resilience</strong></td>
+<td>System continues even if a service is down</td>
+<td>Mediation continues even if usage service restarts</td>
+</tr>
+<tr>
+<td><strong>Scalability</strong></td>
+<td>Horizontal scaling of consumers</td>
+<td>Multiple service-usage instances process USAGE queue</td>
+</tr>
+<tr>
+<td><strong>Load Leveling</strong></td>
+<td>Smooth out traffic spikes</td>
+<td>10,000 CDRs arrive at once, processed gradually</td>
+</tr>
+<tr>
+<td><strong>Async Processing</strong></td>
+<td>Non-blocking operations</td>
+<td>Order submitted immediately, provisioning happens later</td>
+</tr>
+</tbody></table>
+<h3>1.2 Architecture Diagram</h3>
+
+<pre><code class="language-">┌─────────────────────────────────────────────────────────────────────────┐
+│                        MESSAGE QUEUE ECOSYSTEM                           │
+└─────────────────────────────────────────────────────────────────────────┘
+
+ EXTERNAL SYSTEMS                   QUEUES                CONSUMERS
+┌──────────────────┐          ┌──────────────┐      ┌─────────────────┐
+│  Salesforce CRM  │──────────▶│  OMS         │──────▶│ crm_gateway     │
+│  Orders/Accounts │          │  (Order      │      │ OmsReceiver     │
+└──────────────────┘          │   Intake)    │      └─────────────────┘
+                              └──────────────┘              │
+                                     │                      │
+                              ┌──────▼──────┐              │
+┌──────────────────┐          │ OMS_ARCHIVE │              │
+│  Nokia/ServiceNow│◀─────────┤ (Audit)     │              │
+│  Provisioning    │          └─────────────┘              │
+│  Callbacks       │                                        ▼
+└───────┬──────────┘          ┌──────────────┐      ┌─────────────────┐
+        │                     │ OMS_ERROR    │◀─────│ Archive/Error   │
+        │                     │ (Failures)   │      │ Handling        │
+        │                     └──────────────┘      └─────────────────┘
+        │
+        └────────────────────▶┌──────────────┐      ┌─────────────────┐
+                              │ PROVISIONING │──────▶│ crm_gateway     │
+                              │ _RESPONSE    │      │ OrderUpdater    │
+                              │ (Callbacks)  │      └─────────────────┘
+                              └──────────────┘              │
+                                                            │
+┌──────────────────┐          ┌──────────────┐            ▼
+│  CDR Files       │          │ MEDIATION    │      ┌─────────────────┐
+│  SFTP/S3         │──────────▶│ (CDR Process)│──────▶│ service-        │
+└──────────────────┘          └──────────────┘      │ mediation       │
+                                     │               │ MediationRcvr   │
+                                     │               └────────┬────────┘
+                                     │                        │
+                                     │                        ▼
+                              ┌──────▼──────┐      ┌─────────────────┐
+│  Batch Process   │──────────▶│ USAGE      │──────▶│ service-usage   │
+│  (Rating Trigger)│          │ (Rating)    │      │ UsageProcessor  │
+└──────────────────┘          └──────────────┘      └─────────────────┘
+                                     │
+                                     │
+┌──────────────────┐          ┌──────▼──────┐      ┌─────────────────┐
+│  service-proxy   │──────────▶│ BULK       │──────▶│ jobs-common     │
+│  Bulk Operations │          │ (Bulk Ops)  │      │ BulkProcessor   │
+└──────────────────┘          └──────────────┘      └─────────────────┘
+                                     │
+                                     │
+┌──────────────────┐          ┌──────▼──────┐      ┌─────────────────┐
+│  Price Vendor    │──────────▶│ price-sync │──────▶│ pricing_sync    │
+│  Updates         │          │             │      │ ConsumerProcess │
+└──────────────────┘          └──────────────┘      └─────────────────┘
+</code></pre>
+
+<hr>
+
+<h2>2. ActiveMQ Infrastructure</h2>
+
+<h3>2.1 Deployment Architecture</h3>
+
+<strong>Embrix O2X uses Amazon MQ</strong> (managed ActiveMQ service) for production:
+<pre><code class="language-">┌─────────────────────────────────────────────────────────────┐
+│ Amazon MQ Broker (ActiveMQ 5.16.x)                          │
+├─────────────────────────────────────────────────────────────┤
+│                                                              │
+│  Deployment Mode: Active/Standby                            │
+│  Instance Type: mq.m5.large                                 │
+│  Storage: 100 GB EBS (auto-scaling enabled)                 │
+│  Multi-AZ: Yes (High Availability)                          │
+│                                                              │
+│  Endpoints:                                                  │
+│  • OpenWire (Java): ssl://b-xxx.mq.us-east-1.amazonaws.com:61617 │
+│  • STOMP: ssl://b-xxx.mq.us-east-1.amazonaws.com:61614     │
+│  • Web Console: https://b-xxx.mq.us-east-1.amazonaws.com:8162   │
+│                                                              │
+│  Authentication: Username/Password (Vault-managed)          │
+│  Encryption: TLS 1.2+                                        │
+│  VPC: Private subnet (no public access)                     │
+│                                                              │
+└─────────────────────────────────────────────────────────────┘
+</code></pre>
+<h3>2.2 Local Development Setup</h3>
+
+<strong>Docker Compose</strong> for local ActiveMQ:
+<pre><code class="language-yaml"># docker-compose.yml (excerpt)
+version: '3.8'
+services:
+  activemq:
+    image: rmohr/activemq:5.15.9
+    container_name: embrix-activemq
+    ports:
+      - "61616:61616"  # OpenWire (Java clients)
+      - "8161:8161"    # Web Console
+      - "5672:5672"    # AMQP
+      - "61613:61613"  # STOMP
+    environment:
+      - ACTIVEMQ_ADMIN_LOGIN=admin
+      - ACTIVEMQ_ADMIN_PASSWORD=admin
+    volumes:
+      - ./activemq-data:/var/activemq/data
+      - ./activemq-conf:/opt/activemq/conf
+    networks:
+      - embrix-network
+</code></pre>
+<strong>Start ActiveMQ</strong>:
+<pre><code class="language-bash">docker-compose up -d activemq
+
+# Verify running
+docker ps | grep activemq
+
+# Access Web Console
+open http://localhost:8161/admin
+# Credentials: admin/admin
+</code></pre>
+<h3>2.3 Connection Configuration</h3>
+
+<strong>Spring Boot Configuration</strong> (application.yml):
+<pre><code class="language-yaml">spring:
+  activemq:
+    broker-url: tcp://localhost:61616
+    # Production: ssl://b-xxx.mq.us-east-1.amazonaws.com:61617
+    user: ${MQ_USERNAME}  # From Vault
+    password: ${MQ_PASSWORD}  # From Vault
+    pool:
+      enabled: true
+      max-connections: 10
+      idle-timeout: 30000
+    packages:
+      trust-all: false
+      trusted: com.embrix.core
+
+# Camel configuration
+camel:
+  component:
+    activemq:
+      broker-url: ${spring.activemq.broker-url}
+      username: ${spring.activemq.user}
+      password: ${spring.activemq.password}
+      concurrent-consumers: 3
+      max-concurrent-consumers: 10
+</code></pre>
+<strong>Vault Secrets</strong>:
+<pre><code class="language-bash"># Store in Vault
+vault kv put secret/activemq/production \
+  username=embrix-prod-user \
+  password=&lt;secure-password&gt;
+
+# Retrieve in application
+export MQ_USERNAME=$(vault kv get -field=username secret/activemq/production)
+export MQ_PASSWORD=$(vault kv get -field=password secret/activemq/production)
+</code></pre>
+
+<hr>
+
+<h2>3. Complete Queue Inventory</h2>
+
+<h3>3.1 Active Production Queues</h3>
+
+<table>
+<thead><tr>
+<th>Queue Name</th>
+<th>Purpose</th>
+<th>Producer(s)</th>
+<th>Consumer(s)</th>
+<th>Message Type</th>
+<th>Avg Volume</th>
+</tr></thead><tbody>
+<tr>
+<td>------------</td>
+<td>---------</td>
+<td>-------------</td>
+<td>-------------</td>
+<td>--------------</td>
+<td>------------</td>
+</tr>
+<tr>
+<td><strong>OMS</strong></td>
+<td>Order intake</td>
+<td>Salesforce CRM, External systems</td>
+<td>crm_gateway (OmsReceiver)</td>
+<td>OrderDTO</td>
+<td>500-1000/day</td>
+</tr>
+<tr>
+<td><strong>OMS_ARCHIVE</strong></td>
+<td>Audit trail</td>
+<td>crm_gateway</td>
+<td>Audit system (passive)</td>
+<td>OrderDTO</td>
+<td>Same as OMS</td>
+</tr>
+<tr>
+<td><strong>OMS_ERROR</strong></td>
+<td>Failed orders</td>
+<td>crm_gateway</td>
+<td>Error handling / Manual review</td>
+<td>OrderDTO + Error</td>
+<td>5-10/day</td>
+</tr>
+<tr>
+<td><strong>OMS_RESPONSE</strong></td>
+<td>Order confirmations</td>
+<td>crm_gateway</td>
+<td>External CRM</td>
+<td>OrderResponseDTO</td>
+<td>500-1000/day</td>
+</tr>
+<tr>
+<td><strong>PROVISIONING_RESPONSE</strong></td>
+<td>Provisioning callbacks</td>
+<td>Nokia, ServiceNow, Cisco</td>
+<td>crm_gateway (OrderUpdater)</td>
+<td>ProvisioningResponseDTO</td>
+<td>300-600/day</td>
+</tr>
+<tr>
+<td><strong>MCM_BILLING_OMS_RESPONSE</strong></td>
+<td>MCM-specific responses</td>
+<td>MCM/Nokia systems</td>
+<td>provision_gateway</td>
+<td>MCMResponseDTO</td>
+<td>200-400/day</td>
+</tr>
+<tr>
+<td><strong>MEDIATION</strong></td>
+<td>CDR processing</td>
+<td>External mediation system</td>
+<td>service-mediation (MediationProcessor)</td>
+<td>ProcessCdrsInput</td>
+<td>10-50 files/day</td>
+</tr>
+<tr>
+<td><strong>USAGE</strong></td>
+<td>Usage rating</td>
+<td>batch-process</td>
+<td>service-usage (UsageProcessor)</td>
+<td>UsageContainerInput</td>
+<td>Hourly batches</td>
+</tr>
+<tr>
+<td><strong>BULK</strong></td>
+<td>Bulk operations</td>
+<td>service-proxy</td>
+<td>jobs-common (BulkProcessor)</td>
+<td>BulkProcessInput</td>
+<td>50-200/day</td>
+</tr>
+<tr>
+<td><strong>price-sync</strong></td>
+<td>Price catalog updates</td>
+<td>External price vendor</td>
+<td>pricing_sync</td>
+<td>PriceSyncMessage</td>
+<td>Weekly</td>
+</tr>
+</tbody></table>
+<h3>3.2 Defined but Inactive Queues</h3>
+
+<table>
+<thead><tr>
+<th>Queue Name</th>
+<th>Status</th>
+<th>Reason</th>
+<th>Future Use</th>
+</tr></thead><tbody>
+<tr>
+<td>------------</td>
+<td>--------</td>
+<td>--------</td>
+<td>------------</td>
+</tr>
+<tr>
+<td><strong>PRICING_SYNC</strong></td>
+<td>Disabled</td>
+<td>Feature EP-4729 disabled</td>
+<td>Potential re-enable for automated pricing</td>
+</tr>
+<tr>
+<td><strong>BILLING</strong></td>
+<td>Not Used</td>
+<td>Direct service invocation preferred</td>
+<td>Reserved for future async billing</td>
+</tr>
+<tr>
+<td><strong>PAYMENT</strong></td>
+<td>Not Used</td>
+<td>Payments processed synchronously</td>
+<td>May be used for async payment webhooks</td>
+</tr>
+<tr>
+<td><strong>INVOICE</strong></td>
+<td>Not Used</td>
+<td>Invoices generated on-demand</td>
+<td>Reserved for batch invoice generation</td>
+</tr>
+<tr>
+<td><strong>ACCOUNT</strong></td>
+<td>Not Used</td>
+<td>Accounts created synchronously</td>
+<td>Reserved for future account events</td>
+</tr>
+</tbody></table>
+<h3>3.3 Custom/Dynamic Queues</h3>
+
+<strong>OmsComponent Framework</strong> allows creation of custom queues per orchestrator:
+<pre><code class="language-groovy">// Example: Custom queue for complex provisioning
+@Component
+class ComplexProvisioningOrchestrator extends OmsComponent {
+    @Override
+    String getQueueName() {
+        return "COMPLEX_PROVISIONING"  // Creates dedicated queue
+    }
+    
+    // Processing logic...
+}
+</code></pre>
+
+<hr>
+
+<h2>4. Message Flow Patterns</h2>
+
+<h3>4.1 Order-to-Cash Flow (Synchronous + Async)</h3>
+
+<strong>Complete Flow with Queue Integration</strong>:
+<pre><code class="language-">┌─────────────────────────────────────────────────────────────────────────┐
+│ PHASE 1: ORDER INTAKE (Async via OMS Queue)                             │
+└─────────────────────────────────────────────────────────────────────────┘
+
+Salesforce CRM
+  │ [1] Order Created
+  │ POST to external endpoint
+  ▼
+┌─────────────────────┐
+│ External Gateway    │
+│ (Salesforce)        │
+└──────────┬──────────┘
+           │ [2] Send to OMS queue
+           ▼
+     ┌──────────┐
+     │   OMS    │
+     │  Queue   │
+     └─────┬────┘
+           │ [3] Consume message
+           ▼
+┌─────────────────────┐
+│ crm_gateway         │
+│ OmsReceiver         │
+├─────────────────────┤
+│ • Validate message  │
+│ • Parse OrderDTO    │
+│ • Enrich data       │
+└──────────┬──────────┘
+           │
+           ├──────────────────┐ [4a] Archive (audit)
+           │                  ▼
+           │            ┌──────────────┐
+           │            │ OMS_ARCHIVE  │
+           │            └──────────────┘
+           │
+           ├──────────────────┐ [4b] On error
+           │                  ▼
+           │            ┌──────────────┐
+           │            │  OMS_ERROR   │
+           │            └──────────────┘
+           │
+           │ [5] Process order
+           ▼
+┌─────────────────────┐
+│ OmsProcessor        │
+├─────────────────────┤
+│ • Create account    │
+│ • Create order      │
+│ • Create subs       │
+└──────────┬──────────┘
+           │
+           ├──────────────────┐ [6] Send response
+           │                  ▼
+           │            ┌──────────────┐
+           │            │OMS_RESPONSE  │──────▶ Back to CRM
+           │            └──────────────┘
+           │
+           │ [7] Trigger provisioning
+           ▼
+┌─────────────────────┐
+│ provision_gateway   │
+│ • Nokia ESB call    │
+└─────────────────────┘
+
+┌─────────────────────────────────────────────────────────────────────────┐
+│ PHASE 2: PROVISIONING CALLBACK (Async via PROVISIONING_RESPONSE)        │
+└─────────────────────────────────────────────────────────────────────────┘
+
+Nokia/Network Element
+  │ [8] Provisioning Complete
+  │ Callback webhook
+  ▼
+┌───────────────────────┐
+│ Provisioning System   │
+│ (Nokia, ServiceNow)   │
+└──────────┬────────────┘
+           │ [9] Send callback
+           ▼
+     ┌──────────────────────┐
+     │ PROVISIONING_RESPONSE│
+     │      Queue           │
+     └─────┬────────────────┘
+           │ [10] Consume
+           ▼
+┌─────────────────────┐
+│ crm_gateway         │
+│ OrderUpdater        │
+├─────────────────────┤
+│ • Update order      │
+│ • Set COMPLETED     │
+└──────────┬──────────┘
+           │
+           │ [11] Trigger billing
+           ▼
+┌─────────────────────┐
+│ service-billing     │
+│ • Create charges    │
+│ • Schedule billing  │
+└──────────┬──────────┘
+           │
+           │ [12] Generate invoice
+           ▼
+┌─────────────────────┐
+│ service-invoice     │
+│ • Create PDF        │
+│ • Send to customer  │
+└─────────────────────┘
+
+Time Breakdown:
+[1-7]  : 2-5 seconds (async order processing)
+[8-10] : 5-30 minutes (provisioning varies by network)
+[11-12]: 1-2 seconds (billing trigger)
+Total: 5-30 minutes for complete flow
+</code></pre>
+<h3>4.2 Usage Rating Pipeline (Multi-Queue Async)</h3>
+
+<strong>High-Volume CDR Processing</strong>:
+<pre><code class="language-">┌─────────────────────────────────────────────────────────────────────────┐
+│ PHASE 1: MEDIATION (MEDIATION Queue)                                    │
+└─────────────────────────────────────────────────────────────────────────┘
+
+CDR Files on SFTP/S3
+  │ 1000s-100,000s of records
+  ▼
+┌─────────────────────┐
+│ External Mediation  │
+│ System / Batch Job  │
+└──────────┬──────────┘
+           │ [1] Trigger mediation
+           │ Message: { fileName, serviceType, tenantName }
+           ▼
+     ┌──────────┐
+     │MEDIATION │
+     │  Queue   │
+     └─────┬────┘
+           │ [2] Consume
+           ▼
+┌─────────────────────────────────┐
+│ service-mediation               │
+│ MediationProcessor              │
+├─────────────────────────────────┤
+│ [3] Download CDR file           │
+│ • SFTP or S3                    │
+│ [4] Parse and normalize         │
+│ • Vendor format → Canonical     │
+│ • Enrich with account data      │
+│ [5] Deduplicate                 │
+│ • Check for existing records    │
+│ [6] Store UNRATED records       │
+│ • core_usage.usage_record       │
+│ • status = 'UNRATED'            │
+└──────────┬──────────────────────┘
+           │
+           │ [7] Mediation complete
+           │ Stored: 50,000 UNRATED records
+           ▼
+
+Processing Time: 5-30 minutes for 50,000 CDRs
+Database Inserts: Batch insert (1000 per batch)
+
+┌─────────────────────────────────────────────────────────────────────────┐
+│ PHASE 2: RATING (USAGE Queue)                                           │
+└─────────────────────────────────────────────────────────────────────────┘
+
+┌─────────────────────┐
+│ batch-process       │
+│ (Scheduled Job)     │
+├─────────────────────┤
+│ [8] Hourly trigger  │
+│ Query UNRATED usage │
+│ Group by account    │
+└──────────┬──────────┘
+           │ [9] Trigger rating
+           │ Message: { usageRecordIds[], batchId }
+           ▼
+     ┌──────────┐
+     │  USAGE   │
+     │  Queue   │
+     └─────┬────┘
+           │ [10] Consume
+           ▼
+┌─────────────────────────────────┐
+│ service-usage                   │
+│ UsageProcessor                  │
+├─────────────────────────────────┤
+│ [11] Rate usage records         │
+│ • Apply pricing plans           │
+│ • Calculate tiered charges      │
+│ • Check quotas/limits           │
+│ [12] Update records             │
+│ • status = 'RATED'              │
+│ • rated_amount = calculated     │
+│ [13] Create accumulators        │
+│ • Monthly voice minutes         │
+│ • Data GB consumed              │
+└──────────┬──────────────────────┘
+           │
+           │ [14] Rating complete
+           │ 50,000 records now RATED
+           ▼
+
+Processing Time: 10-60 minutes for 50,000 CDRs
+Rate: ~1000 CDRs/second
+
+┌─────────────────────────────────────────────────────────────────────────┐
+│ PHASE 3: BILLING (Direct Service Call - No Queue)                       │
+└─────────────────────────────────────────────────────────────────────────┘
+
+┌─────────────────────┐
+│ batch-process       │
+│ (End of Month)      │
+├─────────────────────┤
+│ [15] Monthly billing│
+│ run                 │
+└──────────┬──────────┘
+           │ [16] Direct GraphQL call
+           ▼
+┌─────────────────────────────────┐
+│ service-billing                 │
+├─────────────────────────────────┤
+│ [17] Query RATED usage          │
+│ • WHERE billed = false          │
+│ [18] Create charges             │
+│ • Aggregate by account          │
+│ • Apply discounts               │
+│ [19] Update usage               │
+│ • billed = true                 │
+└──────────┬──────────────────────┘
+           │
+           │ [20] Invoicing
+           ▼
+┌─────────────────────┐
+│ service-invoice     │
+│ • Generate invoice  │
+│ • Create PDF        │
+│ • Email customer    │
+└─────────────────────┘
+
+Total End-to-End Time:
+CDR Creation → Customer Invoice: 1-4 hours (depending on batch schedules)
+</code></pre>
+<strong>Key Insights</strong>:
+<ul>
+<li><strong>MEDIATION Queue</strong>: Low message volume (10-50/day), but each message triggers processing of 1,000s-100,000s of CDRs</li>
+<li><strong>USAGE Queue</strong>: Medium volume (24-72 messages/day for hourly batches), each processes thousands of records</li>
+<li><strong>No Queue for Billing</strong>: Direct service invocation for billing cycle (scheduled job)</li>
+</ul>
+<h3>4.3 Bulk Operations Flow (BULK Queue)</h3>
+
+<strong>Use Cases</strong>: Invoice regeneration, payment allocation, credit/debit notes, adjustments
+<pre><code class="language-">┌─────────────────────────────────────────────────────────────────────────┐
+│ BULK OPERATIONS PATTERN                                                  │
+└─────────────────────────────────────────────────────────────────────────┘
+
+User/System (UI or API)
+  │ [1] Bulk operation request
+  │ Example: "Regenerate invoices for 500 accounts"
+  ▼
+┌─────────────────────┐
+│ service-proxy       │
+│ BulkProcessService  │
+├─────────────────────┤
+│ [2] Create bulk job │
+│ • Generate job ID   │
+│ • Validate payload  │
+│ [3] Split into      │
+│     chunks (100)    │
+└──────────┬──────────┘
+           │ [4] Send messages (5 chunks)
+           ▼
+     ┌──────────┐
+     │   BULK   │
+     │  Queue   │
+     └─────┬────┘
+           │ [5] Consume (parallel)
+           ▼
+┌─────────────────────────────────────────┐
+│ jobs-common                             │
+│ BulkProcessor (3 consumers)             │
+├─────────────────────────────────────────┤
+│ Consumer 1 │ Consumer 2 │ Consumer 3   │
+│ Chunk 1    │ Chunk 2    │ Chunk 3      │
+│ 100 ops    │ 100 ops    │ 100 ops      │
+└──────────┬──────────────┴──────────────┘
+           │ [6] Execute operations
+           │ • REGENERATE_INVOICE → service-invoice
+           │ • ALLOCATE_PAYMENT → service-payment
+           │ • CREATE_ADJUSTMENT → service-billing
+           ▼
+┌─────────────────────────────────┐
+│ Core Services                   │
+│ • service-invoice               │
+│ • service-payment               │
+│ • service-billing               │
+└──────────┬──────────────────────┘
+           │
+           │ [7] Update bulk_action_stats
+           │ • Success count
+           │ • Failure count
+           │ • Completed percentage
+           ▼
+
+Processing Time:
+500 operations in chunks of 100 = 5 messages
+With 3 consumers: ~2-5 minutes total
+</code></pre>
+<strong>Supported Bulk Operations</strong>:
+<pre><code class="language-groovy">enum BulkApiName {
+    // Invoice operations
+    RESEND_INVOICE_TO_VENDOR,
+    REGENERATE_INVOICE,
+    CANCEL_INVOICE,
+    
+    // Payment operations
+    REVERSE_PAYMENT,
+    ALLOCATE_PAYMENT,
+    PROCESS_BANK_FILE,
+    
+    // Credit/Debit notes
+    CREATE_CREDIT_NOTE,
+    CREATE_DEBIT_NOTE,
+    
+    // Adjustments
+    CREATE_ADJUSTMENT,
+    REVERSE_ADJUSTMENT
+}
+</code></pre>
+<strong>BULK Message Format</strong>:
+<pre><code class="language-json">{
+  "id": "BULK-2024-02-11-001",
+  "apiName": "REGENERATE_INVOICE",
+  "payloads": [
+    {
+      "invoiceId": "INV-2024-001",
+      "reason": "Tax calculation correction"
+    },
+    {
+      "invoiceId": "INV-2024-002",
+      "reason": "Tax calculation correction"
+    }
+    // ... up to 100 per message
+  ],
+  "createdBy": "admin@embrix.com",
+  "createdDate": "2024-02-11T10:30:00Z"
+}
+</code></pre>
+
+<hr>
+
+<h2>5. Error Handling & Retry Mechanisms</h2>
+
+<h3>5.1 Exception Types</h3>
+
+<strong>Two Categories of Exceptions</strong>:
+<pre><code class="language-groovy">// NonRetryableException - Business validation failures
+class NonRetryableException extends RuntimeException {
+    String errorCode
+    Map&lt;String, Object&gt; details
+    
+    NonRetryableException(String message, String errorCode) {
+        super(message)
+        this.errorCode = errorCode
+    }
+}
+
+// Examples:
+// • Account not found
+// • Duplicate order
+// • Invalid product code
+// • Insufficient balance
+// • Business rule violation
+
+// RetryableException - Transient failures
+class RetryableException extends RuntimeException {
+    RetryableException(String message, Throwable cause) {
+        super(message, cause)
+    }
+}
+
+// Examples:
+// • Database connection timeout
+// • External API timeout
+// • Network error
+// • Temporary service unavailable
+</code></pre>
+<h3>5.2 Retry Configuration</h3>
+
+<strong>Exponential Backoff with Jitter</strong>:
+<pre><code class="language-groovy">// Retry policy configuration
+@Configuration
+class JmsRetryConfig {
+    
+    @Bean
+    DefaultErrorHandler errorHandler() {
+        def errorHandler = new DefaultErrorHandler()
+        
+        errorHandler.setMaximumRedeliveries(7)
+        errorHandler.setRedeliveryDelay(250)  // Initial delay: 250ms
+        errorHandler.setBackOffMultiplier(1.5)  // Exponential multiplier
+        errorHandler.setUseExponentialBackOff(true)
+        errorHandler.setMaximumRedeliveryDelay(60000)  // Max delay: 60s
+        errorHandler.setUseCollisionAvoidance(true)  // Add jitter
+        
+        return errorHandler
+    }
+}
+</code></pre>
+<strong>Retry Schedule</strong>:
+<pre><code class="language-">Attempt 1: Immediate (0ms)
+Attempt 2: 250ms
+Attempt 3: 375ms (250 * 1.5)
+Attempt 4: 562ms (375 * 1.5)
+Attempt 5: 843ms (562 * 1.5)
+Attempt 6: 1264ms (843 * 1.5)
+Attempt 7: 1896ms (1264 * 1.5)
+Attempt 8: 2841ms (1896 * 1.5) - Final attempt
+
+Total retry time: ~8 seconds
+</code></pre>
+<h3>5.3 Dead Letter Queue (DLQ)</h3>
+
+<strong>Messages that fail after max retries → DLQ</strong>:
+<pre><code class="language-groovy">@Component
+class OmsReceiver {
+    
+    @JmsListener(destination = "OMS", containerFactory = "jmsFactory")
+    void receiveMessage(String message) {
+        try {
+            processOrder(message)
+        } catch (NonRetryableException e) {
+            log.error("Business validation failed: ${e.message}")
+            // Send to OMS_ERROR for manual review
+            jmsTemplate.convertAndSend("OMS_ERROR", [
+                originalMessage: message,
+                errorMessage: e.message,
+                errorCode: e.errorCode,
+                timestamp: new Date()
+            ])
+            // ACK message (do not retry)
+        } catch (Exception e) {
+            log.error("Transient error: ${e.message}")
+            // Throw RetryableException to trigger retry
+            throw new RetryableException("Failed to process order", e)
+        }
+    }
+}
+</code></pre>
+<strong>DLQ Monitoring</strong>:
+<pre><code class="language-bash"># View DLQ messages in ActiveMQ Console
+http://localhost:8161/admin/browse.jsp?JMSDestination=ActiveMQ.DLQ
+
+# Programmatically reprocess DLQ messages
+@Component
+class DLQReprocessor {
+    
+    @Scheduled(cron = "0 0 */6 * * *")  // Every 6 hours
+    void checkDLQ() {
+        def dlqMessages = browseQueue("ActiveMQ.DLQ")
+        
+        dlqMessages.each { message -&gt;
+            if (shouldRetry(message)) {
+                moveToOriginalQueue(message)
+            } else {
+                createIncident(message)  // Alert ops team
+            }
+        }
+    }
+}
+</code></pre>
+
+<hr>
+
+<h2>6. Message Formats & Examples</h2>
+
+<h3>6.1 OMS Message Format</h3>
+
+<strong>Order Creation</strong>:
+<pre><code class="language-json">{
+  "object_type": "ORDER",
+  "account_id": "ACC-1001",
+  "user_id": "USR-501",
+  "order_type": "NEW",
+  "services": [
+    {
+      "action": "ADD",
+      "product_code": "INTERNET_100",
+      "quantity": 1,
+      "pricing": {
+        "monthly_recurring_charge": 50.00,
+        "one_time_charge": 99.00,
+        "currency": "USD"
+      },
+      "customization": {
+        "installation_date": "2024-02-20",
+        "ont_serial": "ONT123456",
+        "service_address": {
+          "street": "456 Service Road",
+          "city": "Mexico City",
+          "state": "CDMX",
+          "postal_code": "01000"
+        }
+      }
+    }
+  ],
+  "extended_data": {
+    "sales_rep": "John Doe",
+    "campaign_code": "PROMO2024",
+    "notes": "Customer requested morning installation"
+  },
+  "submission_timestamp": "2024-02-11T10:45:00Z",
+  "source_system": "Salesforce",
+  "correlation_id": "SF-ORD-20240211-12345"
+}
+</code></pre>
+<strong>Account Update</strong>:
+<pre><code class="language-json">{
+  "object_type": "ACCOUNT",
+  "account_id": "ACC-1001",
+  "action": "UPDATE",
+  "updates": {
+    "billing_address": {
+      "street": "789 New Street",
+      "city": "Guadalajara",
+      "state": "Jalisco",
+      "postal_code": "44100"
+    },
+    "payment_method": {
+      "type": "CREDIT_CARD",
+      "token": "tok_visa_1234",
+      "is_default": true
+    }
+  },
+  "submission_timestamp": "2024-02-11T11:00:00Z"
+}
+</code></pre>
+<h3>6.2 PROVISIONING_RESPONSE Message</h3>
+
+<strong>Successful Provisioning Callback</strong>:
+<pre><code class="language-json">{
+  "order_id": "ORD-20240211-001",
+  "provisioning_id": "PROV-12345",
+  "status": "COMPLETED",
+  "completion_timestamp": "2024-02-11T11:30:00Z",
+  "network_details": {
+    "ont_serial": "ONT123456",
+    "olt": "OLT-ZONE1-01",
+    "port": "1/1/5",
+    "vlan": 100,
+    "ip_address": "10.1.1.150",
+    "gateway": "10.1.1.1",
+    "speed_profile": "100M_DOWN_20M_UP",
+    "service_activation_date": "2024-02-11T11:30:00Z"
+  },
+  "vendor": "Nokia",
+  "vendor_reference": "NOKIA-ACT-789456"
+}
+</code></pre>
+<strong>Failed Provisioning</strong>:
+<pre><code class="language-json">{
+  "order_id": "ORD-20240211-002",
+  "provisioning_id": "PROV-12346",
+  "status": "FAILED",
+  "failure_timestamp": "2024-02-11T12:00:00Z",
+  "error": {
+    "code": "PORT_UNAVAILABLE",
+    "message": "No available ports on OLT-ZONE2-03",
+    "details": {
+      "olt": "OLT-ZONE2-03",
+      "requested_port": "1/1/8",
+      "available_ports": []
+    }
+  },
+  "vendor": "Nokia",
+  "retry_recommended": false
+}
+</code></pre>
+<h3>6.3 MEDIATION Message</h3>
+
+<strong>CDR File Processing Request</strong>:
+<pre><code class="language-json">{
+  "service_type": "VOICE",
+  "file_name": "mcm_voice_cdr_20240211.csv",
+  "tenant_name": "coopeg-prd",
+  "file_location": "sftp://cdr.mcm.com/outbound/mcm_voice_cdr_20240211.csv",
+  "file_size_bytes": 52428800,
+  "record_count_estimate": 150000,
+  "generation_timestamp": "2024-02-11T00:00:00Z",
+  "processing_priority": "NORMAL",
+  "vendor": "MCM",
+  "vendor_format": "MCM_VOICE_V2"
+}
+</code></pre>
+<h3>6.4 USAGE Message</h3>
+
+<strong>Usage Rating Batch</strong>:
+<pre><code class="language-json">{
+  "batch_id": "USAGE-BATCH-20240211-001",
+  "usage_record_ids": [
+    "USG-001",
+    "USG-002",
+    "USG-003"
+    // ... up to 10,000 IDs
+  ],
+  "rating_date": "2024-02-11",
+  "account_ids": ["ACC-1001", "ACC-1002"],
+  "service_type": "VOICE",
+  "priority": "HIGH",
+  "initiated_by": "batch-process",
+  "submission_timestamp": "2024-02-11T01:00:00Z"
+}
+</code></pre>
+<strong>Re-rating Request</strong>:
+<pre><code class="language-json">{
+  "reprocess_type": "RE_RATE",
+  "usage_record_ids": ["USG-1001", "USG-1002"],
+  "reason": "Corrected pricing plan",
+  "new_rating_plan_id": "PLAN-2024-NEW",
+  "initiated_by": "admin@embrix.com",
+  "submission_timestamp": "2024-02-11T14:00:00Z"
+}
+</code></pre>
+<h3>6.5 BULK Message</h3>
+
+<strong>Invoice Regeneration</strong>:
+<pre><code class="language-json">{
+  "id": "BULK-2024-02-11-005",
+  "api_name": "REGENERATE_INVOICE",
+  "payloads": [
+    {
+      "invoice_id": "INV-2024-001",
+      "account_id": "ACC-1001",
+      "reason": "Tax calculation correction",
+      "regenerate_pdf": true,
+      "send_notification": false
+    },
+    {
+      "invoice_id": "INV-2024-002",
+      "account_id": "ACC-1002",
+      "reason": "Tax calculation correction",
+      "regenerate_pdf": true,
+      "send_notification": false
+    }
+    // ... up to 100
+  ],
+  "total_count": 2,
+  "created_by": "admin@embrix.com",
+  "created_date": "2024-02-11T15:30:00Z",
+  "callback_url": "https://api.embrix.com/bulk/status/BULK-2024-02-11-005"
+}
+</code></pre>
+
+<hr>
+
+<h2>7. Performance & Monitoring</h2>
+
+<h3>7.1 Key Metrics</h3>
+
+<strong>Monitor in ActiveMQ Console</strong> (<code>http://localhost:8161/admin</code>):
+<table>
+<thead><tr>
+<th>Metric</th>
+<th>Description</th>
+<th>Healthy Range</th>
+<th>Alert Threshold</th>
+</tr></thead><tbody>
+<tr>
+<td>--------</td>
+<td>-------------</td>
+<td>---------------</td>
+<td>-----------------</td>
+</tr>
+<tr>
+<td><strong>Queue Depth</strong></td>
+<td>Messages waiting</td>
+<td>0-100</td>
+<td>> 1000</td>
+</tr>
+<tr>
+<td><strong>Enqueue Rate</strong></td>
+<td>Messages/second added</td>
+<td>Varies by queue</td>
+<td>-</td>
+</tr>
+<tr>
+<td><strong>Dequeue Rate</strong></td>
+<td>Messages/second processed</td>
+<td>Should match enqueue</td>
+<td>< 50% of enqueue</td>
+</tr>
+<tr>
+<td><strong>Consumer Count</strong></td>
+<td>Active consumers</td>
+<td>1-10 per queue</td>
+<td>0 (no consumers)</td>
+</tr>
+<tr>
+<td><strong>Average Enqueue Time</strong></td>
+<td>Time to add message</td>
+<td>< 10ms</td>
+<td>> 100ms</td>
+</tr>
+<tr>
+<td><strong>Memory Usage</strong></td>
+<td>Broker memory</td>
+<td>< 70%</td>
+<td>> 90%</td>
+</tr>
+<tr>
+<td><strong>Store Percent</strong></td>
+<td>Disk usage</td>
+<td>< 70%</td>
+<td>> 90%</td>
+</tr>
+</tbody></table>
+<h3>7.2 Monitoring Queries</h3>
+
+<strong>View Queue Metrics</strong>:
+<pre><code class="language-bash"># Using ActiveMQ API
+curl -u admin:admin \
+  http://localhost:8161/api/jolokia/read/org.apache.activemq:type=Broker,brokerName=localhost,destinationType=Queue,destinationName=OMS
+
+# Response includes:
+# {
+#   "value": {
+#     "QueueSize": 23,
+#     "EnqueueCount": 15234,
+#     "DequeueCount": 15211,
+#     "ConsumerCount": 3,
+#     "AverageEnqueueTime": 5.2,
+#     "MemoryPercentUsage": 12
+#   }
+# }
+</code></pre>
+<strong>Grafana Dashboard Queries</strong> (Prometheus metrics):
+<pre><code class="language-promql"># Queue depth over time
+activemq_queue_size{queue="OMS"}
+
+# Message throughput
+rate(activemq_enqueue_count{queue="OMS"}[5m])
+
+# Consumer lag (messages not being processed fast enough)
+activemq_queue_size &gt; 500
+
+# Alert on no consumers
+activemq_consumer_count{queue="OMS"} == 0
+</code></pre>
+<h3>7.3 Performance Tuning</h3>
+
+<strong>Concurrent Consumers</strong>:
+<pre><code class="language-yaml"># Increase concurrent consumers for high-volume queues
+camel:
+  component:
+    activemq:
+      concurrent-consumers: 5      # Start with 5
+      max-concurrent-consumers: 20  # Scale up to 20 under load
+</code></pre>
+<strong>Prefetch Limit</strong> (how many messages consumer fetches at once):
+<pre><code class="language-groovy">@Bean
+ConnectionFactory connectionFactory() {
+    def factory = new ActiveMQConnectionFactory()
+    factory.brokerURL = "tcp://localhost:61616"
+    factory.prefetchPolicy.queuePrefetch = 100  // Fetch 100 messages at a time
+    return factory
+}
+</code></pre>
+<strong>Message Persistence</strong>:
+<pre><code class="language-groovy">// For non-critical messages, use non-persistent mode (faster)
+jmsTemplate.deliveryMode = DeliveryMode.NON_PERSISTENT
+
+// For critical messages, use persistent mode (slower, but safe)
+jmsTemplate.deliveryMode = DeliveryMode.PERSISTENT  // Default
+</code></pre>
+
+<hr>
+
+<h2>8. Development Guide</h2>
+
+<h3>8.1 Creating a Queue Consumer</h3>
+
+<strong>Step 1: Define Message DTO</strong>:
+<pre><code class="language-groovy">// dto/MyMessage.groovy
+class MyMessage {
+    String id
+    String accountId
+    String operation
+    Map&lt;String, Object&gt; data
+    Date timestamp
+}
+</code></pre>
+<strong>Step 2: Create Consumer</strong>:
+<pre><code class="language-groovy">// consumer/MyQueueReceiver.groovy
+@Component
+class MyQueueReceiver {
+    
+    @Autowired
+    MyProcessingService processingService
+    
+    @JmsListener(destination = "MY_QUEUE", containerFactory = "jmsListenerContainerFactory")
+    void receiveMessage(String message) {
+        log.info("Received message: ${message}")
+        
+        try {
+            // Parse message
+            def myMessage = parseMessage(message)
+            
+            // Validate
+            validateMessage(myMessage)
+            
+            // Process
+            processingService.process(myMessage)
+            
+            log.info("Successfully processed message ${myMessage.id}")
+            
+        } catch (NonRetryableException e) {
+            log.error("Business validation failed: ${e.message}")
+            sendToErrorQueue(message, e)
+            // Do not throw - message will be ACKed
+            
+        } catch (Exception e) {
+            log.error("Transient error processing message: ${e.message}", e)
+            // Throw to trigger retry
+            throw new RetryableException("Failed to process message", e)
+        }
+    }
+    
+    private MyMessage parseMessage(String json) {
+        try {
+            return new JsonSlurper().parseText(json) as MyMessage
+        } catch (Exception e) {
+            throw new NonRetryableException("Invalid JSON format", "INVALID_MESSAGE")
+        }
+    }
+    
+    private void validateMessage(MyMessage message) {
+        if (!message.accountId) {
+            throw new NonRetryableException("Missing accountId", "MISSING_FIELD")
+        }
+        // Additional validations...
+    }
+    
+    private void sendToErrorQueue(String originalMessage, Exception error) {
+        jmsTemplate.convertAndSend("MY_QUEUE_ERROR", [
+            originalMessage: originalMessage,
+            errorMessage: error.message,
+            errorCode: error.errorCode,
+            timestamp: new Date()
+        ])
+    }
+}
+</code></pre>
+<strong>Step 3: Configure Listener Factory</strong>:
+<pre><code class="language-groovy">// config/JmsConfig.groovy
+@Configuration
+class JmsConfig {
+    
+    @Bean
+    JmsListenerContainerFactory&lt;?&gt; jmsListenerContainerFactory(
+        ConnectionFactory connectionFactory,
+        DefaultErrorHandler errorHandler) {
+        
+        def factory = new DefaultJmsListenerContainerFactory()
+        factory.setConnectionFactory(connectionFactory)
+        factory.setErrorHandler(errorHandler)
+        factory.setConcurrency("3-10")  // Min 3, max 10 consumers
+        factory.setSessionTransacted(true)
+        return factory
+    }
+}
+</code></pre>
+<h3>8.2 Sending Messages</h3>
+
+<strong>Producer Example</strong>:
+<pre><code class="language-groovy">@Component
+class MyQueueProducer {
+    
+    @Autowired
+    JmsTemplate jmsTemplate
+    
+    void sendMessage(MyMessage message) {
+        def json = JsonOutput.toJson(message)
+        
+        jmsTemplate.convertAndSend("MY_QUEUE", json) { messagePostProcessor -&gt;
+            // Add custom headers
+            messagePostProcessor.setStringProperty("correlationId", message.id)
+            messagePostProcessor.setStringProperty("messageType", "MY_MESSAGE")
+            messagePostProcessor.setIntProperty("priority", 5)
+            return messagePostProcessor
+        }
+        
+        log.info("Sent message ${message.id} to MY_QUEUE")
+    }
+    
+    void sendBatch(List&lt;MyMessage&gt; messages) {
+        jmsTemplate.execute { session, messageProducer -&gt;
+            messages.each { message -&gt;
+                def json = JsonOutput.toJson(message)
+                def textMessage = session.createTextMessage(json)
+                messageProducer.send(textMessage)
+            }
+        }
+        
+        log.info("Sent ${messages.size()} messages to MY_QUEUE")
+    }
+}
+</code></pre>
+<h3>8.3 Testing Queue Flows</h3>
+
+<strong>Integration Test Example</strong>:
+<pre><code class="language-groovy">@SpringBootTest
+@TestPropertySource(locations = "classpath:application-test.properties")
+class MyQueueIntegrationTest {
+    
+    @Autowired
+    MyQueueProducer producer
+    
+    @Autowired
+    MyRepository repository
+    
+    @Autowired
+    JmsTemplate jmsTemplate
+    
+    @Test
+    void testMessageFlow() {
+        // Given
+        def message = new MyMessage(
+            id: "TEST-001",
+            accountId: "ACC-TEST",
+            operation: "CREATE",
+            data: [key: "value"]
+        )
+        
+        // When
+        producer.sendMessage(message)
+        
+        // Wait for async processing
+        Thread.sleep(2000)
+        
+        // Then
+        def result = repository.findById("TEST-001")
+        assert result.isPresent()
+        assert result.get().status == "PROCESSED"
+    }
+    
+    @Test
+    void testErrorHandling() {
+        // Given - invalid message
+        def invalidMessage = new MyMessage(
+            id: "TEST-002",
+            accountId: null,  // Missing required field
+            operation: "CREATE"
+        )
+        
+        // When
+        producer.sendMessage(invalidMessage)
+        
+        // Wait
+        Thread.sleep(2000)
+        
+        // Then - should be in error queue
+        def errorMessage = jmsTemplate.receiveAndConvert("MY_QUEUE_ERROR")
+        assert errorMessage != null
+        assert errorMessage.errorCode == "MISSING_FIELD"
+    }
+}
+</code></pre>
+
+<hr>
+
+<h2>9. Troubleshooting</h2>
+
+<h3>9.1 Common Issues</h3>
+
+<h4>Issue 1: High Queue Depth (Messages Piling Up)</h4>
+
+<strong>Symptoms</strong>:
+<ul>
+<li>Queue depth increasing</li>
+<li>Messages not being consumed</li>
+<li>System slowdown</li>
+</ul>
+<strong>Diagnosis</strong>:
+<pre><code class="language-bash"># Check consumer count
+curl -u admin:admin http://localhost:8161/api/jolokia/read/org.apache.activemq:type=Broker,brokerName=localhost,destinationType=Queue,destinationName=OMS | jq '.value.ConsumerCount'
+
+# Check if consumers are stuck
+# Look for repeated errors in logs
+tail -f service-mediation/logs/application.log | grep ERROR
+</code></pre>
+<strong>Possible Causes & Solutions</strong>:
+<table>
+<thead><tr>
+<th>Cause</th>
+<th>Solution</th>
+</tr></thead><tbody>
+<tr>
+<td>-------</td>
+<td>----------</td>
+</tr>
+<tr>
+<td><strong>No consumers running</strong></td>
+<td>Restart service: <code>kubectl rollout restart deployment/service-mediation</code></td>
+</tr>
+<tr>
+<td><strong>Consumer processing too slow</strong></td>
+<td>Increase concurrent consumers in config</td>
+</tr>
+<tr>
+<td><strong>Database connection pool exhausted</strong></td>
+<td>Increase pool size or optimize queries</td>
+</tr>
+<tr>
+<td><strong>External API timeouts</strong></td>
+<td>Implement circuit breaker, increase timeouts</td>
+</tr>
+<tr>
+<td><strong>Messages causing exceptions</strong></td>
+<td>Check error logs, fix business logic bug</td>
+</tr>
+</tbody></table>
+<h4>Issue 2: Messages Going to DLQ</h4>
+
+<strong>Symptoms</strong>:
+<ul>
+<li>Messages in ActiveMQ.DLQ</li>
+<li>Errors in logs after max retries</li>
+</ul>
+<strong>Diagnosis</strong>:
+<pre><code class="language-bash"># Browse DLQ
+http://localhost:8161/admin/browse.jsp?JMSDestination=ActiveMQ.DLQ
+
+# Check message details
+curl -u admin:admin http://localhost:8161/api/jolokia/exec/org.apache.activemq:type=Broker,brokerName=localhost,destinationType=Queue,destinationName=ActiveMQ.DLQ/browse | jq '.'
+</code></pre>
+<strong>Solutions</strong>:
+<ol>
+<li><strong>Identify root cause</strong> from error logs</li>
+<li><strong>Fix business logic</strong> or data issue</li>
+<li><strong>Reprocess messages</strong>:</li>
+</ol>
+<pre><code class="language-groovy">@Component
+class DLQReprocessor {
+    
+    @Autowired
+    JmsTemplate jmsTemplate
+    
+    void reprocessDLQ(String originalQueue) {
+        def dlqMessages = browseDLQ()
+        
+        dlqMessages.each { message -&gt;
+            // Move back to original queue
+            jmsTemplate.convertAndSend(originalQueue, message.text)
+        }
+    }
+}
+</code></pre>
+<h4>Issue 3: Duplicate Messages</h4>
+
+<strong>Symptoms</strong>:
+<ul>
+<li>Same order processed twice</li>
+<li>Duplicate database records</li>
+</ul>
+<strong>Cause</strong>: Message redelivery after consumer crash before ACK
+<strong>Solution</strong>: Implement idempotency
+<pre><code class="language-groovy">@Component
+class IdempotentOmsReceiver {
+    
+    @Autowired
+    ProcessedMessageRepository processedRepo
+    
+    @JmsListener(destination = "OMS")
+    @Transactional
+    void receiveMessage(String message, @Header("JMSMessageID") String messageId) {
+        
+        // Check if already processed
+        if (processedRepo.existsById(messageId)) {
+            log.warn("Message ${messageId} already processed, skipping")
+            return  // ACK without reprocessing
+        }
+        
+        // Process message
+        processOrder(message)
+        
+        // Mark as processed
+        processedRepo.save(new ProcessedMessage(
+            id: messageId,
+            processedAt: new Date()
+        ))
+    }
+}
+</code></pre>
+
+<hr>
+
+<h2>10. Best Practices</h2>
+
+<h3>10.1 Message Design</h3>
+
+✅ <strong>DO</strong>:
+<ul>
+<li>Include correlation IDs for traceability</li>
+<li>Add timestamps (UTC)</li>
+<li>Use JSON for complex messages</li>
+<li>Include version field for schema evolution</li>
+<li>Keep messages < 1 MB</li>
+</ul>
+❌ <strong>DON'T</strong>:
+<ul>
+<li>Send sensitive data unencrypted</li>
+<li>Include large binary data (use S3 reference instead)</li>
+<li>Use ambiguous field names</li>
+<li>Omit error context</li>
+</ul>
+<h3>10.2 Consumer Design</h3>
+
+✅ <strong>DO</strong>:
+<ul>
+<li>Make consumers idempotent</li>
+<li>Use transactional message processing</li>
+<li>Log correlation IDs</li>
+<li>Implement proper error handling (Retryable vs NonRetryable)</li>
+<li>Monitor consumer lag</li>
+</ul>
+❌ <strong>DON'T</strong>:
+<ul>
+<li>Block consumer thread with long operations</li>
+<li>Swallow exceptions silently</li>
+<li>Retry non-retryable errors</li>
+<li>Process messages out of order when order matters</li>
+</ul>
+<h3>10.3 Performance Optimization</h3>
+
+<ol>
+<li><strong>Batch Processing</strong>: Process multiple records per message</li>
+<li><strong>Concurrent Consumers</strong>: Scale horizontally</li>
+<li><strong>Prefetch</strong>: Fetch multiple messages at once</li>
+<li><strong>Compression</strong>: For large messages</li>
+<li><strong>Partitioning</strong>: Separate queues by tenant or priority</li>
+</ol>
+
+<hr>
+
+<h2>Summary & Next Steps</h2>
+
+<h3>What We Covered</h3>
+
+✅ <strong>ActiveMQ Architecture</strong>: Amazon MQ deployment, local setup  
+✅ <strong>Queue Inventory</strong>: All 10+ production queues documented  
+✅ <strong>Message Patterns</strong>: Order-to-cash, usage pipeline, bulk operations  
+✅ <strong>Error Handling</strong>: Retry mechanisms, DLQ management  
+✅ <strong>Message Formats</strong>: Complete examples for all queue types  
+✅ <strong>Monitoring</strong>: Key metrics and alerting  
+✅ <strong>Development Guide</strong>: How to create consumers and producers  
+✅ <strong>Troubleshooting</strong>: Common issues and solutions
+<h3>For Developers</h3>
+
+<ul>
+<li><strong>Understand async flows</strong> before implementing new features</li>
+<li><strong>Test with local ActiveMQ</strong> using Docker</li>
+<li><strong>Monitor queue health</strong> in production</li>
+<li><strong>Implement idempotency</strong> for all consumers</li>
+<li><strong>Use proper exception types</strong> (Retryable vs NonRetryable)</li>
+</ul>
+<h3>Next Steps</h3>
+
+<ol>
+<li><strong>Set up local ActiveMQ</strong> with Docker</li>
+<li><strong>Explore ActiveMQ Console</strong> (http://localhost:8161)</li>
+<li><strong>Test message flows</strong> with integration tests</li>
+<li><strong>Monitor production queues</strong> with Grafana</li>
+<li><strong>Implement new queue consumer</strong> following patterns</li>
+</ol>
+
+<hr>
+
+<strong>Master asynchronous messaging for scalable Embrix O2X architecture! 📨</strong></p>
+        <footer>
+            <p><strong>Embrix O2X Platform Documentation</strong></p>
+            <p>Version 3.1.9-SNAPSHOT • Last Updated: February 2026</p>
+        </footer>
+    </div>
+</body>
+</html>

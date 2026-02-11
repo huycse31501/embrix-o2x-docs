@@ -1,0 +1,2165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>📋 Newcomer Guide Enhancement Plan - Embrix O2X</title>
+    
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+        font-size: 16px;
+        line-height: 1.7;
+        color: #1f2937;
+        background: linear-gradient(135deg, #f5f7fa 0%, #e9ecef 100%);
+        background-attachment: fixed;
+        padding: 20px;
+    }
+
+    .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        background: white;
+        padding: 40px 50px;
+        border-radius: 16px;
+        box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .container::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 5px;
+        background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+    }
+
+    .nav-header {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 20px;
+        border-radius: 8px;
+        margin-bottom: 30px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+    }
+
+    .nav-header h1 {
+        font-size: 1.4em;
+        margin-bottom: 5px;
+        font-weight: 600;
+    }
+
+    .nav-links {
+        display: flex;
+        gap: 15px;
+        flex-wrap: wrap;
+    }
+
+    .nav-links a {
+        color: white;
+        text-decoration: none;
+        padding: 8px 16px;
+        background: rgba(255,255,255,0.2);
+        border-radius: 5px;
+        transition: background 0.3s;
+    }
+
+    .nav-links a:hover {
+        background: rgba(255,255,255,0.3);
+    }
+
+    h1 {
+        color: #667eea;
+        margin: 35px 0 20px 0;
+        padding: 12px 0 12px 18px;
+        border-left: 5px solid #667eea;
+        border-bottom: 2px solid #667eea;
+        background: linear-gradient(90deg, rgba(102, 126, 234, 0.05) 0%, rgba(255,255,255,0) 100%);
+        font-size: 1.8em;
+        font-weight: 700;
+        border-radius: 0 8px 0 0;
+    }
+
+    h2 {
+        color: #764ba2;
+        margin: 30px 0 18px 0;
+        padding: 10px 0 10px 15px;
+        border-left: 4px solid #764ba2;
+        border-bottom: 2px solid #f0f0f0;
+        background: linear-gradient(90deg, rgba(118, 75, 162, 0.03) 0%, rgba(255,255,255,0) 100%);
+        font-size: 1.5em;
+        font-weight: 700;
+        border-radius: 0 6px 0 0;
+    }
+
+    h3 {
+        color: #667eea;
+        margin: 25px 0 15px 0;
+        padding: 8px 0 8px 12px;
+        border-left: 3px solid #667eea;
+        background: linear-gradient(90deg, rgba(102, 126, 234, 0.04) 0%, transparent 100%);
+        font-size: 1.25em;
+        font-weight: 600;
+        border-radius: 0 6px 6px 0;
+    }
+
+    h4 {
+        color: #764ba2;
+        margin: 20px 0 12px 0;
+        padding: 6px 0 6px 10px;
+        border-left: 2px solid #764ba2;
+        background: linear-gradient(90deg, rgba(118, 75, 162, 0.03) 0%, transparent 100%);
+        font-size: 1.1em;
+        font-weight: 600;
+        border-radius: 0 4px 4px 0;
+    }
+
+    h5 {
+        color: #667eea;
+        margin: 18px 0 10px 0;
+        padding: 4px 0 4px 8px;
+        border-left: 2px solid #667eea;
+        font-size: 1.05em;
+        font-weight: 600;
+        background: linear-gradient(90deg, rgba(102, 126, 234, 0.02) 0%, transparent 100%);
+        border-radius: 0 3px 3px 0;
+    }
+
+    h6 {
+        color: #764ba2;
+        margin: 15px 0 8px 0;
+        font-size: 0.95em;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    p {
+        margin: 12px 0;
+        line-height: 1.7;
+        font-size: 0.95em;
+        color: #374151;
+    }
+    
+    /* Better spacing for paragraphs after headings */
+    h1 + p, h2 + p, h3 + p, h4 + p {
+        margin-top: 10px;
+    }
+
+    ul, ol {
+        margin: 20px 0;
+        padding-left: 35px;
+    }
+
+    li {
+        margin: 10px 0;
+        line-height: 1.7;
+        font-size: 0.95em;
+        position: relative;
+        padding-left: 8px;
+    }
+
+    ul li::marker {
+        color: #667eea;
+        font-weight: bold;
+        font-size: 1.1em;
+    }
+
+    ol li::marker {
+        color: #764ba2;
+        font-weight: bold;
+        font-size: 1em;
+    }
+
+    /* Better list item styling */
+    li {
+        background: linear-gradient(90deg, rgba(102, 126, 234, 0.02) 0%, transparent 100%);
+        border-left: 2px solid transparent;
+        padding: 8px 8px 8px 12px;
+        border-radius: 0 4px 4px 0;
+        transition: all 0.2s ease;
+    }
+
+    li:hover {
+        background: linear-gradient(90deg, rgba(102, 126, 234, 0.05) 0%, transparent 100%);
+        border-left-color: #667eea;
+        padding-left: 16px;
+    }
+
+    /* Nested lists */
+    li ul, li ol {
+        margin: 8px 0 8px 10px;
+    }
+
+    /* Nested list items - smaller styling */
+    li li {
+        font-size: 0.92em;
+        margin: 6px 0;
+        background: linear-gradient(90deg, rgba(118, 75, 162, 0.02) 0%, transparent 100%);
+    }
+
+    li li:hover {
+        background: linear-gradient(90deg, rgba(118, 75, 162, 0.05) 0%, transparent 100%);
+        border-left-color: #764ba2;
+    }
+
+    code {
+        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        padding: 2px 6px;
+        border-radius: 4px;
+        font-family: 'Fira Code', 'Courier New', Consolas, monospace;
+        font-size: 0.85em;
+        color: #d63384;
+        border: 1px solid #dee2e6;
+        font-weight: 500;
+    }
+
+    /* Inline code with special highlighting */
+    p code, li code, td code {
+        position: relative;
+    }
+
+    p code::before, li code::before, td code::before {
+        content: '';
+        position: absolute;
+        inset: -2px;
+        border-radius: 5px;
+        background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+        z-index: -1;
+        opacity: 0;
+        transition: opacity 0.2s;
+    }
+
+    p code:hover::before, li code:hover::before, td code:hover::before {
+        opacity: 1;
+    }
+
+    pre {
+        background: #1e293b;
+        color: #e2e8f0;
+        padding: 16px 18px;
+        border-radius: 8px;
+        overflow-x: auto;
+        margin: 18px 0;
+        border: 1px solid #334155;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+        font-family: 'Cascadia Code', 'Fira Code', 'SF Mono', 'Consolas', 'Liberation Mono', monospace;
+        font-size: 0.85em;
+        line-height: 1.6;
+        position: relative;
+        font-feature-settings: "liga" 0;
+        text-rendering: optimizeLegibility;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+    }
+
+    pre code {
+        background: none;
+        color: inherit;
+        padding: 0;
+        border: none;
+        font-family: inherit;
+        font-weight: normal;
+        font-size: 1em;
+        display: block;
+    }
+    
+    /* Ensure consistent styling for all code content inside pre blocks */
+    pre code * {
+        font-size: inherit !important;
+        line-height: inherit !important;
+        color: inherit !important;
+        font-family: inherit !important;
+    }
+
+    /* Hover effect */
+    pre:hover {
+        border-color: #475569;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.12);
+        transition: all 0.3s ease;
+    }
+
+    /* Code block header indicator */
+    pre::after {
+        content: 'CODE';
+        position: absolute;
+        top: 8px;
+        right: 12px;
+        font-size: 0.65em;
+        color: #64748b;
+        font-weight: 600;
+        letter-spacing: 0.05em;
+        opacity: 0.5;
+    }
+
+    blockquote {
+        border-left: 4px solid #667eea;
+        padding: 15px 20px;
+        margin: 20px 0;
+        color: #555;
+        font-style: italic;
+        font-size: 0.95em;
+        background: linear-gradient(90deg, rgba(102, 126, 234, 0.05) 0%, rgba(255,255,255,0) 100%);
+        border-radius: 0 6px 6px 0;
+        position: relative;
+    }
+
+    blockquote::before {
+        content: '"';
+        position: absolute;
+        left: -10px;
+        top: -10px;
+        font-size: 4em;
+        color: rgba(102, 126, 234, 0.1);
+        font-family: Georgia, serif;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 20px 0;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+        border-radius: 8px;
+        overflow: hidden;
+        background: white;
+        font-size: 0.9em;
+    }
+
+    thead {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    }
+
+    th {
+        color: white;
+        padding: 12px 15px;
+        text-align: left;
+        font-weight: 600;
+        text-transform: uppercase;
+        font-size: 0.82em;
+        letter-spacing: 0.3px;
+    }
+
+    td {
+        padding: 10px 15px;
+        border-bottom: 1px solid #e5e7eb;
+        vertical-align: top;
+        line-height: 1.6;
+    }
+
+    tbody tr:last-child td {
+        border-bottom: none;
+    }
+
+    tbody tr:hover {
+        background: rgba(102, 126, 234, 0.04);
+        transition: background 0.2s ease;
+    }
+
+    tbody tr:nth-child(even) {
+        background: rgba(102, 126, 234, 0.02);
+    }
+
+    tbody tr:nth-child(even):hover {
+        background: rgba(102, 126, 234, 0.05);
+    }
+    
+    /* Better code in tables */
+    td code {
+        font-size: 0.85em;
+        padding: 2px 6px;
+    }
+
+    .info-box {
+        background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+        border-left: 5px solid #2196f3;
+        padding: 20px;
+        margin: 25px 0;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(33, 150, 243, 0.2);
+    }
+
+    .warning-box {
+        background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%);
+        border-left: 5px solid #ff9800;
+        padding: 20px;
+        margin: 25px 0;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(255, 152, 0, 0.2);
+    }
+
+    .success-box {
+        background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+        border-left: 5px solid #4caf50;
+        padding: 20px;
+        margin: 25px 0;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(76, 175, 80, 0.2);
+    }
+
+    /* Better colors for syntax in diagrams */
+    pre {
+        /* Box drawing characters in nice blue */
+        color: #93c5fd;
+    }
+
+    /* JSON/code syntax in pre blocks */
+    pre {
+        white-space: pre;
+        word-wrap: normal;
+    }
+
+    .toc {
+        background: #f8f9fa;
+        padding: 20px;
+        border-radius: 8px;
+        margin: 20px 0;
+        border-left: 4px solid #667eea;
+    }
+
+    .toc h2 {
+        color: #667eea;
+        border-bottom: none;
+        margin-bottom: 15px;
+    }
+
+    .toc ul {
+        list-style: none;
+        padding-left: 0;
+    }
+
+    .toc li {
+        margin: 8px 0;
+    }
+
+    .toc a {
+        color: #667eea;
+        text-decoration: none;
+        transition: color 0.3s;
+    }
+
+    .toc a:hover {
+        color: #764ba2;
+    }
+
+    hr {
+        border: none;
+        border-top: 2px solid #f0f0f0;
+        margin: 30px 0;
+    }
+
+    .badge {
+        display: inline-block;
+        background: #667eea;
+        color: white;
+        padding: 4px 10px;
+        border-radius: 12px;
+        font-size: 0.85em;
+        margin-left: 10px;
+    }
+
+    a {
+        color: #667eea;
+        text-decoration: none;
+        transition: color 0.3s;
+    }
+
+    a:hover {
+        color: #764ba2;
+        text-decoration: underline;
+    }
+    
+    /* Better display for metadata fields */
+    strong {
+        color: #374151;
+        font-weight: 600;
+    }
+    
+    /* Metadata field styling - each field on its own line */
+    .metadata-field {
+        margin: 8px 0;
+        padding: 8px 14px;
+        background: linear-gradient(90deg, rgba(102, 126, 234, 0.04) 0%, transparent 100%);
+        border-left: 3px solid #667eea;
+        border-radius: 0 4px 4px 0;
+        line-height: 1.7;
+        font-size: 0.95em;
+        display: block;
+        clear: both;
+    }
+    
+    .metadata-field strong {
+        color: #667eea;
+        font-weight: 600;
+        margin-right: 8px;
+        display: inline-block;
+        min-width: 100px;
+    }
+    
+    .metadata-field code {
+        font-size: 0.88em;
+    }
+
+    footer {
+        margin-top: 50px;
+        padding-top: 30px;
+        border-top: 2px solid #f0f0f0;
+        text-align: center;
+        color: #888;
+    }
+
+    @media print {
+        body {
+            background: white;
+        }
+        .nav-header, .nav-links {
+            display: none;
+        }
+        pre {
+            break-inside: avoid;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .container {
+            padding: 20px;
+        }
+        .nav-header {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+        .nav-links {
+            margin-top: 15px;
+        }
+        h1 {
+            font-size: 2em;
+        }
+        h2 {
+            font-size: 1.5em;
+        }
+    }
+</style>
+
+</head>
+<body>
+    <div class="container">
+        <div class="nav-header"><div><h1>Embrix O2X Documentation</h1><small>Navigate between guides</small></div><div class="nav-links"><a href="index.html">🏠 Home</a><a href="guide-index.html">📚 Guide Index</a><a href="part1-business-architecture.html">Part 1</a><a href="part2-technical-deep-dive.html">Part 2</a><a href="part3-services-development.html">Part 3</a><a href="part4-frontend-ui.html">Part 4</a><a href="part5-message-queues.html">Part 5</a><a href="quick-start.html">🎯 Quick Start</a><a href="quick-reference.html">📖 Quick Ref</a><a href="troubleshooting-guide.html">🔧 Troubleshooting</a></div></div>
+        
+<h1>Embrix O2X - Newcomer Documentation Enhancement Plan</h1>
+
+<strong>Created</strong>: February 11, 2026  
+<strong>Purpose</strong>: Comprehensive plan to enhance docs/newcomer/ based on complete system analysis
+
+<hr>
+
+<h2>Executive Summary</h2>
+
+After comprehensive analysis of the entire Embrix O2X workspace, I've identified opportunities to significantly enhance the newcomer documentation with information about:
+<ol>
+<li><strong>Frontend Applications</strong> - 4 React applications (ui-core, selfcare, embrix-lite, ui)</li>
+<li><strong>Complete Service Documentation</strong> - All 9 core services with detailed interactions</li>
+<li><strong>Gateway Integration Details</strong> - All 8 gateways with external system mappings</li>
+<li><strong>Database Architecture</strong> - Complete schema documentation with 8+ schemas</li>
+<li><strong>Message Queue Flows</strong> - Detailed ActiveMQ queue documentation</li>
+<li><strong>File Operations</strong> - Comprehensive file handling across the system</li>
+<li><strong>Multi-Tenant Operations</strong> - Complete onboarding and management guide</li>
+<li><strong>Business Workflows</strong> - Real-world scenarios with code examples</li>
+</ol>
+
+<hr>
+
+<h2>Current Documentation Assessment</h2>
+
+<h3>Existing Files in docs/newcomer/</h3>
+
+<table>
+<thead><tr>
+<th>File</th>
+<th>Status</th>
+<th>Coverage</th>
+</tr></thead><tbody>
+<tr>
+<td>------</td>
+<td>--------</td>
+<td>----------</td>
+</tr>
+<tr>
+<td><code>index.html</code></td>
+<td>✅ Good</td>
+<td>Entry point</td>
+</tr>
+<tr>
+<td><code>guide-index.html</code></td>
+<td>✅ Good</td>
+<td>Navigation</td>
+</tr>
+<tr>
+<td><code>part1-business-architecture.html</code></td>
+<td>✅ Good</td>
+<td>Business context</td>
+</tr>
+<tr>
+<td><code>part2-technical-deep-dive.html</code></td>
+<td>✅ Good</td>
+<td>Technical architecture</td>
+</tr>
+<tr>
+<td><code>part3-services-development.html</code></td>
+<td>✅ Good</td>
+<td>Services and development</td>
+</tr>
+<tr>
+<td><code>business-scenarios.html</code></td>
+<td>✅ Good</td>
+<td>Business workflows</td>
+</tr>
+<tr>
+<td><code>multi-tenant-complete-guide.html</code></td>
+<td>✅ Good</td>
+<td>Multi-tenant guide</td>
+</tr>
+<tr>
+<td><code>quick-reference.html</code></td>
+<td>✅ Good</td>
+<td>Quick reference</td>
+</tr>
+<tr>
+<td><code>README.md</code></td>
+<td>✅ Good</td>
+<td>Documentation index</td>
+</tr>
+</tbody></table>
+<h3>Gaps Identified</h3>
+
+<table>
+<thead><tr>
+<th>Gap Area</th>
+<th>Impact</th>
+<th>Priority</th>
+</tr></thead><tbody>
+<tr>
+<td>----------</td>
+<td>--------</td>
+<td>----------</td>
+</tr>
+<tr>
+<td><strong>Frontend Architecture</strong></td>
+<td>High - No UI documentation</td>
+<td>🔴 Critical</td>
+</tr>
+<tr>
+<td><strong>Database Deep Dive</strong></td>
+<td>High - Limited schema details</td>
+<td>🔴 Critical</td>
+</tr>
+<tr>
+<td><strong>Gateway Integrations</strong></td>
+<td>Medium - Basic coverage</td>
+<td>🟡 High</td>
+</tr>
+<tr>
+<td><strong>File Operations</strong></td>
+<td>Medium - Not documented</td>
+<td>🟡 High</td>
+</tr>
+<tr>
+<td><strong>Message Queue Flows</strong></td>
+<td>High - Limited queue documentation</td>
+<td>🔴 Critical</td>
+</tr>
+<tr>
+<td><strong>Service Interactions</strong></td>
+<td>Medium - Service relationships unclear</td>
+<td>🟡 High</td>
+</tr>
+<tr>
+<td><strong>Development Workflows</strong></td>
+<td>Low - Basic coverage exists</td>
+<td>🟢 Medium</td>
+</tr>
+<tr>
+<td><strong>API Documentation</strong></td>
+<td>Medium - GraphQL examples limited</td>
+<td>🟡 High</td>
+</tr>
+</tbody></table>
+
+<hr>
+
+<h2>Enhancement Recommendations</h2>
+
+<h3>Phase 1: Critical Enhancements (Week 1)</h3>
+
+<h4>1.1 New Document: Frontend Architecture Guide</h4>
+
+<strong>File</strong>: <code>NEWCOMER_GUIDE_PART4_FRONTEND_AND_UI.md</code> → <code>part4-frontend-ui.html</code>
+<strong>Content Structure</strong>:
+<pre><code class="language-markdown"># Part 4: Frontend Applications & User Interfaces
+
+## 1. Frontend Application Overview
+   - React-based architecture
+   - 4 main applications (ui-core, selfcare, embrix-lite, ui)
+   
+## 2. ui-core (Admin Application)
+   - Tenant onboarding and configuration
+   - Admin dashboards
+   - System administration
+   - Key components and routing
+   
+## 3. selfcare (Customer Portal)
+   - Customer registration and authentication
+   - Billing and invoice viewing
+   - Payment management
+   - Usage reports and CDR viewing
+   - Service upgrades
+   - Component architecture
+   
+## 4. ui (Public Website)
+   - Package comparison
+   - Sign-up flows
+   - Public-facing features
+   
+## 5. embrix-lite
+   - Lightweight UI variant
+   - Use cases and features
+   
+## 6. API Integration Patterns
+   - GraphQL client implementation
+   - OAuth2 authentication flow
+   - State management
+   - Error handling
+   
+## 7. Multi-Tenant Branding
+   - Tenant-specific theming
+   - Logo and color customization
+   - Domain configuration
+</code></pre>
+<strong>Why Critical</strong>: No UI documentation exists; developers need to understand the complete stack.
+
+<hr>
+
+<h4>1.2 Enhanced Document: Database Architecture Deep Dive</h4>
+
+<strong>Enhancement to</strong>: <code>NEWCOMER_GUIDE_PART3_SERVICES_AND_DEVELOPMENT.md</code> Section 2
+<strong>New Content to Add</strong>:
+<pre><code class="language-markdown">## 2. Database Architecture (Enhanced)
+
+### 2.1 Complete Schema Reference
+
+#### core_engine Schema (Detailed)
+**Tables**:
+- `account` - Customer accounts with parent-child relationships
+  - Columns: id, parent_account_id, account_type, status, balance, bill_cycle_day
+  - Indexes: idx_account_status, idx_account_bill_cycle, idx_account_balance
+  - Relationships: Self-referential (parent_account_id)
+  
+- `subscription` - Service subscriptions
+  - Links to account, product, and price_offer
+  - Lifecycle: ACTIVE → SUSPENDED → TERMINATED
+  
+- `user` - System users and customer portal users
+- `contact` - Contact information
+- `address` - Physical and service addresses
+
+#### core_oms Schema (Detailed)
+- `order` - Complete order lifecycle
+  - JSONB extended_data for flexibility
+  - GIN index on extended_data
+  
+- `service_line` - Order line items
+- `order_activity` - Complete audit trail
+- `orchestration_state` - OmsComponent workflow state
+
+#### core_billing Schema (Detailed)
+- `charge` - All billing charges
+  - Types: RECURRING, ONE_TIME, USAGE, ADHOC, ADJUSTMENT
+  
+- `invoice` - Customer invoices
+  - CFDI support with uuid and stamped_date
+  - PDF storage via S3 (pdf_url)
+  
+- `payment` - Payment records
+- `payment_allocation` - Payment-to-invoice mapping
+- `balance_impact` - Audit trail for all balance changes
+- `bill_unit` - Billing cycle management
+
+#### core_usage Schema (Partitioned Tables)
+- `usage_record` - High-volume usage data
+  - Partitioning: RANGE by usage_date (monthly)
+  - Partition management strategy
+  - Index strategy per partition
+  
+### 2.2 Partitioning Strategy
+
+**Monthly Partitioning Example**:
+</code></pre>sql
+CREATE TABLE core_usage.usage_record_2024_01 PARTITION OF core_usage.usage_record
+FOR VALUES FROM ('2024-01-01') TO ('2024-02-01');
+<pre><code class="language-">
+**Benefits**:
+- Query performance (partition pruning)
+- Easier archival (detach and drop old partitions)
+- Maintenance windows per partition
+
+**Management**:
+- Automated partition creation (batch job)
+- Retention policy: 24 months online, then archive to S3
+
+### 2.3 Performance Optimization Patterns
+
+**Index Strategies**:
+</code></pre>sql
+-- Composite indexes for common queries
+CREATE INDEX idx_invoice_account_status ON core_billing.invoice(account_id, status);
+-- Partial indexes for specific conditions
+CREATE INDEX idx_unpaid_invoices ON core_billing.invoice(account_id) 
+WHERE status IN ('PENDING', 'OVERDUE');
+-- GIN indexes for JSONB
+CREATE INDEX idx_order_extended_data ON core_oms.order USING GIN(extended_data);
+<pre><code class="language-">
+### 2.4 Data Relationships (ER Diagram)
+
+</code></pre>
+account (core_engine)
+  ├── 1:N → order (core_oms)
+  ├── 1:N → subscription (core_engine)
+  ├── 1:N → invoice (core_billing)
+  ├── 1:N → payment (core_billing)
+  ├── 1:N → usage_record (core_usage)
+  └── 1:N → bill_unit (core_billing)
+order (core_oms)
+  ├── 1:N → service_line
+  ├── 1:N → order_activity
+  └── 1:1 → orchestration_state
+invoice (core_billing)
+  ├── 1:N → charge
+  └── N:M → payment (via payment_allocation)
+<pre><code class="language-">
+### 2.5 Flyway Migration Best Practices
+
+**Migration Naming**:
+</code></pre>
+V{version}__{description}.sql
+V1__Create_Schema.sql
+V2__Add_CFDI_Support.sql
+V3__Partition_Usage_Table.sql
+<pre><code class="language-">
+**Migration Structure**:
+1. Schema changes first
+2. Data migrations second
+3. Index creation last (concurrent where possible)
+
+**Example Migration**:
+</code></pre>sql
+-- V24__Add_Balance_Tracking.sql
+ALTER TABLE core_engine.account 
+ADD COLUMN balance NUMERIC(19,4) DEFAULT 0;
+CREATE TABLE core_billing.balance_impact (
+    id VARCHAR(50) PRIMARY KEY,
+    account_id VARCHAR(50) NOT NULL,
+    transaction_type VARCHAR(50),
+    amount NUMERIC(19,4),
+    previous_balance NUMERIC(19,4),
+    new_balance NUMERIC(19,4),
+    created_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+CREATE INDEX idx_balance_impact_account 
+ON core_billing.balance_impact(account_id, created_date);
+<pre><code class="language-"></code></pre>
+<strong>Why Critical</strong>: Database is the foundation; developers need complete schema understanding.
+
+<hr>
+
+<h4>1.3 New Document: Message Queue Architecture</h4>
+
+<strong>File</strong>: <code>NEWCOMER_GUIDE_PART5_MESSAGE_QUEUES_AND_INTEGRATION.md</code> → <code>part5-message-queues.html</code>
+<strong>Content Structure</strong>:
+<pre><code class="language-markdown"># Part 5: Message Queue Architecture & Integration Patterns
+
+## 1. ActiveMQ Architecture Overview
+   - Amazon MQ deployment
+   - High availability configuration
+   - Connection management
+   
+## 2. Queue Inventory and Purpose
+   
+### 2.1 Order Processing Queues
+- **OMS** - Order intake from external CRM
+  - Producer: Salesforce/External CRM
+  - Consumer: crm_gateway (OmsReceiver)
+  - Message Format: OrderDTO
+  - Flow: CRM → OMS → OmsProcessor → service-transactional
+  
+- **OMS_ARCHIVE** - Audit trail
+  - All processed orders for compliance
+  
+- **OMS_ERROR** - Failed order processing
+  - Dead letter for investigation
+  
+- **OMS_RESPONSE** - Success notifications
+  - Back to external systems
+  
+### 2.2 Provisioning Queues
+- **PROVISIONING_RESPONSE** - Network provisioning callbacks
+  - Producer: Nokia ESB, ServiceNow, Cisco
+  - Consumer: crm_gateway (OrderUpdater)
+  - Triggers billing after successful activation
+  
+- **MCM_BILLING_OMS_RESPONSE** - MCM-specific responses
+  - Producer: MCM/Nokia systems
+  - Consumer: provision_gateway
+  
+### 2.3 Usage Processing Queues
+- **MEDIATION** - CDR file processing
+  - Producer: External mediation system
+  - Consumer: service-mediation (MediationProcessor)
+  - Message: ProcessCdrsInput (serviceType, fileName, tenantName)
+  - Flow: CDR files → MEDIATION → Normalization → usage_record (UNRATED)
+  
+- **USAGE** - Usage rating
+  - Producer: batch-process (after mediation)
+  - Consumer: service-usage (UsageProcessor)
+  - Message: UsageContainerInput
+  - Flow: UNRATED records → USAGE → Rating → RATED records → Charges
+  
+### 2.4 Bulk Operations Queue
+- **BULK** - Bulk operations
+  - Producer: service-proxy (BulkProcessService)
+  - Consumer: jobs-common (BulkProcessor)
+  - Operations: Invoice regeneration, payment allocation, adjustments
+  
+### 2.5 Other Queues
+- **price-sync** - Price catalog updates
+  - Producer: External price vendor
+  - Consumer: pricing_sync service
+
+## 3. Message Patterns
+
+### 3.1 Request-Response Pattern (OMS)
+</code></pre>
+External CRM → OMS queue → crm_gateway processes
+  → Success: OMS_RESPONSE back to CRM
+  → Failure: OMS_ERROR for investigation
+  → Archive: OMS_ARCHIVE for compliance
+<pre><code class="language-">
+### 3.2 Event-Driven Pattern (Provisioning)
+</code></pre>
+provision_gateway sends activation → External system
+  → System processes asynchronously
+  → Completion: PROVISIONING_RESPONSE → crm_gateway
+  → crm_gateway updates order status → Triggers billing
+<pre><code class="language-">
+### 3.3 Pipeline Pattern (Usage)
+</code></pre>
+CDR Files → MEDIATION queue → service-mediation
+  → Normalized records to DB
+  → batch-process triggers → USAGE queue
+  → service-usage rates → RATED records
+  → service-billing creates charges
+<pre><code class="language-">
+## 4. Error Handling and Retry
+
+### 4.1 Retry Configuration
+</code></pre>groovy
+// Retry policy
+maxRetries: 7
+initialDelay: 250ms
+multiplier: 1.5
+maxDelay: 60000ms
+// Example delays
+Attempt 1: 250ms
+Attempt 2: 375ms
+Attempt 3: 562ms
+Attempt 4: 843ms
+...
+Attempt 7: ~2841ms
+<pre><code class="language-">
+### 4.2 Exception Types
+- **NonRetryableException** - Business validation failures
+  - No retry, immediate failure
+  - Examples: Invalid account, duplicate order
+  
+- **RetryableException** - Transient failures
+  - Network timeouts, database connection issues
+  - Retry with backoff
+
+### 4.3 Dead Letter Queues
+- Failed messages after max retries → DLQ
+- Manual investigation and reprocessing
+
+## 5. Message Formats
+
+### 5.1 OMS Message Example
+</code></pre>json
+{
+  "object_type": "ORDER",
+  "account_id": "ACC-1001",
+  "order_type": "NEW",
+  "services": [
+    {
+      "product_code": "INTERNET_100",
+      "action": "ADD"
+    }
+  ],
+  "extended_data": {
+    "ont_serial": "ONT123456",
+    "installation_address": {...}
+  }
+}
+<pre><code class="language-">
+### 5.2 MEDIATION Message Example
+</code></pre>json
+{
+  "serviceType": "VOICE",
+  "fileName": "mcm_cdr_20240115.csv",
+  "tenantName": "coopeg-prd",
+  "recordCount": 15000
+}
+<pre><code class="language-">
+### 5.3 USAGE Message Example
+</code></pre>json
+{
+  "usageRecordIds": ["USG-001", "USG-002", ...],
+  "ratingDate": "2024-01-15",
+  "batchId": "BATCH-20240115-001"
+}
+<pre><code class="language-">
+## 6. Monitoring and Troubleshooting
+
+### 6.1 ActiveMQ Console
+- URL: http://localhost:8161/admin
+- Credentials: admin/admin
+- Monitor: Queue depth, consumers, message rates
+
+### 6.2 Key Metrics
+- Queue depth (messages waiting)
+- Enqueue/dequeue rates
+- Consumer count
+- Message age
+
+### 6.3 Common Issues
+- **High queue depth**: Slow consumer or processing errors
+- **No consumers**: Service down or connection issue
+- **Increasing error queue**: Business logic failures
+
+## 7. Development Guide
+
+### 7.1 Creating a Queue Consumer
+</code></pre>groovy
+@Component
+class MyQueueReceiver {
+    @JmsListener(destination = "MY_QUEUE", containerFactory = "jmsListenerContainerFactory")
+    void receiveMessage(String message) {
+        try {
+            // Process message
+            processMessage(message)
+        } catch (NonRetryableException e) {
+            log.error("Business validation failed: ${e.message}")
+            throw e // No retry
+        } catch (Exception e) {
+            log.error("Transient error: ${e.message}")
+            throw new RetryableException(e) // Will retry
+        }
+    }
+}
+<pre><code class="language-">
+### 7.2 Sending Messages
+</code></pre>groovy
+@Autowired
+JmsTemplate jmsTemplate
+void sendToQueue(String queueName, Object message) {
+    jmsTemplate.convertAndSend(queueName, message)
+}
+<pre><code class="language-">
+### 7.3 Testing Queue Flows
+</code></pre>groovy
+// Integration test
+@SpringBootTest
+class QueueIntegrationTest {
+    @Test
+    void testOrderFlow() {
+        // Send message to OMS
+        sendTestOrder()
+        // Wait for processing
+        Thread.sleep(2000)
+        // Verify in database
+        def order = orderRepository.findById("TEST-001")
+        assert order.status == "COMPLETED"
+    }
+}
+<pre><code class="language-"></code></pre>
+<strong>Why Critical</strong>: Message queues are core to the architecture; understanding flows is essential.
+
+<hr>
+
+<h3>Phase 2: High-Priority Enhancements (Week 2)</h3>
+
+<h4>2.1 Enhanced Document: Gateway Integration Guide</h4>
+
+<strong>Enhancement to</strong>: <code>NEWCOMER_GUIDE_PART2_TECHNICAL_DEEP_DIVE.md</code> Section 2
+<strong>New Detailed Sections for Each Gateway</strong>:
+<pre><code class="language-markdown">### 2.1 crm_gateway - Detailed Integration
+
+#### External Systems
+- Salesforce CRM
+- Microsoft Dynamics 365
+- Custom CRM systems
+
+#### Integration Patterns
+
+**GraphQL API**:
+</code></pre>graphql
+<h1>Public API for order submission</h1>
+
+mutation CreateOrder {
+  createOrder(input: {
+    accountId: "ACC-1001"
+    orderType: NEW
+    services: [
+      { productCode: "INTERNET_100", action: ADD }
+    ]
+  }) {
+    orderId
+    status
+    validationErrors { field message }
+  }
+}
+<pre><code class="language-">
+**ActiveMQ Integration**:
+- Consumes: OMS, PROVISIONING_RESPONSE
+- Produces: OMS_ARCHIVE, OMS_ERROR, OMS_RESPONSE
+
+**OAuth2 Authorization Server**:
+</code></pre>bash
+<h1>Get token</h1>
+
+curl -X POST http://localhost:8080/oauth/token \
+  -H "Authorization: Basic $(echo -n 'client:secret' | base64)" \
+  -d "grant_type=client_credentials&scope=all"
+<h1>Use token</h1>
+
+curl -H "Authorization: Bearer {token}" \
+  http://localhost:8080/graphql
+<pre><code class="language-">
+#### Configuration (Vault)
+</code></pre>yaml
+application:
+  jwt:
+    key: {vault:secret/ctg-oms/dev#application.jwt.key}
+  oauth:
+    clientId: {vault:secret/ctg-oms/dev#application.oauth.clientId}
+    secret: {vault:secret/ctg-oms/dev#application.oauth.secret}
+  tenant: {vault:secret/ctg-oms/dev#application.tenant}
+<pre><code class="language-">
+### 2.2 provision_gateway - Detailed Integration
+
+#### Supported Provisioning Systems
+- Nokia ESB (MCM Telecom)
+- ServiceNow
+- Cisco NSO
+- Generic REST/SOAP provisioning APIs
+
+#### Operations Supported
+</code></pre>groovy
+enum ApiName {
+    UPDATE_DID,
+    UPDATE_DID_LIST,
+    REMOVE_DID,
+    REMOVE_DID_LIST,
+    UPDATE_TRUNK,
+    REMOVE_TRUNK,
+    UPDATE_IP_ADDRESS,
+    REMOVE_IP_ADDRESS,
+    UPDATE_PROVISIONING_REQUEST
+}
+<pre><code class="language-">
+#### Nokia MCM Integration Example
+</code></pre>groovy
+// Provision internet service
+def provisionRequest = [
+    accountId: "ACC-1001",
+    orderId: "ORD-12345",
+    serviceType: "INTERNET",
+    ont_serial: "ONT987654",
+    olt: "OLT-ZONE1-01",
+    port: "1/1/1",
+    vlan: 100,
+    speed_profile: "100M",
+    ip_address: "10.1.1.100",
+    gateway: "10.1.1.1"
+]
+// Send to Nokia ESB
+def response = nokiaClient.provisionService(provisionRequest)
+// Wait for async response on PROVISIONING_RESPONSE queue
+<pre><code class="language-">
+### 2.3 tax-gateway - Detailed Integration
+
+#### Tax Providers
+- Avalara (US, Canada, International)
+- TaxJar (US only)
+- Custom tax engine
+- PAC Providers (Mexico CFDI):
+  - Finkok
+  - Ecodex
+  - SW Sapien
+
+#### CFDI Workflow (Mexico)
+</code></pre>
+Invoice Generation → tax-gateway
+  ↓
+Generate CFDI XML (v3.3/v4.0)
+  ↓
+Submit to PAC via SFTP
+  ↓
+PAC stamps with UUID
+  ↓
+Retrieve stamped XML
+  ↓
+Store UUID in invoice.uuid
+  ↓
+Deliver to customer
+<pre><code class="language-">
+#### Tax Calculation Example
+</code></pre>groovy
+// Request
+def taxRequest = [
+    customerAddress: [
+        country: "MX",
+        state: "CDMX",
+        postalCode: "01000"
+    ],
+    lineItems: [
+        [
+            productCode: "INTERNET_100",
+            amount: 500.00,
+            taxCode: "SERVICE_DIGITAL"
+        ]
+    ]
+]
+// Response
+def taxResponse = [
+    subtotal: 500.00,
+    taxBreakdown: [
+        [name: "IVA", rate: 0.16, amount: 80.00]
+    ],
+    total: 580.00
+]
+<pre><code class="language-">
+### 2.4 payment-gateway - Detailed Integration
+
+#### Supported Payment Processors
+- **Cards**: Stripe, Braintree, Authorize.Net
+- **Mexican Banks**: Banamex, Bancomer, Banorte, Santander, Scotiabank
+- **Wallets**: PayPal, Apple Pay, Google Pay
+
+#### Bank File Processing
+</code></pre>groovy
+// Mexican bank file formats
+enum FilePaymentType {
+    BANAMEX,           // 5 columns
+    BANCOMER,          // 5 columns  
+    BANORTE,           // 13 columns
+    SANTANDER,         // 20 columns
+    SCOTIABANK
+}
+// Processing flow
+Bank uploads file to S3 → Lambda trigger
+  ↓
+payment-gateway downloads
+  ↓
+Parse CSV (bank-specific format)
+  ↓
+Validate columns and amounts
+  ↓
+Create payment records
+  ↓
+Allocate to invoices
+  ↓
+Update account balances
+  ↓
+Trigger auto-resume if applicable
+<pre><code class="language-">
+#### Stripe Integration Example
+</code></pre>groovy
+// Create payment intent
+def paymentIntent = stripeClient.paymentIntents.create([
+    amount: 50000, // $500.00 in cents
+    currency: "usd",
+    customer: stripeCustomerId,
+    description: "Invoice INV-2024-001",
+    metadata: [
+        accountId: "ACC-1001",
+        invoiceId: "INV-2024-001"
+    ]
+])
+// Webhook handling for payment confirmation
+@PostMapping("/webhook/stripe")
+def handleStripeWebhook(@RequestBody String payload, @RequestHeader("Stripe-Signature") String signature) {
+    def event = Webhook.constructEvent(payload, signature, webhookSecret)
+    if (event.type == "payment_intent.succeeded") {
+        def paymentIntent = event.data.object
+        processPayment(paymentIntent)
+    }
+}
+<pre><code class="language-">
+### 2.5 finance-gateway - Detailed Integration
+
+#### Supported ERP Systems
+- QuickBooks Online
+- NetSuite (in progress)
+- Oracle EBS
+- SAP (planned)
+
+#### QuickBooks Integration
+</code></pre>groovy
+// OAuth2 flow
+<ol>
+<li>Redirect user to QuickBooks authorization</li>
+<li>Receive callback with authorization code</li>
+<li>Exchange code for access + refresh tokens</li>
+<li>Store tokens in Vault</li>
+</ol>
+// Sync invoice to QuickBooks
+def qbInvoice = [
+    Line: [
+        [
+            Amount: 500.00,
+            DetailType: "SalesItemLineDetail",
+            SalesItemLineDetail: [
+                ItemRef: [value: qbItemId],
+                Qty: 1,
+                UnitPrice: 500.00
+            ]
+        ]
+    ],
+    CustomerRef: [value: qbCustomerId],
+    DueDate: "2024-02-15",
+    CustomField: [
+        [Name: "Embrix Invoice ID", StringValue: "INV-2024-001"]
+    ]
+]
+def response = qbClient.createInvoice(qbInvoice)
+<pre><code class="language-">
+#### Journal Entry Sync
+</code></pre>groovy
+// Revenue journal entry
+def journalEntry = [
+    TxnDate: "2024-01-31",
+    Line: [
+        // Debit: Accounts Receivable
+        [
+            Amount: 580.00,
+            DetailType: "JournalEntryLineDetail",
+            JournalEntryLineDetail: [
+                PostingType: "Debit",
+                AccountRef: [value: arAccountId]
+            ]
+        ],
+        // Credit: Revenue
+        [
+            Amount: 500.00,
+            DetailType: "JournalEntryLineDetail",
+            JournalEntryLineDetail: [
+                PostingType: "Credit",
+                AccountRef: [value: revenueAccountId]
+            ]
+        ],
+        // Credit: Tax Liability
+        [
+            Amount: 80.00,
+            DetailType: "JournalEntryLineDetail",
+            JournalEntryLineDetail: [
+                PostingType: "Credit",
+                AccountRef: [value: taxLiabilityAccountId]
+            ]
+        ]
+    ]
+]
+<pre><code class="language-">
+### 2.6 diameter-gateway - Detailed Integration
+
+#### Purpose
+Real-time charging for mobile data sessions (3GPP Diameter)
+
+#### Diameter Operations
+- CCR-Initial (Credit Control Request - Initial)
+- CCR-Update (mid-session)
+- CCR-Terminate (session end)
+- CCA responses (Credit Control Answer)
+
+#### Real-Time Flow
+</code></pre>
+<ol>
+<li>Mobile device starts data session<br>↓</li>
+<li>GGSN/PGW sends CCR-Initial to diameter-gateway<br>↓</li>
+<li>diameter-gateway:<br><ul><li>Resolves account by MSISDN</li></ul><br><ul><li>Checks balance in Redis</li></ul><br><ul><li>Reserves quota (e.g., 100MB)</li></ul><br>↓</li>
+<li>Returns CCA-Initial with granted units<br>↓</li>
+<li>During session: CCR-Update for more quota<br>↓</li>
+<li>Session end: CCR-Terminate<br>↓</li>
+<li>Create final usage_record and charge</li>
+</ol>
+<pre><code class="language-">
+#### Performance Requirements
+- Response time: &lt; 100ms (P99)
+- Throughput: 10,000+ requests/second
+- Redis for balance caching (avoid DB on critical path)
+</code></pre>
+
+<hr>
+
+<h4>2.2 New Document: File Operations Guide</h4>
+
+<strong>File</strong>: <code>NEWCOMER_GUIDE_PART6_FILE_OPERATIONS.md</code> → <code>part6-file-operations.html</code>
+<strong>Content Structure</strong>:
+<pre><code class="language-markdown"># Part 6: File Operations & Storage
+
+## 1. File Categories Overview
+   - Complete enum reference
+   - Use cases for each category
+   
+## 2. Payment File Processing
+   - Mexican bank formats (Banamex, Bancomer, Banorte, Santander)
+   - CSV parsing and validation
+   - Payment allocation logic
+   
+## 3. CFDI and Tax Files
+   - CFDI XML generation
+   - PAC provider integration (SFTP)
+   - UUID tracking
+   
+## 4. Usage Files (CDR)
+   - CDR file formats (voice, SMS, data)
+   - SFTP ingestion
+   - Mediation processing
+   
+## 5. AWS S3 Integration
+   - Bucket structure
+   - Upload/download patterns
+   - Presigned URLs
+   
+## 6. File Validation Rules
+   - Format validation
+   - Column count validation
+   - Duplicate detection
+   
+## 7. Error Handling
+   - File error logging
+   - Retry mechanisms
+   - Manual intervention procedures
+</code></pre>
+
+<hr>
+
+<h3>Phase 3: Medium-Priority Enhancements (Week 3)</h3>
+
+<h4>3.1 API Documentation Enhancement</h4>
+
+<strong>New Section in Part 3</strong>: Complete GraphQL API Reference
+<pre><code class="language-markdown">## 9. Complete GraphQL API Reference
+
+### 9.1 Account Management APIs
+
+#### Create Account
+</code></pre>graphql
+mutation ProcessNewAccount {
+  processNewAccount(input: {
+    accountType: RESIDENTIAL
+    companyName: "Acme Corp"
+    billingAddress: {
+      street: "123 Main St"
+      city: "Mexico City"
+      state: "CDMX"
+      postalCode: "01000"
+      country: "MX"
+    }
+    primaryContact: {
+      firstName: "John"
+      lastName: "Doe"
+      email: "john@acme.com"
+      phone: "+52 55 1234 5678"
+    }
+    billCycleDay: 1
+    paymentTerms: 30
+  }) {
+    accountId
+    status
+    errors { field message }
+  }
+}
+<pre><code class="language-">
+#### Query Account
+</code></pre>graphql
+query GetAccount {
+  getAccount(id: "ACC-1001") {
+    id
+    accountType
+    status
+    balance
+    billCycleDay
+    subscriptions {
+      id
+      productCode
+      status
+      recurringCharge
+    }
+    contacts {
+      firstName
+      lastName
+      email
+      phone
+      isPrimary
+    }
+    invoices(filter: { status: OVERDUE }) {
+      id
+      invoiceDate
+      dueDate
+      totalAmount
+      balance
+    }
+  }
+}
+<pre><code class="language-">
+### 9.2 Order Management APIs
+
+#### Submit Order
+</code></pre>graphql
+mutation CreateOrder {
+  createOrder(input: {
+    accountId: "ACC-1001"
+    orderType: NEW
+    services: [
+      {
+        action: ADD
+        productCode: "INTERNET_100"
+        quantity: 1
+        customization: {
+          installationDate: "2024-02-15"
+          serviceAddress: {
+            street: "456 Service Rd"
+            city: "Mexico City"
+          }
+        }
+      }
+    ]
+    extendedData: {
+      ontSerial: "ONT123456"
+      port: "required"
+    }
+  }) {
+    orderId
+    orderNumber
+    status
+    estimatedCompletionDate
+    validationErrors {
+      field
+      message
+      severity
+    }
+  }
+}
+<pre><code class="language-">
+#### Search Orders
+</code></pre>graphql
+query SearchOrders {
+  searchOrders(filter: {
+    accountId: "ACC-1001"
+    status: [PROVISIONING, COMPLETED]
+    dateRange: {
+      from: "2024-01-01"
+      to: "2024-01-31"
+    }
+  }, page: { offset: 0, limit: 20 }) {
+    total
+    orders {
+      id
+      orderNumber
+      orderType
+      status
+      createdDate
+      completedDate
+      services {
+        productCode
+        productName
+        action
+        status
+      }
+    }
+  }
+}
+<pre><code class="language-">
+### 9.3 Billing & Invoice APIs
+
+#### Run Billing Cycle
+</code></pre>graphql
+mutation RunBillingCycle {
+  runBillingCycle(input: {
+    billCycleDay: 1
+    billingPeriodStart: "2024-01-01"
+    billingPeriodEnd: "2024-01-31"
+    accountIds: null  # null = all accounts
+  }) {
+    totalAccountsBilled
+    totalChargesGenerated
+    totalAmount
+    errors {
+      accountId
+      errorMessage
+      errorCode
+    }
+    summary {
+      recurringCharges: { count amount }
+      usageCharges: { count amount }
+      adjustments: { count amount }
+    }
+  }
+}
+<pre><code class="language-">
+#### Generate Invoice
+</code></pre>graphql
+mutation GenerateInvoice {
+  generateInvoice(input: {
+    accountId: "ACC-1001"
+    billingPeriodStart: "2024-01-01"
+    billingPeriodEnd: "2024-01-31"
+    format: PDF
+    language: "es-MX"
+    includeCFDI: true
+  }) {
+    invoiceId
+    invoiceNumber
+    invoiceDate
+    dueDate
+    subtotal
+    taxTotal
+    totalAmount
+    pdfUrl
+    uuid  # CFDI UUID
+    stampedDate
+  }
+}
+<pre><code class="language-">
+#### Query Invoices
+</code></pre>graphql
+query SearchInvoices {
+  searchBillInvoice(filter: {
+    accountId: "ACC-1001"
+    status: [PENDING, OVERDUE]
+  }) {
+    invoices {
+      id
+      invoiceNumber
+      invoiceDate
+      dueDate
+      totalAmount
+      amountPaid
+      balance
+      status
+      pdfUrl
+      charges {
+        description
+        chargeType
+        amount
+        taxAmount
+        totalAmount
+      }
+      taxBreakdown {
+        taxName
+        taxRate
+        taxableAmount
+        taxAmount
+      }
+    }
+  }
+}
+<pre><code class="language-">
+### 9.4 Payment APIs
+
+#### Process Payment
+</code></pre>graphql
+mutation ProcessPayment {
+  applyPayment(input: {
+    accountId: "ACC-1001"
+    paymentMethodId: "PM-001"
+    amount: 500.00
+    paymentDate: "2024-02-01"
+    paymentType: BANK_TRANSFER
+    referenceNumber: "REF123456"
+    allocateToInvoices: [
+      { invoiceId: "INV-2024-001", amount: 300.00 },
+      { invoiceId: "INV-2024-002", amount: 200.00 }
+    ]
+  }) {
+    paymentId
+    status
+    transactionId
+    allocations {
+      invoiceId
+      amount
+      remainingBalance
+    }
+    accountBalance
+  }
+}
+<pre><code class="language-">
+### 9.5 Usage APIs
+
+#### Search Usage Records
+</code></pre>graphql
+query SearchUsage {
+  searchUsageRecords(filter: {
+    accountId: "ACC-1001"
+    subscriptionId: "SUB-001"
+    dateRange: {
+      from: "2024-01-01T00:00:00Z"
+      to: "2024-01-31T23:59:59Z"
+    }
+    serviceType: [VOICE_CALL, DATA]
+    status: RATED
+  }, page: { offset: 0, limit: 100 }) {
+    total
+    records {
+      id
+      sourceId  # Phone number or IMSI
+      startTime
+      endTime
+      duration  # seconds for voice
+      volume    # bytes for data
+      destination
+      serviceType
+      callType
+      ratedAmount
+      billed
+    }
+    summary {
+      totalRecords
+      totalAmount
+      byServiceType {
+        serviceType
+        count
+        amount
+      }
+    }
+  }
+}
+<pre><code class="language-">
+#### Get Usage Summary
+</code></pre>graphql
+query GetUsageSummary {
+  getUsageSummary(input: {
+    accountId: "ACC-1001"
+    periodStart: "2024-01-01"
+    periodEnd: "2024-01-31"
+  }) {
+    voiceMinutes
+    smsCount
+    dataGB
+    totalCharges
+    breakdown {
+      date
+      voiceMinutes
+      dataGB
+      charges
+    }
+  }
+}
+<pre><code class="language-">
+### 9.6 Self-Care APIs
+
+#### Customer Registration
+</code></pre>graphql
+mutation RegisterCustomer {
+  registerSelfCareUser(input: {
+    email: "customer@example.com"
+    password: "SecurePass123!"
+    accountId: "ACC-1001"
+    firstName: "Jane"
+    lastName: "Customer"
+    phone: "+52 55 9876 5432"
+  }) {
+    userId
+    status
+    activationToken
+  }
+}
+<pre><code class="language-">
+#### View Bills
+</code></pre>graphql
+query ViewMyBills {
+  myBills(filter: { last: 12 }) {
+    invoices {
+      id
+      invoiceDate
+      dueDate
+      totalAmount
+      amountPaid
+      balance
+      status
+      pdfUrl
+      canDownload
+    }
+  }
+}
+<pre><code class="language-">
+### 9.7 Error Handling
+
+#### Standard Error Format
+</code></pre>json
+{
+  "errors": [
+    {
+      "message": "Account not found",
+      "extensions": {
+        "code": "ACCOUNT_NOT_FOUND",
+        "accountId": "ACC-9999",
+        "classification": "NOT_FOUND"
+      }
+    }
+  ]
+}
+<pre><code class="language-">
+#### Common Error Codes
+- `ACCOUNT_NOT_FOUND` - Account ID doesn't exist
+- `INSUFFICIENT_BALANCE` - Account balance too low
+- `INVALID_PAYMENT_METHOD` - Payment method invalid or expired
+- `ORDER_VALIDATION_FAILED` - Order data validation errors
+- `PROVISIONING_FAILED` - External provisioning system error
+- `DUPLICATE_ORDER` - Order already exists
+</code></pre>
+
+<hr>
+
+<h4>3.2 Development Workflow Documentation</h4>
+
+<strong>New Section</strong>: Complete development workflow guide
+<pre><code class="language-markdown">## 10. Development Workflows
+
+### 10.1 Feature Development Workflow
+
+#### Step 1: Set Up Feature Branch
+</code></pre>bash
+git checkout -b feature/EP-5555-new-feature
+<pre><code class="language-">
+#### Step 2: Implement in Engine (Business Logic)
+</code></pre>groovy
+// engine/src/main/groovy/com/embrix/core/engine/billingHub/
+class NewFeatureService {
+    def calculateSomething(input) {
+        // Business logic here
+    }
+}
+<pre><code class="language-">
+#### Step 3: Add Database Migration (if needed)
+</code></pre>sql
+-- engine/src/main/resources/db/migration/V125__Add_New_Feature_Table.sql
+CREATE TABLE core_billing.new_feature (
+    id VARCHAR(50) PRIMARY KEY,
+    account_id VARCHAR(50) NOT NULL,
+    feature_data JSONB,
+    created_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+CREATE INDEX idx_new_feature_account ON core_billing.new_feature(account_id);
+<pre><code class="language-">
+#### Step 4: Build and Install Engine
+</code></pre>bash
+cd engine
+mvn clean install -DskipTests
+<pre><code class="language-">
+#### Step 5: Implement in Service (API Layer)
+</code></pre>groovy
+// service-billing/src/main/groovy/
+@Component
+class NewFeatureResolver implements GraphQLQueryResolver {
+    @Autowired
+    NewFeatureService newFeatureService
+    def newFeatureQuery(NewFeatureInput input) {
+        newFeatureService.calculateSomething(input)
+    }
+}
+<pre><code class="language-">
+#### Step 6: Add GraphQL Schema
+</code></pre>graphql
+<h1>service-billing/src/main/resources/graphql/new-feature.graphqls</h1>
+
+extend type Query {
+  newFeatureQuery(input: NewFeatureInput!): NewFeatureResult!
+}
+input NewFeatureInput {
+  accountId: String!
+  parameter: String
+}
+type NewFeatureResult {
+  success: Boolean!
+  data: String
+  errors: [Error]
+}
+<pre><code class="language-">
+#### Step 7: Test Locally
+</code></pre>bash
+<h1>Start service</h1>
+
+cd service-billing
+mvn spring-boot:run -Dspring-boot.run.profiles=dev
+<h1>Test GraphQL query</h1>
+
+curl -X POST http://localhost:8080/graphql \
+  -H "Content-Type: application/json" \
+  -d '{"query": "{ newFeatureQuery(input: {accountId: \"ACC-001\"}) { success data } }"}'
+<pre><code class="language-">
+#### Step 8: Write Tests
+</code></pre>groovy
+@SpringBootTest
+class NewFeatureServiceTest {
+    @Autowired
+    NewFeatureService service
+    @Test
+    void testCalculateSomething() {
+        def input = [accountId: "ACC-001", parameter: "test"]
+        def result = service.calculateSomething(input)
+        assert result.success
+        assert result.data != null
+    }
+}
+<pre><code class="language-">
+#### Step 9: Commit and Push
+</code></pre>bash
+git add .
+git commit -m "EP-5555: Implement new feature"
+git push origin feature/EP-5555-new-feature
+<pre><code class="language-">
+#### Step 10: Create Pull Request
+- Title: "EP-5555: Implement new feature"
+- Description: Link to Jira, describe changes
+- Request reviews from team
+
+### 10.2 Bug Fix Workflow
+
+#### Reproduce Bug Locally
+</code></pre>bash
+<h1>Check logs</h1>
+
+tail -f service-billing/logs/application.log | grep ERROR
+<h1>Query database</h1>
+
+psql -U omsadmin -d omsdevdb
+SELECT * FROM core_billing.invoice WHERE id = 'INV-ERROR-001';
+<pre><code class="language-">
+#### Create Bug Fix Branch
+</code></pre>bash
+git checkout -b bugfix/EP-5556-fix-invoice-generation
+<pre><code class="language-">
+#### Fix and Test
+</code></pre>groovy
+// Fix in engine or service
+// Add regression test
+// Verify fix works
+@Test
+void testBugFix() {
+    // Test that previously failed, now passes
+}
+<pre><code class="language-">
+#### Deploy to Test Environment
+</code></pre>bash
+mvn clean package
+helm upgrade urbanos-service-billing ./charts/service-billing \
+  -f helm_values/urbanos/service-billing.yaml
+<pre><code class="language-">
+### 10.3 Database Migration Workflow
+
+#### Create Migration File
+</code></pre>bash
+<h1>Naming: V{version}__{description}.sql</h1>
+
+<h1>Version increments from last migration</h1>
+
+cd engine/src/main/resources/db/migration
+touch V126__Add_Column_To_Invoice.sql
+<pre><code class="language-">
+#### Write Migration
+</code></pre>sql
+-- V126__Add_Column_To_Invoice.sql
+ALTER TABLE core_billing.invoice 
+ADD COLUMN email_sent_date TIMESTAMP;
+CREATE INDEX idx_invoice_email_sent 
+ON core_billing.invoice(email_sent_date) 
+WHERE email_sent_date IS NOT NULL;
+<pre><code class="language-">
+#### Test Migration
+</code></pre>bash
+<h1>On local database</h1>
+
+mvn flyway:migrate -Dspring.profiles.active=dev
+<h1>Check migration history</h1>
+
+mvn flyway:info
+<pre><code class="language-">
+#### Rollback Plan
+</code></pre>sql
+-- Always create rollback script
+-- V126__rollback.sql (not auto-executed)
+ALTER TABLE core_billing.invoice DROP COLUMN email_sent_date;
+DROP INDEX IF EXISTS idx_invoice_email_sent;
+<pre><code class="language-">
+### 10.4 Multi-Tenant Testing
+
+#### Test on Multiple Tenants
+</code></pre>bash
+<h1>Set tenant in environment</h1>
+
+export TENANT_NAME=urbanos
+export SPRING_DATASOURCE_URL=jdbc:postgresql://localhost:5432/coredb-urbanos
+<h1>Run tests</h1>
+
+mvn test -Dspring.profiles.active=dev
+<h1>Switch tenant</h1>
+
+export TENANT_NAME=demo
+export SPRING_DATASOURCE_URL=jdbc:postgresql://localhost:5432/coredb-demo
+<h1>Run tests again</h1>
+
+mvn test -Dspring.profiles.active=dev
+<pre><code class="language-">
+### 10.5 Integration Testing
+
+#### Test Complete Flow
+</code></pre>groovy
+@SpringBootTest
+@TestPropertySource(locations = "classpath:application-test.properties")
+class OrderToCashIntegrationTest {
+    @Test
+    void testCompleteOrderFlow() {
+        // 1. Create account
+        def account = createTestAccount()
+        // 2. Submit order
+        def order = submitOrder(account.id)
+        assert order.status == "CREATED"
+        // 3. Simulate provisioning callback
+        simulateProvisioningSuccess(order.id)
+        // Wait for async processing
+        Thread.sleep(2000)
+        // 4. Verify order completed
+        def updatedOrder = getOrder(order.id)
+        assert updatedOrder.status == "COMPLETED"
+        // 5. Run billing
+        runBillingCycle(account.id)
+        // 6. Verify invoice generated
+        def invoices = getInvoices(account.id)
+        assert invoices.size() == 1
+        assert invoices[0].status == "SENT"
+        // 7. Process payment
+        def payment = processPayment(account.id, invoices[0].totalAmount)
+        // 8. Verify payment allocated
+        def updatedInvoice = getInvoice(invoices[0].id)
+        assert updatedInvoice.status == "PAID"
+        assert updatedInvoice.balance == 0
+    }
+}
+```
+
+<hr>
+
+<h2>Implementation Plan</h2>
+
+<h3>Timeline</h3>
+
+<table>
+<thead><tr>
+<th>Phase</th>
+<th>Duration</th>
+<th>Deliverables</th>
+</tr></thead><tbody>
+<tr>
+<td>-------</td>
+<td>----------</td>
+<td>--------------</td>
+</tr>
+<tr>
+<td>Phase 1</td>
+<td>Week 1</td>
+<td>Frontend guide, enhanced database docs, message queue guide</td>
+</tr>
+<tr>
+<td>Phase 2</td>
+<td>Week 2</td>
+<td>Gateway integration details, file operations guide</td>
+</tr>
+<tr>
+<td>Phase 3</td>
+<td>Week 3</td>
+<td>API documentation, development workflows</td>
+</tr>
+</tbody></table>
+<h3>Resources Required</h3>
+
+<ul>
+<li>Technical writer: 1 person (or developer with writing skills)</li>
+<li>Subject matter experts: Available for reviews</li>
+<li>Tools: Markdown editor, convert_to_html.py script</li>
+</ul>
+<h3>Success Metrics</h3>
+
+<ul>
+<li><strong>Completeness</strong>: All major system components documented</li>
+<li><strong>Accuracy</strong>: Technical reviews by 2+ team members</li>
+<li><strong>Usability</strong>: New team members can onboard with docs alone</li>
+<li><strong>Maintainability</strong>: Easy to update as system evolves</li>
+</ul>
+
+<hr>
+
+<h2>Maintenance Plan</h2>
+
+<h3>Regular Updates</h3>
+
+<ul>
+<li><strong>Quarterly Review</strong>: Check for outdated information</li>
+<li><strong>After Major Releases</strong>: Update version-specific content</li>
+<li><strong>New Feature</strong>: Document in relevant guide section</li>
+<li><strong>Architecture Changes</strong>: Update architecture diagrams</li>
+</ul>
+<h3>Documentation Standards</h3>
+
+<ul>
+<li>Use clear, concise language</li>
+<li>Include code examples for all concepts</li>
+<li>Provide diagrams for complex flows</li>
+<li>Cross-reference related sections</li>
+<li>Keep table of contents updated</li>
+</ul>
+
+<hr>
+
+<h2>Conclusion</h2>
+
+This enhancement plan transforms the newcomer documentation from good to exceptional by:
+<ol>
+<li>✅ Covering ALL system components (frontend, backend, gateways, database, queues)</li>
+<li>✅ Providing comprehensive code examples</li>
+<li>✅ Including real-world workflow guides</li>
+<li>✅ Documenting integration patterns with external systems</li>
+<li>✅ Offering quick reference materials</li>
+<li>✅ Enabling self-service onboarding for new team members</li>
+</ol>
+<strong>Estimated Total Effort</strong>: 3 weeks (1 person full-time)  
+<strong>Impact</strong>: Dramatically reduced onboarding time and improved developer productivity</p>
+        <footer>
+            <p><strong>Embrix O2X Platform Documentation</strong></p>
+            <p>Version 3.1.9-SNAPSHOT • Last Updated: February 2026</p>
+        </footer>
+    </div>
+</body>
+</html>

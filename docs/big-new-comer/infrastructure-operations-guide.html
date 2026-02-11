@@ -1,0 +1,1809 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>⚡ Infrastructure & Operations Guide - Embrix O2X</title>
+    
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+        font-size: 16px;
+        line-height: 1.7;
+        color: #1f2937;
+        background: linear-gradient(135deg, #f5f7fa 0%, #e9ecef 100%);
+        background-attachment: fixed;
+        padding: 20px;
+    }
+
+    .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        background: white;
+        padding: 40px 50px;
+        border-radius: 16px;
+        box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .container::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 5px;
+        background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+    }
+
+    .nav-header {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 20px;
+        border-radius: 8px;
+        margin-bottom: 30px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+    }
+
+    .nav-header h1 {
+        font-size: 1.4em;
+        margin-bottom: 5px;
+        font-weight: 600;
+    }
+
+    .nav-links {
+        display: flex;
+        gap: 15px;
+        flex-wrap: wrap;
+    }
+
+    .nav-links a {
+        color: white;
+        text-decoration: none;
+        padding: 8px 16px;
+        background: rgba(255,255,255,0.2);
+        border-radius: 5px;
+        transition: background 0.3s;
+    }
+
+    .nav-links a:hover {
+        background: rgba(255,255,255,0.3);
+    }
+
+    h1 {
+        color: #667eea;
+        margin: 35px 0 20px 0;
+        padding: 12px 0 12px 18px;
+        border-left: 5px solid #667eea;
+        border-bottom: 2px solid #667eea;
+        background: linear-gradient(90deg, rgba(102, 126, 234, 0.05) 0%, rgba(255,255,255,0) 100%);
+        font-size: 1.8em;
+        font-weight: 700;
+        border-radius: 0 8px 0 0;
+    }
+
+    h2 {
+        color: #764ba2;
+        margin: 30px 0 18px 0;
+        padding: 10px 0 10px 15px;
+        border-left: 4px solid #764ba2;
+        border-bottom: 2px solid #f0f0f0;
+        background: linear-gradient(90deg, rgba(118, 75, 162, 0.03) 0%, rgba(255,255,255,0) 100%);
+        font-size: 1.5em;
+        font-weight: 700;
+        border-radius: 0 6px 0 0;
+    }
+
+    h3 {
+        color: #667eea;
+        margin: 25px 0 15px 0;
+        padding: 8px 0 8px 12px;
+        border-left: 3px solid #667eea;
+        background: linear-gradient(90deg, rgba(102, 126, 234, 0.04) 0%, transparent 100%);
+        font-size: 1.25em;
+        font-weight: 600;
+        border-radius: 0 6px 6px 0;
+    }
+
+    h4 {
+        color: #764ba2;
+        margin: 20px 0 12px 0;
+        padding: 6px 0 6px 10px;
+        border-left: 2px solid #764ba2;
+        background: linear-gradient(90deg, rgba(118, 75, 162, 0.03) 0%, transparent 100%);
+        font-size: 1.1em;
+        font-weight: 600;
+        border-radius: 0 4px 4px 0;
+    }
+
+    h5 {
+        color: #667eea;
+        margin: 18px 0 10px 0;
+        padding: 4px 0 4px 8px;
+        border-left: 2px solid #667eea;
+        font-size: 1.05em;
+        font-weight: 600;
+        background: linear-gradient(90deg, rgba(102, 126, 234, 0.02) 0%, transparent 100%);
+        border-radius: 0 3px 3px 0;
+    }
+
+    h6 {
+        color: #764ba2;
+        margin: 15px 0 8px 0;
+        font-size: 0.95em;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    p {
+        margin: 12px 0;
+        line-height: 1.7;
+        font-size: 0.95em;
+        color: #374151;
+    }
+    
+    /* Better spacing for paragraphs after headings */
+    h1 + p, h2 + p, h3 + p, h4 + p {
+        margin-top: 10px;
+    }
+
+    ul, ol {
+        margin: 20px 0;
+        padding-left: 35px;
+    }
+
+    li {
+        margin: 10px 0;
+        line-height: 1.7;
+        font-size: 0.95em;
+        position: relative;
+        padding-left: 8px;
+    }
+
+    ul li::marker {
+        color: #667eea;
+        font-weight: bold;
+        font-size: 1.1em;
+    }
+
+    ol li::marker {
+        color: #764ba2;
+        font-weight: bold;
+        font-size: 1em;
+    }
+
+    /* Better list item styling */
+    li {
+        background: linear-gradient(90deg, rgba(102, 126, 234, 0.02) 0%, transparent 100%);
+        border-left: 2px solid transparent;
+        padding: 8px 8px 8px 12px;
+        border-radius: 0 4px 4px 0;
+        transition: all 0.2s ease;
+    }
+
+    li:hover {
+        background: linear-gradient(90deg, rgba(102, 126, 234, 0.05) 0%, transparent 100%);
+        border-left-color: #667eea;
+        padding-left: 16px;
+    }
+
+    /* Nested lists */
+    li ul, li ol {
+        margin: 8px 0 8px 10px;
+    }
+
+    /* Nested list items - smaller styling */
+    li li {
+        font-size: 0.92em;
+        margin: 6px 0;
+        background: linear-gradient(90deg, rgba(118, 75, 162, 0.02) 0%, transparent 100%);
+    }
+
+    li li:hover {
+        background: linear-gradient(90deg, rgba(118, 75, 162, 0.05) 0%, transparent 100%);
+        border-left-color: #764ba2;
+    }
+
+    code {
+        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        padding: 2px 6px;
+        border-radius: 4px;
+        font-family: 'Fira Code', 'Courier New', Consolas, monospace;
+        font-size: 0.85em;
+        color: #d63384;
+        border: 1px solid #dee2e6;
+        font-weight: 500;
+    }
+
+    /* Inline code with special highlighting */
+    p code, li code, td code {
+        position: relative;
+    }
+
+    p code::before, li code::before, td code::before {
+        content: '';
+        position: absolute;
+        inset: -2px;
+        border-radius: 5px;
+        background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+        z-index: -1;
+        opacity: 0;
+        transition: opacity 0.2s;
+    }
+
+    p code:hover::before, li code:hover::before, td code:hover::before {
+        opacity: 1;
+    }
+
+    pre {
+        background: #1e293b;
+        color: #e2e8f0;
+        padding: 16px 18px;
+        border-radius: 8px;
+        overflow-x: auto;
+        margin: 18px 0;
+        border: 1px solid #334155;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+        font-family: 'Cascadia Code', 'Fira Code', 'SF Mono', 'Consolas', 'Liberation Mono', monospace;
+        font-size: 0.85em;
+        line-height: 1.6;
+        position: relative;
+        font-feature-settings: "liga" 0;
+        text-rendering: optimizeLegibility;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+    }
+
+    pre code {
+        background: none;
+        color: inherit;
+        padding: 0;
+        border: none;
+        font-family: inherit;
+        font-weight: normal;
+        font-size: 1em;
+        display: block;
+    }
+    
+    /* Ensure consistent styling for all code content inside pre blocks */
+    pre code * {
+        font-size: inherit !important;
+        line-height: inherit !important;
+        color: inherit !important;
+        font-family: inherit !important;
+    }
+
+    /* Hover effect */
+    pre:hover {
+        border-color: #475569;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.12);
+        transition: all 0.3s ease;
+    }
+
+    /* Code block header indicator */
+    pre::after {
+        content: 'CODE';
+        position: absolute;
+        top: 8px;
+        right: 12px;
+        font-size: 0.65em;
+        color: #64748b;
+        font-weight: 600;
+        letter-spacing: 0.05em;
+        opacity: 0.5;
+    }
+
+    blockquote {
+        border-left: 4px solid #667eea;
+        padding: 15px 20px;
+        margin: 20px 0;
+        color: #555;
+        font-style: italic;
+        font-size: 0.95em;
+        background: linear-gradient(90deg, rgba(102, 126, 234, 0.05) 0%, rgba(255,255,255,0) 100%);
+        border-radius: 0 6px 6px 0;
+        position: relative;
+    }
+
+    blockquote::before {
+        content: '"';
+        position: absolute;
+        left: -10px;
+        top: -10px;
+        font-size: 4em;
+        color: rgba(102, 126, 234, 0.1);
+        font-family: Georgia, serif;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 20px 0;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+        border-radius: 8px;
+        overflow: hidden;
+        background: white;
+        font-size: 0.9em;
+    }
+
+    thead {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    }
+
+    th {
+        color: white;
+        padding: 12px 15px;
+        text-align: left;
+        font-weight: 600;
+        text-transform: uppercase;
+        font-size: 0.82em;
+        letter-spacing: 0.3px;
+    }
+
+    td {
+        padding: 10px 15px;
+        border-bottom: 1px solid #e5e7eb;
+        vertical-align: top;
+        line-height: 1.6;
+    }
+
+    tbody tr:last-child td {
+        border-bottom: none;
+    }
+
+    tbody tr:hover {
+        background: rgba(102, 126, 234, 0.04);
+        transition: background 0.2s ease;
+    }
+
+    tbody tr:nth-child(even) {
+        background: rgba(102, 126, 234, 0.02);
+    }
+
+    tbody tr:nth-child(even):hover {
+        background: rgba(102, 126, 234, 0.05);
+    }
+    
+    /* Better code in tables */
+    td code {
+        font-size: 0.85em;
+        padding: 2px 6px;
+    }
+
+    .info-box {
+        background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+        border-left: 5px solid #2196f3;
+        padding: 20px;
+        margin: 25px 0;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(33, 150, 243, 0.2);
+    }
+
+    .warning-box {
+        background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%);
+        border-left: 5px solid #ff9800;
+        padding: 20px;
+        margin: 25px 0;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(255, 152, 0, 0.2);
+    }
+
+    .success-box {
+        background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+        border-left: 5px solid #4caf50;
+        padding: 20px;
+        margin: 25px 0;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(76, 175, 80, 0.2);
+    }
+
+    /* Better colors for syntax in diagrams */
+    pre {
+        /* Box drawing characters in nice blue */
+        color: #93c5fd;
+    }
+
+    /* JSON/code syntax in pre blocks */
+    pre {
+        white-space: pre;
+        word-wrap: normal;
+    }
+
+    .toc {
+        background: #f8f9fa;
+        padding: 20px;
+        border-radius: 8px;
+        margin: 20px 0;
+        border-left: 4px solid #667eea;
+    }
+
+    .toc h2 {
+        color: #667eea;
+        border-bottom: none;
+        margin-bottom: 15px;
+    }
+
+    .toc ul {
+        list-style: none;
+        padding-left: 0;
+    }
+
+    .toc li {
+        margin: 8px 0;
+    }
+
+    .toc a {
+        color: #667eea;
+        text-decoration: none;
+        transition: color 0.3s;
+    }
+
+    .toc a:hover {
+        color: #764ba2;
+    }
+
+    hr {
+        border: none;
+        border-top: 2px solid #f0f0f0;
+        margin: 30px 0;
+    }
+
+    .badge {
+        display: inline-block;
+        background: #667eea;
+        color: white;
+        padding: 4px 10px;
+        border-radius: 12px;
+        font-size: 0.85em;
+        margin-left: 10px;
+    }
+
+    a {
+        color: #667eea;
+        text-decoration: none;
+        transition: color 0.3s;
+    }
+
+    a:hover {
+        color: #764ba2;
+        text-decoration: underline;
+    }
+    
+    /* Better display for metadata fields */
+    strong {
+        color: #374151;
+        font-weight: 600;
+    }
+    
+    /* Metadata field styling - each field on its own line */
+    .metadata-field {
+        margin: 8px 0;
+        padding: 8px 14px;
+        background: linear-gradient(90deg, rgba(102, 126, 234, 0.04) 0%, transparent 100%);
+        border-left: 3px solid #667eea;
+        border-radius: 0 4px 4px 0;
+        line-height: 1.7;
+        font-size: 0.95em;
+        display: block;
+        clear: both;
+    }
+    
+    .metadata-field strong {
+        color: #667eea;
+        font-weight: 600;
+        margin-right: 8px;
+        display: inline-block;
+        min-width: 100px;
+    }
+    
+    .metadata-field code {
+        font-size: 0.88em;
+    }
+
+    footer {
+        margin-top: 50px;
+        padding-top: 30px;
+        border-top: 2px solid #f0f0f0;
+        text-align: center;
+        color: #888;
+    }
+
+    @media print {
+        body {
+            background: white;
+        }
+        .nav-header, .nav-links {
+            display: none;
+        }
+        pre {
+            break-inside: avoid;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .container {
+            padding: 20px;
+        }
+        .nav-header {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+        .nav-links {
+            margin-top: 15px;
+        }
+        h1 {
+            font-size: 2em;
+        }
+        h2 {
+            font-size: 1.5em;
+        }
+    }
+</style>
+
+</head>
+<body>
+    <div class="container">
+        <div class="nav-header"><div><h1>Embrix O2X Documentation</h1><small>Navigate between guides</small></div><div class="nav-links"><a href="index.html">🏠 Home</a><a href="guide-index.html">📚 Guide Index</a><a href="part1-business-architecture.html">Part 1</a><a href="part2-technical-deep-dive.html">Part 2</a><a href="part3-services-development.html">Part 3</a><a href="part4-frontend-ui.html">Part 4</a><a href="part5-message-queues.html">Part 5</a><a href="quick-start.html">🎯 Quick Start</a><a href="quick-reference.html">📖 Quick Ref</a><a href="troubleshooting-guide.html">🔧 Troubleshooting</a></div></div>
+        
+<h1>Embrix O2X Platform - Infrastructure & Operations Guide</h1>
+
+<strong>Version</strong>: 3.1.9-SNAPSHOT  
+<strong>Last Updated</strong>: February 2026  
+<strong>Purpose</strong>: Complete guide to infrastructure, deployment, and operational procedures
+
+<hr>
+
+<h2>Table of Contents</h2>
+
+<ol>
+<li><a href="#infrastructure-overview">Infrastructure Overview</a></li>
+<li><a href="#aws-architecture">AWS Architecture</a></li>
+<li><a href="#kubernetes-deployment">Kubernetes Deployment</a></li>
+<li><a href="#service-configuration">Service Configuration</a></li>
+<li><a href="#secrets-management">Secrets Management</a></li>
+<li><a href="#monitoring--observability">Monitoring & Observability</a></li>
+<li><a href="#message-queue-operations">Message Queue Operations</a></li>
+<li><a href="#database-operations">Database Operations</a></li>
+<li><a href="#cicd-pipeline">CI/CD Pipeline</a></li>
+<li><a href="#operational-procedures">Operational Procedures</a></li>
+</ol>
+
+<hr>
+
+<h2>Infrastructure Overview</h2>
+
+<h3>Technology Stack</h3>
+
+<table>
+<thead><tr>
+<th>Component</th>
+<th>Technology</th>
+<th>Version</th>
+<th>Purpose</th>
+</tr></thead><tbody>
+<tr>
+<td>-----------</td>
+<td>------------</td>
+<td>---------</td>
+<td>---------</td>
+</tr>
+<tr>
+<td><strong>Compute</strong></td>
+<td>Kubernetes (EKS)</td>
+<td>1.27+</td>
+<td>Container orchestration</td>
+</tr>
+<tr>
+<td><strong>Database</strong></td>
+<td>PostgreSQL (RDS)</td>
+<td>10.5+</td>
+<td>Primary datastore</td>
+</tr>
+<tr>
+<td><strong>Cache</strong></td>
+<td>Redis (ElastiCache)</td>
+<td>6.2+</td>
+<td>Session/cache storage</td>
+</tr>
+<tr>
+<td><strong>Messaging</strong></td>
+<td>ActiveMQ (Amazon MQ)</td>
+<td>5.15.9</td>
+<td>Message broker</td>
+</tr>
+<tr>
+<td><strong>Secrets</strong></td>
+<td>HashiCorp Vault</td>
+<td>Latest</td>
+<td>Secrets management</td>
+</tr>
+<tr>
+<td><strong>Storage</strong></td>
+<td>AWS S3</td>
+<td>N/A</td>
+<td>Object storage</td>
+</tr>
+<tr>
+<td><strong>Load Balancer</strong></td>
+<td>AWS ALB</td>
+<td>N/A</td>
+<td>Application load balancing</td>
+</tr>
+<tr>
+<td><strong>DNS</strong></td>
+<td>Route 53</td>
+<td>N/A</td>
+<td>DNS management</td>
+</tr>
+<tr>
+<td><strong>Monitoring</strong></td>
+<td>Prometheus + Grafana</td>
+<td>Latest</td>
+<td>Metrics and dashboards</td>
+</tr>
+<tr>
+<td><strong>Logging</strong></td>
+<td>ELK Stack</td>
+<td>Latest</td>
+<td>Log aggregation</td>
+</tr>
+</tbody></table>
+<h3>Infrastructure Diagram</h3>
+
+<pre><code class="language-">┌─────────────────────────────────────────────────────────────────┐
+│                         INTERNET                                 │
+└───────────────────────────┬─────────────────────────────────────┘
+                            │
+┌───────────────────────────▼─────────────────────────────────────┐
+│                     ROUTE 53 (DNS)                               │
+│  selfcare.urbanos.com → ALB                                     │
+│  api.urbanos.com → ALB                                          │
+└───────────────────────────┬─────────────────────────────────────┘
+                            │
+┌───────────────────────────▼─────────────────────────────────────┐
+│              APPLICATION LOAD BALANCER (ALB)                     │
+│  SSL Termination, Path-based routing                            │
+└───────────────────────────┬─────────────────────────────────────┘
+                            │
+┌───────────────────────────▼─────────────────────────────────────┐
+│                 KUBERNETES CLUSTER (EKS)                         │
+│                                                                  │
+│  ┌─────────────────────────────────────────────────────────┐   │
+│  │  Namespace: urbanos                                      │   │
+│  │                                                           │   │
+│  │  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐ │   │
+│  │  │ crm_gateway  │  │service-billing│ │service-invoice│ │   │
+│  │  │  (2 pods)    │  │  (2 pods)     │ │  (2 pods)     │ │   │
+│  │  └──────────────┘  └──────────────┘  └──────────────┘ │   │
+│  │                                                           │   │
+│  │  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐ │   │
+│  │  │service-usage │  │service-payment│ │service-revenue│ │   │
+│  │  │  (2 pods)    │  │  (2 pods)     │ │  (2 pods)     │ │   │
+│  │  └──────────────┘  └──────────────┘  └──────────────┘ │   │
+│  │                                                           │   │
+│  │  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐ │   │
+│  │  │provision_gwy │  │payment_gwy   │  │tax_gateway   │ │   │
+│  │  │  (2 pods)    │  │  (2 pods)     │ │  (2 pods)     │ │   │
+│  │  └──────────────┘  └──────────────┘  └──────────────┘ │   │
+│  └─────────────────────────────────────────────────────────┘   │
+└───────────────────────────┬─────────────────────────────────────┘
+                            │
+┌───────────────────────────▼─────────────────────────────────────┐
+│                     DATA & MESSAGING LAYER                       │
+│                                                                  │
+│  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐         │
+│  │ RDS Postgres │  │  ElastiCache │  │  Amazon MQ   │         │
+│  │coredb-urbanos│  │    (Redis)   │  │  (ActiveMQ)  │         │
+│  └──────────────┘  └──────────────┘  └──────────────┘         │
+│                                                                  │
+│  ┌──────────────┐  ┌──────────────┐                            │
+│  │  S3 Buckets  │  │    Vault     │                            │
+│  │ (Invoices)   │  │  (Secrets)   │                            │
+│  └──────────────┘  └──────────────┘                            │
+└─────────────────────────────────────────────────────────────────┘
+
+┌─────────────────────────────────────────────────────────────────┐
+│                  MONITORING & LOGGING                            │
+│                                                                  │
+│  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐         │
+│  │  Prometheus  │  │   Grafana    │  │  ELK Stack   │         │
+│  │  (Metrics)   │  │ (Dashboards) │  │   (Logs)     │         │
+│  └──────────────┘  └──────────────┘  └──────────────┘         │
+└─────────────────────────────────────────────────────────────────┘
+</code></pre>
+
+<hr>
+
+<h2>AWS Architecture</h2>
+
+<h3>AWS Services Used</h3>
+
+<table>
+<thead><tr>
+<th>Service</th>
+<th>Purpose</th>
+<th>Configuration</th>
+</tr></thead><tbody>
+<tr>
+<td>---------</td>
+<td>---------</td>
+<td>---------------</td>
+</tr>
+<tr>
+<td><strong>EKS</strong></td>
+<td>Kubernetes cluster</td>
+<td>Multi-AZ, Auto-scaling node groups</td>
+</tr>
+<tr>
+<td><strong>RDS</strong></td>
+<td>PostgreSQL databases</td>
+<td>Multi-AZ, Automated backups</td>
+</tr>
+<tr>
+<td><strong>ElastiCache</strong></td>
+<td>Redis cache</td>
+<td>Cluster mode, Multi-AZ</td>
+</tr>
+<tr>
+<td><strong>Amazon MQ</strong></td>
+<td>ActiveMQ broker</td>
+<td>Active/Standby, Multi-AZ</td>
+</tr>
+<tr>
+<td><strong>S3</strong></td>
+<td>Object storage</td>
+<td>Versioning enabled, Lifecycle policies</td>
+</tr>
+<tr>
+<td><strong>ALB</strong></td>
+<td>Load balancing</td>
+<td>SSL termination, Path-based routing</td>
+</tr>
+<tr>
+<td><strong>Route 53</strong></td>
+<td>DNS management</td>
+<td>Health checks, Failover routing</td>
+</tr>
+<tr>
+<td><strong>CloudWatch</strong></td>
+<td>Monitoring</td>
+<td>Metrics, Alarms, Logs</td>
+</tr>
+<tr>
+<td><strong>IAM</strong></td>
+<td>Access management</td>
+<td>Role-based access</td>
+</tr>
+<tr>
+<td><strong>VPC</strong></td>
+<td>Networking</td>
+<td>Public/private subnets, NAT gateways</td>
+</tr>
+</tbody></table>
+<h3>Network Architecture</h3>
+
+<strong>VPC Configuration</strong>:
+<pre><code class="language-">VPC: 10.0.0.0/16
+
+Public Subnets (ALB, NAT Gateway):
+  - 10.0.1.0/24 (us-east-1a)
+  - 10.0.2.0/24 (us-east-1b)
+
+Private Subnets (EKS nodes, RDS, ElastiCache):
+  - 10.0.10.0/24 (us-east-1a)
+  - 10.0.11.0/24 (us-east-1b)
+  - 10.0.20.0/24 (us-east-1a) - Database subnet
+  - 10.0.21.0/24 (us-east-1b) - Database subnet
+</code></pre>
+<strong>Security Groups</strong>:
+<ul>
+<li><strong>ALB SG</strong>: 80/443 from 0.0.0.0/0</li>
+<li><strong>EKS Node SG</strong>: 8080-8100 from ALB SG, All traffic within SG</li>
+<li><strong>RDS SG</strong>: 5432 from EKS Node SG</li>
+<li><strong>ElastiCache SG</strong>: 6379 from EKS Node SG</li>
+<li><strong>Amazon MQ SG</strong>: 61617 from EKS Node SG</li>
+</ul>
+
+<hr>
+
+<h2>Kubernetes Deployment</h2>
+
+<h3>Cluster Configuration</h3>
+
+<strong>EKS Cluster</strong>: <code>embrix-eks-prod</code>
+<strong>Node Groups</strong>:
+<table>
+<thead><tr>
+<th>Node Group</th>
+<th>Instance Type</th>
+<th>Min</th>
+<th>Max</th>
+<th>Desired</th>
+</tr></thead><tbody>
+<tr>
+<td>------------</td>
+<td>---------------</td>
+<td>-----</td>
+<td>-----</td>
+<td>---------</td>
+</tr>
+<tr>
+<td><strong>core-services</strong></td>
+<td>m5.xlarge</td>
+<td>2</td>
+<td>10</td>
+<td>4</td>
+</tr>
+<tr>
+<td><strong>gateways</strong></td>
+<td>m5.large</td>
+<td>2</td>
+<td>8</td>
+<td>3</td>
+</tr>
+<tr>
+<td><strong>batch-jobs</strong></td>
+<td>m5.2xlarge</td>
+<td>1</td>
+<td>5</td>
+<td>1</td>
+</tr>
+</tbody></table>
+<strong>Kubernetes Version</strong>: 1.27
+<h3>Namespace Organization</h3>
+
+<strong>Tenant Namespaces</strong>:
+<ul>
+<li><code>urbanos</code> - Urbanos tenant</li>
+<li><code>coopeg-prd</code> - CoopeG production</li>
+<li><code>coopeg-sbx</code> - CoopeG sandbox</li>
+<li><code>demo</code> - Demo tenant</li>
+<li><code>shm</code> - SHM tenant</li>
+</ul>
+<strong>Shared Namespaces</strong>:
+<ul>
+<li><code>monitoring</code> - Prometheus, Grafana</li>
+<li><code>logging</code> - ELK Stack</li>
+<li><code>ingress-nginx</code> - Ingress controller</li>
+</ul>
+<h3>Deployment Manifest Example</h3>
+
+<strong>Service Deployment</strong> (<code>service-billing</code>):
+<pre><code class="language-yaml">apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: urbanos-service-billing
+  namespace: urbanos
+  labels:
+    app: service-billing
+    tenant: urbanos
+    version: 3.1.9
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: service-billing
+      tenant: urbanos
+  template:
+    metadata:
+      labels:
+        app: service-billing
+        tenant: urbanos
+    spec:
+      containers:
+      - name: service-billing
+        image: embrix/service-billing:3.1.9
+        ports:
+        - containerPort: 8090
+          name: http
+        env:
+        - name: TENANT_ID
+          value: "TIDLT-100005"
+        - name: SPRING_PROFILES_ACTIVE
+          value: "prod"
+        - name: DATABASE_URL
+          valueFrom:
+            secretKeyRef:
+              name: urbanos-db-secret
+              key: url
+        - name: DATABASE_USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: urbanos-db-secret
+              key: username
+        - name: DATABASE_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: urbanos-db-secret
+              key: password
+        - name: VAULT_URI
+          value: "http://vault.default.svc.cluster.local:8200"
+        - name: VAULT_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: vault-token
+              key: token
+        resources:
+          requests:
+            cpu: 500m
+            memory: 1Gi
+          limits:
+            cpu: 2000m
+            memory: 4Gi
+        livenessProbe:
+          httpGet:
+            path: /actuator/health
+            port: 8090
+          initialDelaySeconds: 120
+          periodSeconds: 30
+          timeoutSeconds: 10
+          failureThreshold: 3
+        readinessProbe:
+          httpGet:
+            path: /actuator/health
+            port: 8090
+          initialDelaySeconds: 60
+          periodSeconds: 10
+          timeoutSeconds: 5
+          failureThreshold: 3
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: urbanos-service-billing
+  namespace: urbanos
+spec:
+  selector:
+    app: service-billing
+    tenant: urbanos
+  ports:
+  - port: 8090
+    targetPort: 8090
+    name: http
+  type: ClusterIP
+</code></pre>
+<h3>Horizontal Pod Autoscaler (HPA)</h3>
+
+<pre><code class="language-yaml">apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: urbanos-service-billing-hpa
+  namespace: urbanos
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: urbanos-service-billing
+  minReplicas: 2
+  maxReplicas: 10
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 70
+  - type: Resource
+    resource:
+      name: memory
+      target:
+        type: Utilization
+        averageUtilization: 80
+  behavior:
+    scaleUp:
+      stabilizationWindowSeconds: 60
+      policies:
+      - type: Percent
+        value: 50
+        periodSeconds: 60
+    scaleDown:
+      stabilizationWindowSeconds: 300
+      policies:
+      - type: Pods
+        value: 1
+        periodSeconds: 60
+</code></pre>
+<h3>Ingress Configuration</h3>
+
+<pre><code class="language-yaml">apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: urbanos-ingress
+  namespace: urbanos
+  annotations:
+    kubernetes.io/ingress.class: alb
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/target-type: ip
+    alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:us-east-1:123456789012:certificate/xxx
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}, {"HTTPS": 443}]'
+    alb.ingress.kubernetes.io/ssl-redirect: '443'
+spec:
+  rules:
+  - host: api.urbanos.com
+    http:
+      paths:
+      - path: /graphql
+        pathType: Prefix
+        backend:
+          service:
+            name: urbanos-crm-gateway
+            port:
+              number: 8080
+      - path: /api/v1/tax
+        pathType: Prefix
+        backend:
+          service:
+            name: urbanos-tax-gateway
+            port:
+              number: 8082
+  - host: selfcare.urbanos.com
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: urbanos-selfcare-ui
+            port:
+              number: 80
+</code></pre>
+
+<hr>
+
+<h2>Service Configuration</h2>
+
+<h3>Environment Variables</h3>
+
+<strong>Common Environment Variables</strong> (All Services):
+<pre><code class="language-bash"># Tenant Configuration
+TENANT_ID=TIDLT-100005
+SPRING_PROFILES_ACTIVE=prod
+
+# Logging
+LOGS_DIR=/var/log/embrix
+LOG_LEVEL=INFO
+
+# Vault
+VAULT_URI=http://vault.default.svc.cluster.local:8200
+VAULT_TOKEN=&lt;from Kubernetes Secret&gt;
+
+# Database (from Vault via Spring Cloud Vault)
+# These are loaded automatically from Vault path: secret/ctg-oms/prod
+
+# Redis Cache
+REDIS_HOST=master.prod-cache-rg.8fxuvv.use1.cache.amazonaws.com
+REDIS_PORT=6379
+
+# ActiveMQ
+AMQ_BROKER_URL=ssl://broker.mq.us-east-1.amazonaws.com:61617
+# AMQ credentials loaded from Vault
+
+# AWS S3
+AWS_S3_PUBLICURL=https://s3.amazonaws.com/embrix-public-prod
+AWS_REGION=us-east-1
+
+# Gateway URLs
+TAX_GATEWAY_URL=http://urbanos-tax-gateway.urbanos.svc.cluster.local:8082
+PAYMENT_GATEWAY_URL=http://urbanos-payment-gateway.urbanos.svc.cluster.local:8083
+FINANCE_GATEWAY_URL=http://urbanos-finance-gateway.urbanos.svc.cluster.local:8084
+PROVISIONING_GATEWAY_URL=http://urbanos-provision-gateway.urbanos.svc.cluster.local:8081
+</code></pre>
+<strong>Service-Specific Variables</strong>:
+<strong>crm_gateway</strong>:
+<pre><code class="language-bash">SERVER_PORT=8080
+OAUTH2_ENABLED=true
+JWT_SECRET=&lt;from Vault&gt;
+</code></pre>
+<strong>service-billing</strong>:
+<pre><code class="language-bash">SERVER_PORT=8090
+BILLING_CYCLE_DAY=1
+</code></pre>
+<strong>service-invoice</strong>:
+<pre><code class="language-bash">SERVER_PORT=8091
+INVOICE_PDF_TEMPLATE=default
+S3_INVOICE_BUCKET=embrix-invoices-prod
+</code></pre>
+<h3>Spring Boot Configuration</h3>
+
+<strong>application.yml</strong> (Template):
+<pre><code class="language-yaml">spring:
+  application:
+    name: service-billing
+  profiles:
+    active: ${SPRING_PROFILES_ACTIVE:dev}
+  
+  datasource:
+    url: ${DATABASE_URL}
+    username: ${DATABASE_USERNAME}
+    password: ${DATABASE_PASSWORD}
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      maximum-pool-size: 50
+      minimum-idle: 10
+      connection-timeout: 30000
+      idle-timeout: 600000
+      max-lifetime: 1800000
+  
+  cloud:
+    vault:
+      uri: ${VAULT_URI}
+      token: ${VAULT_TOKEN}
+      generic:
+        enabled: true
+        application-name: ctg-oms
+      kv:
+        enabled: true
+        backend: secret
+        profile-separator: '/'
+  
+  jooq:
+    sql-dialect: POSTGRES
+  
+  flyway:
+    enabled: false  # Only in engine module
+
+server:
+  port: ${SERVER_PORT:8090}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,prometheus,metrics
+  endpoint:
+    health:
+      show-details: when-authorized
+  metrics:
+    export:
+      prometheus:
+        enabled: true
+
+logging:
+  level:
+    root: ${LOG_LEVEL:INFO}
+    com.embrix: DEBUG
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+  file:
+    name: ${LOGS_DIR:/var/log}/service-billing.log
+    max-size: 100MB
+    max-history: 30
+
+tenant:
+  id: ${TENANT_ID}
+
+redis:
+  host: ${REDIS_HOST}
+  port: ${REDIS_PORT:6379}
+
+activemq:
+  broker-url: ${AMQ_BROKER_URL}
+</code></pre>
+
+<hr>
+
+<h2>Secrets Management</h2>
+
+<h3>HashiCorp Vault Setup</h3>
+
+<strong>Vault Paths</strong>:
+<pre><code class="language-">secret/
+├── ctg-oms/
+│   ├── dev/
+│   │   ├── database
+│   │   ├── activemq
+│   │   ├── jwt
+│   │   └── oauth2
+│   ├── staging/
+│   └── prod/
+│       ├── database       # DB credentials per tenant
+│       ├── activemq       # ActiveMQ credentials
+│       ├── jwt            # JWT signing key
+│       ├── oauth2         # OAuth2 client secrets
+│       ├── slack          # Slack webhook URLs
+│       └── external-apis  # Third-party API keys
+└── tenant/
+    ├── urbanos/
+    │   ├── salesforce     # Salesforce OAuth
+    │   ├── braintree      # Braintree credentials
+    │   ├── avalara        # Avalara credentials
+    │   └── quickbooks     # QuickBooks OAuth
+    └── coopeg-prd/
+        └── ...
+</code></pre>
+<strong>Example Secret Structure</strong>:
+<pre><code class="language-json">// secret/ctg-oms/prod/database
+{
+  "url": "jdbc:postgresql://embrix-rds-prod.xxx.rds.amazonaws.com:5432/coredb-urbanos?sslmode=require",
+  "username": "omsadmin",
+  "password": "SuperSecurePassword123!"
+}
+
+// secret/ctg-oms/prod/activemq
+{
+  "broker-url": "ssl://broker.mq.us-east-1.amazonaws.com:61617",
+  "username": "embrix-prod",
+  "password": "AnotherSecurePassword456!"
+}
+
+// secret/tenant/urbanos/salesforce
+{
+  "client-id": "3MVG9...",
+  "client-secret": "ABC123...",
+  "username": "integration@urbanos.com",
+  "password": "Password789!",
+  "security-token": "XYZ456..."
+}
+</code></pre>
+<h3>Kubernetes Secret Management</h3>
+
+<strong>Creating Secrets</strong>:
+<pre><code class="language-bash"># Database secret
+kubectl create secret generic urbanos-db-secret \
+  --from-literal=url='jdbc:postgresql://...' \
+  --from-literal=username='omsadmin' \
+  --from-literal=password='SuperSecure123!' \
+  --namespace=urbanos
+
+# Vault token secret
+kubectl create secret generic vault-token \
+  --from-literal=token='s.XXXXXXXXXXXX' \
+  --namespace=urbanos
+</code></pre>
+<strong>Sealed Secrets</strong> (Encrypted in Git):
+<pre><code class="language-yaml">apiVersion: bitnami.com/v1alpha1
+kind: SealedSecret
+metadata:
+  name: urbanos-db-secret
+  namespace: urbanos
+spec:
+  encryptedData:
+    url: AgBX7+... (encrypted)
+    username: AgCQ3... (encrypted)
+    password: AgDL9... (encrypted)
+</code></pre>
+
+<hr>
+
+<h2>Monitoring & Observability</h2>
+
+<h3>Prometheus Metrics</h3>
+
+<strong>Metrics Collected</strong>:
+<ul>
+<li><strong>System Metrics</strong>: CPU, memory, disk, network</li>
+<li><strong>JVM Metrics</strong>: Heap usage, GC pauses, thread count</li>
+<li><strong>HTTP Metrics</strong>: Request rate, latency, error rate</li>
+<li><strong>Business Metrics</strong>: Orders/hour, bills/day, invoices sent, payments processed</li>
+<li><strong>Database Metrics</strong>: Connection pool usage, query latency</li>
+<li><strong>ActiveMQ Metrics</strong>: Queue depth, message rate, consumer count</li>
+</ul>
+<strong>Prometheus Configuration</strong>:
+<pre><code class="language-yaml">scrape_configs:
+  - job_name: 'kubernetes-pods'
+    kubernetes_sd_configs:
+    - role: pod
+    relabel_configs:
+    - source_labels: [__meta_kubernetes_pod_annotation_prometheus_io_scrape]
+      action: keep
+      regex: true
+    - source_labels: [__meta_kubernetes_pod_annotation_prometheus_io_path]
+      action: replace
+      target_label: __metrics_path__
+      regex: (.+)
+    - source_labels: [__address__, __meta_kubernetes_pod_annotation_prometheus_io_port]
+      action: replace
+      regex: ([^:]+)(?::\d+)?;(\d+)
+      replacement: $1:$2
+      target_label: __address__
+    - source_labels: [__meta_kubernetes_namespace]
+      action: replace
+      target_label: kubernetes_namespace
+    - source_labels: [__meta_kubernetes_pod_name]
+      action: replace
+      target_label: kubernetes_pod_name
+</code></pre>
+<strong>Pod Annotations for Scraping</strong>:
+<pre><code class="language-yaml">metadata:
+  annotations:
+    prometheus.io/scrape: "true"
+    prometheus.io/port: "8090"
+    prometheus.io/path: "/actuator/prometheus"
+</code></pre>
+<h3>Grafana Dashboards</h3>
+
+<strong>Key Dashboards</strong>:
+<ol>
+<li><strong>System Overview</strong><br><ul><li>Total requests/sec across all services</li></ul><br><ul><li>Error rate (5xx responses)</li></ul><br><ul><li>Average response time</li></ul><br><ul><li>Pod CPU/Memory usage</li></ul><br><ul><li>Database connection pool status</li></ul></li>
+<li><strong>Business Metrics</strong><br><ul><li>Orders created (last 24h, 7d, 30d)</li></ul><br><ul><li>Billing cycles executed</li></ul><br><ul><li>Invoices generated</li></ul><br><ul><li>Payments processed</li></ul><br><ul><li>Revenue recognized</li></ul></li>
+<li><strong>Service Health</strong><br><ul><li>Per-service request rate</li></ul><br><ul><li>Per-service error rate</li></ul><br><ul><li>Per-service latency (p50, p95, p99)</li></ul><br><ul><li>Pod restart count</li></ul><br><ul><li>Liveness/readiness probe failures</li></ul></li>
+<li><strong>Infrastructure</strong><br><ul><li>Node CPU/Memory usage</li></ul><br><ul><li>Disk usage</li></ul><br><ul><li>Network I/O</li></ul><br><ul><li>Database performance</li></ul><br><ul><li>Cache hit rate</li></ul></li>
+</ol>
+<strong>Alert Rules</strong>:
+<pre><code class="language-yaml">groups:
+- name: embrix-alerts
+  interval: 30s
+  rules:
+  - alert: HighErrorRate
+    expr: rate(http_server_requests_seconds_count{status=~"5.."}[5m]) &gt; 0.05
+    for: 5m
+    labels:
+      severity: critical
+    annotations:
+      summary: "High error rate on {{ $labels.job }}"
+      description: "Error rate is {{ $value | humanizePercentage }}"
+  
+  - alert: HighMemoryUsage
+    expr: container_memory_usage_bytes / container_spec_memory_limit_bytes &gt; 0.85
+    for: 5m
+    labels:
+      severity: warning
+    annotations:
+      summary: "High memory usage on {{ $labels.pod }}"
+      description: "Memory usage is {{ $value | humanizePercentage }}"
+  
+  - alert: PodRestarting
+    expr: rate(kube_pod_container_status_restarts_total[15m]) &gt; 0
+    for: 5m
+    labels:
+      severity: warning
+    annotations:
+      summary: "Pod {{ $labels.pod }} is restarting"
+      description: "Pod has restarted {{ $value }} times in the last 15 minutes"
+</code></pre>
+<h3>Logging</h3>
+
+<strong>ELK Stack Configuration</strong>:
+<strong>Logback Configuration</strong> (JSON logging):
+<pre><code class="language-xml">&lt;configuration&gt;
+  &lt;appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender"&gt;
+    &lt;encoder class="net.logstash.logback.encoder.LogstashEncoder"&gt;
+      &lt;customFields&gt;{"service":"service-billing","tenant":"${TENANT_ID}"}&lt;/customFields&gt;
+    &lt;/encoder&gt;
+  &lt;/appender&gt;
+  
+  &lt;root level="INFO"&gt;
+    &lt;appender-ref ref="CONSOLE" /&gt;
+  &lt;/root&gt;
+&lt;/configuration&gt;
+</code></pre>
+<strong>Filebeat Configuration</strong> (Ships logs to Elasticsearch):
+<pre><code class="language-yaml">filebeat.inputs:
+- type: container
+  paths:
+    - '/var/log/containers/*.log'
+  processors:
+  - add_kubernetes_metadata:
+      host: ${NODE_NAME}
+      matchers:
+      - logs_path:
+          logs_path: "/var/log/containers/"
+
+output.elasticsearch:
+  hosts: ["elasticsearch.logging.svc.cluster.local:9200"]
+  index: "embrix-logs-%{+yyyy.MM.dd}"
+</code></pre>
+<strong>Kibana Queries</strong>:
+<pre><code class="language-"># Find errors in service-billing
+service:service-billing AND level:ERROR
+
+# Find slow queries
+service:service-billing AND duration:&gt;5000
+
+# Find specific tenant logs
+tenant:TIDLT-100005 AND level:ERROR
+
+# Find order processing errors
+message:"Order processing failed" AND orderId:*
+</code></pre>
+
+<hr>
+
+<h2>Message Queue Operations</h2>
+
+<h3>ActiveMQ Management</h3>
+
+<strong>Web Console</strong>: <code>http://localhost:8161</code> (admin/admin)
+<strong>Queue Monitoring</strong>:
+<pre><code class="language-bash"># List all queues
+curl -u admin:admin http://localhost:8161/api/jolokia/read/org.apache.activemq:type=Broker,brokerName=localhost,destinationType=Queue,destinationName=*
+
+# Get queue depth
+curl -u admin:admin http://localhost:8161/api/jolokia/read/org.apache.activemq:type=Broker,brokerName=localhost,destinationType=Queue,destinationName=OMS/QueueSize
+
+# Purge queue
+curl -u admin:admin -X POST http://localhost:8161/api/jolokia/exec/org.apache.activemq:type=Broker,brokerName=localhost,destinationType=Queue,destinationName=OMS/purge
+</code></pre>
+<strong>Queue Statistics</strong>:
+<table>
+<thead><tr>
+<th>Queue</th>
+<th>Avg Depth</th>
+<th>Peak Depth</th>
+<th>Enqueue Rate</th>
+<th>Dequeue Rate</th>
+</tr></thead><tbody>
+<tr>
+<td>-------</td>
+<td>-----------</td>
+<td>------------</td>
+<td>--------------</td>
+<td>--------------</td>
+</tr>
+<tr>
+<td>OMS</td>
+<td>50</td>
+<td>500</td>
+<td>100/min</td>
+<td>95/min</td>
+</tr>
+<tr>
+<td>MEDIATION</td>
+<td>1000</td>
+<td>5000</td>
+<td>500/min</td>
+<td>480/min</td>
+</tr>
+<tr>
+<td>USAGE</td>
+<td>2000</td>
+<td>10000</td>
+<td>1000/min</td>
+<td>950/min</td>
+</tr>
+<tr>
+<td>PROVISIONING_RESPONSE</td>
+<td>10</td>
+<td>100</td>
+<td>50/min</td>
+<td>50/min</td>
+</tr>
+</tbody></table>
+<strong>Dead Letter Queue (DLQ) Handling</strong>:
+<pre><code class="language-groovy">// Check DLQ
+def dlqMessages = dsl
+    .select()
+    .from(ACTIVEMQ_MESSAGES)
+    .where(ACTIVEMQ_MESSAGES.DESTINATION.like('ActiveMQ.DLQ%'))
+    .fetch()
+
+// Replay message from DLQ
+def message = consumeFromDLQ('OMS.DLQ')
+// Fix issue
+sendToQueue('OMS', message)
+</code></pre>
+
+<hr>
+
+<h2>Database Operations</h2>
+
+<h3>Daily Operations</h3>
+
+<strong>Connection Monitoring</strong>:
+<pre><code class="language-sql">-- Active connections
+SELECT count(*) FROM pg_stat_activity;
+
+-- Long-running queries
+SELECT pid, now() - pg_stat_activity.query_start AS duration, query
+FROM pg_stat_activity
+WHERE state = 'active'
+ORDER BY duration DESC;
+
+-- Kill long-running query
+SELECT pg_terminate_backend(pid);
+</code></pre>
+<strong>Index Maintenance</strong>:
+<pre><code class="language-sql">-- Find missing indexes
+SELECT schemaname, tablename, attname, n_distinct, correlation
+FROM pg_stats
+WHERE schemaname NOT IN ('pg_catalog', 'information_schema')
+AND n_distinct &gt; 100
+ORDER BY abs(correlation) DESC;
+
+-- Rebuild index
+REINDEX INDEX CONCURRENTLY idx_invoice_account;
+
+-- Analyze table
+ANALYZE invoice;
+</code></pre>
+<strong>Partition Management</strong>:
+<pre><code class="language-bash"># Create next month's partition
+psql -U omsadmin -d coredb-urbanos -c "
+CREATE TABLE IF NOT EXISTS usage_record_2026_03
+PARTITION OF usage_record
+FOR VALUES FROM ('2026-03-01') TO ('2026-04-01');
+
+CREATE INDEX idx_usage_account_2026_03 ON usage_record_2026_03(account_id);
+CREATE INDEX idx_usage_subscription_2026_03 ON usage_record_2026_03(subscription_id);
+"
+</code></pre>
+<h3>Backup & Restore</h3>
+
+<strong>Manual Backup</strong>:
+<pre><code class="language-bash"># Full backup
+pg_dump -h localhost -U omsadmin -d coredb-urbanos \
+  -F c -b -v -f backup-$(date +%Y%m%d).dump
+
+# Schema-only backup
+pg_dump -h localhost -U omsadmin -d coredb-urbanos \
+  -s -F p -f schema-$(date +%Y%m%d).sql
+
+# Specific table backup
+pg_dump -h localhost -U omsadmin -d coredb-urbanos \
+  -t core_billing.invoice -F c -f invoice-backup.dump
+</code></pre>
+<strong>Restore</strong>:
+<pre><code class="language-bash"># Full restore
+pg_restore -h localhost -U omsadmin -d coredb-urbanos-new \
+  -v backup-20260211.dump
+
+# Table-only restore
+pg_restore -h localhost -U omsadmin -d coredb-urbanos \
+  -t invoice -v invoice-backup.dump
+</code></pre>
+
+<hr>
+
+<h2>CI/CD Pipeline</h2>
+
+<h3>GitLab CI/CD</h3>
+
+<strong>Pipeline Stages</strong>:
+<ol>
+<li><strong>Build</strong>: Compile Java/Groovy, run unit tests</li>
+<li><strong>Test</strong>: Integration tests, static code analysis</li>
+<li><strong>Package</strong>: Build Docker image</li>
+<li><strong>Deploy</strong>: Deploy to Kubernetes (dev/staging/prod)</li>
+</ol>
+<strong>.gitlab-ci.yml</strong>:
+<pre><code class="language-yaml">stages:
+  - build
+  - test
+  - package
+  - deploy
+
+variables:
+  MAVEN_OPTS: "-Dmaven.repo.local=$CI_PROJECT_DIR/.m2/repository"
+  DOCKER_REGISTRY: "embrix.registry.com"
+  IMAGE_NAME: "$DOCKER_REGISTRY/service-billing"
+
+build:
+  stage: build
+  image: maven:3.8-openjdk-17
+  script:
+    - cd service-billing
+    - mvn clean compile
+  artifacts:
+    paths:
+      - service-billing/target/
+    expire_in: 1 hour
+  cache:
+    paths:
+      - .m2/repository
+
+test:
+  stage: test
+  image: maven:3.8-openjdk-17
+  script:
+    - cd service-billing
+    - mvn test
+  artifacts:
+    reports:
+      junit: service-billing/target/surefire-reports/TEST-*.xml
+
+package:
+  stage: package
+  image: docker:latest
+  services:
+    - docker:dind
+  script:
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $DOCKER_REGISTRY
+    - docker build -t $IMAGE_NAME:$CI_COMMIT_SHA -t $IMAGE_NAME:latest .
+    - docker push $IMAGE_NAME:$CI_COMMIT_SHA
+    - docker push $IMAGE_NAME:latest
+  only:
+    - main
+    - develop
+
+deploy_dev:
+  stage: deploy
+  image: bitnami/kubectl:latest
+  script:
+    - kubectl config use-context dev-cluster
+    - kubectl set image deployment/urbanos-service-billing \
+        service-billing=$IMAGE_NAME:$CI_COMMIT_SHA \
+        -n urbanos
+    - kubectl rollout status deployment/urbanos-service-billing -n urbanos
+  environment:
+    name: development
+  only:
+    - develop
+
+deploy_prod:
+  stage: deploy
+  image: bitnami/kubectl:latest
+  script:
+    - kubectl config use-context prod-cluster
+    - kubectl set image deployment/urbanos-service-billing \
+        service-billing=$IMAGE_NAME:$CI_COMMIT_SHA \
+        -n urbanos
+    - kubectl rollout status deployment/urbanos-service-billing -n urbanos
+  environment:
+    name: production
+  when: manual
+  only:
+    - main
+</code></pre>
+
+<hr>
+
+<h2>Operational Procedures</h2>
+
+<h3>Service Deployment</h3>
+
+<strong>Standard Deployment Process</strong>:
+<pre><code class="language-bash"># 1. Build and push Docker image
+docker build -t embrix/service-billing:3.1.9 .
+docker push embrix/service-billing:3.1.9
+
+# 2. Update Kubernetes deployment
+kubectl set image deployment/urbanos-service-billing \
+  service-billing=embrix/service-billing:3.1.9 \
+  -n urbanos
+
+# 3. Monitor rollout
+kubectl rollout status deployment/urbanos-service-billing -n urbanos
+
+# 4. Verify deployment
+kubectl get pods -n urbanos | grep service-billing
+kubectl logs -f urbanos-service-billing-xxx -n urbanos
+
+# 5. Check health endpoint
+curl http://urbanos-service-billing.urbanos.svc.cluster.local:8090/actuator/health
+</code></pre>
+<strong>Rollback</strong>:
+<pre><code class="language-bash"># Rollback to previous version
+kubectl rollout undo deployment/urbanos-service-billing -n urbanos
+
+# Rollback to specific revision
+kubectl rollout history deployment/urbanos-service-billing -n urbanos
+kubectl rollout undo deployment/urbanos-service-billing --to-revision=3 -n urbanos
+</code></pre>
+<h3>Scaling Operations</h3>
+
+<strong>Manual Scaling</strong>:
+<pre><code class="language-bash"># Scale up
+kubectl scale deployment urbanos-service-billing --replicas=5 -n urbanos
+
+# Scale down
+kubectl scale deployment urbanos-service-billing --replicas=2 -n urbanos
+</code></pre>
+<strong>Auto-scaling Setup</strong>:
+<pre><code class="language-bash"># Enable HPA
+kubectl autoscale deployment urbanos-service-billing \
+  --cpu-percent=70 \
+  --min=2 \
+  --max=10 \
+  -n urbanos
+
+# Check HPA status
+kubectl get hpa -n urbanos
+</code></pre>
+<h3>Troubleshooting</h3>
+
+<strong>Pod Issues</strong>:
+<pre><code class="language-bash"># Check pod status
+kubectl get pods -n urbanos
+
+# Describe pod (events, conditions)
+kubectl describe pod urbanos-service-billing-xxx -n urbanos
+
+# View logs
+kubectl logs urbanos-service-billing-xxx -n urbanos
+kubectl logs urbanos-service-billing-xxx -n urbanos --previous  # Previous container
+
+# Execute commands in pod
+kubectl exec -it urbanos-service-billing-xxx -n urbanos -- /bin/bash
+
+# Port-forward for local testing
+kubectl port-forward urbanos-service-billing-xxx 8090:8090 -n urbanos
+</code></pre>
+<strong>Database Issues</strong>:
+<pre><code class="language-bash"># Check connection
+psql -h embrix-rds-prod.xxx.rds.amazonaws.com -U omsadmin -d coredb-urbanos
+
+# Check connection count
+SELECT count(*) FROM pg_stat_activity WHERE datname='coredb-urbanos';
+
+# Kill idle connections
+SELECT pg_terminate_backend(pid) 
+FROM pg_stat_activity 
+WHERE datname='coredb-urbanos' 
+AND state='idle' 
+AND state_change &lt; current_timestamp - INTERVAL '1 hour';
+</code></pre>
+<strong>ActiveMQ Issues</strong>:
+<pre><code class="language-bash"># Check queue depth
+curl -u admin:admin http://activemq:8161/api/jolokia/read/org.apache.activemq:type=Broker,brokerName=localhost,destinationType=Queue,destinationName=OMS/QueueSize
+
+# Purge stuck queue
+curl -u admin:admin -X POST http://activemq:8161/api/jolokia/exec/org.apache.activemq:type=Broker,brokerName=localhost,destinationType=Queue,destinationName=OMS/purge
+</code></pre>
+<h3>Incident Response</h3>
+
+<strong>Severity Levels</strong>:
+<ul>
+<li><strong>P1 (Critical)</strong>: System down, data loss, security breach</li>
+<li><strong>P2 (High)</strong>: Major feature unavailable, performance degradation</li>
+<li><strong>P3 (Medium)</strong>: Minor feature issue, workaround available</li>
+<li><strong>P4 (Low)</strong>: Cosmetic issue, no functional impact</li>
+</ul>
+<strong>Response Times</strong>:
+<ul>
+<li>P1: 15 minutes</li>
+<li>P2: 1 hour</li>
+<li>P3: 4 hours</li>
+<li>P4: Next business day</li>
+</ul>
+<strong>Incident Procedure</strong>:
+<ol>
+<li><strong>Detect</strong>: Alert fires, user reports</li>
+<li><strong>Assess</strong>: Determine severity</li>
+<li><strong>Communicate</strong>: Notify stakeholders</li>
+<li><strong>Investigate</strong>: Check logs, metrics, traces</li>
+<li><strong>Mitigate</strong>: Implement temporary fix</li>
+<li><strong>Resolve</strong>: Deploy permanent fix</li>
+<li><strong>Document</strong>: Post-mortem analysis</li>
+</ol>
+
+<hr>
+
+<h2>Summary</h2>
+
+<h3>Infrastructure Highlights</h3>
+
+<ul>
+<li><strong>AWS-based</strong>: EKS, RDS, ElastiCache, Amazon MQ, S3</li>
+<li><strong>Kubernetes orchestration</strong>: Multi-tenant namespace isolation</li>
+<li><strong>Auto-scaling</strong>: HPA for services, ASG for nodes</li>
+<li><strong>Multi-AZ</strong>: High availability across availability zones</li>
+<li><strong>Monitoring</strong>: Prometheus + Grafana + ELK Stack</li>
+<li><strong>Secrets</strong>: HashiCorp Vault + Kubernetes Secrets</li>
+<li><strong>CI/CD</strong>: GitLab CI with automated deployments</li>
+</ul>
+<h3>Operational Practices</h3>
+
+<ul>
+<li><strong>Zero-downtime deployments</strong>: Rolling updates</li>
+<li><strong>Health checks</strong>: Liveness and readiness probes</li>
+<li><strong>Resource limits</strong>: CPU/memory limits per pod</li>
+<li><strong>Backup strategy</strong>: Automated daily RDS snapshots</li>
+<li><strong>Incident response</strong>: Defined severity levels and SLAs</li>
+<li><strong>Log aggregation</strong>: Centralized logging via ELK</li>
+</ul>
+
+<hr>
+
+<strong>For service-specific details, see <code>NEWCOMER_GUIDE_PART2_TECHNICAL_DEEP_DIVE.md</code> and <code>NEWCOMER_GUIDE_PART3_SERVICES_AND_DEVELOPMENT.md</code></strong></p>
+        <footer>
+            <p><strong>Embrix O2X Platform Documentation</strong></p>
+            <p>Version 3.1.9-SNAPSHOT • Last Updated: February 2026</p>
+        </footer>
+    </div>
+</body>
+</html>

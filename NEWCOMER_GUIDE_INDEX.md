@@ -90,6 +90,13 @@ This guide is split into 3 comprehensive parts to help you understand everything
 **File**: `NEWCOMER_GUIDE_PART3_SERVICES_AND_DEVELOPMENT.md`  
 **Time to Read**: 90-120 minutes
 
+---
+
+## Part 4: Frontend Applications & User Interfaces
+**File**: `NEWCOMER_GUIDE_PART4_FRONTEND_AND_UI.md`  
+**Time to Read**: 60-90 minutes
+**Status**: ✨ NEW - February 2026
+
 ### What You'll Learn:
 - ✅ All 7 core services explained (billing, invoice, usage, payment, etc.)
 - ✅ Complete database schema architecture
@@ -97,6 +104,22 @@ This guide is split into 3 comprehensive parts to help you understand everything
 - ✅ Local development environment setup (step-by-step)
 - ✅ Build sequences and dependencies
 - ✅ Testing strategies
+
+---
+
+## Part 4: Frontend Applications & User Interfaces
+**File**: `NEWCOMER_GUIDE_PART4_FRONTEND_AND_UI.md`  
+**Time to Read**: 60-90 minutes
+**Status**: ✨ NEW - February 2026
+
+### What You'll Learn:
+- ✅ All 4 React frontend applications (ui-core, selfcare, ui, embrix-lite)
+- ✅ Complete customer journey flows (registration, billing, payments, usage)
+- ✅ GraphQL API integration patterns with Apollo Client
+- ✅ OAuth2/JWT authentication implementation
+- ✅ Multi-tenant branding and theming
+- ✅ State management and routing patterns
+- ✅ Build and deployment configurations
 
 ### Key Sections:
 1. **Core Services Layer**
@@ -141,6 +164,110 @@ This guide is split into 3 comprehensive parts to help you understand everything
 - GraphQL query examples
 - Testing setup
 
+### Key Sections:
+1. **Frontend Architecture Overview**
+   - 4 React applications and their purposes
+   - Technology stack (React 16.x, Apollo Client, Material-UI)
+   
+2. **ui-core (Admin Portal)**
+   - Tenant onboarding and configuration
+   - System administration dashboards
+   - User and role management
+   
+3. **selfcare (Customer Portal)**
+   - Customer registration and authentication
+   - Billing and invoice viewing
+   - Payment processing (Braintree integration)
+   - Usage reports and CDR viewing
+   - Service upgrade workflows
+   
+4. **API Integration Patterns**
+   - GraphQL client setup
+   - Authentication flows
+   - Error handling
+   - State management
+
+### Who Should Read This:
+- Frontend developers
+- Full-stack developers
+- UI/UX designers
+- Anyone working on customer-facing or admin interfaces
+
+### Code Examples Included:
+- React component structures
+- GraphQL queries and mutations
+- Authentication service implementation
+- Theme provider with dynamic branding
+- CI/CD pipeline configurations
+
+---
+
+## Part 5: Message Queue Architecture & Integration Patterns
+**File**: `NEWCOMER_GUIDE_PART5_MESSAGE_QUEUES_AND_INTEGRATION.md`  
+**Time to Read**: 75-105 minutes
+**Status**: ✨ NEW - February 2026
+
+### What You'll Learn:
+- ✅ ActiveMQ infrastructure (Amazon MQ deployment + local setup)
+- ✅ Complete inventory of 10+ production queues
+- ✅ Message flow patterns (order-to-cash, usage pipeline, bulk operations)
+- ✅ Error handling and retry mechanisms with exponential backoff
+- ✅ Message formats for all queue types with JSON examples
+- ✅ Performance tuning and monitoring strategies
+- ✅ Development guide (creating consumers and producers)
+- ✅ Troubleshooting common issues (high queue depth, DLQ, duplicates)
+
+### Key Sections:
+1. **ActiveMQ Infrastructure**
+   - Amazon MQ broker architecture
+   - Docker Compose local setup
+   - Connection configuration with Vault
+
+2. **Queue Inventory**
+   - OMS (Order intake from CRM)
+   - PROVISIONING_RESPONSE (Network callbacks)
+   - MEDIATION (CDR file processing - 100,000+ records/batch)
+   - USAGE (Usage rating - hourly batches)
+   - BULK (Bulk operations - invoice regeneration, payments)
+   - And 5+ more queues
+
+3. **Message Flow Patterns**
+   - Order-to-Cash (async order processing with provisioning callbacks)
+   - Usage Rating Pipeline (MEDIATION → USAGE → Billing)
+   - Bulk Operations (parallel processing with chunking)
+   - Time breakdowns and performance metrics
+
+4. **Error Handling**
+   - Retryable vs NonRetryable exceptions
+   - Exponential backoff configuration (7 retries, 250ms → 2841ms)
+   - Dead Letter Queue (DLQ) management
+   - Reprocessing strategies
+
+5. **Development Guide**
+   - Creating queue consumers (step-by-step with code)
+   - Sending messages (producer patterns)
+   - Integration testing examples
+   - Best practices and anti-patterns
+
+6. **Monitoring & Performance**
+   - Key metrics (queue depth, throughput, consumer lag)
+   - ActiveMQ console monitoring
+   - Grafana dashboard queries
+   - Performance tuning (concurrent consumers, prefetch, persistence)
+
+### Who Should Read This:
+- Backend developers
+- Integration engineers
+- DevOps engineers
+- Anyone working with asynchronous processing or external integrations
+
+### Code Examples Included:
+- Consumer implementation with error handling
+- Producer implementation with batch sending
+- Integration test examples
+- Monitoring and alerting queries
+- DLQ reprocessing scripts
+
 ---
 
 ## 🎯 Recommended Reading Path
@@ -153,7 +280,9 @@ This guide is split into 3 comprehensive parts to help you understand everything
 | | Day 1 PM | Part 2 (Technical Deep Dive) | 90 min | Understand how it's built |
 | | Day 2 AM | Part 3 Sections 1-2 (Services & DB) | 60 min | Understand the components |
 | | Day 2 PM | Part 3 Sections 3-4 (Flows & Setup) | 90 min | See it in action, set up locally |
-| | Day 3 | Explore codebase with guide | Full day | Navigate confidently with context |
+| | Day 3 AM | Part 4 (Frontend Applications) | 90 min | Understand UI architecture |
+| | Day 3 PM | Part 5 (Message Queues) | 105 min | Master async messaging patterns |
+| | Day 4 | Explore codebase with guide | Full day | Navigate confidently with context |
 | **Business Analyst** | Phase 1 | Part 1 (Full) | 60 min | Business use cases, capabilities |
 | | Phase 2 | Part 2 Sections 1-2 (Gateways) | 30 min | External integrations |
 | | Phase 3 | Part 3 Section 3 (Business Flows) | 45 min | End-to-end scenarios |
@@ -241,12 +370,27 @@ This guide is split into 3 comprehensive parts to help you understand everything
 
 ## 🔗 Additional Resources
 
-### Related Documentation:
+### Core Documentation Suite:
+- **`COMPLETE_SYSTEM_OVERVIEW.md`** - Complete bird's-eye view of entire platform ⭐ **NEW**
+- **`FRONTEND_UI_ARCHITECTURE.md`** - Complete frontend/UI guide (React apps, GraphQL) ⭐ **NEW**
+- **`DATABASE_ARCHITECTURE_COMPLETE.md`** - Complete database reference (50+ tables) ⭐ **NEW**
+- **`INFRASTRUCTURE_OPERATIONS_GUIDE.md`** - Infrastructure & operations (K8s, AWS, monitoring) ⭐ **NEW**
 - `MULTI_TENANT_ARCHITECTURE.md` - Detailed multi-tenancy analysis
+- `BUSINESS_SCENARIOS_AND_WORKFLOWS.md` - Real-world business scenarios
 - `COMPREHENSIVE_ARCHITECTURE.md` - Original architecture documentation
-- `PRODUCT_FLOW_CUSTOMER_JOURNEY_VERIFIED.md` - Customer journey flows
-- `CURRENT_TAX_CALCULATION_FLOW.md` - Tax processing details
+
+### Specialized Guides:
+- `QUICK_START.md` - Quick setup and getting started
+- `QUICK_REFERENCE_GUIDE.md` - Quick reference for common tasks
+- `DEPLOYMENT_GUIDE.md` - Deployment procedures
+- `STEP_BY_STEP_DEPLOYMENT.md` - Step-by-step deployment guide
 - Individual service READMEs in each module folder
+
+### Upgrade Documentation:
+- `UPGRADE_PROGRESS_TRACKER.md` - Dependency upgrade tracking
+- `DEPENDENCIES_UPGRADE_GUIDE.md` - Complete upgrade guide
+- `DEPENDENCY_UPGRADE_MASTER_PLAN.md` - Master upgrade plan
+- `HIBERNATE_PROXY_BEST_PRACTICES.md` - Hibernate upgrade guide
 
 ### Codebase Entry Points:
 ```
@@ -305,21 +449,25 @@ Recommended exploration order:
 
 ## 📈 Document Statistics
 
-**Total Pages**: ~150 (across 3 parts)  
-**Code Examples**: 50+  
-**Diagrams**: 15+  
-**Business Flows**: 3 complete end-to-end  
+**Total Pages**: ~270 (across 5 parts + supplementary guides)  
+**Code Examples**: 190+  
+**Diagrams**: 45+  
+**Business Flows**: 8+ complete end-to-end  
 **Hub Explanations**: 11 detailed  
-**Service Descriptions**: 10 core services  
-**Gateway Coverage**: 6 gateways
+**Service Descriptions**: 10+ core services  
+**Gateway Coverage**: 8 gateways  
+**Queue Documentation**: 10+ ActiveMQ queues  
+**Frontend Applications**: 4 React apps fully documented
 
 **Time Investment**:
-- Part 1: 45-60 minutes
-- Part 2: 60-90 minutes
-- Part 3: 90-120 minutes
-- **Total**: 3-4.5 hours for complete understanding
+- Part 1: 45-60 minutes (Business & Architecture)
+- Part 2: 60-90 minutes (Technical Deep Dive)
+- Part 3: 90-120 minutes (Services & Development)
+- Part 4: 60-90 minutes (Frontend & UI) ✨ NEW
+- Part 5: 75-105 minutes (Message Queues) ✨ NEW
+- **Total**: 5.5-7.5 hours for complete understanding
 
-**Worth It**: This investment gives you comprehensive knowledge that would take weeks to acquire through code exploration alone.
+**Worth It**: This investment gives you comprehensive knowledge that would take 3-4 weeks to acquire through code exploration alone. With these guides, you'll be productive in 1 week.
 
 ---
 

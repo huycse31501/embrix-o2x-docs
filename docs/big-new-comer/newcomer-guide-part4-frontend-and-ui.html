@@ -1,0 +1,2151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Newcomer Guide Part4 Frontend And Ui - Embrix O2X</title>
+    
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+        font-size: 16px;
+        line-height: 1.7;
+        color: #1f2937;
+        background: linear-gradient(135deg, #f5f7fa 0%, #e9ecef 100%);
+        background-attachment: fixed;
+        padding: 20px;
+    }
+
+    .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        background: white;
+        padding: 40px 50px;
+        border-radius: 16px;
+        box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .container::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 5px;
+        background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+    }
+
+    .nav-header {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 20px;
+        border-radius: 8px;
+        margin-bottom: 30px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+    }
+
+    .nav-header h1 {
+        font-size: 1.4em;
+        margin-bottom: 5px;
+        font-weight: 600;
+    }
+
+    .nav-links {
+        display: flex;
+        gap: 15px;
+        flex-wrap: wrap;
+    }
+
+    .nav-links a {
+        color: white;
+        text-decoration: none;
+        padding: 8px 16px;
+        background: rgba(255,255,255,0.2);
+        border-radius: 5px;
+        transition: background 0.3s;
+    }
+
+    .nav-links a:hover {
+        background: rgba(255,255,255,0.3);
+    }
+
+    h1 {
+        color: #667eea;
+        margin: 35px 0 20px 0;
+        padding: 12px 0 12px 18px;
+        border-left: 5px solid #667eea;
+        border-bottom: 2px solid #667eea;
+        background: linear-gradient(90deg, rgba(102, 126, 234, 0.05) 0%, rgba(255,255,255,0) 100%);
+        font-size: 1.8em;
+        font-weight: 700;
+        border-radius: 0 8px 0 0;
+    }
+
+    h2 {
+        color: #764ba2;
+        margin: 30px 0 18px 0;
+        padding: 10px 0 10px 15px;
+        border-left: 4px solid #764ba2;
+        border-bottom: 2px solid #f0f0f0;
+        background: linear-gradient(90deg, rgba(118, 75, 162, 0.03) 0%, rgba(255,255,255,0) 100%);
+        font-size: 1.5em;
+        font-weight: 700;
+        border-radius: 0 6px 0 0;
+    }
+
+    h3 {
+        color: #667eea;
+        margin: 25px 0 15px 0;
+        padding: 8px 0 8px 12px;
+        border-left: 3px solid #667eea;
+        background: linear-gradient(90deg, rgba(102, 126, 234, 0.04) 0%, transparent 100%);
+        font-size: 1.25em;
+        font-weight: 600;
+        border-radius: 0 6px 6px 0;
+    }
+
+    h4 {
+        color: #764ba2;
+        margin: 20px 0 12px 0;
+        padding: 6px 0 6px 10px;
+        border-left: 2px solid #764ba2;
+        background: linear-gradient(90deg, rgba(118, 75, 162, 0.03) 0%, transparent 100%);
+        font-size: 1.1em;
+        font-weight: 600;
+        border-radius: 0 4px 4px 0;
+    }
+
+    h5 {
+        color: #667eea;
+        margin: 18px 0 10px 0;
+        padding: 4px 0 4px 8px;
+        border-left: 2px solid #667eea;
+        font-size: 1.05em;
+        font-weight: 600;
+        background: linear-gradient(90deg, rgba(102, 126, 234, 0.02) 0%, transparent 100%);
+        border-radius: 0 3px 3px 0;
+    }
+
+    h6 {
+        color: #764ba2;
+        margin: 15px 0 8px 0;
+        font-size: 0.95em;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    p {
+        margin: 12px 0;
+        line-height: 1.7;
+        font-size: 0.95em;
+        color: #374151;
+    }
+    
+    /* Better spacing for paragraphs after headings */
+    h1 + p, h2 + p, h3 + p, h4 + p {
+        margin-top: 10px;
+    }
+
+    ul, ol {
+        margin: 20px 0;
+        padding-left: 35px;
+    }
+
+    li {
+        margin: 10px 0;
+        line-height: 1.7;
+        font-size: 0.95em;
+        position: relative;
+        padding-left: 8px;
+    }
+
+    ul li::marker {
+        color: #667eea;
+        font-weight: bold;
+        font-size: 1.1em;
+    }
+
+    ol li::marker {
+        color: #764ba2;
+        font-weight: bold;
+        font-size: 1em;
+    }
+
+    /* Better list item styling */
+    li {
+        background: linear-gradient(90deg, rgba(102, 126, 234, 0.02) 0%, transparent 100%);
+        border-left: 2px solid transparent;
+        padding: 8px 8px 8px 12px;
+        border-radius: 0 4px 4px 0;
+        transition: all 0.2s ease;
+    }
+
+    li:hover {
+        background: linear-gradient(90deg, rgba(102, 126, 234, 0.05) 0%, transparent 100%);
+        border-left-color: #667eea;
+        padding-left: 16px;
+    }
+
+    /* Nested lists */
+    li ul, li ol {
+        margin: 8px 0 8px 10px;
+    }
+
+    /* Nested list items - smaller styling */
+    li li {
+        font-size: 0.92em;
+        margin: 6px 0;
+        background: linear-gradient(90deg, rgba(118, 75, 162, 0.02) 0%, transparent 100%);
+    }
+
+    li li:hover {
+        background: linear-gradient(90deg, rgba(118, 75, 162, 0.05) 0%, transparent 100%);
+        border-left-color: #764ba2;
+    }
+
+    code {
+        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        padding: 2px 6px;
+        border-radius: 4px;
+        font-family: 'Fira Code', 'Courier New', Consolas, monospace;
+        font-size: 0.85em;
+        color: #d63384;
+        border: 1px solid #dee2e6;
+        font-weight: 500;
+    }
+
+    /* Inline code with special highlighting */
+    p code, li code, td code {
+        position: relative;
+    }
+
+    p code::before, li code::before, td code::before {
+        content: '';
+        position: absolute;
+        inset: -2px;
+        border-radius: 5px;
+        background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+        z-index: -1;
+        opacity: 0;
+        transition: opacity 0.2s;
+    }
+
+    p code:hover::before, li code:hover::before, td code:hover::before {
+        opacity: 1;
+    }
+
+    pre {
+        background: #1e293b;
+        color: #e2e8f0;
+        padding: 16px 18px;
+        border-radius: 8px;
+        overflow-x: auto;
+        margin: 18px 0;
+        border: 1px solid #334155;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+        font-family: 'Cascadia Code', 'Fira Code', 'SF Mono', 'Consolas', 'Liberation Mono', monospace;
+        font-size: 0.85em;
+        line-height: 1.6;
+        position: relative;
+        font-feature-settings: "liga" 0;
+        text-rendering: optimizeLegibility;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+    }
+
+    pre code {
+        background: none;
+        color: inherit;
+        padding: 0;
+        border: none;
+        font-family: inherit;
+        font-weight: normal;
+        font-size: 1em;
+        display: block;
+    }
+    
+    /* Ensure consistent styling for all code content inside pre blocks */
+    pre code * {
+        font-size: inherit !important;
+        line-height: inherit !important;
+        color: inherit !important;
+        font-family: inherit !important;
+    }
+
+    /* Hover effect */
+    pre:hover {
+        border-color: #475569;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.12);
+        transition: all 0.3s ease;
+    }
+
+    /* Code block header indicator */
+    pre::after {
+        content: 'CODE';
+        position: absolute;
+        top: 8px;
+        right: 12px;
+        font-size: 0.65em;
+        color: #64748b;
+        font-weight: 600;
+        letter-spacing: 0.05em;
+        opacity: 0.5;
+    }
+
+    blockquote {
+        border-left: 4px solid #667eea;
+        padding: 15px 20px;
+        margin: 20px 0;
+        color: #555;
+        font-style: italic;
+        font-size: 0.95em;
+        background: linear-gradient(90deg, rgba(102, 126, 234, 0.05) 0%, rgba(255,255,255,0) 100%);
+        border-radius: 0 6px 6px 0;
+        position: relative;
+    }
+
+    blockquote::before {
+        content: '"';
+        position: absolute;
+        left: -10px;
+        top: -10px;
+        font-size: 4em;
+        color: rgba(102, 126, 234, 0.1);
+        font-family: Georgia, serif;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 20px 0;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+        border-radius: 8px;
+        overflow: hidden;
+        background: white;
+        font-size: 0.9em;
+    }
+
+    thead {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    }
+
+    th {
+        color: white;
+        padding: 12px 15px;
+        text-align: left;
+        font-weight: 600;
+        text-transform: uppercase;
+        font-size: 0.82em;
+        letter-spacing: 0.3px;
+    }
+
+    td {
+        padding: 10px 15px;
+        border-bottom: 1px solid #e5e7eb;
+        vertical-align: top;
+        line-height: 1.6;
+    }
+
+    tbody tr:last-child td {
+        border-bottom: none;
+    }
+
+    tbody tr:hover {
+        background: rgba(102, 126, 234, 0.04);
+        transition: background 0.2s ease;
+    }
+
+    tbody tr:nth-child(even) {
+        background: rgba(102, 126, 234, 0.02);
+    }
+
+    tbody tr:nth-child(even):hover {
+        background: rgba(102, 126, 234, 0.05);
+    }
+    
+    /* Better code in tables */
+    td code {
+        font-size: 0.85em;
+        padding: 2px 6px;
+    }
+
+    .info-box {
+        background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+        border-left: 5px solid #2196f3;
+        padding: 20px;
+        margin: 25px 0;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(33, 150, 243, 0.2);
+    }
+
+    .warning-box {
+        background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%);
+        border-left: 5px solid #ff9800;
+        padding: 20px;
+        margin: 25px 0;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(255, 152, 0, 0.2);
+    }
+
+    .success-box {
+        background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+        border-left: 5px solid #4caf50;
+        padding: 20px;
+        margin: 25px 0;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(76, 175, 80, 0.2);
+    }
+
+    /* Better colors for syntax in diagrams */
+    pre {
+        /* Box drawing characters in nice blue */
+        color: #93c5fd;
+    }
+
+    /* JSON/code syntax in pre blocks */
+    pre {
+        white-space: pre;
+        word-wrap: normal;
+    }
+
+    .toc {
+        background: #f8f9fa;
+        padding: 20px;
+        border-radius: 8px;
+        margin: 20px 0;
+        border-left: 4px solid #667eea;
+    }
+
+    .toc h2 {
+        color: #667eea;
+        border-bottom: none;
+        margin-bottom: 15px;
+    }
+
+    .toc ul {
+        list-style: none;
+        padding-left: 0;
+    }
+
+    .toc li {
+        margin: 8px 0;
+    }
+
+    .toc a {
+        color: #667eea;
+        text-decoration: none;
+        transition: color 0.3s;
+    }
+
+    .toc a:hover {
+        color: #764ba2;
+    }
+
+    hr {
+        border: none;
+        border-top: 2px solid #f0f0f0;
+        margin: 30px 0;
+    }
+
+    .badge {
+        display: inline-block;
+        background: #667eea;
+        color: white;
+        padding: 4px 10px;
+        border-radius: 12px;
+        font-size: 0.85em;
+        margin-left: 10px;
+    }
+
+    a {
+        color: #667eea;
+        text-decoration: none;
+        transition: color 0.3s;
+    }
+
+    a:hover {
+        color: #764ba2;
+        text-decoration: underline;
+    }
+    
+    /* Better display for metadata fields */
+    strong {
+        color: #374151;
+        font-weight: 600;
+    }
+    
+    /* Metadata field styling - each field on its own line */
+    .metadata-field {
+        margin: 8px 0;
+        padding: 8px 14px;
+        background: linear-gradient(90deg, rgba(102, 126, 234, 0.04) 0%, transparent 100%);
+        border-left: 3px solid #667eea;
+        border-radius: 0 4px 4px 0;
+        line-height: 1.7;
+        font-size: 0.95em;
+        display: block;
+        clear: both;
+    }
+    
+    .metadata-field strong {
+        color: #667eea;
+        font-weight: 600;
+        margin-right: 8px;
+        display: inline-block;
+        min-width: 100px;
+    }
+    
+    .metadata-field code {
+        font-size: 0.88em;
+    }
+
+    footer {
+        margin-top: 50px;
+        padding-top: 30px;
+        border-top: 2px solid #f0f0f0;
+        text-align: center;
+        color: #888;
+    }
+
+    @media print {
+        body {
+            background: white;
+        }
+        .nav-header, .nav-links {
+            display: none;
+        }
+        pre {
+            break-inside: avoid;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .container {
+            padding: 20px;
+        }
+        .nav-header {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+        .nav-links {
+            margin-top: 15px;
+        }
+        h1 {
+            font-size: 2em;
+        }
+        h2 {
+            font-size: 1.5em;
+        }
+    }
+</style>
+
+</head>
+<body>
+    <div class="container">
+        <div class="nav-header"><div><h1>Embrix O2X Documentation</h1><small>Navigate between guides</small></div><div class="nav-links"><a href="index.html">📑 Index</a></div></div>
+        
+<h1>Embrix O2X Platform - Newcomer's Guide (Part 4)</h1>
+
+<h2>Frontend Applications & User Interfaces</h2>
+
+<strong>Version</strong>: 3.1.9-SNAPSHOT  
+<strong>Last Updated</strong>: February 2026  
+<strong>Prerequisites</strong>: Read Parts 1, 2, and 3 first  
+<strong>Target Audience</strong>: Frontend developers, full-stack developers, UI/UX designers
+
+<hr>
+
+<h2>Table of Contents - Part 4</h2>
+
+<ol>
+<li><a href="#1-frontend-architecture-overview">Frontend Architecture Overview</a></li>
+<li><a href="#2-ui-core---admin--operations-application">ui-core - Admin & Operations Application</a></li>
+<li><a href="#3-selfcare---customer-self-service-portal">selfcare - Customer Self-Service Portal</a></li>
+<li><a href="#4-ui---public-website--discovery">ui - Public Website & Discovery</a></li>
+<li><a href="#5-embrix-lite---lightweight-ui-variant">embrix-lite - Lightweight UI Variant</a></li>
+<li><a href="#6-api-integration-patterns">API Integration Patterns</a></li>
+<li><a href="#7-authentication--authorization">Authentication & Authorization</a></li>
+<li><a href="#8-multi-tenant-branding--customization">Multi-Tenant Branding & Customization</a></li>
+<li><a href="#9-state-management--routing">State Management & Routing</a></li>
+<li><a href="#10-build--deployment">Build & Deployment</a></li>
+</ol>
+
+<hr>
+
+<h2>1. Frontend Architecture Overview</h2>
+
+<h3>1.1 Application Ecosystem</h3>
+
+Embrix O2X provides <strong>four React-based frontend applications</strong>, each serving distinct user roles and use cases:
+<pre><code class="language-">┌─────────────────────────────────────────────────────────────────────────┐
+│                          FRONTEND ECOSYSTEM                              │
+└─────────────────────────────────────────────────────────────────────────┘
+
+┌──────────────────────┐  ┌──────────────────────┐  ┌──────────────────────┐
+│   ui-core            │  │   selfcare           │  │   ui                 │
+│   (Admin Portal)     │  │   (Customer Portal)  │  │   (Public Site)      │
+├──────────────────────┤  ├──────────────────────┤  ├──────────────────────┤
+│ • Tenant onboarding  │  │ • Customer login     │  │ • Package comparison │
+│ • System config      │  │ • View bills         │  │ • Sign-up flows      │
+│ • User management    │  │ • Make payments      │  │ • Marketing pages    │
+│ • Ops dashboard      │  │ • Usage reports      │  │ • Lead generation    │
+│ • Analytics          │  │ • Service upgrades   │  │ • Product info       │
+└──────────┬───────────┘  └──────────┬───────────┘  └──────────┬───────────┘
+           │                         │                         │
+           │                         │                         │
+           └─────────────────────────┴─────────────────────────┘
+                                     │
+                                     ▼
+┌─────────────────────────────────────────────────────────────────────────┐
+│                       GraphQL API (crm_gateway)                          │
+│                       http://localhost:8080/graphql                      │
+└─────────────────────────────────────────────────────────────────────────┘
+                                     │
+                                     ▼
+┌─────────────────────────────────────────────────────────────────────────┐
+│                       Backend Services Layer                             │
+└─────────────────────────────────────────────────────────────────────────┘
+
+┌──────────────────────┐
+│   embrix-lite        │
+│   (Lightweight)      │
+├──────────────────────┤
+│ • Simplified UI      │
+│ • Reduced features   │
+│ • Faster load times  │
+└──────────────────────┘
+</code></pre>
+<h3>1.2 Technology Stack</h3>
+
+<table>
+<thead><tr>
+<th>Application</th>
+<th>Framework</th>
+<th>Version</th>
+<th>Build Tool</th>
+<th>State Management</th>
+</tr></thead><tbody>
+<tr>
+<td>-------------</td>
+<td>-----------</td>
+<td>---------</td>
+<td>------------</td>
+<td>------------------</td>
+</tr>
+<tr>
+<td><strong>ui-core</strong></td>
+<td>React</td>
+<td>16.12.0</td>
+<td>React Scripts 3.2.0</td>
+<td>Context API / Redux (likely)</td>
+</tr>
+<tr>
+<td><strong>selfcare</strong></td>
+<td>React</td>
+<td>16.8.6</td>
+<td>React Scripts 3.0.1</td>
+<td>Context API / Redux (likely)</td>
+</tr>
+<tr>
+<td><strong>ui</strong></td>
+<td>React</td>
+<td>16.12.0</td>
+<td>React Scripts 3.2.0</td>
+<td>Context API</td>
+</tr>
+<tr>
+<td><strong>embrix-lite</strong></td>
+<td>React</td>
+<td>16.12.0</td>
+<td>React Scripts 3.2.0</td>
+<td>Context API</td>
+</tr>
+</tbody></table>
+<strong>Common Dependencies</strong>:
+<ul>
+<li><strong>GraphQL Client</strong>: Apollo Client or similar</li>
+<li><strong>HTTP Client</strong>: Axios / Fetch API</li>
+<li><strong>Routing</strong>: React Router</li>
+<li><strong>UI Components</strong>: Material-UI or custom components</li>
+<li><strong>Form Management</strong>: Formik / React Hook Form</li>
+<li><strong>Authentication</strong>: OAuth2/JWT with Vault integration</li>
+</ul>
+<h3>1.3 Application Separation Rationale</h3>
+
+<table>
+<thead><tr>
+<th>Concern</th>
+<th>Benefit of Separate Apps</th>
+</tr></thead><tbody>
+<tr>
+<td>---------</td>
+<td>-------------------------</td>
+</tr>
+<tr>
+<td><strong>Security</strong></td>
+<td>Admin operations isolated from customer access</td>
+</tr>
+<tr>
+<td><strong>Performance</strong></td>
+<td>Smaller bundle sizes, faster load times</td>
+</tr>
+<tr>
+<td><strong>Scalability</strong></td>
+<td>Independent deployment and scaling</td>
+</tr>
+<tr>
+<td><strong>User Experience</strong></td>
+<td>Tailored UX for different user roles</td>
+</tr>
+<tr>
+<td><strong>Development</strong></td>
+<td>Teams can work independently on different apps</td>
+</tr>
+</tbody></table>
+
+<hr>
+
+<h2>2. ui-core - Admin & Operations Application</h2>
+
+<h3>2.1 Purpose & Target Users</h3>
+
+<strong>Purpose</strong>: Internal operations and administration for service provider staff
+<strong>Target Users</strong>:
+<ul>
+<li>System administrators</li>
+<li>Operations managers</li>
+<li>Finance team members</li>
+<li>Customer support agents</li>
+<li>Implementation consultants</li>
+</ul>
+<h3>2.2 Key Features</h3>
+
+<h4>2.2.1 Tenant Onboarding</h4>
+
+<strong>What It Is</strong>: Complete tenant provisioning and configuration workflow
+<strong>Steps</strong>:
+<ol>
+<li><strong>Tenant Creation</strong><br><pre><code class="language-javascript">   const tenantData = {
+     tenantName: "newclient",
+     tenantCode: "TIDLT-100008",
+     domain: "newclient.embrix.com",
+     logoUrl: "https://s3.../logo.png",
+     themeColors: {
+       primaryColor: "#1976D2",
+       secondaryColor: "#DC004E"
+     },
+     supportEmail: "support@newclient.com",
+     supportPhone: "+1-555-0100"
+   };
+   </code></pre></li>
+<li><strong>Self-Care Configuration</strong><br><pre><code class="language-javascript">   const selfCareConfig = {
+     tenantId: "TIDLT-100008",
+     enableSelfRegistration: true,
+     enableCreditCardPayment: true,
+     enableUsageReports: true,
+     enableVoiceCDR: false,
+     enableDataCDR: true,
+     defaultLanguage: "en-US",
+     supportedLanguages: ["en-US", "es-MX"],
+     permissions: {
+       VIEW_BILLS: true,
+       VIEW_INVOICE: true,
+       ADD_CREDIT_CARD: true,
+       MAKE_PAYMENT: true,
+       VIEW_USAGE: true
+     }
+   };
+   </code></pre></li>
+<li><strong>Gateway Configuration</strong><br><ul><li>Payment gateway credentials (Stripe, Braintree)</li></ul><br><ul><li>Tax provider setup (Avalara, PAC)</li></ul><br><ul><li>ERP integration (QuickBooks, NetSuite)</li></ul><br><ul><li>Provisioning system connection</li></ul></li>
+<li><strong>Database Provisioning</strong><br><pre><code class="language-sql">   -- Automated via backend
+   CREATE DATABASE coredb_newclient;
+   -- Run Flyway migrations
+   -- Seed initial data
+   </code></pre></li>
+</ol>
+<h4>2.2.2 System Configuration Dashboard</h4>
+
+<strong>Configuration Screens</strong>:
+<table>
+<thead><tr>
+<th>Screen</th>
+<th>Purpose</th>
+<th>Key Actions</th>
+</tr></thead><tbody>
+<tr>
+<td>--------</td>
+<td>---------</td>
+<td>-------------</td>
+</tr>
+<tr>
+<td><strong>Tenants List</strong></td>
+<td>View all tenants</td>
+<td>Create, Edit, Deactivate</td>
+</tr>
+<tr>
+<td><strong>Tenant Details</strong></td>
+<td>Configure specific tenant</td>
+<td>Update settings, View health</td>
+</tr>
+<tr>
+<td><strong>Gateway Management</strong></td>
+<td>External system configs</td>
+<td>Add/Edit credentials, Test connection</td>
+</tr>
+<tr>
+<td><strong>Feature Flags</strong></td>
+<td>Enable/disable features per tenant</td>
+<td>Toggle features, Set rollout %</td>
+</tr>
+<tr>
+<td><strong>Rate Plans</strong></td>
+<td>Configure billing rates</td>
+<td>Create plans, Set pricing tiers</td>
+</tr>
+<tr>
+<td><strong>Product Catalog</strong></td>
+<td>Manage products</td>
+<td>Add products, Bundle configuration</td>
+</tr>
+</tbody></table>
+<h4>2.2.3 User & Role Management</h4>
+
+<strong>User Management Features</strong>:
+<ul>
+<li>Create/Edit/Deactivate users</li>
+<li>Assign roles and permissions</li>
+<li>Bulk user import</li>
+<li>Password reset workflows</li>
+<li>Session management</li>
+</ul>
+<strong>Role Examples</strong>:
+<pre><code class="language-javascript">const roles = [
+  {
+    name: "SUPER_ADMIN",
+    permissions: ["*"]  // All permissions
+  },
+  {
+    name: "TENANT_ADMIN",
+    permissions: [
+      "VIEW_DASHBOARD",
+      "MANAGE_USERS",
+      "CONFIGURE_TENANT",
+      "VIEW_REPORTS"
+    ]
+  },
+  {
+    name: "FINANCE_MANAGER",
+    permissions: [
+      "VIEW_INVOICES",
+      "VIEW_PAYMENTS",
+      "EXPORT_REPORTS",
+      "MANAGE_PRICING"
+    ]
+  },
+  {
+    name: "CUSTOMER_SUPPORT",
+    permissions: [
+      "VIEW_ACCOUNTS",
+      "VIEW_ORDERS",
+      "CREATE_TICKETS",
+      "APPLY_CREDITS"
+    ]
+  }
+];
+</code></pre>
+<h4>2.2.4 Operations Dashboard</h4>
+
+<strong>Key Metrics Displayed</strong>:
+<pre><code class="language-">┌─────────────────────────────────────────────────────────────┐
+│ System Health Dashboard                                      │
+├─────────────────────────────────────────────────────────────┤
+│                                                               │
+│  Active Tenants: 7          Total Accounts: 15,234          │
+│  Orders Today: 142          Invoices Generated: 1,053        │
+│  Payments: $125,340         Failed Orders: 3                 │
+│                                                               │
+│  ┌─────────────────┐  ┌─────────────────┐  ┌──────────────┐│
+│  │ Message Queues  │  │ Service Status  │  │ DB Health    ││
+│  ├─────────────────┤  ├─────────────────┤  ├──────────────┤│
+│  │ OMS: 23         │  │ Billing: ✅     │  │ Conn: 45/50  ││
+│  │ USAGE: 1,234    │  │ Invoice: ✅     │  │ Queries: 120 ││
+│  │ MEDIATION: 5    │  │ Payment: ⚠️     │  │ Locks: 2     ││
+│  │ BULK: 0         │  │ Usage: ✅       │  │ Size: 145GB  ││
+│  └─────────────────┘  └─────────────────┘  └──────────────┘│
+│                                                               │
+│  Recent Errors:                                              │
+│  • Payment gateway timeout (3 occurrences)                   │
+│  • CDR file parsing error (mcm_2024_02_11.csv)              │
+│                                                               │
+└─────────────────────────────────────────────────────────────┘
+</code></pre>
+<h3>2.3 Component Structure</h3>
+
+<strong>Example Component Hierarchy</strong>:
+<pre><code class="language-">ui-core/
+├── src/
+│   ├── components/
+│   │   ├── Dashboard/
+│   │   │   ├── SystemHealth.jsx
+│   │   │   ├── QueueMetrics.jsx
+│   │   │   └── ServiceStatus.jsx
+│   │   ├── Tenants/
+│   │   │   ├── TenantList.jsx
+│   │   │   ├── TenantForm.jsx
+│   │   │   ├── TenantDetails.jsx
+│   │   │   └── SelfCareConfig.jsx
+│   │   ├── Users/
+│   │   │   ├── UserList.jsx
+│   │   │   ├── UserForm.jsx
+│   │   │   └── RoleAssignment.jsx
+│   │   ├── Gateways/
+│   │   │   ├── GatewayList.jsx
+│   │   │   ├── GatewayConfig.jsx
+│   │   │   └── ConnectionTest.jsx
+│   │   └── Common/
+│   │       ├── Header.jsx
+│   │       ├── Sidebar.jsx
+│   │       └── ErrorBoundary.jsx
+│   ├── pages/
+│   │   ├── DashboardPage.jsx
+│   │   ├── TenantsPage.jsx
+│   │   ├── UsersPage.jsx
+│   │   └── SettingsPage.jsx
+│   ├── services/
+│   │   ├── api.js              // GraphQL client
+│   │   ├── auth.js             // Authentication
+│   │   └── tenantService.js    // Tenant operations
+│   ├── utils/
+│   │   ├── validation.js
+│   │   └── formatters.js
+│   └── App.jsx
+└── package.json
+</code></pre>
+
+<hr>
+
+<h2>3. selfcare - Customer Self-Service Portal</h2>
+
+<h3>3.1 Purpose & Target Users</h3>
+
+<strong>Purpose</strong>: Customer-facing portal for account self-management
+<strong>Target Users</strong>:
+<ul>
+<li>End customers (residential)</li>
+<li>Business customers (small-medium)</li>
+<li>Account administrators</li>
+<li>Authorized users</li>
+</ul>
+<h3>3.2 Customer Journey & Features</h3>
+
+<h4>3.2.1 Registration & Onboarding</h4>
+
+<strong>Self-Registration Flow</strong>:
+<pre><code class="language-">┌─────────────────────────────────────────────────────────────┐
+│ Step 1: Email Verification                                   │
+│ • Enter email address                                        │
+│ • Receive verification code                                  │
+│ • Validate code                                              │
+└─────────────┬───────────────────────────────────────────────┘
+              │
+              ▼
+┌─────────────────────────────────────────────────────────────┐
+│ Step 2: Account Lookup                                       │
+│ • Enter account number or service address                    │
+│ • System validates eligibility                               │
+└─────────────┬───────────────────────────────────────────────┘
+              │
+              ▼
+┌─────────────────────────────────────────────────────────────┐
+│ Step 3: Create Credentials                                   │
+│ • Set password (strength requirements)                       │
+│ • Set security questions                                     │
+│ • Accept terms of service                                    │
+└─────────────┬───────────────────────────────────────────────┘
+              │
+              ▼
+┌─────────────────────────────────────────────────────────────┐
+│ Step 4: Welcome & Dashboard                                  │
+│ • Account overview                                           │
+│ • Pending bills                                              │
+│ • Quick actions                                              │
+└─────────────────────────────────────────────────────────────┘
+</code></pre>
+<strong>GraphQL Registration Mutation</strong>:
+<pre><code class="language-javascript">const REGISTER_SELF_CARE_USER = gql`
+  mutation RegisterSelfCareUser($input: SelfCareRegistrationInput!) {
+    registerSelfCareUser(input: $input) {
+      userId
+      status
+      activationToken
+      errors {
+        field
+        message
+      }
+    }
+  }
+`;
+
+// Usage
+const { data } = await apolloClient.mutate({
+  mutation: REGISTER_SELF_CARE_USER,
+  variables: {
+    input: {
+      email: "customer@example.com",
+      password: "SecurePass123!",
+      accountId: "ACC-1001",
+      firstName: "Jane",
+      lastName: "Customer",
+      phone: "+52 55 9876 5432"
+    }
+  }
+});
+</code></pre>
+<h4>3.2.2 Dashboard & Account Overview</h4>
+
+<strong>Dashboard Components</strong>:
+<pre><code class="language-">┌─────────────────────────────────────────────────────────────┐
+│ Customer Dashboard                              👤 Jane Doe  │
+├─────────────────────────────────────────────────────────────┤
+│                                                               │
+│ Account Summary                                              │
+│ ┌─────────────────────────────────────────────────────────┐ │
+│ │ Account ID: ACC-1001          Status: ✅ Active         │ │
+│ │ Current Balance: -$125.00     Next Bill Date: Feb 28    │ │
+│ │ Bill Cycle Day: 28th          Payment Method: ****1234  │ │
+│ └─────────────────────────────────────────────────────────┘ │
+│                                                               │
+│ Active Services                                              │
+│ ┌─────────────────────────────────────────────────────────┐ │
+│ │ 🌐 Internet 100 Mbps              $50.00/month          │ │
+│ │ 📺 Cable TV Premium               $79.99/month          │ │
+│ │ ☎️  VoIP Business Line            $29.99/month          │ │
+│ └─────────────────────────────────────────────────────────┘ │
+│                                                               │
+│ Quick Actions                                                │
+│ ┌──────────┐ ┌──────────┐ ┌──────────┐ ┌──────────┐       │
+│ │💳 Pay Bill│ │📄 Invoices│ │📊 Usage  │ │⚙️ Settings│       │
+│ └──────────┘ └──────────┘ └──────────┘ └──────────┘       │
+│                                                               │
+│ Recent Activity                                              │
+│ • Invoice INV-2024-002 generated ($159.98) - Feb 10         │
+│ • Payment $159.98 received - Feb 8                          │
+│ • Speed upgrade activated - Jan 25                          │
+│                                                               │
+└─────────────────────────────────────────────────────────────┘
+</code></pre>
+<strong>Dashboard Query</strong>:
+<pre><code class="language-javascript">const DASHBOARD_QUERY = gql`
+  query GetCustomerDashboard($accountId: String!) {
+    getAccount(id: $accountId) {
+      id
+      status
+      balance
+      billCycleDay
+      nextBillingDate
+      subscriptions {
+        id
+        productCode
+        productName
+        status
+        recurringCharge
+        activationDate
+      }
+      paymentMethods {
+        id
+        type
+        last4
+        expiryDate
+        isDefault
+      }
+      recentActivity {
+        date
+        type
+        description
+        amount
+      }
+    }
+  }
+`;
+</code></pre>
+<h4>3.2.3 Billing & Invoices</h4>
+
+<strong>View Bills Screen</strong>:
+<pre><code class="language-">┌─────────────────────────────────────────────────────────────┐
+│ My Bills                                                     │
+├─────────────────────────────────────────────────────────────┤
+│                                                               │
+│ Filters: [All] [Paid] [Pending] [Overdue]                   │
+│ Date Range: [Last 12 Months ▼]                              │
+│                                                               │
+│ ┌─────────────────────────────────────────────────────────┐ │
+│ │ Invoice #INV-2024-002          Amount: $159.98          │ │
+│ │ Date: Feb 10, 2024             Due: Feb 28, 2024        │ │
+│ │ Status: ⚠️ PENDING             [Download PDF] [Pay Now] │ │
+│ │                                                           │ │
+│ │ Charges:                                                  │ │
+│ │   Internet 100 Mbps          $50.00                      │ │
+│ │   Cable TV Premium           $79.99                      │ │
+│ │   VoIP Business Line         $29.99                      │ │
+│ │   Subtotal:                 $159.98                      │ │
+│ │   Tax (16%):                 $25.60                      │ │
+│ │   Total:                    $185.58                      │ │
+│ └─────────────────────────────────────────────────────────┘ │
+│                                                               │
+│ ┌─────────────────────────────────────────────────────────┐ │
+│ │ Invoice #INV-2024-001          Amount: $159.98          │ │
+│ │ Date: Jan 10, 2024             Due: Jan 28, 2024        │ │
+│ │ Status: ✅ PAID                [Download PDF]            │ │
+│ │ Payment: Jan 25, 2024 via Bank Transfer                  │ │
+│ └─────────────────────────────────────────────────────────┘ │
+│                                                               │
+└─────────────────────────────────────────────────────────────┘
+</code></pre>
+<strong>Invoices Query</strong>:
+<pre><code class="language-javascript">const VIEW_BILLS_QUERY = gql`
+  query ViewMyBills($filter: BillFilterInput!) {
+    myBills(filter: $filter) {
+      invoices {
+        id
+        invoiceNumber
+        invoiceDate
+        dueDate
+        subtotal
+        taxTotal
+        totalAmount
+        amountPaid
+        balance
+        status
+        pdfUrl
+        canDownload
+        charges {
+          description
+          chargeType
+          amount
+          taxAmount
+          totalAmount
+        }
+        payments {
+          paymentDate
+          amount
+          paymentMethod
+        }
+      }
+      summary {
+        totalInvoices
+        totalAmount
+        totalPaid
+        totalDue
+      }
+    }
+  }
+`;
+</code></pre>
+<h4>3.2.4 Payment Management</h4>
+
+<strong>Make Payment Screen</strong>:
+<pre><code class="language-">┌─────────────────────────────────────────────────────────────┐
+│ Make a Payment                                               │
+├─────────────────────────────────────────────────────────────┤
+│                                                               │
+│ Account Balance: $185.58                                     │
+│                                                               │
+│ Select Invoices to Pay:                                     │
+│ ☑️ INV-2024-002  Due: Feb 28  Amount: $185.58               │
+│ ☐ INV-2024-001  Due: Jan 28  Amount: $0.00 (Paid)          │
+│                                                               │
+│ Payment Amount: $185.58                                      │
+│                                                               │
+│ Payment Method:                                              │
+│ ( ) Credit Card ending in 1234                              │
+│ ( ) Bank Transfer                                            │
+│ (•) New Payment Method                                       │
+│                                                               │
+│ ┌─────────────────────────────────────────────────────────┐ │
+│ │ Card Number:   [____-____-____-____]                     │ │
+│ │ Expiry:        [MM] / [YY]                               │ │
+│ │ CVV:           [___]                                      │ │
+│ │ Name on Card:  [____________________________]            │ │
+│ │ ☑️ Save this payment method for future use               │ │
+│ └─────────────────────────────────────────────────────────┘ │
+│                                                               │
+│ [Cancel]                              [Process Payment $185.58]│
+│                                                               │
+└─────────────────────────────────────────────────────────────┘
+</code></pre>
+<strong>Payment Processing</strong>:
+<pre><code class="language-javascript">const PROCESS_PAYMENT = gql`
+  mutation ProcessPayment($input: PaymentInput!) {
+    processPayment(input: $input) {
+      paymentId
+      status
+      transactionId
+      confirmationNumber
+      allocations {
+        invoiceId
+        amount
+        remainingBalance
+      }
+      accountBalance
+      errors {
+        code
+        message
+      }
+    }
+  }
+`;
+
+// Braintree tokenization (client-side)
+const BraintreeVaultController = {
+  tokenizeCard: async (cardData) =&gt; {
+    const response = await fetch('/api/payment/tokenize', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(cardData)
+    });
+    return response.json(); // { token: "tok_xxxxx" }
+  }
+};
+
+// Payment submission
+const submitPayment = async () =&gt; {
+  // 1. Tokenize card (PCI-compliant)
+  const { token } = await BraintreeVaultController.tokenizeCard({
+    number: cardNumber,
+    expiryMonth: expiryMM,
+    expiryYear: expiryYY,
+    cvv: cvv
+  });
+
+  // 2. Process payment with token
+  const { data } = await apolloClient.mutate({
+    mutation: PROCESS_PAYMENT,
+    variables: {
+      input: {
+        accountId: "ACC-1001",
+        paymentMethodToken: token,
+        amount: 185.58,
+        allocateToInvoices: [
+          { invoiceId: "INV-2024-002", amount: 185.58 }
+        ],
+        savePaymentMethod: true
+      }
+    }
+  });
+
+  // 3. Show confirmation
+  if (data.processPayment.status === "COMPLETED") {
+    showSuccessMessage("Payment processed successfully!");
+  }
+};
+</code></pre>
+<h4>3.2.5 Usage Reports & CDR Viewing</h4>
+
+<strong>Usage Reports Screen</strong>:
+<pre><code class="language-">┌─────────────────────────────────────────────────────────────┐
+│ Usage Reports                                                │
+├─────────────────────────────────────────────────────────────┤
+│                                                               │
+│ Period: [January 2024 ▼]                                    │
+│ Service: [All Services ▼]                                    │
+│                                                               │
+│ Usage Summary                                                │
+│ ┌─────────────────────────────────────────────────────────┐ │
+│ │ 📞 Voice:     450 minutes     Charges: $15.50           │ │
+│ │ 📱 SMS:       120 messages    Charges: $2.40            │ │
+│ │ 🌐 Data:      25.5 GB         Charges: $0.00 (included)│ │
+│ │                                                           │ │
+│ │ Total Usage Charges: $17.90                              │ │
+│ └─────────────────────────────────────────────────────────┘ │
+│                                                               │
+│ Daily Usage Chart                                            │
+│ ┌─────────────────────────────────────────────────────────┐ │
+│ │        📊 [Bar chart showing daily usage]                │ │
+│ │ GB                                                        │ │
+│ │ 2.0│     █                                               │ │
+│ │ 1.5│   █ █ █   █                                         │ │
+│ │ 1.0│ █ █ █ █ █ █ █                                       │ │
+│ │ 0.5│ █ █ █ █ █ █ █ █                                     │ │
+│ │ 0.0└─────────────────────                                │ │
+│ │     1 2 3 4 5 6 7 8 ... 31                               │ │
+│ └─────────────────────────────────────────────────────────┘ │
+│                                                               │
+│ Voice CDR (Last 50 calls)        [Export to CSV]            │
+│ ┌─────────────────────────────────────────────────────────┐ │
+│ │ Date/Time          Number Called    Duration    Cost    │ │
+│ │ Feb 11 10:45 AM    +52 55 1234 5678  12:34     $0.45   │ │
+│ │ Feb 11 09:15 AM    +1 415 555 0199   5:12      $0.18   │ │
+│ │ Feb 10 03:30 PM    +52 55 9876 5432  25:18     $0.89   │ │
+│ │ ...                                                       │ │
+│ └─────────────────────────────────────────────────────────┘ │
+│                                                               │
+└─────────────────────────────────────────────────────────────┘
+</code></pre>
+<strong>Usage Query</strong>:
+<pre><code class="language-javascript">const USAGE_SUMMARY_QUERY = gql`
+  query GetUsageSummary($input: UsageSummaryInput!) {
+    getUsageSummary(input: $input) {
+      voiceMinutes
+      smsCount
+      dataGB
+      totalCharges
+      breakdown {
+        date
+        voiceMinutes
+        smsCount
+        dataGB
+        charges
+      }
+    }
+    
+    getVoiceCDR(input: {
+      accountId: $accountId
+      periodStart: $periodStart
+      periodEnd: $periodEnd
+    }) {
+      records {
+        timestamp
+        calledNumber
+        duration
+        cost
+        callType
+      }
+    }
+  }
+`;
+</code></pre>
+<h4>3.2.6 Service Upgrades</h4>
+
+<strong>Upgrade Service Flow</strong>:
+<pre><code class="language-">┌─────────────────────────────────────────────────────────────┐
+│ Upgrade Your Service                                         │
+├─────────────────────────────────────────────────────────────┤
+│                                                               │
+│ Current Plan: Internet 100 Mbps ($50.00/month)              │
+│                                                               │
+│ Available Upgrades:                                          │
+│                                                               │
+│ ┌─────────────────────────────────────────────────────────┐ │
+│ │ 🚀 Internet 200 Mbps         $70.00/month              │ │
+│ │    • 2x faster downloads                                 │ │
+│ │    • Better for streaming                                │ │
+│ │    • Price difference: +$20.00/month                     │ │
+│ │                         [Select & Continue →]            │ │
+│ └─────────────────────────────────────────────────────────┘ │
+│                                                               │
+│ ┌─────────────────────────────────────────────────────────┐ │
+│ │ 🚀🚀 Internet 500 Mbps        $100.00/month            │ │
+│ │    • 5x faster downloads                                 │ │
+│ │    • Perfect for home office                             │ │
+│ │    • Price difference: +$50.00/month                     │ │
+│ │                         [Select & Continue →]            │ │
+│ └─────────────────────────────────────────────────────────┘ │
+│                                                               │
+│ ┌─────────────────────────────────────────────────────────┐ │
+│ │ 🚀🚀🚀 Internet 1 Gbps       $150.00/month             │ │
+│ │    • Maximum speed                                       │ │
+│ │    • No throttling                                       │ │
+│ │    • Price difference: +$100.00/month                    │ │
+│ │                         [Select & Continue →]            │ │
+│ └─────────────────────────────────────────────────────────┘ │
+│                                                               │
+└─────────────────────────────────────────────────────────────┘
+</code></pre>
+<strong>Upgrade Mutation</strong>:
+<pre><code class="language-javascript">const UPGRADE_SERVICE = gql`
+  mutation UpgradeService($input: ServiceUpgradeInput!) {
+    createOrder(input: {
+      accountId: $accountId
+      orderType: MODIFY
+      services: [{
+        action: MODIFY
+        subscriptionId: $subscriptionId
+        newProductCode: $newProductCode
+      }]
+    }) {
+      orderId
+      status
+      estimatedCompletionDate
+      proratedCharges {
+        description
+        amount
+      }
+    }
+  }
+`;
+</code></pre>
+<h3>3.3 selfcare Component Structure</h3>
+
+<pre><code class="language-">selfcare/
+├── src/
+│   ├── components/
+│   │   ├── Auth/
+│   │   │   ├── Login.jsx
+│   │   │   ├── Register.jsx
+│   │   │   └── ForgotPassword.jsx
+│   │   ├── Dashboard/
+│   │   │   ├── AccountSummary.jsx
+│   │   │   ├── ActiveServices.jsx
+│   │   │   ├── QuickActions.jsx
+│   │   │   └── RecentActivity.jsx
+│   │   ├── Billing/
+│   │   │   ├── InvoiceList.jsx
+│   │   │   ├── InvoiceDetail.jsx
+│   │   │   ├── PaymentForm.jsx
+│   │   │   └── PaymentHistory.jsx
+│   │   ├── Usage/
+│   │   │   ├── UsageSummary.jsx
+│   │   │   ├── UsageChart.jsx
+│   │   │   ├── CDRList.jsx
+│   │   │   └── ExportDialog.jsx
+│   │   ├── Services/
+│   │   │   ├── ServiceList.jsx
+│   │   │   ├── ServiceDetails.jsx
+│   │   │   └── UpgradeWizard.jsx
+│   │   └── Profile/
+│   │       ├── PersonalInfo.jsx
+│   │       ├── PaymentMethods.jsx
+│   │       ├── Notifications.jsx
+│   │       └── Security.jsx
+│   ├── pages/
+│   │   ├── DashboardPage.jsx
+│   │   ├── BillingPage.jsx
+│   │   ├── UsagePage.jsx
+│   │   └── ProfilePage.jsx
+│   ├── services/
+│   │   ├── apolloClient.js
+│   │   ├── authService.js
+│   │   └── braintreeService.js
+│   └── App.jsx
+└── package.json
+</code></pre>
+
+<hr>
+
+<h2>4. ui - Public Website & Discovery</h2>
+
+<h3>4.1 Purpose</h3>
+
+<strong>Purpose</strong>: Customer acquisition and brand presence
+<strong>Target Audience</strong>:
+<ul>
+<li>Prospective customers</li>
+<li>Leads researching options</li>
+<li>Market segment explorers</li>
+</ul>
+<h3>4.2 Key Pages</h3>
+
+<h4>4.2.1 Package Comparison</h4>
+
+<pre><code class="language-">┌─────────────────────────────────────────────────────────────┐
+│ Choose Your Perfect Plan                                     │
+├─────────────────────────────────────────────────────────────┤
+│                                                               │
+│ ┌─────────────┐  ┌─────────────┐  ┌─────────────┐          │
+│ │  Starter    │  │ Professional│  │  Enterprise │          │
+│ │   $19/mo    │  │   $49/mo    │  │   Custom    │          │
+│ ├─────────────┤  ├─────────────┤  ├─────────────┤          │
+│ │ • 50 Mbps   │  │ • 200 Mbps  │  │ • 1 Gbps+   │          │
+│ │ • 100 GB    │  │ • Unlimited │  │ • Unlimited │          │
+│ │ • Email     │  │ • Priority  │  │ • Dedicated │          │
+│ │   Support   │  │   Support   │  │   Account   │          │
+│ │             │  │ • Free      │  │   Manager   │          │
+│ │             │  │   Install   │  │ • SLA 99.9% │          │
+│ │             │  │             │  │ • Custom    │          │
+│ │             │  │             │  │   Solutions │          │
+│ │             │  │             │  │             │          │
+│ │[Start Trial]│  │[Sign Up Now]│  │[Contact Us] │          │
+│ └─────────────┘  └─────────────┘  └─────────────┘          │
+│                                                               │
+└─────────────────────────────────────────────────────────────┘
+</code></pre>
+<h4>4.2.2 Sign-Up Flow</h4>
+
+<pre><code class="language-">Registration Funnel:
+1. Package selection
+2. Service address check (serviceability)
+3. Personal information
+4. Payment method (optional)
+5. Schedule installation
+6. Confirmation
+</code></pre>
+<strong>Package Query</strong>:
+<pre><code class="language-javascript">const SEARCH_PACKAGES = gql`
+  query SearchPackages($filter: PackageFilterInput) {
+    searchPackages(filter: $filter) {
+      packages {
+        id
+        packageCode
+        name
+        description
+        price
+        billingFrequency
+        features {
+          name
+          value
+          included
+        }
+        popular
+        availableForSelfRegistration
+      }
+    }
+  }
+`;
+</code></pre>
+<h3>4.3 Lead Generation</h3>
+
+<strong>Features</strong>:
+<ul>
+<li>Contact forms with CRM integration</li>
+<li>Live chat widget</li>
+<li>Request callback functionality</li>
+<li>Email newsletter signup</li>
+</ul>
+
+<hr>
+
+<h2>5. embrix-lite - Lightweight UI Variant</h2>
+
+<h3>5.1 Purpose</h3>
+
+<strong>Purpose</strong>: Reduced functionality for specific use cases or lower-bandwidth scenarios
+<strong>Potential Use Cases</strong>:
+<ul>
+<li>Kiosk mode for retail locations</li>
+<li>Limited-feature customer portals</li>
+<li>Mobile-optimized lightweight version</li>
+<li>Emerging markets with slower connections</li>
+</ul>
+<h3>5.2 Characteristics</h3>
+
+<table>
+<thead><tr>
+<th>Feature</th>
+<th>Full (selfcare)</th>
+<th>Lite</th>
+</tr></thead><tbody>
+<tr>
+<td>---------</td>
+<td>----------------</td>
+<td>------</td>
+</tr>
+<tr>
+<td><strong>Bundle Size</strong></td>
+<td>~2-3 MB</td>
+<td>~500 KB</td>
+</tr>
+<tr>
+<td><strong>Features</strong></td>
+<td>All features</td>
+<td>Core features only</td>
+</tr>
+<tr>
+<td><strong>Animations</strong></td>
+<td>Rich animations</td>
+<td>Minimal</td>
+</tr>
+<tr>
+<td><strong>Dependencies</strong></td>
+<td>Full stack</td>
+<td>Essential only</td>
+</tr>
+<tr>
+<td><strong>Target</strong></td>
+<td>Desktop/Mobile</td>
+<td>Mobile-first</td>
+</tr>
+</tbody></table>
+
+<hr>
+
+<h2>6. API Integration Patterns</h2>
+
+<h3>6.1 GraphQL Client Setup</h3>
+
+<strong>Apollo Client Configuration</strong>:
+<pre><code class="language-javascript">// apolloClient.js
+import { ApolloClient, InMemoryCache, createHttpLink } from '@apollo/client';
+import { setContext } from '@apollo/client/link/context';
+
+const httpLink = createHttpLink({
+  uri: process.env.REACT_APP_GRAPHQL_URL || 'http://localhost:8080/graphql',
+});
+
+const authLink = setContext((_, { headers }) =&gt; {
+  // Get token from localStorage or session
+  const token = localStorage.getItem('authToken');
+  
+  return {
+    headers: {
+      ...headers,
+      authorization: token ? `Bearer ${token}` : "",
+      'X-Tenant-ID': process.env.REACT_APP_TENANT_ID || 'urbanos',
+    }
+  };
+});
+
+export const client = new ApolloClient({
+  link: authLink.concat(httpLink),
+  cache: new InMemoryCache(),
+  defaultOptions: {
+    watchQuery: {
+      fetchPolicy: 'cache-and-network',
+    },
+  },
+});
+</code></pre>
+<h3>6.2 Error Handling</h3>
+
+<pre><code class="language-javascript">// ErrorBoundary.jsx
+import React from 'react';
+
+class ErrorBoundary extends React.Component {
+  state = { hasError: false, error: null };
+
+  static getDerivedStateFromError(error) {
+    return { hasError: true, error };
+  }
+
+  componentDidCatch(error, errorInfo) {
+    console.error('Error caught by boundary:', error, errorInfo);
+    // Log to error tracking service (e.g., Sentry)
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return (
+        &lt;div className="error-page"&gt;
+          &lt;h1&gt;Something went wrong&lt;/h1&gt;
+          &lt;p&gt;We're sorry for the inconvenience. Please try refreshing the page.&lt;/p&gt;
+          &lt;button onClick={() =&gt; window.location.reload()}&gt;
+            Refresh Page
+          &lt;/button&gt;
+        &lt;/div&gt;
+      );
+    }
+
+    return this.props.children;
+  }
+}
+
+// GraphQL error handling
+const handleGraphQLError = (error) =&gt; {
+  if (error.networkError) {
+    console.error('Network error:', error.networkError);
+    showNotification('Network error. Please check your connection.', 'error');
+  }
+  
+  if (error.graphQLErrors) {
+    error.graphQLErrors.forEach(({ message, extensions }) =&gt; {
+      if (extensions?.code === 'UNAUTHENTICATED') {
+        // Redirect to login
+        window.location.href = '/login';
+      } else {
+        showNotification(message, 'error');
+      }
+    });
+  }
+};
+</code></pre>
+
+<hr>
+
+<h2>7. Authentication & Authorization</h2>
+
+<h3>7.1 OAuth2 Login Flow</h3>
+
+<pre><code class="language-javascript">// authService.js
+class AuthService {
+  
+  async login(username, password) {
+    try {
+      // Get OAuth2 token
+      const tokenResponse = await fetch('/oauth/token', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+          'Authorization': 'Basic ' + btoa('client:secret')
+        },
+        body: new URLSearchParams({
+          grant_type: 'password',
+          username: username,
+          password: password,
+          scope: 'all'
+        })
+      });
+
+      const tokenData = await tokenResponse.json();
+      
+      // Store token
+      localStorage.setItem('authToken', tokenData.access_token);
+      localStorage.setItem('refreshToken', tokenData.refresh_token);
+      
+      // Decode JWT to get user info
+      const userInfo = this.decodeToken(tokenData.access_token);
+      localStorage.setItem('userInfo', JSON.stringify(userInfo));
+      
+      return { success: true, userInfo };
+    } catch (error) {
+      console.error('Login failed:', error);
+      return { success: false, error: error.message };
+    }
+  }
+
+  async refreshToken() {
+    const refreshToken = localStorage.getItem('refreshToken');
+    
+    const response = await fetch('/oauth/token', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        'Authorization': 'Basic ' + btoa('client:secret')
+      },
+      body: new URLSearchParams({
+        grant_type: 'refresh_token',
+        refresh_token: refreshToken
+      })
+    });
+
+    const tokenData = await response.json();
+    localStorage.setItem('authToken', tokenData.access_token);
+    
+    return tokenData.access_token;
+  }
+
+  logout() {
+    localStorage.removeItem('authToken');
+    localStorage.removeItem('refreshToken');
+    localStorage.removeItem('userInfo');
+    window.location.href = '/login';
+  }
+
+  decodeToken(token) {
+    const payload = token.split('.')[1];
+    return JSON.parse(atob(payload));
+  }
+
+  hasPermission(permission) {
+    const userInfo = JSON.parse(localStorage.getItem('userInfo') || '{}');
+    return userInfo.permissions?.includes(permission) || false;
+  }
+}
+
+export default new AuthService();
+</code></pre>
+<h3>7.2 Permission-Based Rendering</h3>
+
+<pre><code class="language-javascript">// ProtectedComponent.jsx
+import React from 'react';
+import authService from '../services/authService';
+
+const ProtectedComponent = ({ permission, children, fallback = null }) =&gt; {
+  const hasPermission = authService.hasPermission(permission);
+  
+  if (!hasPermission) {
+    return fallback || &lt;div&gt;You don't have permission to view this.&lt;/div&gt;;
+  }
+  
+  return &lt;&gt;{children}&lt;/&gt;;
+};
+
+// Usage
+&lt;ProtectedComponent permission="VIEW_BILLS"&gt;
+  &lt;InvoiceList /&gt;
+&lt;/ProtectedComponent&gt;
+
+&lt;ProtectedComponent permission="MAKE_PAYMENT"&gt;
+  &lt;button onClick={processPayment}&gt;Pay Now&lt;/button&gt;
+&lt;/ProtectedComponent&gt;
+</code></pre>
+
+<hr>
+
+<h2>8. Multi-Tenant Branding & Customization</h2>
+
+<h3>8.1 Tenant Configuration</h3>
+
+<pre><code class="language-javascript">// tenantConfig.js
+export const getTenantConfig = async (tenantId) =&gt; {
+  const response = await fetch(`/api/tenant/${tenantId}/config`);
+  return response.json();
+};
+
+// Example tenant config
+const tenantConfig = {
+  tenantId: "TIDLT-100005",
+  tenantName: "urbanos",
+  branding: {
+    logoUrl: "https://s3.../urbanos-logo.png",
+    faviconUrl: "https://s3.../urbanos-favicon.ico",
+    primaryColor: "#1976D2",
+    secondaryColor: "#DC004E",
+    accentColor: "#FFC107",
+    fontFamily: "Roboto, sans-serif"
+  },
+  contact: {
+    supportEmail: "support@urbanos.com",
+    supportPhone: "+52 55 1234 5678",
+    website: "https://www.urbanos.com"
+  },
+  features: {
+    enableSelfRegistration: true,
+    enableCreditCardPayment: true,
+    enableUsageReports: true,
+    enableVoiceCDR: true
+  },
+  localization: {
+    defaultLanguage: "es-MX",
+    supportedLanguages: ["es-MX", "en-US"],
+    currency: "MXN",
+    timezone: "America/Mexico_City"
+  },
+  domains: {
+    selfcare: "selfcare.urbanos.com",
+    api: "api.urbanos.com"
+  }
+};
+</code></pre>
+<h3>8.2 Dynamic Theming</h3>
+
+<pre><code class="language-javascript">// ThemeProvider.jsx
+import React, { createContext, useContext, useEffect, useState } from 'react';
+import { ThemeProvider as MUIThemeProvider, createTheme } from '@mui/material/styles';
+
+const TenantThemeContext = createContext();
+
+export const TenantThemeProvider = ({ children }) =&gt; {
+  const [tenantConfig, setTenantConfig] = useState(null);
+
+  useEffect(() =&gt; {
+    // Load tenant config
+    const tenantId = process.env.REACT_APP_TENANT_ID;
+    getTenantConfig(tenantId).then(setTenantConfig);
+  }, []);
+
+  if (!tenantConfig) {
+    return &lt;div&gt;Loading...&lt;/div&gt;;
+  }
+
+  const theme = createTheme({
+    palette: {
+      primary: {
+        main: tenantConfig.branding.primaryColor,
+      },
+      secondary: {
+        main: tenantConfig.branding.secondaryColor,
+      },
+    },
+    typography: {
+      fontFamily: tenantConfig.branding.fontFamily,
+    },
+  });
+
+  return (
+    &lt;TenantThemeContext.Provider value={tenantConfig}&gt;
+      &lt;MUIThemeProvider theme={theme}&gt;
+        {children}
+      &lt;/MUIThemeProvider&gt;
+    &lt;/TenantThemeContext.Provider&gt;
+  );
+};
+
+export const useTenantConfig = () =&gt; useContext(TenantThemeContext);
+</code></pre>
+
+<hr>
+
+<h2>9. State Management & Routing</h2>
+
+<h3>9.1 State Management (Context API Example)</h3>
+
+<pre><code class="language-javascript">// AppContext.jsx
+import React, { createContext, useReducer, useContext } from 'react';
+
+const AppStateContext = createContext();
+const AppDispatchContext = createContext();
+
+const initialState = {
+  user: null,
+  account: null,
+  notifications: [],
+  loading: false
+};
+
+function appReducer(state, action) {
+  switch (action.type) {
+    case 'SET_USER':
+      return { ...state, user: action.payload };
+    case 'SET_ACCOUNT':
+      return { ...state, account: action.payload };
+    case 'ADD_NOTIFICATION':
+      return {
+        ...state,
+        notifications: [...state.notifications, action.payload]
+      };
+    case 'REMOVE_NOTIFICATION':
+      return {
+        ...state,
+        notifications: state.notifications.filter(n =&gt; n.id !== action.payload)
+      };
+    case 'SET_LOADING':
+      return { ...state, loading: action.payload };
+    default:
+      return state;
+  }
+}
+
+export const AppProvider = ({ children }) =&gt; {
+  const [state, dispatch] = useReducer(appReducer, initialState);
+
+  return (
+    &lt;AppStateContext.Provider value={state}&gt;
+      &lt;AppDispatchContext.Provider value={dispatch}&gt;
+        {children}
+      &lt;/AppDispatchContext.Provider&gt;
+    &lt;/AppStateContext.Provider&gt;
+  );
+};
+
+export const useAppState = () =&gt; useContext(AppStateContext);
+export const useAppDispatch = () =&gt; useContext(AppDispatchContext);
+</code></pre>
+<h3>9.2 Routing (React Router)</h3>
+
+<pre><code class="language-javascript">// App.jsx
+import React from 'react';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { AppProvider } from './context/AppContext';
+import { TenantThemeProvider } from './context/ThemeProvider';
+import PrivateRoute from './components/PrivateRoute';
+
+// Pages
+import LoginPage from './pages/LoginPage';
+import RegisterPage from './pages/RegisterPage';
+import DashboardPage from './pages/DashboardPage';
+import BillingPage from './pages/BillingPage';
+import UsagePage from './pages/UsagePage';
+import ProfilePage from './pages/ProfilePage';
+
+function App() {
+  return (
+    &lt;BrowserRouter&gt;
+      &lt;AppProvider&gt;
+        &lt;TenantThemeProvider&gt;
+          &lt;Routes&gt;
+            {/* Public routes */}
+            &lt;Route path="/login" element={&lt;LoginPage /&gt;} /&gt;
+            &lt;Route path="/register" element={&lt;RegisterPage /&gt;} /&gt;
+            
+            {/* Protected routes */}
+            &lt;Route path="/dashboard" element={
+              &lt;PrivateRoute&gt;
+                &lt;DashboardPage /&gt;
+              &lt;/PrivateRoute&gt;
+            } /&gt;
+            
+            &lt;Route path="/billing" element={
+              &lt;PrivateRoute permission="VIEW_BILLS"&gt;
+                &lt;BillingPage /&gt;
+              &lt;/PrivateRoute&gt;
+            } /&gt;
+            
+            &lt;Route path="/usage" element={
+              &lt;PrivateRoute permission="VIEW_USAGE"&gt;
+                &lt;UsagePage /&gt;
+              &lt;/PrivateRoute&gt;
+            } /&gt;
+            
+            &lt;Route path="/profile" element={
+              &lt;PrivateRoute&gt;
+                &lt;ProfilePage /&gt;
+              &lt;/PrivateRoute&gt;
+            } /&gt;
+            
+            {/* Default redirect */}
+            &lt;Route path="/" element={&lt;Navigate to="/dashboard" replace /&gt;} /&gt;
+          &lt;/Routes&gt;
+        &lt;/TenantThemeProvider&gt;
+      &lt;/AppProvider&gt;
+    &lt;/BrowserRouter&gt;
+  );
+}
+
+export default App;
+</code></pre>
+
+<hr>
+
+<h2>10. Build & Deployment</h2>
+
+<h3>10.1 Build Configuration</h3>
+
+<strong>package.json</strong> (example for selfcare):
+<pre><code class="language-json">{
+  "name": "embrix-selfcare",
+  "version": "3.1.9",
+  "private": true,
+  "dependencies": {
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6",
+    "react-router-dom": "^6.0.0",
+    "react-scripts": "3.0.1",
+    "@apollo/client": "^3.0.0",
+    "graphql": "^15.0.0",
+    "@mui/material": "^5.0.0",
+    "axios": "^0.21.0"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": {
+    "production": [
+      "&gt;0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
+}
+</code></pre>
+<h3>10.2 Environment Configuration</h3>
+
+<strong>.env.production</strong>:
+<pre><code class="language-bash">REACT_APP_GRAPHQL_URL=https://api.urbanos.embrix.com/graphql
+REACT_APP_TENANT_ID=urbanos
+REACT_APP_BRAINTREE_TOKENIZATION_KEY=production_xxxxx
+REACT_APP_GOOGLE_ANALYTICS_ID=UA-XXXXX-Y
+</code></pre>
+<strong>.env.development</strong>:
+<pre><code class="language-bash">REACT_APP_GRAPHQL_URL=http://localhost:8080/graphql
+REACT_APP_TENANT_ID=urbanos
+REACT_APP_BRAINTREE_TOKENIZATION_KEY=sandbox_xxxxx
+</code></pre>
+<h3>10.3 Build & Deploy</h3>
+
+<pre><code class="language-bash"># Build for production
+npm run build
+
+# Output: build/ directory with optimized static files
+
+# Deploy to S3 (example)
+aws s3 sync build/ s3://selfcare-urbanos-embrix/ --delete
+
+# Invalidate CloudFront cache
+aws cloudfront create-invalidation \
+  --distribution-id E1234567890ABC \
+  --paths "/*"
+</code></pre>
+<h3>10.4 CI/CD Pipeline (Example)</h3>
+
+<pre><code class="language-yaml"># .gitlab-ci.yml or .github/workflows/deploy.yml
+name: Deploy Selfcare
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+      
+      - name: Install dependencies
+        run: npm ci
+        working-directory: ./selfcare
+      
+      - name: Run tests
+        run: npm test
+        working-directory: ./selfcare
+      
+      - name: Build
+        run: npm run build
+        working-directory: ./selfcare
+        env:
+          REACT_APP_GRAPHQL_URL: ${{ secrets.GRAPHQL_URL }}
+          REACT_APP_TENANT_ID: urbanos
+      
+      - name: Deploy to S3
+        uses: jakejarvis/s3-sync-action@master
+        with:
+          args: --delete
+        env:
+          AWS_S3_BUCKET: selfcare-urbanos-embrix
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          SOURCE_DIR: 'selfcare/build'
+</code></pre>
+
+<hr>
+
+<h2>Summary & Next Steps</h2>
+
+<h3>What We Covered</h3>
+
+✅ <strong>Four React Applications</strong>: ui-core, selfcare, ui, embrix-lite  
+✅ <strong>Complete Feature Set</strong>: Registration, billing, payments, usage, upgrades  
+✅ <strong>API Integration</strong>: GraphQL with Apollo Client  
+✅ <strong>Authentication</strong>: OAuth2/JWT implementation  
+✅ <strong>Multi-Tenancy</strong>: Dynamic branding and configuration  
+✅ <strong>State Management</strong>: Context API and routing  
+✅ <strong>Build & Deploy</strong>: Production-ready deployment strategies
+<h3>For Developers</h3>
+
+<ul>
+<li><strong>Start with selfcare</strong> - Most feature-rich customer-facing app</li>
+<li><strong>Explore GraphQL Playground</strong> - http://localhost:8080/graphiql</li>
+<li><strong>Set up local environment</strong> - Follow Part 3 for backend setup</li>
+<li><strong>Review component structure</strong> - Modular, reusable components</li>
+<li><strong>Understand permissions</strong> - Role-based access control</li>
+</ul>
+<h3>Next Steps</h3>
+
+<ol>
+<li><strong>Set up local development</strong> for frontend apps</li>
+<li><strong>Connect to backend GraphQL API</strong></li>
+<li><strong>Explore existing components</strong> in each application</li>
+<li><strong>Implement a new feature</strong> following established patterns</li>
+<li><strong>Test across different tenants</strong> to understand multi-tenancy</li>
+</ol>
+
+<hr>
+
+<strong>Ready to build amazing user experiences for Embrix O2X customers! 🎨</strong></p>
+        <footer>
+            <p><strong>Embrix O2X Platform Documentation</strong></p>
+            <p>Version 3.1.9-SNAPSHOT • Last Updated: February 2026</p>
+        </footer>
+    </div>
+</body>
+</html>
