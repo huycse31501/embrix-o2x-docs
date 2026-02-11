@@ -252,7 +252,7 @@
 
     pre {
         background: #1e293b;
-        color: #cbd5e1;
+        color: #e2e8f0;
         padding: 16px 18px;
         border-radius: 8px;
         overflow-x: auto;
@@ -260,8 +260,8 @@
         border: 1px solid #334155;
         box-shadow: 0 2px 4px rgba(0,0,0,0.08);
         font-family: 'Cascadia Code', 'Fira Code', 'SF Mono', 'Consolas', 'Liberation Mono', monospace;
-        font-size: 0.8em;
-        line-height: 1.5;
+        font-size: 0.85em;
+        line-height: 1.6;
         position: relative;
         font-feature-settings: "liga" 0;
         text-rendering: optimizeLegibility;
@@ -277,6 +277,15 @@
         font-family: inherit;
         font-weight: normal;
         font-size: 1em;
+        display: block;
+    }
+    
+    /* Ensure consistent styling for all code content inside pre blocks */
+    pre code * {
+        font-size: inherit !important;
+        line-height: inherit !important;
+        color: inherit !important;
+        font-family: inherit !important;
     }
 
     /* Hover effect */
@@ -1071,13 +1080,20 @@ This guide is split into 3 comprehensive parts to help you understand everything
 <h3>Codebase Entry Points:</h3>
 
 <pre><code class="language-">Recommended exploration order:
-<ol>
-<li>common/src/main/groovy/com/embrix/core/common/enums/<br>└─→ Understand domain enums</li>
-<li>engine/src/main/groovy/com/embrix/core/engine/{hub}/<br>└─→ Explore business logic by hub</li>
-<li>crm_gateway/src/main/resources/graphql/<br>└─→ See GraphQL schema</li>
-<li>core/service-*/src/main/groovy/<br>└─→ Understand service implementations</li>
-<li>gateway-common/src/main/groovy/<br>└─→ Gateway integration patterns</li>
-</ol>
+1. common/src/main/groovy/com/embrix/core/common/enums/
+   └─→ Understand domain enums
+
+2. engine/src/main/groovy/com/embrix/core/engine/{hub}/
+   └─→ Explore business logic by hub
+
+3. crm_gateway/src/main/resources/graphql/
+   └─→ See GraphQL schema
+
+4. core/service-*/src/main/groovy/
+   └─→ Understand service implementations
+
+5. gateway-common/src/main/groovy/
+   └─→ Gateway integration patterns
 </code></pre>
 <h3>Development Tools:</h3>
 

@@ -252,7 +252,7 @@
 
     pre {
         background: #1e293b;
-        color: #cbd5e1;
+        color: #e2e8f0;
         padding: 16px 18px;
         border-radius: 8px;
         overflow-x: auto;
@@ -260,8 +260,8 @@
         border: 1px solid #334155;
         box-shadow: 0 2px 4px rgba(0,0,0,0.08);
         font-family: 'Cascadia Code', 'Fira Code', 'SF Mono', 'Consolas', 'Liberation Mono', monospace;
-        font-size: 0.8em;
-        line-height: 1.5;
+        font-size: 0.85em;
+        line-height: 1.6;
         position: relative;
         font-feature-settings: "liga" 0;
         text-rendering: optimizeLegibility;
@@ -277,6 +277,15 @@
         font-family: inherit;
         font-weight: normal;
         font-size: 1em;
+        display: block;
+    }
+    
+    /* Ensure consistent styling for all code content inside pre blocks */
+    pre code * {
+        font-size: inherit !important;
+        line-height: inherit !important;
+        color: inherit !important;
+        font-family: inherit !important;
     }
 
     /* Hover effect */
@@ -768,6 +777,7 @@ BillUnitService.create()
 <pre><code class="language-">┌─────────────────────────────────────────────────────────────────────────┐
 │                        REGISTRATION WORKFLOW                             │
 └─────────────────────────────────────────────────────────────────────────┘
+
    ┌──────────────────┐
    │   Customer UI    │
    │ (selfcare/ui)    │
@@ -845,6 +855,7 @@ BillUnitService.create()
    │  │  5. Returns provisioningId and status                │  │
    │  └──────────────────────────────────────────────────────┘  │
    └────────────────────────────────────────────────────────────┘
+
    Result: ✓ Account Created  ✓ Services Provisioned  ✓ Ready to Bill
 </code></pre>
 
@@ -927,7 +938,14 @@ BillUnitService.create()
 <strong>Apply payment</strong>:
 <ul>
 <li><strong>GraphQL mutation</strong>: <code>applyPayment</code></li>
-<li><strong>Parameters</strong>:<br><pre><code class="language-">  {<br>accountId: "ACC-12345"<br>amount: 26705.00<br>currencyCode: "USD"<br>paymentProfileId: "profile_xyz" OR cardToken: "tok_abc123"<br>invoiceIds: ["INV-202602-00123"]<br>}<br></code></pre></li>
+<li><strong>Parameters</strong>:<br><pre><code class="language-">  {
+    accountId: "ACC-12345"
+    amount: 26705.00
+    currencyCode: "USD"
+    paymentProfileId: "profile_xyz" OR cardToken: "tok_abc123"
+    invoiceIds: ["INV-202602-00123"]
+  }
+  </code></pre></li>
 <li><strong>Required Permission</strong>: <code>APPLY_PAYMENT</code></li>
 </ul>
 
@@ -1169,7 +1187,23 @@ BillUnitService.create()
 
 <ol>
 <li><strong>Sales Opportunity</strong> (Salesforce)<br><ul><li>Sales rep creates opportunity for "Acme Corp"</li></ul><br><ul><li>Product: UCaaS Professional - 500 users</li></ul><br><ul><li>Contract: 12 months, annual billing</li></ul><br><ul><li>Total contract value (TCV): $294,000 ($49/user/month × 500 × 12)</li></ul><br><ul><li>Opportunity → Won</li></ul><br><ul><li>Generates Order in Salesforce</li></ul></li>
-<li><strong>Order Integration</strong> (crm_gateway)<br><ul><li>Salesforce triggers order export</li></ul><br><ul><li>Order message published to ActiveMQ queue: <code>OMS</code></li></ul><br><ul><li>Queue format: JSON with canonical order structure</li></ul><br><pre><code class="language-json">   {<br>"externalOrderId": "SF-0034567",<br>"accountId": "ACC-001",<br>"orderDate": "2026-02-10",<br>"orderType": "NEW_SERVICE",<br>"orderLines": [<br>{<br>"itemId": "UCAAS-PRO",<br>"quantity": 500,<br>"serviceStartDate": "2026-03-01",<br>"term": 12,<br>"termUnit": "MONTH",<br>"billableServices": [...]<br>}<br>]<br>}<br></code></pre></li>
+<li><strong>Order Integration</strong> (crm_gateway)<br><ul><li>Salesforce triggers order export</li></ul><br><ul><li>Order message published to ActiveMQ queue: <code>OMS</code></li></ul><br><ul><li>Queue format: JSON with canonical order structure</li></ul><br><pre><code class="language-json">   {
+     "externalOrderId": "SF-0034567",
+     "accountId": "ACC-001",
+     "orderDate": "2026-02-10",
+     "orderType": "NEW_SERVICE",
+     "orderLines": [
+       {
+         "itemId": "UCAAS-PRO",
+         "quantity": 500,
+         "serviceStartDate": "2026-03-01",
+         "term": 12,
+         "termUnit": "MONTH",
+         "billableServices": [...]
+       }
+     ]
+   }
+   </code></pre></li>
 <li><strong>Order Consumption</strong> (crm_gateway → service-transactional)<br><ul><li><code>OmsProcessor</code> consumes from OMS queue</li></ul><br><ul><li>Maps external order to internal Order DTO</li></ul><br><ul><li>Validates account exists</li></ul><br><ul><li>Calls <code>OrderService.createOrder()</code></li></ul><br><ul><li>Publishes to PROVISIONING queue</li></ul></li>
 </ol>
 <h4>Phase 2: Order Processing & Provisioning</h4>
@@ -1380,6 +1414,7 @@ BillUnitService.create()
 <pre><code class="language-">┌──────────────────────────────────────────────────────────────────────────┐
 │                   REAL-TIME USAGE RATING PIPELINE                         │
 └──────────────────────────────────────────────────────────────────────────┘
+
 Step 1: Usage Event Capture
 ┌─────────────────────────────────────────────────────────────────┐
 │  Telecom Network (Soft switch / MSC)                            │
@@ -1395,6 +1430,7 @@ Step 1: Usage Event Capture
 └──────────────────────┬──────────────────────────────────────────┘
                        │
                        ▼
+
 Step 2: Usage Ingestion
 ┌─────────────────────────────────────────────────────────────────┐
 │  service-mediation: MCMMediationService                         │
@@ -1415,6 +1451,7 @@ Step 2: Usage Ingestion
 └──────────────────────┬──────────────────────────────────────────┘
                        │
                        ▼
+
 Step 3: Pre-Processing Pipeline
 ┌─────────────────────────────────────────────────────────────────┐
 │  engine → usageProcessHub → PreProcessingService                │
@@ -1448,6 +1485,7 @@ Step 3: Pre-Processing Pipeline
 └──────────────────────┬──────────────────────────────────────────┘
                        │
                        ▼
+
 Step 4: Prepaid Rating
 ┌─────────────────────────────────────────────────────────────────┐
 │  PrepaidRatingService.rateUsageRecord()                         │
@@ -1480,6 +1518,7 @@ Step 4: Prepaid Rating
 │  │  └─────────────────────────────────────────────────────┘  │  │
 │  └───────────────────────────────────────────────────────────┘  │
 └─────────────────────────────────────────────────────────────────┘
+
 Result: ✓ Call Rated  ✓ Balance Updated  ✓ Transaction Created
 </code></pre>
 <strong>Balance After Rating</strong>:
@@ -1672,7 +1711,28 @@ Result: ✓ Call Rated  ✓ Balance Updated  ✓ Transaction Created
 <li><strong>Revenue Recognition</strong> (Embrix O2X)<br><ul><li>Month-end job runs: <code>recognizeRevenue</code></li></ul><br><ul><li>Processes all pending revenue journals for the month</li></ul><br><ul><li>Creates GL entries in internal ledger</li></ul></li>
 <li><strong>Journal Entry Batch Creation</strong><br><ul><li>Groups revenue journals by:</li></ul><br><ul><li>GL account</li></ul><br><ul><li>Department/cost center</li></ul><br><ul><li>Customer (if needed)</li></ul><br><ul><li>Creates batch:</li></ul><br><ul><li>Batch date: Last day of month</li></ul><br><ul><li>Description: "February 2026 Revenue Recognition"</li></ul><br><ul><li>Entries: 1,234 line items</li></ul></li>
 <li><strong>Finance Gateway Call</strong><br><ul><li>GraphQL: <code>createJournal</code> mutation</li></ul><br><ul><li>Parameters:</li></ul><br><ul><li>journalEntries: [{ account, debit, credit, memo }]</li></ul><br><ul><li>batchId</li></ul><br><ul><li>Finance Gateway receives request</li></ul></li>
-<li><strong>QuickBooks Mapping</strong> (finance-gateway)<br><ul><li>Maps Embrix GL accounts → QuickBooks accounts:</li></ul><br><ul><li>4000 (Revenue) → "4000 - Service Revenue"</li></ul><br><ul><li>2400 (Deferred) → "2400 - Deferred Revenue"</li></ul><br><ul><li>Uses <code>ConfigChartOfAccount</code> mapping table</li></ul><br><ul><li>Formats as QuickBooks Journal Entry:</li></ul><br><pre><code class="language-json">   {<br>"TxnDate": "2026-02-28",<br>"Line": [<br>{<br>"DetailType": "JournalEntryLineDetail",<br>"Amount": 125000.00,<br>"JournalEntryLineDetail": {<br>"PostingType": "Debit",<br>"AccountRef": { "value": "82" } // Deferred Revenue<br>}<br>},<br>{<br>"DetailType": "JournalEntryLineDetail",<br>"Amount": 125000.00,<br>"JournalEntryLineDetail": {<br>"PostingType": "Credit",<br>"AccountRef": { "value": "79" } // Service Revenue<br>}<br>}<br>]<br>}<br></code></pre></li>
+<li><strong>QuickBooks Mapping</strong> (finance-gateway)<br><ul><li>Maps Embrix GL accounts → QuickBooks accounts:</li></ul><br><ul><li>4000 (Revenue) → "4000 - Service Revenue"</li></ul><br><ul><li>2400 (Deferred) → "2400 - Deferred Revenue"</li></ul><br><ul><li>Uses <code>ConfigChartOfAccount</code> mapping table</li></ul><br><ul><li>Formats as QuickBooks Journal Entry:</li></ul><br><pre><code class="language-json">   {
+     "TxnDate": "2026-02-28",
+     "Line": [
+       {
+         "DetailType": "JournalEntryLineDetail",
+         "Amount": 125000.00,
+         "JournalEntryLineDetail": {
+           "PostingType": "Debit",
+           "AccountRef": { "value": "82" } // Deferred Revenue
+         }
+       },
+       {
+         "DetailType": "JournalEntryLineDetail",
+         "Amount": 125000.00,
+         "JournalEntryLineDetail": {
+           "PostingType": "Credit",
+           "AccountRef": { "value": "79" } // Service Revenue
+         }
+       }
+     ]
+   }
+   </code></pre></li>
 <li><strong>QuickBooks API Call</strong><br><ul><li>finance-gateway calls QuickBooks API:</li></ul><br><ul><li>Endpoint: POST <code>/v3/company/{realmId}/journalentry</code></li></ul><br><ul><li>Auth: OAuth2 token from Vault</li></ul><br><ul><li>QuickBooks validates and creates entry</li></ul><br><ul><li>Returns: JournalEntry ID</li></ul></li>
 <li><strong>Sync Confirmation</strong><br><ul><li>finance-gateway updates RevenueJournal:</li></ul><br><ul><li>externalId: QuickBooks JournalEntry ID</li></ul><br><ul><li>syncStatus: SYNCED</li></ul><br><ul><li>syncDate: 2026-02-28T23:45:12Z</li></ul><br><ul><li>If error:</li></ul><br><ul><li>syncStatus: FAILED</li></ul><br><ul><li>errorMessage: stored for retry</li></ul><br><ul><li>Notification sent to accounting team</li></ul></li>
 <li><strong>Reconciliation Report</strong><br><ul><li>Compares Embrix GL → QuickBooks:</li></ul><br><ul><li>Revenue by account</li></ul><br><ul><li>Deferred revenue balance</li></ul><br><ul><li>Month-over-month variance</li></ul><br><ul><li>Report generated and emailed to CFO</li></ul></li>
@@ -1708,7 +1768,21 @@ Result: ✓ Call Rated  ✓ Balance Updated  ✓ Transaction Created
 <li><strong>Tiered Rate Calculation</strong> (<code>PGBillUnitService</code>)<br><ul><li><code>applyMCMTieredComplexVolumeDiscountForData()</code></li></ul><br><strong>Step 1: Calculate by tiers</strong>:<br><ul><li>Tier 1: 100 users × $50 = $5,000</li></ul><br><ul><li>Tier 2: 400 users × $45 = $18,000</li></ul><br><ul><li>Tier 3: 1,300 users × $40 = $52,000</li></ul><br><ul><li><strong>Subtotal: $75,000</strong></li></ul></li>
 <li><strong>Volume Discount Application</strong> (<code>applyVolumeDiscount</code>)<br><ul><li>Total users: 1,800</li></ul><br><ul><li>Volume discount tier: 500-1,999 → 5%</li></ul><br><ul><li>Discount amount: $75,000 × 5% = $3,750</li></ul><br><ul><li><strong>Total after discount: $71,250</strong></li></ul></li>
 <li><strong>Transaction Creation</strong><br><ul><li>Recurring charge transaction:</li></ul><br><ul><li>amount: $71,250</li></ul><br><ul><li>description: "UCaaS Service - 1,800 users"</li></ul><br><ul><li>pricingDetail: JSON with tier breakdown</li></ul><br><ul><li>Volume discount transaction:</li></ul><br><ul><li>amount: -$3,750</li></ul><br><ul><li>description: "Volume discount - 5%"</li></ul><br><ul><li>discountType: VOLUME_RETROACTIVE</li></ul></li>
-<li><strong>Invoice Display</strong><br><pre><code class="language-">   INVOICE INV-202602-00789<br>Services:<br><ul><li>UCaaS Professional (0-100 users @ $50)     $5,000</li></ul><br><ul><li>UCaaS Professional (101-500 users @ $45)   $18,000</li></ul><br><ul><li>UCaaS Professional (501-1,800 users @ $40) $52,000</li></ul><br>Subtotal:                                     $75,000<br>Volume Discount (5% - 1,800 users):           ($3,750)<br>Subtotal after discount:                      $71,250<br>Tax (9%):                                     $6,412.50<br>TOTAL DUE:                                    $77,662.50<br></code></pre></li>
+<li><strong>Invoice Display</strong><br><pre><code class="language-">   INVOICE INV-202602-00789
+   
+   Services:
+   - UCaaS Professional (0-100 users @ $50)     $5,000
+   - UCaaS Professional (101-500 users @ $45)   $18,000
+   - UCaaS Professional (501-1,800 users @ $40) $52,000
+   
+   Subtotal:                                     $75,000
+   Volume Discount (5% - 1,800 users):           ($3,750)
+   
+   Subtotal after discount:                      $71,250
+   Tax (9%):                                     $6,412.50
+   
+   TOTAL DUE:                                    $77,662.50
+   </code></pre></li>
 </ol>
 
 <hr>

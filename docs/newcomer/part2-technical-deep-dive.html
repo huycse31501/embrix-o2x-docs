@@ -252,7 +252,7 @@
 
     pre {
         background: #1e293b;
-        color: #cbd5e1;
+        color: #e2e8f0;
         padding: 16px 18px;
         border-radius: 8px;
         overflow-x: auto;
@@ -260,8 +260,8 @@
         border: 1px solid #334155;
         box-shadow: 0 2px 4px rgba(0,0,0,0.08);
         font-family: 'Cascadia Code', 'Fira Code', 'SF Mono', 'Consolas', 'Liberation Mono', monospace;
-        font-size: 0.8em;
-        line-height: 1.5;
+        font-size: 0.85em;
+        line-height: 1.6;
         position: relative;
         font-feature-settings: "liga" 0;
         text-rendering: optimizeLegibility;
@@ -277,6 +277,15 @@
         font-family: inherit;
         font-weight: normal;
         font-size: 1em;
+        display: block;
+    }
+    
+    /* Ensure consistent styling for all code content inside pre blocks */
+    pre code * {
+        font-size: inherit !important;
+        line-height: inherit !important;
+        color: inherit !important;
+        font-family: inherit !important;
     }
 
     /* Hover effect */
@@ -638,13 +647,13 @@ The engine is organized into "Hubs" - each representing a major business domain:
 <strong>Key Services:</strong>
 <strong>1. ProrationEngine</strong>
 <pre><code class="language-groovy">class ProrationEngine {
-    /<em></em>
+    /**
      * Calculate prorated charge for mid-cycle activation/termination
      * 
      * Business Rule: 
      *   If customer activates on day 16 of 30-day month
      *   and monthly charge is $30.00
-     <em>   then prorated charge = (30.00 / 30) </em> 15 = $15.00
+     *   then prorated charge = (30.00 / 30) * 15 = $15.00
      */
     Charge calculateProration(
         Subscription subscription,
@@ -665,7 +674,7 @@ The engine is organized into "Hubs" - each representing a major business domain:
 </code></pre>
 <strong>2. BillingCycleEngine</strong>
 <pre><code class="language-groovy">class BillingCycleEngine {
-    /<em></em>
+    /**
      * Execute billing cycle for all accounts on specific bill day
      * 
      * Process:
@@ -679,16 +688,21 @@ The engine is organized into "Hubs" - each representing a major business domain:
      */
     void executeBillingCycle(Integer billCycleDay) {
         List&lt;Account&gt; accounts = findAccountsByBillCycleDay(billCycleDay)
+        
         accounts.each { account -&gt;
             try {
                 // Generate charges
                 List&lt;Charge&gt; charges = generateChargesForAccount(account)
+                
                 // Calculate taxes
                 TaxCalculation taxes = taxGateway.calculateTax(charges)
+                
                 // Create invoice
                 Invoice invoice = createInvoice(account, charges, taxes)
+                
                 // Update balance
                 updateAccountBalance(account, invoice.totalAmount)
+                
                 log.info("Billing complete for account ${account.id}")
             } catch (Exception e) {
                 log.error("Billing failed for account ${account.id}", e)
@@ -700,7 +714,7 @@ The engine is organized into "Hubs" - each representing a major business domain:
 </code></pre>
 <strong>3. DiscountEngine</strong>
 <pre><code class="language-groovy">class DiscountEngine {
-    /<em></em>
+    /**
      * Apply discounts to charges
      * 
      * Supports:
@@ -713,6 +727,7 @@ The engine is organized into "Hubs" - each representing a major business domain:
         if (!discount.isApplicable(charge)) {
             return charge.amount
         }
+        
         switch (discount.type) {
             case DiscountType.PERCENTAGE:
                 return charge.amount * (1 - discount.value / 100)
@@ -735,9 +750,11 @@ The engine is organized into "Hubs" - each representing a major business domain:
 </ul>
 <strong>Example: Account Lookup</strong>
 <pre><code class="language-groovy">import static com.embrix.engine.jooq.Tables.*
+
 class AccountRepository {
     @Autowired
     DSLContext dsl
+    
     Account findById(String accountId) {
         return dsl
             .select()
@@ -745,6 +762,7 @@ class AccountRepository {
             .where(ACCOUNT.ID.eq(accountId))
             .fetchOneInto(Account.class)
     }
+    
     List&lt;Account&gt; findOverdueAccounts() {
         return dsl
             .select()
@@ -754,6 +772,7 @@ class AccountRepository {
             .orderBy(ACCOUNT.BALANCE.asc())
             .fetchInto(Account.class)
     }
+    
     List&lt;Invoice&gt; findUnpaidInvoices(String accountId) {
         return dsl
             .select()
@@ -769,13 +788,12 @@ class AccountRepository {
 <strong>JOOQ Code Generation:</strong>
 <pre><code class="language-bash"># Migrations are run
 mvn flyway:migrate
-<h1>JOOQ generates Java classes from schema</h1>
 
+# JOOQ generates Java classes from schema
 mvn generate-sources
-<h1>Result: target/generated-sources/jooq-postgres/</h1>
 
-<h1>Contains type-safe table definitions</h1>
-
+# Result: target/generated-sources/jooq-postgres/
+# Contains type-safe table definitions
 </code></pre>
 <h4>1.1.4 Database Migrations with Flyway</h4>
 
@@ -809,24 +827,20 @@ CREATE TABLE IF NOT EXISTS account (
     CONSTRAINT fk_parent_account FOREIGN KEY (parent_account_id) 
         REFERENCES account(id)
 );
+
 CREATE INDEX idx_account_status ON account(status);
 CREATE INDEX idx_account_bill_cycle ON account(bill_cycle_day);
 </code></pre>
 <strong>Running Migrations:</strong>
 <pre><code class="language-bash">cd engine
 mvn flyway:migrate -Dspring.profiles.active=dev
-<h1>Output:</h1>
 
-<h1>Flyway 5.2.4 by Boxfuse</h1>
-
-<h1>Database: jdbc:postgresql://localhost:5432/coredb-urbanos</h1>
-
-<h1>Successfully validated 10 migrations</h1>
-
-<h1>Current version: V10</h1>
-
-<h1>Schema is up to date</h1>
-
+# Output:
+# Flyway 5.2.4 by Boxfuse
+# Database: jdbc:postgresql://localhost:5432/coredb-urbanos
+# Successfully validated 10 migrations
+# Current version: V10
+# Schema is up to date
 </code></pre>
 <h3>1.2 The <code>common</code> Module - Shared Data Model</h3>
 
@@ -851,6 +865,7 @@ mvn flyway:migrate -Dspring.profiles.active=dev
     RESUME,                 // Resume after payment
     CHANGE                  // General change order
 }
+
 enum OrderStatus {
     CREATED,                // Initial state
     VALIDATED,              // Passed validation
@@ -861,6 +876,7 @@ enum OrderStatus {
     FAILED,                 // Provisioning failed
     CANCELLED               // Cancelled by customer/system
 }
+
 enum ServiceLineAction {
     ADD,                    // Add new service
     MODIFY,                 // Change existing service
@@ -877,6 +893,7 @@ enum ServiceLineAction {
     ADHOC,                  // Manual adjustment
     ADJUSTMENT              // Correction
 }
+
 enum InvoiceStatus {
     PENDING,                // Generated, not sent
     SENT,                   // Emailed to customer
@@ -886,6 +903,7 @@ enum InvoiceStatus {
     CANCELLED,              // Voided
     REFUNDED                // Refunded
 }
+
 enum ProrationModel {
     FULL_DAY,               // Charge for any partial day
     DAYS_IN_MONTH,          // Daily rate * days active
@@ -903,6 +921,7 @@ enum ProrationModel {
     PAYPAL,
     STRIPE
 }
+
 enum PaymentStatus {
     PENDING,                // Submitted, not processed
     PROCESSING,             // In progress
@@ -924,9 +943,11 @@ enum PaymentStatus {
     Boolean allowedPartialFulfillment   // Can partially fulfill?
     LocalDateTime createdDate
     LocalDateTime completedDate
+    
     List&lt;ServiceDTO&gt; services           // Nested services
     Map&lt;String, Object&gt; extendedData    // Flexible attributes
 }
+
 class ServiceDTO {
     Integer index                       // Line number
     String type                         // /service/mobile/5g
@@ -934,6 +955,7 @@ class ServiceDTO {
     ServiceLineStatus status
     List&lt;ServiceLineDTO&gt; lines          // Service line items
 }
+
 class ServiceLineDTO {
     Integer index
     String priceOfferId                 // PLAN-5G-UNLIMITED
@@ -952,13 +974,16 @@ class ServiceLineDTO {
     LocalDate dueDate
     LocalDate billingPeriodStart
     LocalDate billingPeriodEnd
+    
     BigDecimal subtotal                 // Charges before tax
     BigDecimal taxTotal                 // Total tax
     BigDecimal totalAmount              // subtotal + taxTotal
     BigDecimal amountPaid               // Payments applied
     BigDecimal balance                  // totalAmount - amountPaid
+    
     InvoiceStatus status
     String pdfUrl                       // S3 URL
+    
     List&lt;ChargeDTO&gt; charges             // Line items
     List&lt;TaxBreakdownDTO&gt; taxBreakdown  // Tax details
 }
@@ -1049,8 +1074,7 @@ An orchestrator is a workflow processor that:
       maxRetries: 7
       multiplier: 1.5
       delay: 250
-<h1>Retry delays: 250ms, 375ms, 562ms, 843ms, 1.26s, 1.9s, 2.85s</h1>
-
+# Retry delays: 250ms, 375ms, 562ms, 843ms, 1.26s, 1.9s, 2.85s
 </code></pre>
 <strong>Slack Alerting:</strong>
 <pre><code class="language-groovy">// Automatic Slack notification on critical failure
@@ -1058,38 +1082,45 @@ camel:
   component:
     slack:
       webhook-url: "https://hooks.slack.com/services/..."
-<h1>Posts to #camel-devops channel with order ID and error details</h1>
-
+# Posts to #camel-devops channel with order ID and error details
 </code></pre>
 <h4>1.3.3 Creating a Custom Orchestrator</h4>
 
 <strong>Example: Mobile Provisioning Orchestrator</strong>
 <pre><code class="language-groovy">package com.embrix.orchestrator.mobile
+
 import com.congerotechnology.ctgomscomponent.OmsComponent
 import org.apache.camel.Exchange
 import org.springframework.stereotype.Component
+
 @Component
 class MobileProvisioningOrchestrator extends OmsComponent {
+    
     @Autowired
     ProvisioningGatewayClient provisioningGateway
+    
     @Autowired
     TaxGatewayClient taxGateway
-    /<em></em>
+    
+    /**
      * Validate order data
      * Throw ValidationException if invalid
      */
     @Override
     void validate(Exchange exchange) {
         Order order = exchange.in.getBody(Order)
+        
         // Validate account
         if (!order.accountId) {
             throw new ValidationException("Account ID required")
         }
+        
         // Validate service line
         def serviceLine = order.services[0]?.lines[0]
         if (!serviceLine) {
             throw new ValidationException("At least one service line required")
         }
+        
         // Validate mobile-specific attributes
         def extendedData = serviceLine.extendedData
         if (!extendedData.IMEI) {
@@ -1098,9 +1129,11 @@ class MobileProvisioningOrchestrator extends OmsComponent {
         if (!extendedData.SIM_ID) {
             throw new ValidationException("SIM ID required")
         }
+        
         log.info("Validation passed for order: ${order.id}")
     }
-    /<em></em>
+    
+    /**
      * Main business logic
      * Call external systems, update order data
      */
@@ -1108,20 +1141,24 @@ class MobileProvisioningOrchestrator extends OmsComponent {
     void process(Exchange exchange) {
         Order order = exchange.in.getBody(Order)
         log.info("Processing mobile provisioning for order: ${order.id}")
+        
         try {
             // Step 1: Calculate taxes
             def taxRequest = buildTaxRequest(order)
             def taxResponse = taxGateway.calculateTax(taxRequest)
             order.estimatedTax = taxResponse.totalTax
             log.info("Tax calculated: ${taxResponse.totalTax}")
+            
             // Step 2: Provision service on network
             def provisionRequest = buildProvisionRequest(order)
             def provisionResponse = provisioningGateway.activateMobileService(provisionRequest)
+            
             if (provisionResponse.status == 'SUCCESS') {
                 // Update service line with network ID
                 def serviceLine = order.services[0].lines[0]
                 serviceLine.provisioningId = provisionResponse.networkId
                 serviceLine.status = ServiceLineStatus.PROVISIONED
+                
                 log.info("Mobile service provisioned: ${provisionResponse.networkId}")
             } else {
                 // Transient failure - will retry
@@ -1129,9 +1166,11 @@ class MobileProvisioningOrchestrator extends OmsComponent {
                     "Provisioning failed: ${provisionResponse.errorMessage}"
                 )
             }
+            
             // Step 3: Update order status
             order.status = OrderStatus.COMPLETED
             log.info("Order ${order.id} completed successfully")
+            
         } catch (RetryableException e) {
             throw e  // Let framework handle retry
         } catch (Exception e) {
@@ -1139,7 +1178,8 @@ class MobileProvisioningOrchestrator extends OmsComponent {
             throw new NonRetryableException("Processing failed: ${e.message}")
         }
     }
-    /<em></em>
+    
+    /**
      * Error cleanup logic
      * Called when order fails permanently
      */
@@ -1147,13 +1187,16 @@ class MobileProvisioningOrchestrator extends OmsComponent {
     void processError(Exchange exchange) {
         Order order = exchange.in.getBody(Order)
         log.error("Order ${order.id} failed permanently")
+        
         // Cleanup logic
         // - Rollback any partial provisioning
         // - Send notification to customer
         // - Create support ticket
+        
         order.status = OrderStatus.FAILED
         order.services[0].lines[0].status = ServiceLineStatus.FAILED
     }
+    
     private TaxRequest buildTaxRequest(Order order) {
         return new TaxRequest(
             accountId: order.accountId,
@@ -1166,6 +1209,7 @@ class MobileProvisioningOrchestrator extends OmsComponent {
             }
         )
     }
+    
     private ProvisionRequest buildProvisionRequest(Order order) {
         def serviceLine = order.services[0].lines[0]
         return new ProvisionRequest(
@@ -1203,7 +1247,7 @@ When this orchestrator starts, OMS Component framework automatically:
 </ul>
 <strong>Key Service: TenantRepositoryService</strong>
 <pre><code class="language-groovy">class TenantRepositoryServiceImpl {
-    /<em></em>
+    /**
      * Lookup tenant-specific gateway configuration
      * 
      * Example: Find QuickBooks OAuth credentials for tenant TIDLT-100005
@@ -1221,7 +1265,8 @@ When this orchestrator starts, OMS Component framework automatically:
             gatewayType.name()
         )
     }
-    /<em></em>
+    
+    /**
      * Get OAuth2 attributes for tenant
      */
     OAuth2Attributes getOAuth2Attributes(String tenantId, String merchantName) {
@@ -1425,7 +1470,7 @@ Gateways are the <strong>entry and exit points</strong> of the platform. They no
 [5] ProvisioningResponseProcessor
     ├─→ Parse callback message
     ├─→ Extract network ID and status
-    ├─→ Update order.services[<em>].lines[</em>].provisioningId
+    ├─→ Update order.services[*].lines[*].provisioningId
     ├─→ Update status to PROVISIONED
     └─→ Trigger billing
 </code></pre>
@@ -1433,28 +1478,31 @@ Gateways are the <strong>entry and exit points</strong> of the platform. They no
 
 <strong>Equipment Assignment:</strong>
 <pre><code class="language-groovy">class EquipmentService {
-    /<em></em>
+    /**
      * Assign equipment from inventory
      */
     String assignEquipment(String equipmentType, String serviceType) {
         // Query available equipment
         Equipment equipment = findAvailableEquipment(equipmentType)
+        
         if (equipment == null) {
             throw new ResourceUnavailableException(
                 "No ${equipmentType} available for ${serviceType}"
             )
         }
+        
         // Mark as assigned
         equipment.status = "ASSIGNED"
         equipment.assignedDate = LocalDateTime.now()
         save(equipment)
+        
         return equipment.id
     }
 }
 </code></pre>
 <strong>DID/Phone Number Assignment:</strong>
 <pre><code class="language-groovy">class DidService {
-    /<em></em>
+    /**
      * Assign phone number from pool
      */
     String assignDid(String countryCode, String areaCode) {
@@ -1467,15 +1515,18 @@ Gateways are the <strong>entry and exit points</strong> of the platform. They no
             .and(DID.STATUS.eq("AVAILABLE"))
             .limit(1)
             .fetchOneInto(Did.class)
+        
         if (did == null) {
             throw new ResourceUnavailableException(
                 "No DID available for ${countryCode}-${areaCode}"
             )
         }
+        
         // Mark as assigned
         did.status = "ASSIGNED"
         did.assignedDate = LocalDateTime.now()
         save(did)
+        
         return did.phoneNumber
     }
 }
@@ -1602,11 +1653,14 @@ Gateways are the <strong>entry and exit points</strong> of the platform. They no
     TipoDeComprobante="I"
     MetodoPago="PUE"
     LugarExpedicion="03100"&gt;
+    
     &lt;cfdi:Emisor Rfc="MCM123456789" Nombre="MCM Telecom SA de CV"/&gt;
+    
     &lt;cfdi:Receptor 
         Rfc="XAXX010101000" 
         Nombre="Juan Perez" 
         UsoCFDI="G03"/&gt;
+    
     &lt;cfdi:Conceptos&gt;
         &lt;cfdi:Concepto 
             ClaveProdServ="81112200"
@@ -1616,6 +1670,7 @@ Gateways are the <strong>entry and exit points</strong> of the platform. They no
             ValorUnitario="599.00"
             Importe="599.00"/&gt;
     &lt;/cfdi:Conceptos&gt;
+    
     &lt;cfdi:Impuestos TotalImpuestosTrasladados="103.84"&gt;
         &lt;cfdi:Traslados&gt;
             &lt;cfdi:Traslado Impuesto="002" TipoFactor="Tasa" TasaOCuota="0.160000" Importe="103.84"/&gt;
@@ -1735,6 +1790,7 @@ Gateways are the <strong>entry and exit points</strong> of the platform. They no
 Authorization: Bearer {access_token}
 Accept: application/json
 Content-Type: application/json
+
 {
   "CustomerRef": {"value": "67"},
   "TxnDate": "2024-01-15",

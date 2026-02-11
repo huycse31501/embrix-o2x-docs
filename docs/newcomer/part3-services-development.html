@@ -252,7 +252,7 @@
 
     pre {
         background: #1e293b;
-        color: #cbd5e1;
+        color: #e2e8f0;
         padding: 16px 18px;
         border-radius: 8px;
         overflow-x: auto;
@@ -260,8 +260,8 @@
         border: 1px solid #334155;
         box-shadow: 0 2px 4px rgba(0,0,0,0.08);
         font-family: 'Cascadia Code', 'Fira Code', 'SF Mono', 'Consolas', 'Liberation Mono', monospace;
-        font-size: 0.8em;
-        line-height: 1.5;
+        font-size: 0.85em;
+        line-height: 1.6;
         position: relative;
         font-feature-settings: "liga" 0;
         text-rendering: optimizeLegibility;
@@ -277,6 +277,15 @@
         font-family: inherit;
         font-weight: normal;
         font-size: 1em;
+        display: block;
+    }
+    
+    /* Ensure consistent styling for all code content inside pre blocks */
+    pre code * {
+        font-size: inherit !important;
+        line-height: inherit !important;
+        color: inherit !important;
+        font-family: inherit !important;
     }
 
     /* Hover effect */
@@ -615,8 +624,7 @@ Core services are <strong>thin wrappers</strong> that expose business logic from
     daysInPeriod
   }
 }
-<h1>Result: {proratedAmount: 15.48, daysActive: 16, daysInPeriod: 31}</h1>
-
+# Result: {proratedAmount: 15.48, daysActive: 16, daysInPeriod: 31}
 </code></pre>
 <strong>3. Ad-Hoc Charge Creation</strong>
 <pre><code class="language-graphql">mutation CreateAdhocCharge {
@@ -658,21 +666,26 @@ Core services are <strong>thin wrappers</strong> that expose business logic from
     ├─→ All charges for period
     ├─→ Tax calculations
     └─→ Payment history
+
 [2] Apply Template
     ├─→ Select Thymeleaf template
     ├─→ Inject data into template
     └─→ Generate HTML
+
 [3] Convert to PDF
     ├─→ iText processes HTML
     ├─→ Apply styling
     └─→ Generate PDF bytes
+
 [4] Upload to S3
     ├─→ Bucket: {tenant}-invoices
     ├─→ Key: invoices/2024/01/ACC-1001/INV-2024-001.pdf
     └─→ Get public URL
+
 [5] Update Database
     ├─→ invoice.pdfUrl = S3 URL
     └─→ invoice.status = SENT
+
 [6] Send Notification
     └─→ Email to customer with download link
 </code></pre>
@@ -751,10 +764,12 @@ Core services are <strong>thin wrappers</strong> that expose business logic from
 <pre><code class="language-">[1] CDR File Detection
     ├─→ Network element places file on SFTP
     └─→ File: mcm_voice_20240115_001.csv
+
 [2] File Ingestion
     ├─→ Download from SFTP
     ├─→ Parse file format
     └─→ Extract CDR records
+
 [3] Normalization
     ├─→ Map vendor-specific fields to canonical format
     │   Network Field → Canonical Field
@@ -764,17 +779,21 @@ Core services are <strong>thin wrappers</strong> that expose business logic from
     │   ├─→ call_duration → duration
     │   └─→ call_type → serviceType
     └─→ Validate data quality
+
 [4] Enrichment
     ├─→ Lookup account by sourceId (IMSI, phone number, IP)
     ├─→ Lookup subscription
     ├─→ Classify call type (local, long distance, international)
     └─→ Add metadata
+
 [5] Deduplication
     ├─→ Check if CDR already processed (by unique ID)
     └─→ Skip duplicates
+
 [6] Storage
     ├─→ Insert into usage_record table
     └─→ Status: UNRATED
+
 [7] Trigger Rating
     └─→ Push to USAGE queue for rating
 </code></pre>
@@ -828,10 +847,12 @@ Core services are <strong>thin wrappers</strong> that expose business logic from
     ├─→ Check payment amount &gt; 0
     ├─→ Verify payment method active
     └─→ Validate account exists
+
 [2] Call Payment Gateway
     ├─→ payment-gateway.processPayment()
     ├─→ External processor (Stripe, PayPal, bank)
     └─→ Receive transaction result
+
 [3] Record Payment
     ├─→ Create payment record in database
     │   - payment_id: PAY-2024-001
@@ -839,6 +860,7 @@ Core services are <strong>thin wrappers</strong> that expose business logic from
     │   - external_transaction_id: ch_stripe_789
     │   - status: COMPLETED
     └─→ Payment date: now()
+
 [4] Allocate to Invoices
     ├─→ Find invoices specified or oldest pending
     ├─→ For each invoice (oldest first):
@@ -849,11 +871,13 @@ Core services are <strong>thin wrappers</strong> that expose business logic from
     │   ├─→ Update invoice.balance -= allocation
     │   └─→ If invoice.balance == 0: invoice.status = PAID
     └─→ Remaining payment → account credit
+
 [5] Update Account Balance
     ├─→ account.balance += payment.amount
     ├─→ Create balance_impact record for audit
     └─→ If balance was negative and now &gt;= 0:
         trigger auto-resume (EP-5480)
+
 [6] Notification
     ├─→ Send payment confirmation email
     └─→ Update customer portal
@@ -905,16 +929,19 @@ Payment received but service not yet delivered.
 <strong>Revenue Recognition Flow:</strong>
 <pre><code class="language-">[1] Charge Created
     └─→ service-billing creates charge for $1,200
+
 [2] Analyze Revenue Model
     ├─→ Charge type: RECURRING
     ├─→ Recognition model: STRAIGHT_LINE
     └─→ Period: 12 months
+
 [3] Create Deferred Revenue
     ├─→ deferred_revenue.total_amount = 1200.00
     ├─→ deferred_revenue.recognized_amount = 0.00
     ├─→ deferred_revenue.remaining_amount = 1200.00
     ├─→ recognition_start = 2024-01-01
     └─→ recognition_end = 2024-12-31
+
 [4] Daily Recognition Job (runs nightly)
     ├─→ For each active deferred revenue:
     │   ├─→ Calculate daily amount: 1200 / 365 = 3.29
@@ -924,6 +951,7 @@ Payment received but service not yet delivered.
     │   ├─→ Update recognized_amount += 3.29
     │   └─→ Update remaining_amount -= 3.29
     └─→ Export to finance-gateway
+
 [5] Monthly Reporting
     └─→ Revenue recognized in January: 3.29 * 31 = 101.99
 </code></pre>
@@ -950,12 +978,14 @@ Payment received but service not yet delivered.
 <div class="metadata-field"><strong>Purpose:</strong> Long-running, resource-intensive batch jobs</div>
 <div class="metadata-field"><strong>Key Jobs:</strong> </div>
 <strong>1. Daily Billing Cycle</strong>
-<pre><code class="language-groovy">@Scheduled(cron = "0 0 2 <em> </em> *")  // 2 AM daily
+<pre><code class="language-groovy">@Scheduled(cron = "0 0 2 * * *")  // 2 AM daily
 void executeDailyBillingCycle() {
     // Find accounts with bill_cycle_day = today
     Integer today = LocalDate.now().getDayOfMonth()
     List&lt;Account&gt; accounts = findAccountsByBillCycleDay(today)
+    
     log.info("Starting billing for ${accounts.size()} accounts")
+    
     // Process in parallel (thread pool)
     accounts.eachParallel { account -&gt;
         try {
@@ -967,11 +997,13 @@ void executeDailyBillingCycle() {
 }
 </code></pre>
 <strong>2. Usage Rating Batch</strong>
-<pre><code class="language-groovy">@Scheduled(cron = "0 0 <em> </em> <em> </em>")  // Hourly
+<pre><code class="language-groovy">@Scheduled(cron = "0 0 * * * *")  // Hourly
 void processUnratedUsage() {
     // Find unrated usage records
     List&lt;UsageRecord&gt; unrated = findUnratedUsageRecords()
+    
     log.info("Rating ${unrated.size()} usage records")
+    
     // Process in batches of 1000
     unrated.collate(1000).each { batch -&gt;
         usageService.rateUsageBatch(batch)
@@ -979,17 +1011,20 @@ void processUnratedUsage() {
 }
 </code></pre>
 <strong>3. Revenue Recognition Batch</strong>
-<pre><code class="language-groovy">@Scheduled(cron = "0 0 1 <em> </em> *")  // 1 AM daily
+<pre><code class="language-groovy">@Scheduled(cron = "0 0 1 * * *")  // 1 AM daily
 void recognizeRevenue() {
     LocalDate today = LocalDate.now()
+    
     // Find active deferred revenue
     List&lt;DeferredRevenue&gt; active = findActiveDeferredRevenue(today)
+    
     active.each { deferredRevenue -&gt;
         BigDecimal dailyAmount = deferredRevenue.totalAmount / 
             ChronoUnit.DAYS.between(
                 deferredRevenue.recognitionStartDate,
                 deferredRevenue.recognitionEndDate
             )
+        
         // Create journal entry
         JournalEntry entry = createJournalEntry(
             debit: "Deferred Revenue",
@@ -997,6 +1032,7 @@ void recognizeRevenue() {
             amount: dailyAmount,
             reference: deferredRevenue.id
         )
+        
         // Update deferred revenue
         deferredRevenue.recognizedAmount += dailyAmount
         deferredRevenue.remainingAmount -= dailyAmount
@@ -1005,26 +1041,31 @@ void recognizeRevenue() {
 }
 </code></pre>
 <strong>4. Payment File Processing</strong>
-<pre><code class="language-groovy">@Scheduled(cron = "0 <em>/15 </em> <em> </em> *")  // Every 15 minutes
+<pre><code class="language-groovy">@Scheduled(cron = "0 */15 * * * *")  // Every 15 minutes
 void processPaymentFiles() {
     // Check S3 for new payment files
     List&lt;S3Object&gt; files = s3Client.listObjects(
         bucket: "${tenant}-payments",
         prefix: "input/"
     )
+    
     files.each { file -&gt;
         if (!isProcessed(file.key)) {
             try {
                 // Download file
                 InputStream content = s3Client.getObject(file)
+                
                 // Parse CSV
                 List&lt;Payment&gt; payments = parsePaymentFile(content)
+                
                 // Process each payment
                 payments.each { payment -&gt;
                     paymentService.processPayment(payment)
                 }
+                
                 // Mark as processed
                 markFileProcessed(file.key)
+                
             } catch (Exception e) {
                 log.error("Failed to process ${file.key}", e)
                 alertSlack("#payment-errors", "Payment file failed: ${file.key}")
@@ -1100,14 +1141,17 @@ PostgreSQL database organized into domain-specific schemas:
     credit_limit NUMERIC(19,4),                       -- Maximum credit allowed
     bill_cycle_day INTEGER,                           -- Day of month (1-31)
     payment_terms INTEGER DEFAULT 30,                 -- Days until payment due
+    
     -- Metadata
     created_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     modified_date TIMESTAMP,
     created_by VARCHAR(50),
     modified_by VARCHAR(50),
+    
     CONSTRAINT fk_parent_account FOREIGN KEY (parent_account_id) 
         REFERENCES core_engine.account(id)
 );
+
 CREATE INDEX idx_account_status ON core_engine.account(status);
 CREATE INDEX idx_account_bill_cycle ON core_engine.account(bill_cycle_day);
 CREATE INDEX idx_account_balance ON core_engine.account(balance) WHERE balance &lt; 0;
@@ -1127,15 +1171,19 @@ CREATE INDEX idx_account_balance ON core_engine.account(balance) WHERE balance &
     type VARCHAR(50) NOT NULL,                        -- NEW, MODIFY, CANCEL, SUSPEND, RESUME
     status VARCHAR(50) NOT NULL,                      -- CREATED, PROVISIONING, COMPLETED, FAILED
     allowed_partial_fulfillment BOOLEAN DEFAULT false,
+    
     -- Dates
     created_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     modified_date TIMESTAMP,
     completed_date TIMESTAMP,
+    
     -- Flexible attributes
     extended_data JSONB,
+    
     CONSTRAINT fk_order_account FOREIGN KEY (account_id) 
         REFERENCES core_engine.account(id)
 );
+
 CREATE INDEX idx_order_account ON core_oms.order(account_id);
 CREATE INDEX idx_order_status ON core_oms.order(status);
 CREATE INDEX idx_order_created ON core_oms.order(created_date);
@@ -1154,31 +1202,39 @@ CREATE INDEX idx_order_extended_data ON core_oms.order USING GIN (extended_data)
     id VARCHAR(50) PRIMARY KEY,                       -- INV-2024-001
     account_id VARCHAR(50) NOT NULL,
     bill_unit_id VARCHAR(50),
+    
     -- Dates
     invoice_date DATE NOT NULL,
     due_date DATE NOT NULL,
     billing_period_start DATE NOT NULL,
     billing_period_end DATE NOT NULL,
+    
     -- Amounts
     subtotal NUMERIC(19,4) NOT NULL,                  -- Charges before tax
     tax_total NUMERIC(19,4) DEFAULT 0,
     total_amount NUMERIC(19,4) NOT NULL,              -- subtotal + tax_total
     amount_paid NUMERIC(19,4) DEFAULT 0,
     balance NUMERIC(19,4) NOT NULL,                   -- total_amount - amount_paid
+    
     -- Status
     status VARCHAR(20) NOT NULL,                      -- PENDING, SENT, PAID, OVERDUE
+    
     -- Documents
     pdf_url TEXT,                                     -- S3 URL to PDF
     html_content TEXT,                                -- For email rendering
+    
     -- Mexican CFDI
     uuid VARCHAR(100),                                -- Digital stamp UUID
     stamped_date TIMESTAMP,                           -- When stamped by PAC
+    
     -- Metadata
     created_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     modified_date TIMESTAMP,
+    
     CONSTRAINT fk_invoice_account FOREIGN KEY (account_id) 
         REFERENCES core_engine.account(id)
 );
+
 CREATE INDEX idx_invoice_account ON core_billing.invoice(account_id);
 CREATE INDEX idx_invoice_status ON core_billing.invoice(status);
 CREATE INDEX idx_invoice_due_date ON core_billing.invoice(due_date);
@@ -1191,34 +1247,43 @@ CREATE TABLE core_usage.usage_record (
     id VARCHAR(50),
     account_id VARCHAR(50) NOT NULL,
     subscription_id VARCHAR(50),
+    
     -- Source
     source_id VARCHAR(100) NOT NULL,                  -- IMSI, phone number, IP address
     usage_date DATE NOT NULL,                         -- For partitioning
+    
     -- Time
     start_time TIMESTAMP NOT NULL,
     end_time TIMESTAMP,
     duration INTEGER,                                 -- Seconds
     volume BIGINT,                                    -- Bytes
+    
     -- Classification
     destination VARCHAR(100),                         -- Called number, URL, etc.
     service_type VARCHAR(50) NOT NULL,                -- VOICE_CALL, SMS, DATA, VIDEO
     call_type VARCHAR(50),                            -- LOCAL, LONG_DISTANCE, INTERNATIONAL
+    
     -- Rating
     rated_amount NUMERIC(19,4) DEFAULT 0,
     rating_plan_id VARCHAR(50),
     status VARCHAR(20) NOT NULL,                      -- UNRATED, RATED, BILLED, DISPUTED
     billed BOOLEAN DEFAULT false,
+    
     -- Metadata
     created_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    
     PRIMARY KEY (id, usage_date)
 ) PARTITION BY RANGE (usage_date);
+
 -- Monthly partitions
 CREATE TABLE core_usage.usage_record_2024_01 
 PARTITION OF core_usage.usage_record
 FOR VALUES FROM ('2024-01-01') TO ('2024-02-01');
+
 CREATE TABLE core_usage.usage_record_2024_02 
 PARTITION OF core_usage.usage_record
 FOR VALUES FROM ('2024-02-01') TO ('2024-03-01');
+
 -- Indexes on partitions
 CREATE INDEX idx_usage_2024_01_account ON core_usage.usage_record_2024_01(account_id);
 CREATE INDEX idx_usage_2024_01_status ON core_usage.usage_record_2024_01(status) WHERE billed = false;
@@ -1236,14 +1301,18 @@ CREATE INDEX idx_usage_2024_01_status ON core_usage.usage_record_2024_01(status)
 <pre><code class="language-sql">-- B-tree indexes for exact matches and ranges
 CREATE INDEX idx_account_id ON invoice(account_id);
 CREATE INDEX idx_created_date ON order(created_date);
+
 -- Composite indexes for common query patterns
 CREATE INDEX idx_invoice_account_status ON invoice(account_id, status);
 CREATE INDEX idx_usage_account_date ON usage_record(account_id, usage_date);
+
 -- Partial indexes for filtered queries
 CREATE INDEX idx_unpaid_invoices ON invoice(account_id) 
 WHERE status IN ('PENDING', 'OVERDUE');
+
 CREATE INDEX idx_unrated_usage ON usage_record(account_id) 
 WHERE billed = false AND status = 'RATED';
+
 -- GIN indexes for JSONB
 CREATE INDEX idx_order_extended_data ON order USING GIN (extended_data);
 </code></pre>
@@ -1277,32 +1346,41 @@ WHERE extended_data @&gt; '{"salesforce_opportunity_id": "OPP-12345"}';
 
 <strong>Timeline: Day 1 to Day 30+</strong>
 <pre><code class="language-">=== DAY 1: Customer Signs Up ===
+
 [1] Customer submits order via web portal
     └─→ Order: Internet 100Mbps + Equipment
+    
 [2] Salesforce CRM creates order
     └─→ GraphQL mutation to crm_gateway.createOrder()
+    
 [3] crm_gateway processes order
     ├─→ Validate account (credit check, address serviceable)
     ├─→ Create order in database (status: CREATED)
     └─→ Push to OMS queue
+    
 [4] Provisioning orchestrator processes
     ├─→ Assign equipment (ONT-12345)
     ├─→ Assign network resources (IP, VLAN)
     ├─→ Calculate taxes
     ├─→ Call provision_gateway
     └─→ Update order (status: PROVISIONING_INITIATED)
+    
 [5] provision_gateway calls Nokia
     ├─→ Configure ONT
     ├─→ Assign VLAN 100
     ├─→ Set speed limit 100Mbps
     └─→ Return provisioning request ID
+    
 === DAY 2: Provisioning Complete ===
+
 [6] Nokia sends callback
     └─→ Message to MCM_BILLING_OMS_RESPONSE queue
+    
 [7] ProvisioningResponseProcessor
     ├─→ Update order (status: PROVISIONED)
     ├─→ Update service line (provisioningId: NW-12345)
     └─→ Trigger billing
+    
 [8] Billing creation
     ├─→ Create subscription record
     │   - accountId: ACC-1001
@@ -1320,6 +1398,7 @@ WHERE extended_data @&gt; '{"salesforce_opportunity_id": "OPP-12345"}';
     │   - chargeType: RECURRING
     │   - status: BILLED
     └─→ Update service status to ACTIVE
+    
 [9] Invoice generation (immediate for new customers)
     ├─→ Create invoice
     │   - invoiceId: INV-2024-001
@@ -1335,13 +1414,17 @@ WHERE extended_data @&gt; '{"salesforce_opportunity_id": "OPP-12345"}';
     │   - Upload to S3
     │   - pdfUrl: s3://urbanos-invoices/.../INV-2024-001.pdf
     └─→ Update invoice (status: SENT)
+    
 [10] Customer notification
     ├─→ Email: "Welcome! Your service is active"
     ├─→ Invoice attached
     └─→ Due date: 2024-02-15 (30 days)
+    
 === DAY 10: Customer Makes Payment ===
+
 [11] Customer pays online (Stripe)
     └─→ GraphQL mutation: processPayment()
+    
 [12] service-payment processes
     ├─→ Call payment-gateway
     ├─→ Stripe charges card: $358.47
@@ -1356,11 +1439,15 @@ WHERE extended_data @&gt; '{"salesforce_opportunity_id": "OPP-12345"}';
     │   - invoice.status: PAID
     └─→ Update account balance
         - account.balance: 0.00 (was -358.47)
+    
 [13] Payment confirmation
     └─→ Email: "Payment received - Thank you!"
+    
 === FEBRUARY 1: First Full Month Billing ===
+
 [14] Batch process runs at 2 AM
     └─→ Find accounts with bill_cycle_day = 1
+    
 [15] Billing cycle for ACC-1001
     ├─→ Find active subscriptions
     │   - Internet 100M subscription
@@ -1373,10 +1460,12 @@ WHERE extended_data @&gt; '{"salesforce_opportunity_id": "OPP-12345"}';
     └─→ Calculate taxes
         - IVA 16%: 95.84
         - totalAmount: 694.84
+        
 [16] Invoice generation
     ├─→ Create invoice INV-2024-002
     ├─→ Generate PDF
     └─→ Update invoice (status: SENT)
+    
 [17] Customer notification
     ├─→ Email: "Your February invoice"
     └─→ Due date: 2024-03-02
@@ -1385,22 +1474,29 @@ WHERE extended_data @&gt; '{"salesforce_opportunity_id": "OPP-12345"}';
 
 <strong>Timeline: Throughout the month</strong>
 <pre><code class="language-">=== USAGE GENERATION ===
+
 [1] Customer makes phone calls throughout day
     ├─→ Call 1: 10 minutes to local number
     ├─→ Call 2: 5 minutes to local number
     └─→ Call 3: 20 minutes to long distance
+    
 [2] Mobile network generates CDRs
     └─→ CDR file created: mcm_voice_20240115.csv
+    
 === HOURLY: CDR PROCESSING ===
+
 [3] Network places file on SFTP
     └─→ /cdr/outbound/mcm_voice_20240115.csv
+    
 [4] service-mediation Camel route
     ├─→ from("sftp://cdr-server/outbound")
     └─→ to("activemq://MEDIATION")
+    
 [5] MediationProcessor
     ├─→ Download file
     ├─→ Parse CSV (1000 CDRs)
     └─→ Process each CDR:
+    
 [6] For each CDR:
     ├─→ Normalize data
     │   Raw: calling_number=5215551234567, duration=600
@@ -1416,10 +1512,14 @@ WHERE extended_data @&gt; '{"salesforce_opportunity_id": "OPP-12345"}';
     │   - Skip if already processed
     └─→ Insert into usage_record
         - status: UNRATED
+        
 [7] Trigger rating
     └─→ Push batch to USAGE queue
+    
 === HOURLY: USAGE RATING ===
+
 [8] service-usage processes USAGE queue
+    
 [9] For each usage record:
     ├─→ Get customer's price offer
     │   - PLAN: Mobile Unlimited Voice
@@ -1437,9 +1537,12 @@ WHERE extended_data @&gt; '{"salesforce_opportunity_id": "OPP-12345"}';
     │   - status: RATED
     └─→ Update accumulator
         - monthly_voice_minutes: 460
+        
 [10] Check quota threshold
     └─→ If &gt; 80% of quota: Send notification
+    
 === MONTH END: BILLING ===
+
 [11] Billing cycle execution
     └─→ Aggregate usage charges
         SELECT SUM(rated_amount) 
@@ -1448,12 +1551,14 @@ WHERE extended_data @&gt; '{"salesforce_opportunity_id": "OPP-12345"}';
           AND usage_date BETWEEN '2024-01-01' AND '2024-01-31'
           AND billed = false
         Result: $5.00 (50 minutes overage * $0.10)
+        
 [12] Create invoice
     ├─→ Recurring charge: $50.00 (plan)
     ├─→ Usage charge: $5.00 (overage)
     ├─→ Subtotal: $55.00
     ├─→ Tax (16%): $8.80
     └─→ Total: $63.80
+    
 [13] Mark usage as billed
     └─→ UPDATE usage_record SET billed = true
 </code></pre>
@@ -1461,46 +1566,58 @@ WHERE extended_data @&gt; '{"salesforce_opportunity_id": "OPP-12345"}';
 
 <strong>Timeline: Payment overdue to service restoration</strong>
 <pre><code class="language-">=== INVOICE BECOMES OVERDUE ===
+
 [1] Invoice INV-2024-003 due date: March 15
     └─→ Customer doesn't pay by due date
+    
 [2] Batch job runs daily (checks overdue invoices)
     ├─→ Find invoices where due_date &lt; today AND status != PAID
     └─→ Update invoice (status: OVERDUE)
+    
 [3] Collections process
     ├─→ Send overdue notice
     └─→ If overdue &gt; 15 days: Suspend service
+    
 [4] Auto-suspend order generation
     ├─→ Create SUSPEND order
     │   - type: SUSPEND
     │   - reason: CREDIT_LIMIT_EXCEEDED
     │   - services: [{lines: [{ action: SUSPEND }]}]
     └─→ Push to OMS queue
+    
 [5] Suspension orchestrator
     ├─→ Validate suspension request
     ├─→ Call provision_gateway
     └─→ provision_gateway calls network
         - Nokia API: suspendService(ACC-1001)
         - Service deactivated
+        
 [6] Customer notification
     └─→ Email: "Service suspended due to non-payment"
+    
 === CUSTOMER MAKES PAYMENT ===
+
 [7] Customer pays via bank transfer
     └─→ Bank generates payment file
+    
 [8] Payment file processing (next day)
     ├─→ Bank uploads: payments_20240330.csv
     ├─→ CRON job downloads file
     └─→ service-payment processes
+    
 [9] For payment record:
     ├─→ Reference: ACC-1001
     ├─→ Amount: $63.80
     ├─→ Find account: ACC-1001
     └─→ Find overdue invoices
+    
 [10] Payment allocation
     ├─→ Allocate $63.80 to INV-2024-003
     ├─→ invoice.amountPaid: 63.80
     ├─→ invoice.balance: 0.00
     ├─→ invoice.status: PAID
     └─→ account.balance: 0.00 (was -63.80)
+    
 [11] Auto-resume logic (EP-5480)
     ├─→ Check if account was suspended
     │   - Query: Find SUSPEND order for ACC-1001
@@ -1511,12 +1628,14 @@ WHERE extended_data @&gt; '{"salesforce_opportunity_id": "OPP-12345"}';
         - type: RESUME
         - reason: PAYMENT_RECEIVED
         - services: [{lines: [{ action: RESUME }]}]
+        
 [12] Resume orchestrator
     ├─→ Validate resume request
     ├─→ Call provision_gateway
     └─→ provision_gateway calls network
         - Nokia API: resumeService(ACC-1001)
         - Service reactivated
+        
 [13] Customer notification
     ├─→ Email: "Service restored - Thank you for your payment"
     └─→ SMS: "Your service is now active"
@@ -1531,23 +1650,20 @@ WHERE extended_data @&gt; '{"salesforce_opportunity_id": "OPP-12345"}';
 <strong>Required Software:</strong>
 <pre><code class="language-bash"># Java 8
 java -version
-<h1>Output: java version "1.8.0_xxx"</h1>
+# Output: java version "1.8.0_xxx"
 
-<h1>Maven 3.6+</h1>
-
+# Maven 3.6+
 mvn -version
-<h1>Docker</h1>
 
+# Docker
 docker --version
-<h1>Git</h1>
 
+# Git
 git --version
-<h1>IDE (IntelliJ IDEA recommended)</h1>
 
-<h1>- Groovy plugin</h1>
-
-<h1>- GraphQL plugin</h1>
-
+# IDE (IntelliJ IDEA recommended)
+# - Groovy plugin
+# - GraphQL plugin
 </code></pre>
 <h3>4.2 Infrastructure Setup</h3>
 
@@ -1560,8 +1676,8 @@ docker run -d \
     -e POSTGRES_PASSWORD=password \
     -e POSTGRES_DB=omsdevdb \
     postgres:10.5
-<h1>ActiveMQ</h1>
 
+# ActiveMQ
 docker run -d \
     --name activemq \
     -e 'ACTIVEMQ_CONFIG_MINMEMORY=512' \
@@ -1569,22 +1685,22 @@ docker run -d \
     -p 8161:8161 \
     -p 61616:61616 \
     webcenter/activemq:5.14.3
-<h1>Redis</h1>
 
+# Redis
 docker run -d \
     --name redis \
     -p 6379:6379 \
     redis:6.2
-<h1>HashiCorp Vault (dev mode)</h1>
 
+# HashiCorp Vault (dev mode)
 docker run -d \
     --name vault \
     --cap-add=IPC_LOCK \
     -e 'VAULT_DEV_ROOT_TOKEN_ID=myroot' \
     -p 8200:8200 \
     vault
-<h1>Verify all running</h1>
 
+# Verify all running
 docker ps
 </code></pre>
 <h3>4.3 Vault Configuration</h3>
@@ -1592,8 +1708,8 @@ docker ps
 <strong>Create Secrets:</strong>
 <pre><code class="language-bash">export VAULT_ADDR=http://localhost:8200
 export VAULT_TOKEN=myroot
-<h1>Create secrets for crm_gateway</h1>
 
+# Create secrets for crm_gateway
 vault kv put secret/ctg-oms/dev \
     spring.datasource.url="jdbc:postgresql://localhost:5432/omsdevdb?stringtype=unspecified" \
     spring.datasource.username="omsadmin" \
@@ -1610,33 +1726,26 @@ vault kv put secret/ctg-oms/dev \
 
 <strong>Run Migrations:</strong>
 <pre><code class="language-bash">cd engine
-<h1>Set environment variables</h1>
 
+# Set environment variables
 export DB_URL=jdbc:postgresql://localhost:5432/omsdevdb
 export DB_USER=omsadmin
 export DB_PASSWORD=password
-<h1>Run Flyway migrations</h1>
 
+# Run Flyway migrations
 mvn flyway:migrate -Dspring.profiles.active=dev
-<h1>Verify</h1>
 
+# Verify
 mvn flyway:info
-<h1>Output:</h1>
 
-<h1>+-----------+---------+---------------------+----------+</h1>
-
-<h1>| Version   | State   | Description         | Installed On |</h1>
-
-<h1>+-----------+---------+---------------------+----------+</h1>
-
-<h1>| 1         | Success | Create Schema       | 2024-01-15 |</h1>
-
-<h1>| 2         | Success | Create Enum Types   | 2024-01-15 |</h1>
-
-<h1>| 3         | Success | Create Config Tables| 2024-01-15 |</h1>
-
-<h1>...</h1>
-
+# Output:
+# +-----------+---------+---------------------+----------+
+# | Version   | State   | Description         | Installed On |
+# +-----------+---------+---------------------+----------+
+# | 1         | Success | Create Schema       | 2024-01-15 |
+# | 2         | Success | Create Enum Types   | 2024-01-15 |
+# | 3         | Success | Create Config Tables| 2024-01-15 |
+# ...
 </code></pre>
 <h3>4.5 Build and Run</h3>
 
@@ -1644,20 +1753,20 @@ mvn flyway:info
 <pre><code class="language-bash"># 1. Build common
 cd common
 mvn clean install -DskipTests
-<h1>2. Build engine</h1>
 
+# 2. Build engine
 cd ../engine
 mvn clean install -DskipTests
-<h1>3. Build oms-component</h1>
 
+# 3. Build oms-component
 cd ../oms-component
 mvn clean install -DskipTests
-<h1>4. Build gateway-common</h1>
 
+# 4. Build gateway-common
 cd ../gateway-common
 mvn clean install -DskipTests
-<h1>5. Build jobs-common</h1>
 
+# 5. Build jobs-common
 cd ../jobs-common
 mvn clean install -DskipTests
 </code></pre>
@@ -1667,22 +1776,21 @@ cd crm_gateway
 export VAULT_URI=http://localhost:8200
 export VAULT_TOKEN=myroot
 mvn spring-boot:run -Dspring.profiles.active=dev
-<h1>Application starts on http://localhost:8080</h1>
 
-<h1>GraphQL playground: http://localhost:8080/graphiql</h1>
-
+# Application starts on http://localhost:8080
+# GraphQL playground: http://localhost:8080/graphiql
 </code></pre>
 <h3>4.6 Verify Setup</h3>
 
 <strong>Test Database Connection:</strong>
 <pre><code class="language-bash">docker exec -it postgres10 psql -U omsadmin -d omsdevdb
-<h1>Check tables</h1>
 
+# Check tables
 \dt core_engine.*
 \dt core_oms.*
 \dt core_billing.*
-<h1>Query test data</h1>
 
+# Query test data
 SELECT * FROM core_config.tenant;
 </code></pre>
 <strong>Test ActiveMQ:</strong>
@@ -1694,8 +1802,8 @@ Check Queues: Should see "OMS" queue (may be empty)
 <pre><code class="language-bash">curl -X POST http://localhost:8080/graphql \
   -H "Content-Type: application/json" \
   -d '{"query": "{ __schema { queryType { name } } }"}'
-<h1>Should return: {"data":{"__schema":{"queryType":{"name":"Query"}}}}</h1>
 
+# Should return: {"data":{"__schema":{"queryType":{"name":"Query"}}}}
 </code></pre>
 
 <hr>

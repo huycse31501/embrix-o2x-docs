@@ -256,7 +256,7 @@ CSS_TEMPLATE = """
 
     pre {
         background: #1e293b;
-        color: #cbd5e1;
+        color: #e2e8f0;
         padding: 16px 18px;
         border-radius: 8px;
         overflow-x: auto;
@@ -264,8 +264,8 @@ CSS_TEMPLATE = """
         border: 1px solid #334155;
         box-shadow: 0 2px 4px rgba(0,0,0,0.08);
         font-family: 'Cascadia Code', 'Fira Code', 'SF Mono', 'Consolas', 'Liberation Mono', monospace;
-        font-size: 0.8em;
-        line-height: 1.5;
+        font-size: 0.85em;
+        line-height: 1.6;
         position: relative;
         font-feature-settings: "liga" 0;
         text-rendering: optimizeLegibility;
@@ -281,6 +281,15 @@ CSS_TEMPLATE = """
         font-family: inherit;
         font-weight: normal;
         font-size: 1em;
+        display: block;
+    }
+    
+    /* Ensure consistent styling for all code content inside pre blocks */
+    pre code * {
+        font-size: inherit !important;
+        line-height: inherit !important;
+        color: inherit !important;
+        font-family: inherit !important;
     }
 
     /* Hover effect */
@@ -554,20 +563,27 @@ CSS_TEMPLATE = """
 def convert_markdown_to_html(markdown_text, title, nav_links=None):
     """Convert markdown text to HTML with styling"""
     
-    # Escape HTML in code blocks first
-    def escape_code_block(match):
-        code = match.group(1)
-        code = code.replace('<', '&lt;').replace('>', '&gt;')
-        lang = match.group(2) if match.lastindex >= 2 else ''
-        if lang:
-            return f'<pre><code class="language-{lang}">{code}</code></pre>'
-        return f'<pre><code>{code}</code></pre>'
+    # STEP 1: Extract and protect code blocks from further processing
+    code_blocks = []
+    code_block_placeholder = "___CODE_BLOCK_{}_PLACEHOLDER___"
     
-    # Process code blocks (```)
+    def extract_code_block(match):
+        lang = match.group(1) or ''
+        code = match.group(2)
+        # Escape HTML entities
+        code = code.replace('<', '&lt;').replace('>', '&gt;')
+        # Store the processed code block
+        block_html = f'<pre><code class="language-{lang}">{code}</code></pre>'
+        placeholder = code_block_placeholder.format(len(code_blocks))
+        code_blocks.append(block_html)
+        return placeholder
+    
+    # Extract all code blocks (```)
     markdown_text = re.sub(r'```(\w+)?\n(.*?)```', 
-                          lambda m: f'<pre><code class="language-{m.group(1) or ""}">{m.group(2).replace("<", "&lt;").replace(">", "&gt;")}</code></pre>', 
+                          extract_code_block, 
                           markdown_text, flags=re.DOTALL)
     
+    # STEP 2: Now process headers (safe because code blocks are protected)
     # Headers (must process from most specific to least specific to avoid conflicts)
     markdown_text = re.sub(r'^###### (.*?)$', r'<h6>\1</h6>', markdown_text, flags=re.MULTILINE)
     markdown_text = re.sub(r'^##### (.*?)$', r'<h5>\1</h5>', markdown_text, flags=re.MULTILINE)
@@ -813,6 +829,11 @@ def convert_markdown_to_html(markdown_text, title, nav_links=None):
     
     # Add spacing around hr
     markdown_text = re.sub(r'<hr>', r'\n<hr>\n', markdown_text)
+    
+    # STEP 3: Restore code blocks (protected content)
+    for i, code_block in enumerate(code_blocks):
+        placeholder = code_block_placeholder.format(i)
+        markdown_text = markdown_text.replace(placeholder, code_block)
     
     # Build navigation
     nav_html = ""

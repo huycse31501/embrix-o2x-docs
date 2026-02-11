@@ -252,7 +252,7 @@
 
     pre {
         background: #1e293b;
-        color: #cbd5e1;
+        color: #e2e8f0;
         padding: 16px 18px;
         border-radius: 8px;
         overflow-x: auto;
@@ -260,8 +260,8 @@
         border: 1px solid #334155;
         box-shadow: 0 2px 4px rgba(0,0,0,0.08);
         font-family: 'Cascadia Code', 'Fira Code', 'SF Mono', 'Consolas', 'Liberation Mono', monospace;
-        font-size: 0.8em;
-        line-height: 1.5;
+        font-size: 0.85em;
+        line-height: 1.6;
         position: relative;
         font-feature-settings: "liga" 0;
         text-rendering: optimizeLegibility;
@@ -277,6 +277,15 @@
         font-family: inherit;
         font-weight: normal;
         font-size: 1em;
+        display: block;
+    }
+    
+    /* Ensure consistent styling for all code content inside pre blocks */
+    pre code * {
+        font-size: inherit !important;
+        line-height: inherit !important;
+        color: inherit !important;
+        font-family: inherit !important;
     }
 
     /* Hover effect */
@@ -792,13 +801,16 @@ External: Salesforce, Nokia, Banks, PAC Providers, ERP
 <pre><code class="language-sql">-- Account
 core_engine.account
   - id, parent_account_id, account_type, status, balance, bill_cycle_day
+
 -- Order
 core_oms.order
   - id, account_id, type, status, extended_data (JSONB)
+
 -- Invoice
 core_billing.invoice
   - id, account_id, invoice_date, due_date, subtotal, tax_total, total_amount, 
     amount_paid, balance, status, pdf_url, uuid (CFDI)
+
 -- Usage (Partitioned by usage_date)
 core_usage.usage_record
   - id, account_id, subscription_id, source_id, usage_date, start_time, 
@@ -808,12 +820,15 @@ core_usage.usage_record
 
 <pre><code class="language-sql">-- Find active accounts
 SELECT * FROM core_engine.account WHERE status = 'ACTIVE';
+
 -- Find overdue invoices
 SELECT * FROM core_billing.invoice 
 WHERE status = 'OVERDUE' AND account_id = ?;
+
 -- Find unbilled usage
 SELECT * FROM core_usage.usage_record 
 WHERE account_id = ? AND billed = false AND status = 'RATED';
+
 -- Find account balance
 SELECT balance FROM core_engine.account WHERE id = ?;
 </code></pre>
@@ -902,13 +917,13 @@ SELECT balance FROM core_engine.account WHERE id = ?;
 mutation {
   createOrder(input: {...}) { id status }
 }
-<h1>Query Orders</h1>
 
+# Query Orders
 query {
   searchOrders(filter: {...}) { id status services {...} }
 }
-<h1>Get Account</h1>
 
+# Get Account
 query {
   getAccount(id: "ACC-001") { id balance subscriptions {...} }
 }
@@ -955,6 +970,7 @@ query {
 
 <pre><code class="language-bash">export VAULT_ADDR=http://localhost:8200
 export VAULT_TOKEN=myroot
+
 vault kv put secret/ctg-oms/dev \
   spring.datasource.url="..." \
   spring.datasource.username="..." \
@@ -970,13 +986,11 @@ vault kv put secret/ctg-oms/dev \
 <h3>Build Order:</h3>
 
 <pre><code class="language-bash">1. common:         mvn clean install -DskipTests
-<ol>
-<li>engine:         mvn clean install -DskipTests</li>
-<li>oms-component:  mvn clean install -DskipTests</li>
-<li>gateway-common: mvn clean install -DskipTests</li>
-<li>jobs-common:    mvn clean install -DskipTests</li>
-<li>services:       mvn clean install -DskipTests</li>
-</ol>
+2. engine:         mvn clean install -DskipTests
+3. oms-component:  mvn clean install -DskipTests
+4. gateway-common: mvn clean install -DskipTests
+5. jobs-common:    mvn clean install -DskipTests
+6. services:       mvn clean install -DskipTests
 </code></pre>
 <h3>Run Service:</h3>
 
@@ -996,14 +1010,14 @@ mvn flyway:migrate -Dspring.profiles.active=dev
 
 <pre><code class="language-bash"># Start all
 docker-compose up -d  # If docker-compose.yml exists
-<h1>Or individually</h1>
 
+# Or individually
 docker run -d --name postgres10 -p 5432:5432 -e POSTGRES_USER=omsadmin -e POSTGRES_PASSWORD=password -e POSTGRES_DB=omsdevdb postgres:10.5
 docker run -d --name activemq -p 8161:8161 -p 61616:61616 webcenter/activemq:5.14.3
 docker run -d --name redis -p 6379:6379 redis:6.2
 docker run -d --name vault -p 8200:8200 -e 'VAULT_DEV_ROOT_TOKEN_ID=myroot' vault
-<h1>Check status</h1>
 
+# Check status
 docker ps
 </code></pre>
 
@@ -1016,8 +1030,10 @@ docker ps
 <pre><code class="language-groovy">def "should calculate correct proration"() {
     given:
     def subscription = new Subscription(monthlyPrice: 30.0, startDate: LocalDate.of(2024, 1, 16))
+    
     when:
     def charge = billingEngine.calculateProration(subscription, ProrationModel.DAYS_IN_MONTH)
+    
     then:
     charge.amount == 15.48
 }
@@ -1026,8 +1042,8 @@ docker ps
 
 <pre><code class="language-bash"># All tests
 mvn test
-<h1>Specific hub</h1>
 
+# Specific hub
 mvn test -PbillingHubMarker
 mvn test -ParHubMarker
 </code></pre>
@@ -1054,11 +1070,11 @@ mvn test -ParHubMarker
 <h3>Database Query:</h3>
 
 <pre><code class="language-bash">docker exec -it postgres10 psql -U omsadmin -d omsdevdb
-<h1>Recent orders</h1>
 
+# Recent orders
 SELECT id, status, created_date FROM core_oms.order ORDER BY created_date DESC LIMIT 10;
-<h1>Unbilled charges</h1>
 
+# Unbilled charges
 SELECT * FROM core_billing.charge WHERE status = 'UNBILLED';
 </code></pre>
 <h3>Redis:</h3>
@@ -1076,8 +1092,10 @@ GET pricing:product:123
 
 <pre><code class="language-sql">-- 1. Create migration: engine/src/main/resources/db/migration/V1.XX__description.sql
 CREATE TABLE core_billing.payment_method (...);
+
 -- 2. Run migration
 mvn flyway:migrate -Dspring.profiles.active=dev
+
 -- 3. Regenerate JOOQ
 mvn clean compile
 </code></pre>
@@ -1087,6 +1105,7 @@ mvn clean compile
 type Query {
   getPaymentMethods(accountId: ID!): [PaymentMethod!]!
 }
+
 -- 2. Create resolver
 @Component
 class PaymentMethodResolver implements GraphQLQueryResolver {
@@ -1099,8 +1118,10 @@ class PaymentMethodResolver implements GraphQLQueryResolver {
 class MyOrchestrator extends OmsComponent {
     @Override
     void validate(Exchange exchange) {...}
+    
     @Override
     void process(Exchange exchange) {...}
+    
     @Override
     void processError(Exchange exchange) {...}
 }

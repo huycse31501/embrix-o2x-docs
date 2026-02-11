@@ -252,7 +252,7 @@
 
     pre {
         background: #1e293b;
-        color: #cbd5e1;
+        color: #e2e8f0;
         padding: 16px 18px;
         border-radius: 8px;
         overflow-x: auto;
@@ -260,8 +260,8 @@
         border: 1px solid #334155;
         box-shadow: 0 2px 4px rgba(0,0,0,0.08);
         font-family: 'Cascadia Code', 'Fira Code', 'SF Mono', 'Consolas', 'Liberation Mono', monospace;
-        font-size: 0.8em;
-        line-height: 1.5;
+        font-size: 0.85em;
+        line-height: 1.6;
         position: relative;
         font-feature-settings: "liga" 0;
         text-rendering: optimizeLegibility;
@@ -277,6 +277,15 @@
         font-family: inherit;
         font-weight: normal;
         font-size: 1em;
+        display: block;
+    }
+    
+    /* Ensure consistent styling for all code content inside pre blocks */
+    pre code * {
+        font-size: inherit !important;
+        line-height: inherit !important;
+        color: inherit !important;
+        font-family: inherit !important;
     }
 
     /* Hover effect */
@@ -892,7 +901,13 @@ Embrix O2X implements <strong>Deployment-Level Multi-Tenancy</strong> (also know
 <strong>Data Storage:</strong>
 <ul>
 <li><strong>Bucket:</strong> <code>embrix-{env}-data</code></li>
-<li><strong>Structure:</strong><br><pre><code class="language-">  embrix-dev-data/<br>├── {tenant-id}/<br>│   ├── invoices/<br>│   ├── reports/<br>│   ├── exports/<br>│   └── imports/<br></code></pre></li>
+<li><strong>Structure:</strong><br><pre><code class="language-">  embrix-dev-data/
+  ├── {tenant-id}/
+  │   ├── invoices/
+  │   ├── reports/
+  │   ├── exports/
+  │   └── imports/
+  </code></pre></li>
 </ul>
 <h4>HashiCorp Vault</h4>
 
@@ -984,20 +999,18 @@ Before starting tenant onboarding, ensure you have:
 psql -h embrix-rds-dev-db.chg5bgdk4yyp.us-east-1.rds.amazonaws.com \
      -U admin -d enginedevdb \
      -c "SELECT id FROM core_config.tenant ORDER BY id DESC LIMIT 1;"
-<h1>Result example: TIDLT-100007</h1>
 
-<h1>Next ID: TIDLT-100008</h1>
-
+# Result example: TIDLT-100007
+# Next ID: TIDLT-100008
 </code></pre>
 <strong>Assign Tenant Name:</strong>
 <pre><code class="language-bash"># Format: {company-name}[-env]
-<h1>Examples:</h1>
-
+# Examples:
 TENANT_NAME="newclient"          # Production tenant
 TENANT_NAME="newclient-sbx"      # Sandbox tenant
 TENANT_NAME="newclient-dev"      # Development tenant
-<h1>Generate Tenant ID</h1>
 
+# Generate Tenant ID
 TENANT_ID="TIDLT-100008"  # Use next sequential ID
 </code></pre>
 <h3>Step 2: Database Provisioning</h3>
@@ -1007,8 +1020,8 @@ TENANT_ID="TIDLT-100008"  # Use next sequential ID
 <pre><code class="language-bash"># Connect to RDS
 psql -h embrix-rds-dev-db.chg5bgdk4yyp.us-east-1.rds.amazonaws.com \
      -U admin -d postgres
-<h1>Create database</h1>
 
+# Create database
 CREATE DATABASE "coredb-${TENANT_NAME}"
     WITH 
     OWNER = admin
@@ -1017,12 +1030,12 @@ CREATE DATABASE "coredb-${TENANT_NAME}"
     LC_CTYPE = 'en_US.UTF-8'
     TABLESPACE = pg_default
     CONNECTION LIMIT = 100;
-<h1>Grant privileges</h1>
 
+# Grant privileges
 GRANT ALL PRIVILEGES ON DATABASE "coredb-${TENANT_NAME}" TO admin;
 GRANT CONNECT ON DATABASE "coredb-${TENANT_NAME}" TO appuser;
-<h1>Exit psql</h1>
 
+# Exit psql
 \q
 </code></pre>
 <h4>2.2 Run Database Migrations</h4>
@@ -1031,8 +1044,8 @@ GRANT CONNECT ON DATABASE "coredb-${TENANT_NAME}" TO appuser;
 export DB_URL="jdbc:postgresql://embrix-rds-dev-db.chg5bgdk4yyp.us-east-1.rds.amazonaws.com:5432/coredb-${TENANT_NAME}?stringtype=unspecified&sslmode=require"
 export DB_USER="admin"
 export DB_PASSWORD="&lt;password-from-secrets&gt;"
-<h1>Option A: Using Flyway (if available)</h1>
 
+# Option A: Using Flyway (if available)
 cd engine/
 flyway migrate \
   -url="${DB_URL}" \
@@ -1040,8 +1053,8 @@ flyway migrate \
   -password="${DB_PASSWORD}" \
   -locations="filesystem:./db/migration" \
   -schemas=public,core_config
-<h1>Option B: Using Spring Boot application</h1>
 
+# Option B: Using Spring Boot application
 cd engine/
 ./mvnw spring-boot:run \
   -Dspring-boot.run.arguments=--spring.flyway.enabled=true \
@@ -1054,14 +1067,15 @@ cd engine/
      -U admin -d "coredb-${TENANT_NAME}" \
      -c "\dt public.*" \
      -c "\dt core_config.*"
-<h1>Expected output: List of all application tables</h1>
 
+# Expected output: List of all application tables
 </code></pre>
 <h4>2.3 Insert Tenant Metadata</h4>
 
 <pre><code class="language-sql">-- Connect to database
 psql -h embrix-rds-dev-db.chg5bgdk4yyp.us-east-1.rds.amazonaws.com \
      -U admin -d "coredb-${TENANT_NAME}"
+
 -- Insert tenant record
 INSERT INTO core_config.tenant (
     id,
@@ -1078,6 +1092,7 @@ INSERT INTO core_config.tenant (
     'LICENSE-KEY-PROVIDED-BY-BUSINESS',
     'ACTIVE'
 );
+
 -- Insert tenant profile (optional - for additional metadata)
 INSERT INTO core_config.tenant_profile (
     tenantid,
@@ -1098,6 +1113,7 @@ INSERT INTO core_config.tenant_profile (
     'America/New_York',
     'USD'
 );
+
 -- Verify
 SELECT * FROM core_config.tenant WHERE id = 'TIDLT-100008';
 </code></pre>
@@ -1106,6 +1122,7 @@ SELECT * FROM core_config.tenant WHERE id = 'TIDLT-100008';
 <h4>3.1 Create Merchant Accounts in Database</h4>
 
 <pre><code class="language-sql">-- Continue in same psql session
+
 -- Example: QuickBooks Finance Gateway
 INSERT INTO core_config.tenant_merchants (
     id,
@@ -1128,6 +1145,7 @@ INSERT INTO core_config.tenant_merchants (
     'REST',
     'https://quickbooks.api.intuit.com'
 );
+
 -- Insert OAuth2 attributes for QuickBooks
 INSERT INTO core_config.oauth2_attributes (
     id,
@@ -1144,6 +1162,7 @@ INSERT INTO core_config.oauth2_attributes (
     'https://newclient.embrix.com/oauth2/callback',
     'random-state-string'
 );
+
 -- Insert finance gateway specific attributes
 INSERT INTO core_config.finance_gateway_attributes (
     id,
@@ -1158,6 +1177,7 @@ INSERT INTO core_config.finance_gateway_attributes (
     'ACCRUAL',
     '01-01'
 );
+
 -- Repeat for other gateways (Payment, Tax, CRM, etc.)
 </code></pre>
 <h4>3.2 Store Credentials in Vault</h4>
@@ -1165,14 +1185,14 @@ INSERT INTO core_config.finance_gateway_attributes (
 <pre><code class="language-bash"># Authenticate to Vault
 export VAULT_ADDR="http://vault-interface/"
 export VAULT_TOKEN="&lt;vault-admin-token&gt;"
-<h1>Create tenant namespace</h1>
 
+# Create tenant namespace
 vault kv put secret/tenant/newclient/info \
   tenant_id=TIDLT-100008 \
   tenant_name=newclient \
   environment=production
-<h1>Store QuickBooks credentials</h1>
 
+# Store QuickBooks credentials
 vault kv put secret/tenant/newclient/quickbooks \
   client_id="&lt;quickbooks-client-id&gt;" \
   client_secret="&lt;quickbooks-client-secret&gt;" \
@@ -1180,25 +1200,25 @@ vault kv put secret/tenant/newclient/quickbooks \
   refresh_token="&lt;initial-refresh-token&gt;" \
   realm_id="123456789" \
   token_expiry="&lt;expiry-timestamp&gt;"
-<h1>Store Stripe credentials (if applicable)</h1>
 
+# Store Stripe credentials (if applicable)
 vault kv put secret/tenant/newclient/stripe \
   api_key="sk_live_..." \
   webhook_secret="whsec_..." \
   publishable_key="pk_live_..."
-<h1>Store Avalara credentials (if applicable)</h1>
 
+# Store Avalara credentials (if applicable)
 vault kv put secret/tenant/newclient/avalara \
   account_id="&lt;avalara-account-id&gt;" \
   license_key="&lt;avalara-license-key&gt;" \
   company_code="&lt;company-code&gt;"
-<h1>Store license key</h1>
 
+# Store license key
 vault kv put secret/tenant/newclient/license/onboarding \
   license_key="LICENSE-KEY-PROVIDED-BY-BUSINESS" \
   decrypt_key="&lt;generated-decrypt-key&gt;"
-<h1>Verify</h1>
 
+# Verify
 vault kv get secret/tenant/newclient/quickbooks
 </code></pre>
 <h3>Step 4: Create Helm Configurations</h3>
@@ -1207,14 +1227,15 @@ vault kv get secret/tenant/newclient/quickbooks
 
 <pre><code class="language-bash"># Navigate to repository root
 cd /path/to/embrix-o2x
-<h1>Create Helm values directories for new tenant</h1>
 
+# Create Helm values directories for new tenant
 mkdir -p core/helm_values/newclient
 mkdir -p payment-gateway/helm_values/newclient
 mkdir -p tax-gateway/helm_values/newclient
 mkdir -p finance-gateway/helm_values/newclient
 mkdir -p provision_gateway/helm_values/newclient
 mkdir -p crm_gateway/helm_values/newclient
+
 echo "Created Helm values directories for tenant: newclient"
 </code></pre>
 <h4>4.2 Core Service Helm Values</h4>
@@ -1360,8 +1381,8 @@ spec:
     requests:
       storage: 100Gi
 EOF
-<h1>Verify</h1>
 
+# Verify
 kubectl get pvc newclient-data-pvc
 </code></pre>
 <h4>5.2 Create Kubernetes Secrets</h4>
@@ -1371,90 +1392,92 @@ kubectl create secret generic pg-secret \
   --from-literal=username=appuser \
   --from-literal=password='&lt;db-password&gt;' \
   --namespace=default
-<h1>Vault token (if not using existing secret)</h1>
 
+# Vault token (if not using existing secret)
 kubectl create secret generic app-vault-token \
   --from-literal=token='&lt;vault-token&gt;' \
   --namespace=default
-<h1>Verify</h1>
 
+# Verify
 kubectl get secrets | grep -E "pg-secret|app-vault-token"
 </code></pre>
 <h4>5.3 Deploy Core Services</h4>
 
 <pre><code class="language-bash"># Set working directory
 cd /path/to/embrix-o2x
-<h1>Deploy services in order (respecting dependencies)</h1>
 
-<h1>1. Deploy SSO (authentication service first)</h1>
+# Deploy services in order (respecting dependencies)
 
+# 1. Deploy SSO (authentication service first)
 helm upgrade --install newclient-service-sso ./core/charts/service-sso \
   -f core/helm_values/newclient/service-sso.yaml \
   --namespace default \
   --create-namespace \
   --wait \
   --timeout 10m
-<h1>2. Deploy transactional service</h1>
 
+# 2. Deploy transactional service
 helm upgrade --install newclient-service-transactional ./core/charts/service-transactional \
   -f core/helm_values/newclient/service-transactional.yaml \
   --namespace default \
   --wait \
   --timeout 10m
-<h1>3. Deploy billing service</h1>
 
+# 3. Deploy billing service
 helm upgrade --install newclient-service-billing ./core/charts/service-billing \
   -f core/helm_values/newclient/service-billing.yaml \
   --namespace default \
   --wait \
   --timeout 10m
-<h1>4. Deploy invoice service</h1>
 
+# 4. Deploy invoice service
 helm upgrade --install newclient-service-invoice ./core/charts/service-invoice \
   -f core/helm_values/newclient/service-invoice.yaml \
   --namespace default \
   --wait \
   --timeout 10m
-<h1>5. Deploy payment service</h1>
 
+# 5. Deploy payment service
 helm upgrade --install newclient-service-payment ./core/charts/service-payment \
   -f core/helm_values/newclient/service-payment.yaml \
   --namespace default \
   --wait \
   --timeout 10m
-<h1>6. Deploy revenue service</h1>
 
+# 6. Deploy revenue service
 helm upgrade --install newclient-service-revenue ./core/charts/service-revenue \
   -f core/helm_values/newclient/service-revenue.yaml \
   --namespace default \
   --wait \
   --timeout 10m
-<h1>7. Deploy usage/mediation services</h1>
 
+# 7. Deploy usage/mediation services
 helm upgrade --install newclient-service-usage ./core/charts/service-usage \
   -f core/helm_values/newclient/service-usage.yaml \
   --namespace default \
   --wait \
   --timeout 10m
+
 helm upgrade --install newclient-service-mediation ./core/charts/service-mediation \
   -f core/helm_values/newclient/service-mediation.yaml \
   --namespace default \
   --wait \
   --timeout 10m
-<h1>8. Deploy batch/jobs services</h1>
 
+# 8. Deploy batch/jobs services
 helm upgrade --install newclient-batch-process ./core/charts/batch-process \
   -f core/helm_values/newclient/batch-process.yaml \
   --namespace default \
   --wait \
   --timeout 10m
+
 helm upgrade --install newclient-jobs-common ./core/charts/jobs-common \
   -f core/helm_values/newclient/jobs-common.yaml \
   --namespace default \
   --wait \
   --timeout 10m
-<h1>9. Deploy API proxy (last, after all services are up)</h1>
 
+# 9. Deploy API proxy (last, after all services are up)
 helm upgrade --install newclient-service-proxy ./core/charts/service-proxy \
   -f core/helm_values/newclient/service-proxy.yaml \
   --namespace default \
@@ -1464,43 +1487,43 @@ helm upgrade --install newclient-service-proxy ./core/charts/service-proxy \
 <strong>Verify core services:</strong>
 <pre><code class="language-bash">kubectl get pods -l tenant=newclient
 kubectl get services -l tenant=newclient
-<h1>Check pod logs for startup</h1>
 
+# Check pod logs for startup
 kubectl logs -l app=newclient-service-transactional --tail=100
 </code></pre>
 <h4>5.4 Deploy Gateway Services</h4>
 
 <pre><code class="language-bash"># Deploy gateways (can be done in parallel)
-<h1>Finance Gateway</h1>
 
+# Finance Gateway
 helm upgrade --install newclient-finance-gateway ./finance-gateway/charts/finance-gateway \
   -f finance-gateway/helm_values/newclient/finance-gateway.yaml \
   --namespace default \
   --wait \
   --timeout 10m
-<h1>Payment Gateway</h1>
 
+# Payment Gateway
 helm upgrade --install newclient-payment-gateway ./payment-gateway/charts/payment-gateway \
   -f payment-gateway/helm_values/newclient/payment-gateway.yaml \
   --namespace default \
   --wait \
   --timeout 10m
-<h1>Tax Gateway</h1>
 
+# Tax Gateway
 helm upgrade --install newclient-tax-gateway ./tax-gateway/charts/tax-gateway \
   -f tax-gateway/helm_values/newclient/tax-gateway.yaml \
   --namespace default \
   --wait \
   --timeout 10m
-<h1>Provision Gateway</h1>
 
+# Provision Gateway
 helm upgrade --install newclient-provision-gateway ./provision_gateway/charts/provision-gateway \
   -f provision_gateway/helm_values/newclient/provision-gateway.yaml \
   --namespace default \
   --wait \
   --timeout 10m
-<h1>CRM Gateway</h1>
 
+# CRM Gateway
 helm upgrade --install newclient-crm-gateway ./crm_gateway/charts/crm-gateway \
   -f crm_gateway/helm_values/newclient/crm-gateway.yaml \
   --namespace default \
@@ -1510,8 +1533,8 @@ helm upgrade --install newclient-crm-gateway ./crm_gateway/charts/crm-gateway \
 <strong>Verify gateway services:</strong>
 <pre><code class="language-bash">kubectl get pods | grep newclient-.*-gateway
 kubectl get services | grep newclient-.*-gateway
-<h1>Test gateway health endpoints</h1>
 
+# Test gateway health endpoints
 kubectl port-forward svc/newclient-finance-gateway 8080:8080
 curl http://localhost:8080/actuator/health
 </code></pre>
@@ -1570,12 +1593,12 @@ spec:
 </code></pre>
 <pre><code class="language-bash"># Apply ingress
 kubectl apply -f k8s/ingress/newclient-ingress.yaml
-<h1>Verify ingress created</h1>
 
+# Verify ingress created
 kubectl get ingress newclient-ingress
 kubectl describe ingress newclient-ingress
-<h1>Check certificate issuance (if using cert-manager)</h1>
 
+# Check certificate issuance (if using cert-manager)
 kubectl get certificate newclient-tls-cert
 </code></pre>
 <h4>6.2 Configure DNS Records</h4>
@@ -1583,28 +1606,24 @@ kubectl get certificate newclient-tls-cert
 <strong>In AWS Route 53 (or DNS provider):</strong>
 <pre><code class="language-bash"># Get LoadBalancer external IP/hostname
 kubectl get svc -n ingress-nginx ingress-nginx-controller
-<h1>Create DNS records</h1>
 
-<h1>A/CNAME records pointing to LoadBalancer:</h1>
-
-<h1>newclient.embrix.com -&gt; &lt;LoadBalancer-DNS&gt;</h1>
-
-<h1>api.newclient.embrix.com -&gt; &lt;LoadBalancer-DNS&gt;</h1>
-
-<h1>*.newclient.embrix.com -&gt; &lt;LoadBalancer-DNS&gt; (optional wildcard)</h1>
-
+# Create DNS records
+# A/CNAME records pointing to LoadBalancer:
+# newclient.embrix.com -&gt; &lt;LoadBalancer-DNS&gt;
+# api.newclient.embrix.com -&gt; &lt;LoadBalancer-DNS&gt;
+# *.newclient.embrix.com -&gt; &lt;LoadBalancer-DNS&gt; (optional wildcard)
 </code></pre>
 <strong>AWS CLI example:</strong>
 <pre><code class="language-bash"># Get hosted zone ID
 HOSTED_ZONE_ID=$(aws route53 list-hosted-zones \
   --query "HostedZones[?Name=='embrix.com.'].Id" \
   --output text | cut -d'/' -f3)
-<h1>Get LoadBalancer DNS</h1>
 
+# Get LoadBalancer DNS
 LB_DNS=$(kubectl get svc -n ingress-nginx ingress-nginx-controller \
   -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')
-<h1>Create DNS record</h1>
 
+# Create DNS record
 aws route53 change-resource-record-sets \
   --hosted-zone-id ${HOSTED_ZONE_ID} \
   --change-batch '{
@@ -1618,15 +1637,15 @@ aws route53 change-resource-record-sets \
       }
     }]
   }'
-<h1>Repeat for api.newclient.embrix.com</h1>
 
+# Repeat for api.newclient.embrix.com
 </code></pre>
 <strong>Verify DNS propagation:</strong>
 <pre><code class="language-bash"># Test DNS resolution
 dig newclient.embrix.com +short
 nslookup newclient.embrix.com
-<h1>Test HTTPS endpoint</h1>
 
+# Test HTTPS endpoint
 curl -I https://newclient.embrix.com
 curl -I https://api.newclient.embrix.com/graphql
 </code></pre>
@@ -1636,8 +1655,8 @@ curl -I https://api.newclient.embrix.com/graphql
 
 <pre><code class="language-bash"># Port-forward to service-sso
 kubectl port-forward svc/newclient-service-sso 8080:8080
-<h1>Create admin user via API (adjust based on your API)</h1>
 
+# Create admin user via API (adjust based on your API)
 curl -X POST http://localhost:8080/api/users/create \
   -H "Content-Type: application/json" \
   -d '{
@@ -1654,6 +1673,7 @@ Or via database:
 <pre><code class="language-sql">-- Connect to tenant database
 psql -h embrix-rds-dev-db.chg5bgdk4yyp.us-east-1.rds.amazonaws.com \
      -U admin -d "coredb-newclient"
+
 -- Insert admin user (adjust schema based on your user table structure)
 INSERT INTO core_config.users (
     id,
@@ -1690,20 +1710,23 @@ done
 <strong>Test Gateway Integrations:</strong>
 <pre><code class="language-bash"># Test Finance Gateway - QuickBooks connection
 kubectl port-forward svc/newclient-finance-gateway 8080:8080
+
 curl -X POST http://localhost:8080/api/quickbooks/test-connection \
   -H "Content-Type: application/json" \
   -H "X-Tenant-ID: TIDLT-100008" \
   -d '{}'
-<h1>Test Payment Gateway - Stripe connection</h1>
 
+# Test Payment Gateway - Stripe connection
 kubectl port-forward svc/newclient-payment-gateway 8080:8080
+
 curl -X POST http://localhost:8080/api/stripe/validate \
   -H "Content-Type: application/json" \
   -H "X-Tenant-ID: TIDLT-100008" \
   -d '{}'
-<h1>Test Tax Gateway - Avalara connection</h1>
 
+# Test Tax Gateway - Avalara connection
 kubectl port-forward svc/newclient-tax-gateway 8080:8080
+
 curl -X POST http://localhost:8080/api/avalara/ping \
   -H "Content-Type: application/json" \
   -H "X-Tenant-ID: TIDLT-100008" \
@@ -1720,24 +1743,20 @@ curl -X POST https://api.newclient.embrix.com/graphql \
 </code></pre>
 <strong>Test End-to-End Workflow:</strong>
 <pre><code class="language-bash"># Create customer -&gt; Create order -&gt; Generate bill -&gt; Generate invoice
-<h1>(Use your actual API endpoints and payloads)</h1>
+# (Use your actual API endpoints and payloads)
 
-<h1>1. Create customer</h1>
-
+# 1. Create customer
 curl -X POST https://api.newclient.embrix.com/graphql \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer &lt;token&gt;" \
   -d '{
     "query": "mutation { createCustomer(input: { firstName: \"Test\", lastName: \"User\", email: \"test@example.com\" }) { id accountNumber } }"
   }'
-<h1>2. Create subscription/order</h1>
 
-<h1>3. Trigger billing cycle</h1>
-
-<h1>4. Verify invoice generation</h1>
-
-<h1>5. Process payment</h1>
-
+# 2. Create subscription/order
+# 3. Trigger billing cycle
+# 4. Verify invoice generation
+# 5. Process payment
 </code></pre>
 <h4>7.3 Smoke Test Checklist</h4>
 
@@ -1783,24 +1802,16 @@ spec:
 <h4>8.2 Create Grafana Dashboards</h4>
 
 <pre><code class="language-bash"># Import tenant-specific dashboard
-<h1>Dashboard ID or JSON with tenant filter: tenant="newclient"</h1>
+# Dashboard ID or JSON with tenant filter: tenant="newclient"
 
-<h1>Key metrics to monitor:</h1>
-
-<h1>- Pod CPU/Memory usage</h1>
-
-<h1>- Request rate & latency</h1>
-
-<h1>- Database connection pool</h1>
-
-<h1>- Cache hit rate</h1>
-
-<h1>- Queue depth (ActiveMQ)</h1>
-
-<h1>- Error rate per service</h1>
-
-<h1>- Gateway API call success rate</h1>
-
+# Key metrics to monitor:
+# - Pod CPU/Memory usage
+# - Request rate & latency
+# - Database connection pool
+# - Cache hit rate
+# - Queue depth (ActiveMQ)
+# - Error rate per service
+# - Gateway API call success rate
 </code></pre>
 <h4>8.3 Configure Alerts</h4>
 
@@ -1824,6 +1835,7 @@ spec:
       annotations:
         summary: "Service {{ $labels.service }} is down for tenant newclient"
         description: "Service has been down for more than 2 minutes"
+    
     - alert: NewClientHighErrorRate
       expr: rate(http_server_requests_seconds_count{tenant="newclient",status=~"5.."}[5m]) &gt; 0.05
       for: 5m
@@ -1833,6 +1845,7 @@ spec:
       annotations:
         summary: "High error rate for tenant newclient"
         description: "Error rate is {{ $value }} errors/sec"
+    
     - alert: NewClientDatabaseConnectionPoolExhausted
       expr: hikaricp_connections_active{tenant="newclient"} &gt;= hikaricp_connections_max{tenant="newclient"} * 0.9
       for: 5m
@@ -1851,71 +1864,58 @@ spec:
 
 Create: <code>docs/runbooks/TENANT_newclient.md</code>
 <pre><code class="language-markdown"># Tenant: newclient (TIDLT-100008)
-<h2>Overview</h2>
 
-<ul>
-<li><strong>Tenant Name:</strong> newclient</li>
-<li><strong>Tenant ID:</strong> TIDLT-100008</li>
-<li><strong>Environment:</strong> Production</li>
-<li><strong>Region:</strong> us-east-1</li>
-<li><strong>Database:</strong> coredb-newclient</li>
-<li><strong>Onboarding Date:</strong> 2026-02-10</li>
-<li><strong>Primary Contact:</strong> contact@newclient.com</li>
-</ul>
-<h2>Access Information</h2>
+## Overview
+- **Tenant Name:** newclient
+- **Tenant ID:** TIDLT-100008
+- **Environment:** Production
+- **Region:** us-east-1
+- **Database:** coredb-newclient
+- **Onboarding Date:** 2026-02-10
+- **Primary Contact:** contact@newclient.com
 
-<ul>
-<li><strong>GraphQL API:</strong> https://api.newclient.embrix.com/graphql</li>
-<li><strong>Admin Portal:</strong> https://newclient.embrix.com</li>
-<li><strong>Monitoring Dashboard:</strong> https://grafana.embrix.com/d/tenant-newclient</li>
-</ul>
-<h2>Service Endpoints</h2>
+## Access Information
+- **GraphQL API:** https://api.newclient.embrix.com/graphql
+- **Admin Portal:** https://newclient.embrix.com
+- **Monitoring Dashboard:** https://grafana.embrix.com/d/tenant-newclient
 
-<ul>
-<li>service-proxy: http://newclient-service-proxy:8080</li>
-<li>service-transactional: http://newclient-service-transactional:8080</li>
-<li>finance-gateway: http://newclient-finance-gateway:8080</li>
-<li>payment-gateway: http://newclient-payment-gateway:8080</li>
-<li>tax-gateway: http://newclient-tax-gateway:8080</li>
-</ul>
-<h2>Integrations</h2>
+## Service Endpoints
+- service-proxy: http://newclient-service-proxy:8080
+- service-transactional: http://newclient-service-transactional:8080
+- finance-gateway: http://newclient-finance-gateway:8080
+- payment-gateway: http://newclient-payment-gateway:8080
+- tax-gateway: http://newclient-tax-gateway:8080
 
-<ul>
-<li><strong>Finance:</strong> QuickBooks (Production)</li>
-<li><strong>Payment:</strong> Stripe (Live)</li>
-<li><strong>Tax:</strong> Avalara (Production)</li>
-<li><strong>CRM:</strong> None</li>
-</ul>
-<h2>Credentials Locations</h2>
+## Integrations
+- **Finance:** QuickBooks (Production)
+- **Payment:** Stripe (Live)
+- **Tax:** Avalara (Production)
+- **CRM:** None
 
-<ul>
-<li>Database: AWS Secrets Manager - <code>embrix/rds/appuser</code></li>
-<li>Vault Token: Kubernetes Secret - <code>app-vault-token</code></li>
-<li>QuickBooks: Vault - <code>secret/tenant/newclient/quickbooks</code></li>
-<li>Stripe: Vault - <code>secret/tenant/newclient/stripe</code></li>
-<li>Avalara: Vault - <code>secret/tenant/newclient/avalara</code></li>
-</ul>
-<h2>Operational Procedures</h2>
+## Credentials Locations
+- Database: AWS Secrets Manager - `embrix/rds/appuser`
+- Vault Token: Kubernetes Secret - `app-vault-token`
+- QuickBooks: Vault - `secret/tenant/newclient/quickbooks`
+- Stripe: Vault - `secret/tenant/newclient/stripe`
+- Avalara: Vault - `secret/tenant/newclient/avalara`
 
-<h3>Restart Services</h3>
+## Operational Procedures
 
+### Restart Services
 </code></pre>bash
 kubectl rollout restart deployment newclient-service-transactional
 kubectl rollout restart deployment newclient-finance-gateway
 <pre><code class="language-">
-<h3>View Logs</h3>
-
+### View Logs
 </code></pre>bash
 kubectl logs -l tenant=newclient -f --tail=100
 kubectl logs deployment/newclient-service-billing -f
 <pre><code class="language-">
-<h3>Scale Services</h3>
-
+### Scale Services
 </code></pre>bash
 kubectl scale deployment newclient-service-transactional --replicas=4
 <pre><code class="language-">
-<h3>Database Backup</h3>
-
+### Database Backup
 </code></pre>bash
 <h1>RDS automated backups: 7-day retention</h1>
 
@@ -1925,36 +1925,29 @@ aws rds create-db-snapshot \
   --db-instance-identifier embrix-rds-dev-db \
   --db-snapshot-identifier newclient-manual-$(date +%Y%m%d-%H%M%S)
 <pre><code class="language-">
-<h2>Troubleshooting</h2>
+## Troubleshooting
 
-<h3>Common Issues</h3>
+### Common Issues
+1. **Service won't start:** Check database connectivity, verify Vault secrets
+2. **Gateway authentication fails:** Verify OAuth tokens in Vault, check token expiry
+3. **High latency:** Check database connection pool, Redis cache hit rate
 
-<ol>
-<li><strong>Service won't start:</strong> Check database connectivity, verify Vault secrets</li>
-<li><strong>Gateway authentication fails:</strong> Verify OAuth tokens in Vault, check token expiry</li>
-<li><strong>High latency:</strong> Check database connection pool, Redis cache hit rate</li>
-</ol>
-<h3>Emergency Contacts</h3>
-
-<ul>
-<li><strong>DevOps On-Call:</strong> devops-oncall@embrix.com</li>
-<li><strong>Tenant Account Manager:</strong> account-manager@embrix.com</li>
-<li><strong>Client Technical Contact:</strong> tech@newclient.com</li>
-</ul>
+### Emergency Contacts
+- **DevOps On-Call:** devops-oncall@embrix.com
+- **Tenant Account Manager:** account-manager@embrix.com
+- **Client Technical Contact:** tech@newclient.com
 </code></pre>
 <h4>9.2 Update Tenant Inventory</h4>
 
 Add to <code>docs/TENANT_INVENTORY.md</code>:
 <pre><code class="language-markdown">## newclient (TIDLT-100008)
-<ul>
-<li><strong>Status:</strong> Active</li>
-<li><strong>Environment:</strong> Production</li>
-<li><strong>Onboarded:</strong> 2026-02-10</li>
-<li><strong>Version:</strong> v2.5.0</li>
-<li><strong>Database:</strong> coredb-newclient</li>
-<li><strong>Integrations:</strong> QuickBooks, Stripe, Avalara</li>
-<li><strong>Special Notes:</strong> Standard configuration, no customizations</li>
-</ul>
+- **Status:** Active
+- **Environment:** Production
+- **Onboarded:** 2026-02-10
+- **Version:** v2.5.0
+- **Database:** coredb-newclient
+- **Integrations:** QuickBooks, Stripe, Avalara
+- **Special Notes:** Standard configuration, no customizations
 </code></pre>
 
 <hr>
@@ -2132,6 +2125,7 @@ CREATE TABLE core_config.feature_flags (
     updated_at TIMESTAMP DEFAULT NOW(),
     PRIMARY KEY (tenant_id, feature_key)
 );
+
 -- Example: Enable advanced reporting for tenant
 INSERT INTO core_config.feature_flags (tenant_id, feature_key, enabled, config)
 VALUES ('TIDLT-100008', 'ADVANCED_REPORTING', true, '{"export_formats": ["PDF", "EXCEL", "CSV"]}');
@@ -2139,8 +2133,10 @@ VALUES ('TIDLT-100008', 'ADVANCED_REPORTING', true, '{"export_formats": ["PDF", 
 <strong>Application Usage:</strong>
 <pre><code class="language-groovy">@Service
 class FeatureFlagService {
+    
     @Autowired
     JdbcTemplate jdbcTemplate
+    
     boolean isEnabled(String tenantId, String featureKey) {
         String sql = "SELECT enabled FROM core_config.feature_flags WHERE tenant_id = ? AND feature_key = ?"
         try {
@@ -2149,6 +2145,7 @@ class FeatureFlagService {
             return false // Feature not configured = disabled
         }
     }
+    
     Map&lt;String, Object&gt; getFeatureConfig(String tenantId, String featureKey) {
         String sql = "SELECT config FROM core_config.feature_flags WHERE tenant_id = ? AND feature_key = ?"
         String json = jdbcTemplate.queryForObject(sql, String.class, tenantId, featureKey)
@@ -2204,6 +2201,7 @@ VALUES
 <pre><code class="language-sql">-- Store custom template
 INSERT INTO core_config.invoice_template (tenant_id, template_name, template_html, template_css)
 VALUES ('TIDLT-100008', 'DEFAULT', '&lt;html&gt;...&lt;/html&gt;', 'body { color: #333; }');
+
 -- Store branding
 INSERT INTO core_config.selfcare_config (tenantid, logo_url, primary_color, secondary_color)
 VALUES ('TIDLT-100008', 'https://s3.../logo.png', '#0066cc', '#ff6600');
@@ -2237,6 +2235,7 @@ VALUES ('TIDLT-100008', 'https://s3.../logo.png', '#0066cc', '#ff6600');
 <pre><code class="language-groovy">// Gateway code reads custom mappings
 @Service
 class NetSuiteIntegrationService {
+    
     Map&lt;String, String&gt; getCustomerFieldMapping(String tenantId) {
         String sql = """
             SELECT custom_mappings-&gt;'customer_mapping' 
@@ -2246,13 +2245,16 @@ class NetSuiteIntegrationService {
         String json = jdbcTemplate.queryForObject(sql, String.class, tenantId)
         return objectMapper.readValue(json, Map.class)
     }
+    
     NetSuiteCustomer mapCustomer(Customer embrixCustomer, String tenantId) {
         Map&lt;String, String&gt; mapping = getCustomerFieldMapping(tenantId)
         NetSuiteCustomer netsuiteCustomer = new NetSuiteCustomer()
+        
         mapping.each { embrixField, netsuiteField -&gt;
             def value = embrixCustomer."${embrixField}"
             netsuiteCustomer."${netsuiteField}" = value
         }
+        
         return netsuiteCustomer
     }
 }
@@ -2300,6 +2302,7 @@ INSERT INTO core_config.tenant_merchants (
     'REST',
     'https://api.newmerchant.com'
 );
+
 -- Add auth attributes (if OAuth2)
 INSERT INTO core_config.oauth2_attributes (
     id, index, environment, redirecturi
@@ -2309,6 +2312,7 @@ INSERT INTO core_config.oauth2_attributes (
     'PRODUCTION',
     'https://newclient.embrix.com/oauth2/callback'
 );
+
 -- Add gateway-specific attributes
 INSERT INTO core_config.finance_gateway_attributes (
     id, index, custom_config
@@ -2331,10 +2335,13 @@ INSERT INTO core_config.finance_gateway_attributes (
 </ol>
 <pre><code class="language-groovy">@Service
 class NewMerchantService {
+    
     @Autowired
     TenantRepositoryService tenantRepo
+    
     @Autowired
     VaultService vaultService
+    
     def authenticate(String tenantId) {
         // Get tenant merchant config
         Tenant tenant = tenantRepo.findByTenantIdAndMerchant(
@@ -2342,10 +2349,12 @@ class NewMerchantService {
             MerchantType.FINANCE_GATEWAY, 
             "NEW_MERCHANT"
         )
+        
         // Get credentials from Vault
         Map&lt;String, String&gt; creds = vaultService.getSecret(
             "secret/tenant/${tenant.name}/newmerchant"
         )
+        
         // Authenticate with merchant API
         // ...
     }
@@ -2356,8 +2365,8 @@ class NewMerchantService {
 </ol>
 <pre><code class="language-bash"># Port-forward to gateway
 kubectl port-forward svc/newclient-finance-gateway 8080:8080
-<h1>Test authentication</h1>
 
+# Test authentication
 curl -X POST http://localhost:8080/api/newmerchant/authenticate \
   -H "X-Tenant-ID: TIDLT-100008"
 </code></pre>
@@ -2539,8 +2548,8 @@ GET /logs-*/_search
     }
   }
 }
-<h1>Query errors for tenant</h1>
 
+# Query errors for tenant
 GET /logs-*/_search
 {
   "query": {
@@ -2606,14 +2615,14 @@ route:
 <strong>Diagnosis:</strong>
 <pre><code class="language-bash"># Check pod status
 kubectl get pods -l tenant=newclient
-<h1>Check pod events</h1>
 
+# Check pod events
 kubectl describe pod &lt;pod-name&gt;
-<h1>Check container logs</h1>
 
+# Check container logs
 kubectl logs &lt;pod-name&gt; --previous
-<h1>Check if config is correct</h1>
 
+# Check if config is correct
 kubectl get configmap &lt;configmap-name&gt; -o yaml
 kubectl get secret &lt;secret-name&gt; -o yaml
 </code></pre>
@@ -2621,26 +2630,26 @@ kubectl get secret &lt;secret-name&gt; -o yaml
 <strong>Database connection failure:</strong>
 <pre><code class="language-bash"># Verify database exists
 psql -h embrix-rds-dev-db... -U admin -l | grep newclient
-<h1>Test connection from pod</h1>
 
+# Test connection from pod
 kubectl exec -it &lt;pod-name&gt; -- psql "${DB_URL}"
-<h1>Check security group allows connection</h1>
 
+# Check security group allows connection
 aws ec2 describe-security-groups --group-ids &lt;sg-id&gt;
 </code></pre>
 <strong>Missing environment variables:</strong>
 <pre><code class="language-bash"># Check pod env vars
 kubectl exec &lt;pod-name&gt; -- env | grep TENANT
-<h1>Fix: Update Helm values and redeploy</h1>
 
+# Fix: Update Helm values and redeploy
 helm upgrade newclient-service-transactional ./charts/service-transactional \
   -f helm_values/newclient/service-transactional.yaml
 </code></pre>
 <strong>Vault secrets not accessible:</strong>
 <pre><code class="language-bash"># Check if vault token is valid
 kubectl get secret app-vault-token -o json | jq -r '.data.token' | base64 -d
-<h1>Test vault access from pod</h1>
 
+# Test vault access from pod
 kubectl exec -it &lt;pod-name&gt; -- \
   curl -H "X-Vault-Token: &lt;token&gt;" http://vault-interface/v1/secret/tenant/newclient/info
 </code></pre>
@@ -2654,12 +2663,12 @@ kubectl exec -it &lt;pod-name&gt; -- \
 <strong>Diagnosis:</strong>
 <pre><code class="language-bash"># Check gateway logs
 kubectl logs deployment/newclient-finance-gateway | grep -i auth
-<h1>Check merchant configuration in database</h1>
 
+# Check merchant configuration in database
 psql -h embrix-rds-dev-db... -U admin -d coredb-newclient \
   -c "SELECT * FROM core_config.tenant_merchants WHERE tenant_id='TIDLT-100008';"
-<h1>Check OAuth2 token expiry</h1>
 
+# Check OAuth2 token expiry
 psql -h embrix-rds-dev-db... -U admin -d coredb-newclient \
   -c "SELECT * FROM core_config.oauth2_attributes WHERE id='TIDLT-100008';"
 </code></pre>
@@ -2667,27 +2676,26 @@ psql -h embrix-rds-dev-db... -U admin -d coredb-newclient \
 <strong>OAuth token expired:</strong>
 <pre><code class="language-bash"># Get current tokens from Vault
 vault kv get secret/tenant/newclient/quickbooks
-<h1>Use refresh token to get new access token (QuickBooks example)</h1>
 
+# Use refresh token to get new access token (QuickBooks example)
 curl -X POST https://oauth.platform.intuit.com/oauth2/v1/tokens/bearer \
   -H "Accept: application/json" \
   -H "Content-Type: application/x-www-form-urlencoded" \
   -H "Authorization: Basic $(echo -n "${CLIENT_ID}:${CLIENT_SECRET}" | base64)" \
   -d "grant_type=refresh_token&refresh_token=${REFRESH_TOKEN}"
-<h1>Store new tokens in Vault</h1>
 
+# Store new tokens in Vault
 vault kv put secret/tenant/newclient/quickbooks \
   access_token="&lt;new-access-token&gt;" \
   refresh_token="&lt;new-refresh-token&gt;" \
   token_expiry="&lt;new-expiry&gt;"
-<h1>Restart gateway to pick up new tokens</h1>
 
+# Restart gateway to pick up new tokens
 kubectl rollout restart deployment/newclient-finance-gateway
 </code></pre>
 <strong>Wrong credentials stored:</strong>
 <pre><code class="language-bash"># Re-verify credentials with merchant
-<h1>Update Vault with correct credentials</h1>
-
+# Update Vault with correct credentials
 vault kv put secret/tenant/newclient/quickbooks \
   client_id="&lt;correct-client-id&gt;" \
   client_secret="&lt;correct-client-secret&gt;"
@@ -2703,15 +2711,15 @@ vault kv put secret/tenant/newclient/quickbooks \
 <strong>Diagnosis:</strong>
 <pre><code class="language-bash"># Check pod resource usage
 kubectl top pods -l tenant=newclient
-<h1>Check database query performance</h1>
 
+# Check database query performance
 psql -h embrix-rds-dev-db... -U admin -d coredb-newclient \
   -c "SELECT query, calls, total_time, mean_time FROM pg_stat_statements ORDER BY mean_time DESC LIMIT 10;"
-<h1>Check cache hit rate</h1>
 
+# Check cache hit rate
 redis-cli -h &lt;redis-host&gt; INFO stats | grep -E "keyspace_hits|keyspace_misses"
-<h1>Check network latency between services</h1>
 
+# Check network latency between services
 kubectl exec -it deployment/newclient-service-billing -- \
   curl -w "@curl-format.txt" -o /dev/null -s http://newclient-service-transactional:8080/actuator/health
 </code></pre>
@@ -2719,11 +2727,10 @@ kubectl exec -it deployment/newclient-service-billing -- \
 <strong>Database connection pool exhausted:</strong>
 <pre><code class="language-bash"># Check active connections
 kubectl logs deployment/newclient-service-billing | grep -i "HikariPool"
-<h1>Increase pool size in application config</h1>
 
-<h1>Update Helm values:</h1>
-
-<h1>spring.datasource.hikari.maximum-pool-size: 30</h1>
+# Increase pool size in application config
+# Update Helm values:
+# spring.datasource.hikari.maximum-pool-size: 30
 
 helm upgrade newclient-service-billing ...
 </code></pre>
@@ -2733,6 +2740,7 @@ SELECT query, calls, total_time, mean_time
 FROM pg_stat_statements 
 WHERE mean_time &gt; 1000 
 ORDER BY mean_time DESC;
+
 -- Add missing indexes
 CREATE INDEX idx_account_tenant_email ON account(tenant_id, email);
 CREATE INDEX idx_invoice_customer_date ON invoice(customer_id, invoice_date);
@@ -2747,10 +2755,9 @@ Customer getCustomer(String customerId) {
 <strong>Need to scale up:</strong>
 <pre><code class="language-bash"># Increase replicas for high-load service
 kubectl scale deployment newclient-service-transactional --replicas=4
-<h1>Or update Helm values for permanent change</h1>
 
-<h1>replicaCount: 4</h1>
-
+# Or update Helm values for permanent change
+# replicaCount: 4
 </code></pre>
 <h4>4. Payment Processing Failures</h4>
 
@@ -2763,11 +2770,11 @@ kubectl scale deployment newclient-service-transactional --replicas=4
 <strong>Diagnosis:</strong>
 <pre><code class="language-bash"># Check payment service logs
 kubectl logs deployment/newclient-service-payment | grep -i "payment.*fail"
-<h1>Check payment gateway logs</h1>
 
+# Check payment gateway logs
 kubectl logs deployment/newclient-payment-gateway | grep -i error
-<h1>Check payment records in database</h1>
 
+# Check payment records in database
 psql -h embrix-rds-dev-db... -U admin -d coredb-newclient \
   -c "SELECT * FROM payment WHERE status='FAILED' ORDER BY created_date DESC LIMIT 10;"
 </code></pre>
@@ -2779,8 +2786,8 @@ curl https://api.stripe.com/v1/charges \
   -d amount=100 \
   -d currency=usd \
   -d source=tok_visa
-<h1>If fails, update credentials in Vault</h1>
 
+# If fails, update credentials in Vault
 vault kv put secret/tenant/newclient/stripe api_key="&lt;correct-key&gt;"
 </code></pre>
 <strong>Webhook not configured:</strong>
@@ -2789,18 +2796,17 @@ curl -X POST https://api.newclient.embrix.com/webhooks/stripe \
   -H "Content-Type: application/json" \
   -H "Stripe-Signature: &lt;test-signature&gt;" \
   -d '{"type": "payment_intent.succeeded", "data": {...}}'
-<h1>Configure webhook in Stripe dashboard</h1>
 
-<h1>URL: https://api.newclient.embrix.com/webhooks/stripe</h1>
-
-<h1>Events: payment_intent.succeeded, payment_intent.failed, charge.refunded</h1>
-
+# Configure webhook in Stripe dashboard
+# URL: https://api.newclient.embrix.com/webhooks/stripe
+# Events: payment_intent.succeeded, payment_intent.failed, charge.refunded
 </code></pre>
 <strong>Payment method expired:</strong>
 <pre><code class="language-sql">-- Check customer payment methods
 SELECT customer_id, payment_method_type, expiry_date, status 
 FROM payment_profile 
 WHERE tenant_id='TIDLT-100008' AND customer_id='&lt;customer-id&gt;';
+
 -- Customer needs to update payment method via self-care portal
 </code></pre>
 <h4>5. Billing/Invoice Generation Issues</h4>
@@ -2814,11 +2820,11 @@ WHERE tenant_id='TIDLT-100008' AND customer_id='&lt;customer-id&gt;';
 <strong>Diagnosis:</strong>
 <pre><code class="language-bash"># Check billing job logs
 kubectl logs deployment/newclient-jobs-common | grep -i "billing"
-<h1>Check invoice service logs</h1>
 
+# Check invoice service logs
 kubectl logs deployment/newclient-service-invoice | grep -i error
-<h1>Check billing records</h1>
 
+# Check billing records
 psql -h embrix-rds-dev-db... -U admin -d coredb-newclient \
   -c "SELECT * FROM bill WHERE status IN ('FAILED', 'PENDING') ORDER BY created_date DESC LIMIT 10;"
 </code></pre>
@@ -2826,18 +2832,19 @@ psql -h embrix-rds-dev-db... -U admin -d coredb-newclient \
 <strong>Job scheduler not running:</strong>
 <pre><code class="language-bash"># Check if job scheduler pod is running
 kubectl get pods -l app=newclient-jobs-common
-<h1>Check job schedule configuration</h1>
 
+# Check job schedule configuration
 psql -h embrix-rds-dev-db... -U admin -d coredb-newclient \
   -c "SELECT * FROM job_schedule WHERE tenant_id='TIDLT-100008' AND status='ACTIVE';"
-<h1>Manually trigger billing job</h1>
 
+# Manually trigger billing job
 curl -X POST http://newclient-jobs-common:8080/api/jobs/billing/trigger \
   -H "X-Tenant-ID: TIDLT-100008"
 </code></pre>
 <strong>Template missing:</strong>
 <pre><code class="language-sql">-- Check if invoice template exists
 SELECT * FROM core_config.invoice_template WHERE tenant_id='TIDLT-100008';
+
 -- If missing, create default template
 INSERT INTO core_config.invoice_template (tenant_id, template_name, template_html)
 VALUES ('TIDLT-100008', 'DEFAULT', '&lt;html&gt;...&lt;/html&gt;');
@@ -2845,12 +2852,12 @@ VALUES ('TIDLT-100008', 'DEFAULT', '&lt;html&gt;...&lt;/html&gt;');
 <strong>S3 upload failing:</strong>
 <pre><code class="language-bash"># Check S3 bucket permissions
 aws s3 ls s3://embrix-dev-data/TIDLT-100008/invoices/
-<h1>Test upload from pod</h1>
 
+# Test upload from pod
 kubectl exec -it deployment/newclient-service-invoice -- \
   aws s3 cp test.txt s3://embrix-dev-data/TIDLT-100008/invoices/
-<h1>Fix IAM role permissions if needed</h1>
 
+# Fix IAM role permissions if needed
 </code></pre>
 <h3>Emergency Procedures</h3>
 
@@ -2858,11 +2865,11 @@ kubectl exec -it deployment/newclient-service-invoice -- \
 
 <pre><code class="language-bash"># View deployment history
 helm history newclient-service-transactional
-<h1>Rollback to previous version</h1>
 
+# Rollback to previous version
 helm rollback newclient-service-transactional &lt;revision&gt;
-<h1>Or rollback all services</h1>
 
+# Or rollback all services
 for service in transactional billing invoice payment revenue; do
   helm rollback newclient-service-${service} &lt;revision&gt;
 done
@@ -2871,8 +2878,8 @@ done
 
 <pre><code class="language-bash"># Scale all services to 0 (emergency maintenance)
 kubectl scale deployment -l tenant=newclient --replicas=0
-<h1>Scale back up</h1>
 
+# Scale back up
 kubectl scale deployment -l tenant=newclient --replicas=2
 </code></pre>
 <h4>Database Restore</h4>
@@ -2881,22 +2888,21 @@ kubectl scale deployment -l tenant=newclient --replicas=2
 aws rds describe-db-snapshots \
   --db-instance-identifier embrix-rds-dev-db \
   --query "DBSnapshots[?contains(DBSnapshotIdentifier, 'newclient')].DBSnapshotIdentifier"
-<h1>Restore from snapshot (creates new instance)</h1>
 
+# Restore from snapshot (creates new instance)
 aws rds restore-db-instance-from-db-snapshot \
   --db-instance-identifier embrix-rds-dev-db-restore \
   --db-snapshot-identifier &lt;snapshot-id&gt;
-<h1>Update connection strings to point to restored instance</h1>
 
-<h1>(Update Helm values and redeploy services)</h1>
-
+# Update connection strings to point to restored instance
+# (Update Helm values and redeploy services)
 </code></pre>
 <h4>Clear Cache</h4>
 
 <pre><code class="language-bash"># Clear Redis cache for tenant
 redis-cli -h &lt;redis-host&gt; KEYS "TIDLT-100008:*" | xargs redis-cli -h &lt;redis-host&gt; DEL
-<h1>Or flush specific pattern</h1>
 
+# Or flush specific pattern
 redis-cli -h &lt;redis-host&gt; --scan --pattern "TIDLT-100008:session:*" | xargs redis-cli -h &lt;redis-host&gt; DEL
 </code></pre>
 
