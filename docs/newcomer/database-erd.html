@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Database ERD Overview - Embrix O2X</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            font-size: 16px;
+            line-height: 1.7;
+            color: #1f2937;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            background-attachment: fixed;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.98);
+            padding: 40px 50px;
+            border-radius: 24px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.2), 0 0 100px rgba(102, 126, 234, 0.3);
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+        }
+
+        .container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 8px;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            box-shadow: 0 2px 10px rgba(102, 126, 234, 0.5);
+        }
+
+        .nav-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            color: white;
+            padding: 25px 30px;
+            border-radius: 20px;
+            margin-bottom: 35px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3), inset 0 1px 0 rgba(255,255,255,0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .nav-header h1 {
+            font-size: 1.5em;
+            margin-bottom: 5px;
+            font-weight: 700;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            position: relative;
+            z-index: 1;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            position: relative;
+            z-index: 1;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            padding: 10px 18px;
+            background: rgba(255,255,255,0.15);
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.2);
+            font-size: 0.9em;
+        }
+
+        .nav-links a::after {
+            display: none;
+        }
+
+        .nav-links a:hover {
+            background: white;
+            color: #667eea;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+
+        h1 {
+            color: white;
+            margin: 35px 0 25px 0;
+            padding: 20px 25px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-size: 1.9em;
+            font-weight: 700;
+            border-radius: 16px;
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3), 0 0 60px rgba(102, 126, 234, 0.1);
+            border: 3px solid rgba(255, 255, 255, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        h2 {
+            color: #764ba2;
+            margin: 30px 0 16px 0;
+            padding: 12px 16px;
+            background: linear-gradient(135deg, rgba(118, 75, 162, 0.08) 0%, rgba(240, 147, 251, 0.08) 100%);
+            border-left: 6px solid #764ba2;
+            border-radius: 12px;
+            font-size: 1.4em;
+            font-weight: 700;
+            box-shadow: 0 4px 15px rgba(118, 75, 162, 0.15);
+        }
+
+        p {
+            margin: 14px 0;
+            color: #374151;
+        }
+
+        ul {
+            margin: 16px 0;
+            padding-left: 18px;
+        }
+
+        li {
+            margin: 6px 0;
+        }
+
+        .diagram-wrapper {
+            margin: 24px 0 12px 0;
+            border-radius: 18px;
+            padding: 20px;
+            background: radial-gradient(circle at top left, rgba(102,126,234,0.18), transparent 55%),
+                        radial-gradient(circle at bottom right, rgba(236,72,153,0.12), transparent 55%),
+                        #0f172a;
+            box-shadow: 0 16px 45px rgba(15,23,42,0.75);
+            border: 1px solid rgba(148,163,184,0.6);
+        }
+
+        .diagram-title {
+            color: #e5e7eb;
+            font-weight: 600;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.95em;
+        }
+
+        .diagram-title span {
+            color: #9ca3af;
+            font-weight: 400;
+            font-size: 0.9em;
+        }
+
+        pre.erddrawing {
+            margin: 0;
+            padding: 18px 18px 18px 18px;
+            border-radius: 12px;
+            background: rgba(15,23,42,0.85);
+            overflow-x: auto;
+            font-family: "Fira Code", "Cascadia Code", "SF Mono", Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+            font-size: 11px;
+            line-height: 1.4;
+            color: #e5e7eb;
+            border: 1px solid rgba(55,65,81,0.9);
+        }
+
+        .legend {
+            margin-top: 10px;
+            font-size: 0.9em;
+            color: #d1d5db;
+        }
+
+        .legend code {
+            font-family: "Fira Code", monospace;
+            font-size: 0.9em;
+            background: rgba(15,23,42,0.95);
+            color: #f9fafb;
+            padding: 2px 6px;
+            border-radius: 4px;
+            border: 1px solid rgba(55,65,81,0.8);
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+            pre.erddrawing {
+                font-size: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="nav-header">
+            <div>
+                <h1>Embrix O2X Documentation</h1>
+                <small>Navigate between guides</small>
+            </div>
+            <div class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="guide-index.html">Guide Index</a>
+                <a href="database-erd.html">Database ERD</a>
+                <a href="database-architecture.html">Database Architecture</a>
+            </div>
+        </div>
+
+        <h1>Database ERD – Visual Overview</h1>
+
+        <p>
+            This page gives you a **visual, one-page view** of the core Embrix O2X data model – the same entities
+            described in <code>DATABASE_ARCHITECTURE_COMPLETE</code>, but focused on how they relate to each other.
+        </p>
+
+        <h2>Core Entities and Relationships</h2>
+
+        <p>
+            The diagram below centers on the main customer, order, billing, usage, and revenue entities used across
+            all services. Boxes are tables; arrows show foreign-key relationships.
+        </p>
+
+        <div class="diagram-wrapper">
+            <div class="diagram-title">
+                <div>Embrix O2X – High-Level ERD</div>
+                <span>Account, Order, Billing, Usage, Revenue</span>
+            </div>
+            <div style="margin-bottom: 16px; border-radius: 12px; overflow: hidden; background: #0b1120; padding: 10px; border: 1px solid rgba(55,65,81,0.9);">
+                <img src="file:///C:/Users/quang/.cursor/projects/c-Users-quang-IdeaProjects-embrix-o2x/assets/embrix-o2x-erd.png"
+                     alt="Embrix O2X High-Level ERD"
+                     style="display:block;width:100%;height:auto;border-radius:8px;">
+            </div>
+            <pre class="erddrawing"><code>
+                   ┌─────────────────────┐                    ┌───────────────────────┐
+                   │      PRODUCT        │                    │     PRICE_OFFER       │
+                   │─────────────────────│                    │───────────────────────│
+                   │ product_id (PK)     │◀──────────────┐    │ price_offer_id (PK)   │
+                   │ code, name, type    │               │    │ product_id (FK)       │
+                   └─────────────────────┘               │    │ price, frequency      │
+                                                        │    └───────────────────────┘
+                                                        │
+                                                        │
+        ┌─────────────────────┐        1          *     │
+        │      ACCOUNT        │─────────────────────────┘
+        │─────────────────────│
+        │ account_id (PK)     │
+        │ number, type        │
+        │ status, currency    │
+        └─────────┬───────────┘
+                  │ 1
+                  │
+                  │    *                    1                 *
+        ┌─────────▼───────────┐     ┌───────────────┐   ┌─────▼─────────────┐
+        │      ADDRESS         │     │    USER       │   │   SUBSCRIPTION    │
+        │──────────────────────│     │───────────────│   │───────────────────│
+        │ address_id (PK)      │     │ user_id (PK)  │   │ subscription_id PK│
+        │ account_id (FK)      │     │ account_id FK │   │ account_id (FK)   │
+        │ type, city, country  │     │ username, role│   │ product_id  (FK)  │
+        └──────────────────────┘     └───────────────┘   │ price_offer_id FK │
+                                                         │ status, dates     │
+                                                         └─────────┬─────────┘
+                                                                   │ 1
+                                                                   │
+                                               *                   │                  1
+        ┌─────────────────────┐        ┌────────▼─────────┐   ┌───▼──────────────┐
+        │        ORDER        │  1..*  │   SERVICE_LINE   │   │   USAGE_RECORD   │
+        │─────────────────────│        │──────────────────│   │──────────────────│
+        │ order_id (PK)       │        │ service_line_idPK│   │ usage_record_idPK│
+        │ account_id (FK)     │        │ order_id (FK)    │   │ subscription_idFK│
+        │ status, type        │        │ product_id (FK)  │   │ account_id (FK)  │
+        └─────────┬───────────┘        │ price_offer_id FK│   │ date, volume     │
+                  │                    └────────┬─────────┘   │ rated, billed    │
+                  │                             │             └──────────────────┘
+                  │                             │
+                  │                             │
+                  │                 1           │           *
+        ┌─────────▼───────────┐───────────────▼──────────────┐
+        │   ORCHESTRATION_    │   1                    *      │
+        │       STATE         │──────────────┐   ┌────────────┘
+        │─────────────────────│              │   │
+        │ order_id (FK, PK)   │              │   │
+        │ current_step, status│              │   │
+        └─────────────────────┘              │   │
+                                            │   │
+                                            │   │
+        ┌─────────────────────┐        1    │   │
+        │     CDR_FILE        │─────────────┘   │
+        │─────────────────────│                │
+        │ cdr_file_id (PK)    │                │
+        │ file_name, status   │           ┌────▼───────────────┐
+        │ record_count        │           │    DEFERRED_       │
+        └─────────────────────┘           │     REVENUE        │
+                                          │────────────────────│
+                                          │ deferred_rev_id PK │
+                                          │ charge_id (FK)     │
+                                          │ total, remaining   │
+        ┌─────────────────────┐        1  └───────┬────────────┘
+        │       CHARGE        │◀──────────────────┘
+        │─────────────────────│
+        │ charge_id (PK)      │
+        │ subscription_id FK  │                    1                 *
+        │ invoice_id (FK)     │      ┌───────────────────────────────▼─────┐
+        │ amount, type, status│      │            JOURNAL_ENTRY             │
+        └─────────┬───────────┘      │──────────────────────────────────────│
+                  │ 1                 │ journal_entry_id (PK)               │
+                  │                   │ invoice_id / charge_id (FK)        │
+                  │                   │ debit_account, credit_account, amt │
+     *            │                   └──────────────────────────────────────┘
+        ┌─────────▼───────────┐
+        │      INVOICE        │
+        │─────────────────────│
+        │ invoice_id (PK)     │
+        │ account_id (FK)     │
+        │ dates, total, bal   │
+        └─────────┬───────────┘
+                  │ 1
+                  │
+                  │             *                    1                *
+        ┌─────────▼───────────┐──────────────┐   ┌──▼─────────────────────┐
+        │      PAYMENT         │              │   │    PAYMENT_ALLOCATION  │
+        │─────────────────────│              │   │────────────────────────│
+        │ payment_id (PK)     │              │   │ allocation_id (PK)     │
+        │ account_id (FK)     │              │   │ payment_id (FK)        │
+        │ amount, type, status│              │   │ invoice_id (FK)        │
+        └─────────┬───────────┘              │   │ allocated_amount       │
+                  │ 1                        │   └───────────┬────────────┘
+                  │                         │               │
+                  │                         │               │
+                  │         *               │               │     *
+        ┌─────────▼───────────┐─────────────┘   ┌──────────▼───────────┐
+        │   BALANCE_IMPACT    │                 │   USAGE_ACCUMULATOR  │
+        │─────────────────────│                 │──────────────────────│
+        │ impact_id (PK)      │                 │ accumulator_id (PK)  │
+        │ account_id (FK)     │                 │ subscription_id (FK) │
+        │ impact_type, amount │                 │ period, value        │
+        └─────────────────────┘                 └──────────────────────┘
+            </code></pre>
+            <div class="legend">
+                <strong>Legend:</strong>
+                <ul>
+                    <li><code>1 ─── * </code> one-to-many relationship (e.g., one <code>ACCOUNT</code> has many <code>SUBSCRIPTION</code>s).</li>
+                    <li>Boxes are physical tables; labels like <code>(PK)</code> and <code>(FK)</code> show primary and foreign keys.</li>
+                    <li>This matches the tables and relationships described in <code>DATABASE_ARCHITECTURE_COMPLETE.md</code>.</li>
+                </ul>
+            </div>
+        </div>
+
+        <h2>How to Use This Diagram</h2>
+
+        <ul>
+            <li><strong>Account-centric view</strong>: Start from <code>ACCOUNT</code> in the center and trace orders, subscriptions, invoices, payments, and usage.</li>
+            <li><strong>Service ownership</strong>: Combine this with <code>DATABASE_ERD_OVERVIEW.md</code> to see which microservice works with which tables.</li>
+            <li><strong>Debugging</strong>: When troubleshooting a customer issue, follow the arrows to know which tables to inspect in sequence.</li>
+        </ul>
+
+        <p>
+            For a text-based, service-mapped version of this ERD, open the markdown file
+            <code>DATABASE_ERD_OVERVIEW.md</code> at the repository root.
+        </p>
+
+        <footer>
+            <p><strong>Embrix O2X Platform Documentation</strong></p>
+            <p>Visual ERD Overview • Last Updated: February 2026</p>
+        </footer>
+    </div>
+</body>
+</html>
+

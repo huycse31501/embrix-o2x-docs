@@ -1,3 +1,10 @@
+# Deploy Embrix O2X Knowledge Hub (docs/big-new-comer) to GitHub Pages
+# Same content as local docs/big-new-comer and GitLab Pages.
+# If this workflow is in repo "embrix-o2x", enable Pages in Settings → Pages
+#   (source: GitHub Actions). URL will be https://<user>.github.io/embrix-o2x/
+# If you use a separate repo "embrix-o2x-docs" for the site, copy this workflow
+#   there and add convert_to_html.py + docs/newcomer-4 + root Part3 .md, or
+#   sync docs/big-new-comer from this repo into that repo and deploy from branch.
 name: Deploy Documentation
 
 on:
@@ -5,6 +12,11 @@ on:
     branches:
       - main
       - master
+    paths:
+      - 'docs/big-new-comer/**'
+      - 'docs/newcomer-4/**'
+      - 'convert_to_html.py'
+      - '.github/workflows/deploy-docs.yml'
   workflow_dispatch:
 
 permissions:
@@ -24,13 +36,13 @@ jobs:
         with:
           python-version: '3.9'
       
-      - name: Generate HTML documentation
+      - name: Generate HTML (Knowledge Hub → docs/big-new-comer)
         run: python convert_to_html.py
       
-      - name: Upload artifact
+      - name: Upload artifact for GitHub Pages
         uses: actions/upload-pages-artifact@v3
         with:
-          path: docs/newcomer
+          path: docs/big-new-comer
 
   deploy:
     environment:
