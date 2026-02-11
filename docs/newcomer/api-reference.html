@@ -1,0 +1,2538 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🔌 API Reference - Embrix O2X</title>
+    
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+        font-size: 16px;
+        line-height: 1.7;
+        color: #1f2937;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+        background-attachment: fixed;
+        padding: 20px;
+        min-height: 100vh;
+    }
+
+    .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        background: rgba(255, 255, 255, 0.98);
+        padding: 40px 50px;
+        border-radius: 24px;
+        box-shadow: 0 20px 60px rgba(0,0,0,0.2), 0 0 100px rgba(102, 126, 234, 0.3);
+        position: relative;
+        overflow: hidden;
+        backdrop-filter: blur(10px);
+    }
+
+    .container::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 8px;
+        background: linear-gradient(90deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+        box-shadow: 0 2px 10px rgba(102, 126, 234, 0.5);
+    }
+    
+    .container::after {
+        content: '';
+        position: absolute;
+        top: -50%;
+        right: -10%;
+        width: 40%;
+        height: 200%;
+        background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, transparent 100%);
+        transform: rotate(-15deg);
+        pointer-events: none;
+    }
+
+    .nav-header {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+        color: white;
+        padding: 25px 30px;
+        border-radius: 20px;
+        margin-bottom: 35px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3), inset 0 1px 0 rgba(255,255,255,0.2);
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .nav-header::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        right: -20%;
+        width: 40%;
+        height: 200%;
+        background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, transparent 100%);
+        transform: rotate(-15deg);
+    }
+
+    .nav-header h1 {
+        font-size: 1.5em;
+        margin-bottom: 5px;
+        font-weight: 700;
+        text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        position: relative;
+        z-index: 1;
+    }
+
+    .nav-links {
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+        position: relative;
+        z-index: 1;
+    }
+
+    .nav-links a {
+        color: white;
+        text-decoration: none;
+        padding: 10px 18px;
+        background: rgba(255,255,255,0.15);
+        border-radius: 10px;
+        transition: all 0.3s ease;
+        font-weight: 500;
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255,255,255,0.2);
+        font-size: 0.9em;
+    }
+    
+    .nav-links a::after {
+        display: none;
+    }
+
+    .nav-links a:hover {
+        background: white;
+        color: #667eea;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+
+    h1 {
+        color: white;
+        margin: 35px 0 25px 0;
+        padding: 20px 25px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        font-size: 1.9em;
+        font-weight: 700;
+        border-radius: 16px;
+        box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3), 0 0 60px rgba(102, 126, 234, 0.1);
+        border: 3px solid rgba(255, 255, 255, 0.2);
+        position: relative;
+        overflow: hidden;
+        transform: translateY(0);
+        transition: all 0.3s ease;
+    }
+    
+    h1::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+        transition: left 0.5s;
+    }
+    
+    h1:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 12px 35px rgba(102, 126, 234, 0.4), 0 0 80px rgba(102, 126, 234, 0.15);
+    }
+    
+    h1:hover::before {
+        left: 100%;
+    }
+
+    h2 {
+        color: #764ba2;
+        margin: 30px 0 20px 0;
+        padding: 16px 20px;
+        background: linear-gradient(135deg, rgba(118, 75, 162, 0.08) 0%, rgba(240, 147, 251, 0.08) 100%);
+        border-left: 6px solid #764ba2;
+        border-radius: 12px;
+        font-size: 1.6em;
+        font-weight: 700;
+        box-shadow: 0 4px 15px rgba(118, 75, 162, 0.15);
+        position: relative;
+        transition: all 0.3s ease;
+    }
+    
+    h2::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 0;
+        height: 3px;
+        background: linear-gradient(90deg, #764ba2 0%, #f093fb 100%);
+        transition: width 0.4s ease;
+    }
+    
+    h2:hover {
+        transform: translateX(5px);
+        box-shadow: 0 6px 20px rgba(118, 75, 162, 0.25);
+    }
+    
+    h2:hover::after {
+        width: 100%;
+    }
+
+    h3 {
+        color: #667eea;
+        margin: 25px 0 15px 0;
+        padding: 14px 18px;
+        background: white;
+        border: 2px solid #667eea;
+        border-radius: 10px;
+        font-size: 1.3em;
+        font-weight: 600;
+        box-shadow: 0 3px 10px rgba(102, 126, 234, 0.1);
+        transition: all 0.3s ease;
+    }
+    
+    h3:hover {
+        background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, transparent 100%);
+        border-color: #764ba2;
+        transform: translateX(3px);
+        box-shadow: 0 5px 15px rgba(102, 126, 234, 0.2);
+    }
+
+    h4 {
+        color: #764ba2;
+        margin: 20px 0 12px 0;
+        padding: 6px 0 6px 10px;
+        border-left: 2px solid #764ba2;
+        background: linear-gradient(90deg, rgba(118, 75, 162, 0.03) 0%, transparent 100%);
+        font-size: 1.1em;
+        font-weight: 600;
+        border-radius: 0 4px 4px 0;
+    }
+
+    h5 {
+        color: #667eea;
+        margin: 18px 0 10px 0;
+        padding: 4px 0 4px 8px;
+        border-left: 2px solid #667eea;
+        font-size: 1.05em;
+        font-weight: 600;
+        background: linear-gradient(90deg, rgba(102, 126, 234, 0.02) 0%, transparent 100%);
+        border-radius: 0 3px 3px 0;
+    }
+
+    h6 {
+        color: #764ba2;
+        margin: 15px 0 8px 0;
+        font-size: 0.95em;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    p {
+        margin: 16px 0;
+        line-height: 1.8;
+        font-size: 1em;
+        color: #374151;
+    }
+    
+    /* Better spacing for paragraphs after headings */
+    h1 + p, h2 + p, h3 + p, h4 + p {
+        margin-top: 12px;
+    }
+    
+    /* First paragraph after heading gets special treatment */
+    h1 + p, h2 + p {
+        font-size: 1.05em;
+        color: #4b5563;
+        font-weight: 400;
+    }
+
+    ul, ol {
+        margin: 20px 0;
+        padding-left: 15px;
+        list-style: none;
+    }
+
+    li {
+        margin: 12px 0;
+        line-height: 1.7;
+        font-size: 0.95em;
+        position: relative;
+        padding: 14px 18px 14px 50px;
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        border-left: 4px solid #667eea;
+        transition: all 0.3s ease;
+    }
+    
+    ul li::before {
+        content: '▸';
+        position: absolute;
+        left: 18px;
+        color: white;
+        font-weight: bold;
+        font-size: 1.3em;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        width: 24px;
+        height: 24px;
+        border-radius: 6px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        line-height: 1;
+        box-shadow: 0 2px 6px rgba(102, 126, 234, 0.3);
+    }
+    
+    ol {
+        counter-reset: item;
+    }
+    
+    ol li::before {
+        content: counter(item);
+        counter-increment: item;
+        position: absolute;
+        left: 18px;
+        color: white;
+        font-weight: 700;
+        font-size: 0.9em;
+        background: linear-gradient(135deg, #764ba2 0%, #f093fb 100%);
+        width: 24px;
+        height: 24px;
+        border-radius: 6px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 2px 6px rgba(118, 75, 162, 0.3);
+    }
+
+    li:hover {
+        transform: translateX(5px);
+        box-shadow: 0 4px 15px rgba(102, 126, 234, 0.15);
+        border-left-width: 6px;
+        background: linear-gradient(90deg, rgba(102, 126, 234, 0.03) 0%, white 100%);
+    }
+
+    /* Nested lists */
+    li ul, li ol {
+        margin: 12px 0 8px 0;
+        padding-left: 10px;
+    }
+
+    /* Nested list items - smaller styling */
+    li li {
+        font-size: 0.92em;
+        margin: 8px 0;
+        padding: 10px 14px 10px 40px;
+        box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+        border-left-color: #764ba2;
+    }
+    
+    li li::before {
+        width: 20px;
+        height: 20px;
+        font-size: 0.85em;
+        left: 12px;
+    }
+
+    li li:hover {
+        border-left-color: #f093fb;
+    }
+
+    code {
+        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        padding: 2px 6px;
+        border-radius: 4px;
+        font-family: 'Fira Code', 'Courier New', Consolas, monospace;
+        font-size: 0.85em;
+        color: #d63384;
+        border: 1px solid #dee2e6;
+        font-weight: 500;
+    }
+
+    /* Inline code with special highlighting */
+    p code, li code, td code {
+        position: relative;
+    }
+
+    p code::before, li code::before, td code::before {
+        content: '';
+        position: absolute;
+        inset: -2px;
+        border-radius: 5px;
+        background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+        z-index: -1;
+        opacity: 0;
+        transition: opacity 0.2s;
+    }
+
+    p code:hover::before, li code:hover::before, td code:hover::before {
+        opacity: 1;
+    }
+
+    pre {
+        background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+        color: #e2e8f0;
+        padding: 24px;
+        border-radius: 16px;
+        overflow-x: auto;
+        margin: 25px 0;
+        border: 2px solid #334155;
+        box-shadow: 0 8px 25px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.05);
+        font-family: 'Cascadia Code', 'Fira Code', 'SF Mono', 'Consolas', 'Liberation Mono', monospace;
+        font-size: 0.88em;
+        line-height: 1.7;
+        position: relative;
+        font-feature-settings: "liga" 0;
+        text-rendering: optimizeLegibility;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+    }
+    
+    pre::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 35px;
+        background: linear-gradient(135deg, rgba(102, 126, 234, 0.15) 0%, rgba(118, 75, 162, 0.15) 100%);
+        border-radius: 14px 14px 0 0;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    pre code {
+        background: none;
+        color: inherit;
+        padding: 0;
+        border: none;
+        font-family: inherit;
+        font-weight: normal;
+        font-size: 1em;
+        display: block;
+        padding-top: 35px;
+    }
+    
+    /* Ensure consistent styling for all code content inside pre blocks */
+    pre code * {
+        font-size: inherit !important;
+        line-height: inherit !important;
+        color: inherit !important;
+        font-family: inherit !important;
+    }
+
+    /* Hover effect */
+    pre:hover {
+        border-color: #667eea;
+        box-shadow: 0 12px 35px rgba(0,0,0,0.4), 0 0 0 2px rgba(102, 126, 234, 0.2);
+        transform: translateY(-2px);
+        transition: all 0.3s ease;
+    }
+
+    /* Code block header indicator with dots */
+    pre::after {
+        content: '';
+        position: absolute;
+        top: 14px;
+        left: 16px;
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        background: #ff5f56;
+        box-shadow: 20px 0 0 #ffbd2e, 40px 0 0 #27c93f;
+    }
+
+    blockquote {
+        border-left: 6px solid #667eea;
+        padding: 22px 28px 22px 60px;
+        margin: 25px 0;
+        color: #555;
+        font-style: italic;
+        font-size: 1em;
+        background: linear-gradient(135deg, rgba(102, 126, 234, 0.08) 0%, rgba(240, 147, 251, 0.05) 100%);
+        border-radius: 16px;
+        position: relative;
+        box-shadow: 0 4px 15px rgba(102, 126, 234, 0.1);
+        transition: all 0.3s ease;
+    }
+
+    blockquote::before {
+        content: '"';
+        position: absolute;
+        left: 18px;
+        top: 50%;
+        transform: translateY(-50%);
+        font-size: 3em;
+        color: rgba(102, 126, 234, 0.2);
+        font-family: Georgia, serif;
+        font-weight: 700;
+        line-height: 1;
+    }
+    
+    blockquote:hover {
+        border-left-color: #764ba2;
+        transform: translateX(5px);
+        box-shadow: 0 6px 20px rgba(102, 126, 234, 0.2);
+    }
+
+    table {
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 0;
+        margin: 25px 0;
+        box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+        border-radius: 16px;
+        overflow: hidden;
+        background: white;
+        font-size: 0.9em;
+        border: 2px solid rgba(102, 126, 234, 0.1);
+    }
+
+    thead {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        position: relative;
+    }
+    
+    thead::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 3px;
+        background: linear-gradient(90deg, #f093fb 0%, transparent 50%, #f093fb 100%);
+    }
+
+    th {
+        color: white;
+        padding: 16px 18px;
+        text-align: left;
+        font-weight: 700;
+        text-transform: uppercase;
+        font-size: 0.8em;
+        letter-spacing: 0.5px;
+        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+    }
+
+    td {
+        padding: 14px 18px;
+        border-bottom: 1px solid rgba(102, 126, 234, 0.08);
+        vertical-align: top;
+        line-height: 1.6;
+        transition: all 0.2s ease;
+    }
+
+    tbody tr:last-child td {
+        border-bottom: none;
+    }
+
+    tbody tr {
+        transition: all 0.3s ease;
+    }
+
+    tbody tr:hover {
+        background: linear-gradient(90deg, rgba(102, 126, 234, 0.08) 0%, rgba(240, 147, 251, 0.05) 100%);
+        transform: scale(1.01);
+        box-shadow: inset 4px 0 0 #667eea;
+    }
+
+    tbody tr:nth-child(even) {
+        background: rgba(102, 126, 234, 0.02);
+    }
+
+    tbody tr:nth-child(even):hover {
+        background: linear-gradient(90deg, rgba(102, 126, 234, 0.08) 0%, rgba(240, 147, 251, 0.05) 100%);
+    }
+    
+    /* Better code in tables */
+    td code {
+        font-size: 0.85em;
+        padding: 3px 7px;
+    }
+
+    .info-box {
+        background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+        border: 3px solid #2196f3;
+        padding: 24px;
+        margin: 30px 0;
+        border-radius: 16px;
+        box-shadow: 0 8px 25px rgba(33, 150, 243, 0.25);
+        position: relative;
+        overflow: hidden;
+        transition: all 0.3s ease;
+    }
+    
+    .info-box::before {
+        content: 'ℹ️';
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        font-size: 2em;
+        opacity: 0.3;
+    }
+    
+    .info-box:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 12px 35px rgba(33, 150, 243, 0.35);
+    }
+
+    .warning-box {
+        background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%);
+        border: 3px solid #ff9800;
+        padding: 24px;
+        margin: 30px 0;
+        border-radius: 16px;
+        box-shadow: 0 8px 25px rgba(255, 152, 0, 0.25);
+        position: relative;
+        overflow: hidden;
+        transition: all 0.3s ease;
+    }
+    
+    .warning-box::before {
+        content: '⚠️';
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        font-size: 2em;
+        opacity: 0.3;
+    }
+    
+    .warning-box:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 12px 35px rgba(255, 152, 0, 0.35);
+    }
+
+    .success-box {
+        background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+        border: 3px solid #4caf50;
+        padding: 24px;
+        margin: 30px 0;
+        border-radius: 16px;
+        box-shadow: 0 8px 25px rgba(76, 175, 80, 0.25);
+        position: relative;
+        overflow: hidden;
+        transition: all 0.3s ease;
+    }
+    
+    .success-box::before {
+        content: '✅';
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        font-size: 2em;
+        opacity: 0.3;
+    }
+    
+    .success-box:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 12px 35px rgba(76, 175, 80, 0.35);
+    }
+
+    /* Better colors for syntax in diagrams */
+    pre {
+        /* Box drawing characters in nice blue */
+        color: #93c5fd;
+    }
+
+    /* JSON/code syntax in pre blocks */
+    pre {
+        white-space: pre;
+        word-wrap: normal;
+    }
+
+    .toc {
+        background: #f8f9fa;
+        padding: 20px;
+        border-radius: 8px;
+        margin: 20px 0;
+        border-left: 4px solid #667eea;
+    }
+
+    .toc h2 {
+        color: #667eea;
+        border-bottom: none;
+        margin-bottom: 15px;
+    }
+
+    .toc ul {
+        list-style: none;
+        padding-left: 0;
+    }
+
+    .toc li {
+        margin: 8px 0;
+    }
+
+    .toc a {
+        color: #667eea;
+        text-decoration: none;
+        transition: color 0.3s;
+    }
+
+    .toc a:hover {
+        color: #764ba2;
+    }
+
+    hr {
+        border: none;
+        border-top: 2px solid #f0f0f0;
+        margin: 30px 0;
+    }
+
+    .badge {
+        display: inline-block;
+        background: #667eea;
+        color: white;
+        padding: 4px 10px;
+        border-radius: 12px;
+        font-size: 0.85em;
+        margin-left: 10px;
+    }
+
+    a {
+        color: #667eea;
+        text-decoration: none;
+        position: relative;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        padding: 2px 0;
+    }
+    
+    a::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 0;
+        height: 2px;
+        background: linear-gradient(90deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+        transition: width 0.3s ease;
+    }
+
+    a:hover {
+        color: #764ba2;
+    }
+    
+    a:hover::after {
+        width: 100%;
+    }
+    
+    /* Better display for metadata fields */
+    strong {
+        color: #374151;
+        font-weight: 600;
+    }
+    
+    /* Metadata field styling - each field on its own line */
+    .metadata-field {
+        margin: 8px 0;
+        padding: 8px 14px;
+        background: linear-gradient(90deg, rgba(102, 126, 234, 0.04) 0%, transparent 100%);
+        border-left: 3px solid #667eea;
+        border-radius: 0 4px 4px 0;
+        line-height: 1.7;
+        font-size: 0.95em;
+        display: block;
+        clear: both;
+    }
+    
+    .metadata-field strong {
+        color: #667eea;
+        font-weight: 600;
+        margin-right: 8px;
+        display: inline-block;
+        min-width: 100px;
+    }
+    
+    .metadata-field code {
+        font-size: 0.88em;
+    }
+
+    footer {
+        margin-top: 50px;
+        padding-top: 30px;
+        border-top: 2px solid #f0f0f0;
+        text-align: center;
+        color: #888;
+    }
+
+    @media print {
+        body {
+            background: white;
+        }
+        .nav-header, .nav-links {
+            display: none;
+        }
+        pre {
+            break-inside: avoid;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .container {
+            padding: 20px;
+        }
+        .nav-header {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+        .nav-links {
+            margin-top: 15px;
+        }
+        h1 {
+            font-size: 2em;
+        }
+        h2 {
+            font-size: 1.5em;
+        }
+    }
+</style>
+
+</head>
+<body>
+    <div class="container">
+        <div class="nav-header"><div><h1>Embrix O2X Documentation</h1><small>Navigate between guides</small></div><div class="nav-links"><a href="index.html">Home</a><a href="guide-index.html">Guide Index</a><a href="guide-index.html">Part 1-5</a><a href="quick-start.html">Quick Start</a><a href="quick-reference.html">Quick Ref</a><a href="complete-system-overview.html">Architecture</a><a href="api-reference.html">API Reference</a><a href="troubleshooting-guide.html">Troubleshooting</a></div></div>
+        
+<h1>Embrix O2X - API Reference Guide</h1>
+
+<strong>Version</strong>: 3.1.9-SNAPSHOT  
+<strong>Last Updated</strong>: February 2026  
+<strong>Purpose</strong>: Complete API documentation for GraphQL and REST endpoints
+
+<hr>
+
+<h2>Table of Contents</h2>
+
+<ol>
+<li><a href="#overview">Overview</a></li>
+<li><a href="#graphql-api">GraphQL API</a></li>
+<li><a href="#rest-api">REST API</a></li>
+<li><a href="#authentication--authorization">Authentication & Authorization</a></li>
+<li><a href="#common-patterns">Common Patterns</a></li>
+<li><a href="#error-handling">Error Handling</a></li>
+<li><a href="#rate-limiting">Rate Limiting</a></li>
+<li><a href="#examples--use-cases">Examples & Use Cases</a></li>
+</ol>
+
+<hr>
+
+<h2>Overview</h2>
+
+<h3>API Endpoints</h3>
+
+<table>
+<thead><tr>
+<th>Service</th>
+<th>Protocol</th>
+<th>Endpoint</th>
+<th>Port</th>
+<th>Description</th>
+</tr></thead><tbody>
+<tr>
+<td>---------</td>
+<td>----------</td>
+<td>----------</td>
+<td>------</td>
+<td>-------------</td>
+</tr>
+<tr>
+<td><strong>crm_gateway</strong></td>
+<td>GraphQL</td>
+<td><code>/graphql</code></td>
+<td>8080</td>
+<td>Main business API</td>
+</tr>
+<tr>
+<td><strong>crm_gateway</strong></td>
+<td>GraphQL Playground</td>
+<td><code>/graphiql</code></td>
+<td>8080</td>
+<td>Interactive API explorer</td>
+</tr>
+<tr>
+<td><strong>service-transactional</strong></td>
+<td>GraphQL</td>
+<td><code>/graphql</code></td>
+<td>8080</td>
+<td>Transactional operations</td>
+</tr>
+<tr>
+<td><strong>tax-engine</strong></td>
+<td>REST</td>
+<td><code>/api/v1</code></td>
+<td>8080</td>
+<td>Tax calculation</td>
+</tr>
+<tr>
+<td><strong>tax-engine</strong></td>
+<td>Swagger</td>
+<td><code>/api/v1/swagger-ui.html</code></td>
+<td>8080</td>
+<td>REST API documentation</td>
+</tr>
+<tr>
+<td><strong>service-billing</strong></td>
+<td>GraphQL</td>
+<td><code>/graphql</code></td>
+<td>8080</td>
+<td>Billing operations</td>
+</tr>
+<tr>
+<td><strong>service-invoice</strong></td>
+<td>GraphQL</td>
+<td><code>/graphql</code></td>
+<td>8080</td>
+<td>Invoice generation</td>
+</tr>
+<tr>
+<td><strong>service-usage</strong></td>
+<td>GraphQL</td>
+<td><code>/graphql</code></td>
+<td>8080</td>
+<td>Usage queries</td>
+</tr>
+<tr>
+<td><strong>service-payment</strong></td>
+<td>GraphQL</td>
+<td><code>/graphql</code></td>
+<td>8080</td>
+<td>Payment processing</td>
+</tr>
+<tr>
+<td><strong>service-revenue</strong></td>
+<td>GraphQL</td>
+<td><code>/graphql</code></td>
+<td>8080</td>
+<td>Revenue recognition</td>
+</tr>
+</tbody></table>
+<h3>API Architecture</h3>
+
+<pre><code class="language-">External Clients
+    ↓
+service-proxy (API Gateway)
+    ↓
+┌─────────────────────────────────────────────────┐
+│  GraphQL APIs                                    │
+│  - crm_gateway (main entry point)               │
+│  - service-transactional                         │
+│  - service-billing                               │
+│  - service-invoice                               │
+│  - service-usage                                 │
+│  - service-payment                               │
+│  - service-revenue                               │
+└─────────────────────────────────────────────────┘
+    ↓
+Engine (Business Logic Hubs)
+    ↓
+Database (PostgreSQL)
+</code></pre>
+
+<hr>
+
+<h2>GraphQL API</h2>
+
+<h3>Base Configuration</h3>
+
+<strong>Default Endpoint</strong>: <code>http://localhost:8080/graphql</code>  
+<strong>Content-Type</strong>: <code>application/json</code>  
+<strong>Authentication</strong>: Bearer token in Authorization header
+<h3>Interactive Exploration</h3>
+
+<strong>GraphiQL Playground</strong>: <code>http://localhost:8080/graphiql</code>
+Features:
+<ul>
+<li>Interactive query builder</li>
+<li>Schema documentation browser</li>
+<li>Query history</li>
+<li>Auto-completion</li>
+</ul>
+
+<hr>
+
+<h2>Core Domain APIs</h2>
+
+<h3>1. Account Management</h3>
+
+<h4>Create Account</h4>
+
+<pre><code class="language-graphql">mutation CreateAccount {
+  processNewAccount(
+    account: {
+      accountName: "TechCorp Inc"
+      accountType: BUSINESS
+      billingCycleDay: 1
+      currencyCode: "USD"
+      status: ACTIVE
+      billingAddress: {
+        addressLine1: "123 Main Street"
+        city: "San Francisco"
+        state: "CA"
+        postalCode: "94105"
+        country: "US"
+      }
+      contacts: [
+        {
+          firstName: "John"
+          lastName: "Doe"
+          email: "john.doe@techcorp.com"
+          phone: "+1-415-555-0100"
+          isPrimary: true
+        }
+      ]
+    }
+  ) {
+    accountId
+    accountName
+    accountNumber
+    status
+    createdDate
+  }
+}
+</code></pre>
+<h4>Search Accounts</h4>
+
+<pre><code class="language-graphql">query SearchAccounts {
+  searchAccounts(
+    filter: {
+      accountName: "TechCorp"
+      status: ACTIVE
+      accountType: BUSINESS
+    }
+    pagination: {
+      page: 0
+      size: 20
+    }
+    sort: {
+      field: "createdDate"
+      direction: DESC
+    }
+  ) {
+    totalElements
+    totalPages
+    content {
+      accountId
+      accountName
+      accountNumber
+      status
+      accountType
+      billingCycleDay
+      balance
+      createdDate
+    }
+  }
+}
+</code></pre>
+<h4>Get Account Details</h4>
+
+<pre><code class="language-graphql">query GetAccount($accountId: String!) {
+  account(accountId: $accountId) {
+    accountId
+    accountName
+    accountNumber
+    status
+    accountType
+    billingCycleDay
+    currencyCode
+    balance {
+      currentBalance
+      creditBalance
+      unbilledAmount
+    }
+    billingAddress {
+      addressLine1
+      city
+      state
+      postalCode
+      country
+    }
+    contacts {
+      contactId
+      firstName
+      lastName
+      email
+      phone
+      isPrimary
+    }
+    subscriptions {
+      subscriptionId
+      productName
+      status
+      startDate
+      endDate
+    }
+  }
+}
+</code></pre>
+<h4>Update Account</h4>
+
+<pre><code class="language-graphql">mutation UpdateAccount {
+  manageAccount(
+    accountId: "ACC-001"
+    updates: {
+      accountName: "TechCorp International Inc"
+      billingCycleDay: 15
+      status: ACTIVE
+    }
+  ) {
+    accountId
+    accountName
+    status
+    lastModifiedDate
+  }
+}
+</code></pre>
+
+<hr>
+
+<h3>2. Order Management</h3>
+
+<h4>Create Order</h4>
+
+<pre><code class="language-graphql">mutation CreateOrder {
+  createOrder(
+    order: {
+      accountId: "ACC-001"
+      orderType: NEW
+      orderDate: "2026-02-01"
+      requestedActivationDate: "2026-02-05"
+      serviceLines: [
+        {
+          productId: "PROD-FIBER-100"
+          quantity: 1
+          action: ADD
+          serviceLocation: {
+            addressLine1: "456 Oak Avenue"
+            city: "San Francisco"
+            state: "CA"
+            postalCode: "94102"
+            country: "US"
+          }
+          customAttributes: [
+            { name: "static_ip", value: "true" }
+            { name: "install_type", value: "standard" }
+          ]
+        }
+      ]
+      bundleIds: ["BUNDLE-TRIPLE-PLAY"]
+    }
+  ) {
+    orderId
+    orderNumber
+    status
+    orderType
+    totalAmount
+    serviceLines {
+      serviceLineId
+      productName
+      quantity
+      unitPrice
+      totalPrice
+    }
+    createdDate
+  }
+}
+</code></pre>
+<h4>Search Orders</h4>
+
+<pre><code class="language-graphql">query SearchOrders {
+  searchOrders(
+    filter: {
+      accountId: "ACC-001"
+      status: [CREATED, SUBMITTED, PROVISIONING_INITIATED]
+      orderType: NEW
+      orderDateFrom: "2026-01-01"
+      orderDateTo: "2026-02-28"
+    }
+    pagination: { page: 0, size: 50 }
+    sort: { field: "orderDate", direction: DESC }
+  ) {
+    totalElements
+    content {
+      orderId
+      orderNumber
+      status
+      orderType
+      orderDate
+      totalAmount
+      serviceLines {
+        productName
+        quantity
+        unitPrice
+      }
+    }
+  }
+}
+</code></pre>
+<h4>Get Order Details</h4>
+
+<pre><code class="language-graphql">query GetOrder($orderId: String!) {
+  order(orderId: $orderId) {
+    orderId
+    orderNumber
+    status
+    orderType
+    orderDate
+    requestedActivationDate
+    completedDate
+    totalAmount
+    account {
+      accountId
+      accountName
+    }
+    serviceLines {
+      serviceLineId
+      productName
+      quantity
+      unitPrice
+      totalPrice
+      status
+      serviceLocation {
+        addressLine1
+        city
+        state
+      }
+    }
+    activities {
+      activityId
+      activityType
+      status
+      message
+      createdDate
+    }
+  }
+}
+</code></pre>
+<h4>Modify Order</h4>
+
+<pre><code class="language-graphql">mutation ModifyOrder {
+  modifyOrder(
+    orderId: "ORD-001"
+    modifications: {
+      serviceLines: [
+        {
+          serviceLineId: "SL-001"
+          action: MODIFY
+          quantity: 2
+        }
+        {
+          productId: "PROD-ADDON-SECURITY"
+          action: ADD
+          quantity: 1
+        }
+      ]
+    }
+  ) {
+    orderId
+    status
+    totalAmount
+    serviceLines {
+      serviceLineId
+      productName
+      quantity
+    }
+  }
+}
+</code></pre>
+<h4>Cancel Order</h4>
+
+<pre><code class="language-graphql">mutation CancelOrder {
+  cancelOrder(
+    orderId: "ORD-001"
+    reason: "Customer requested cancellation"
+  ) {
+    orderId
+    status
+    cancellationDate
+  }
+}
+</code></pre>
+
+<hr>
+
+<h3>3. Product Catalog & Pricing</h3>
+
+<h4>Search Products</h4>
+
+<pre><code class="language-graphql">query SearchProducts {
+  searchProducts(
+    filter: {
+      productType: SERVICE
+      status: ACTIVE
+      category: "INTERNET"
+    }
+    pagination: { page: 0, size: 20 }
+  ) {
+    totalElements
+    content {
+      productId
+      productCode
+      productName
+      description
+      productType
+      status
+      basePrice
+      recurringCharge {
+        amount
+        frequency
+        currencyCode
+      }
+      features {
+        featureName
+        featureValue
+      }
+    }
+  }
+}
+</code></pre>
+<h4>Get Product Details</h4>
+
+<pre><code class="language-graphql">query GetProduct($productId: String!) {
+  product(productId: $productId) {
+    productId
+    productCode
+    productName
+    description
+    longDescription
+    productType
+    status
+    basePrice
+    recurringCharge {
+      amount
+      frequency
+      currencyCode
+    }
+    usageCharges {
+      usageType
+      ratingModel
+      tiers {
+        from
+        to
+        rate
+      }
+    }
+    features {
+      featureName
+      featureValue
+    }
+    customAttributes {
+      name
+      value
+    }
+  }
+}
+</code></pre>
+<h4>Search Price Offers</h4>
+
+<pre><code class="language-graphql">query SearchPriceOffers {
+  searchPriceOffers(
+    filter: {
+      productId: "PROD-001"
+      status: ACTIVE
+      effectiveDate: "2026-02-01"
+    }
+  ) {
+    totalElements
+    content {
+      priceOfferId
+      offerName
+      description
+      offerType
+      recurringPrice
+      oneTimePrice
+      usagePricing {
+        usageType
+        ratingModel
+        tiers {
+          from
+          to
+          rate
+        }
+      }
+      effectiveStartDate
+      effectiveEndDate
+    }
+  }
+}
+</code></pre>
+<h4>Search Bundles</h4>
+
+<pre><code class="language-graphql">query SearchBundles {
+  searchBundles(
+    filter: {
+      status: ACTIVE
+      bundleType: PACKAGE
+    }
+  ) {
+    content {
+      bundleId
+      bundleName
+      description
+      bundleType
+      totalPrice
+      discountAmount
+      products {
+        productId
+        productName
+        quantity
+      }
+    }
+  }
+}
+</code></pre>
+
+<hr>
+
+<h3>4. Subscription Management</h3>
+
+<h4>Get Subscription Details</h4>
+
+<pre><code class="language-graphql">query GetSubscription($subscriptionId: String!) {
+  subscription(subscriptionId: $subscriptionId) {
+    subscriptionId
+    subscriptionNumber
+    status
+    accountId
+    productId
+    productName
+    startDate
+    endDate
+    nextBillingDate
+    recurringCharge {
+      amount
+      frequency
+    }
+    usageAllowances {
+      usageType
+      includedUnits
+      usedUnits
+      remainingUnits
+    }
+    customAttributes {
+      name
+      value
+    }
+  }
+}
+</code></pre>
+<h4>Suspend Subscription</h4>
+
+<pre><code class="language-graphql">mutation SuspendSubscription {
+  suspendSubscription(
+    subscriptionId: "SUB-001"
+    reason: "Payment overdue"
+    suspensionType: TEMPORARY
+  ) {
+    subscriptionId
+    status
+    suspensionDate
+    suspensionReason
+  }
+}
+</code></pre>
+<h4>Resume Subscription</h4>
+
+<pre><code class="language-graphql">mutation ResumeSubscription {
+  resumeSubscription(
+    subscriptionId: "SUB-001"
+    resumeDate: "2026-02-15"
+  ) {
+    subscriptionId
+    status
+    resumeDate
+  }
+}
+</code></pre>
+
+<hr>
+
+<h3>5. Billing Operations</h3>
+
+<h4>Run Billing Cycle</h4>
+
+<pre><code class="language-graphql">mutation RunBillingCycle {
+  runBillingCycle(
+    billCycleDay: 1
+    billingDate: "2026-03-01"
+    dryRun: false
+  ) {
+    success
+    processedAccounts
+    totalCharges
+    totalAmount
+    errors {
+      accountId
+      errorMessage
+    }
+  }
+}
+</code></pre>
+<h4>Calculate Proration</h4>
+
+<pre><code class="language-graphql">query CalculateProration {
+  calculateProration(
+    subscriptionId: "SUB-001"
+    changeDate: "2026-02-15"
+    changeType: UPGRADE
+    newProductId: "PROD-FIBER-200"
+  ) {
+    prorationAmount
+    creditAmount
+    nextChargeAmount
+    explanation
+  }
+}
+</code></pre>
+<h4>Create Charge</h4>
+
+<pre><code class="language-graphql">mutation CreateCharge {
+  createCharge(
+    charge: {
+      accountId: "ACC-001"
+      chargeType: ONE_TIME
+      amount: 99.99
+      description: "Installation fee"
+      chargeDate: "2026-02-01"
+      taxable: true
+    }
+  ) {
+    chargeId
+    amount
+    taxAmount
+    totalAmount
+    status
+  }
+}
+</code></pre>
+
+<hr>
+
+<h3>6. Invoice Management</h3>
+
+<h4>Generate Invoice</h4>
+
+<pre><code class="language-graphql">mutation GenerateInvoice {
+  generateInvoice(
+    accountId: "ACC-001"
+    invoiceDate: "2026-03-01"
+    dueDate: "2026-03-15"
+    includeUsage: true
+  ) {
+    invoiceId
+    invoiceNumber
+    invoiceDate
+    dueDate
+    subtotal
+    taxAmount
+    totalAmount
+    status
+    pdfUrl
+  }
+}
+</code></pre>
+<h4>Search Invoices</h4>
+
+<pre><code class="language-graphql">query SearchInvoices {
+  searchInvoices(
+    filter: {
+      accountId: "ACC-001"
+      status: [OPEN, PARTIALLY_PAID]
+      invoiceDateFrom: "2026-01-01"
+      invoiceDateTo: "2026-03-31"
+    }
+    pagination: { page: 0, size: 20 }
+    sort: { field: "invoiceDate", direction: DESC }
+  ) {
+    totalElements
+    content {
+      invoiceId
+      invoiceNumber
+      invoiceDate
+      dueDate
+      subtotal
+      taxAmount
+      totalAmount
+      paidAmount
+      balanceAmount
+      status
+      pdfUrl
+    }
+  }
+}
+</code></pre>
+<h4>Get Invoice Details</h4>
+
+<pre><code class="language-graphql">query GetInvoice($invoiceId: String!) {
+  invoice(invoiceId: $invoiceId) {
+    invoiceId
+    invoiceNumber
+    invoiceDate
+    dueDate
+    status
+    subtotal
+    taxAmount
+    totalAmount
+    paidAmount
+    balanceAmount
+    account {
+      accountId
+      accountName
+    }
+    lineItems {
+      lineItemId
+      description
+      quantity
+      unitPrice
+      amount
+      taxAmount
+      totalAmount
+    }
+    payments {
+      paymentId
+      paymentDate
+      amount
+      paymentMethod
+    }
+    pdfUrl
+    xmlUrl
+  }
+}
+</code></pre>
+<h4>Regenerate Invoice</h4>
+
+<pre><code class="language-graphql">mutation RegenerateInvoice {
+  regenerateInvoice(
+    invoiceId: "INV-001"
+    reason: "Customer requested updated address"
+  ) {
+    invoiceId
+    invoiceNumber
+    pdfUrl
+    regeneratedDate
+  }
+}
+</code></pre>
+
+<hr>
+
+<h3>7. Payment Processing</h3>
+
+<h4>Process Payment</h4>
+
+<pre><code class="language-graphql">mutation ProcessPayment {
+  applyPayment(
+    payment: {
+      accountId: "ACC-001"
+      amount: 150.00
+      paymentDate: "2026-02-15"
+      paymentMethod: CREDIT_CARD
+      paymentToken: "tok_1234567890"
+      invoiceIds: ["INV-001", "INV-002"]
+      reference: "Payment via customer portal"
+    }
+  ) {
+    paymentId
+    amount
+    status
+    transactionId
+    allocations {
+      invoiceId
+      allocatedAmount
+      remainingBalance
+    }
+    receiptUrl
+  }
+}
+</code></pre>
+<h4>Search Payments</h4>
+
+<pre><code class="language-graphql">query SearchPayments {
+  searchPayments(
+    filter: {
+      accountId: "ACC-001"
+      paymentDateFrom: "2026-01-01"
+      paymentDateTo: "2026-02-28"
+      status: SUCCESSFUL
+    }
+    pagination: { page: 0, size: 20 }
+  ) {
+    totalElements
+    content {
+      paymentId
+      paymentDate
+      amount
+      paymentMethod
+      status
+      transactionId
+      invoices {
+        invoiceId
+        invoiceNumber
+        allocatedAmount
+      }
+    }
+  }
+}
+</code></pre>
+<h4>Add Payment Method</h4>
+
+<pre><code class="language-graphql">mutation AddPaymentMethod {
+  manageAccount(
+    accountId: "ACC-001"
+    paymentProfile: {
+      action: ADD
+      paymentType: CREDIT_CARD
+      paymentToken: "tok_1234567890"
+      isDefault: true
+      billingAddress: {
+        addressLine1: "123 Main Street"
+        city: "San Francisco"
+        state: "CA"
+        postalCode: "94105"
+        country: "US"
+      }
+    }
+  ) {
+    accountId
+    paymentMethods {
+      paymentMethodId
+      paymentType
+      last4Digits
+      expirationDate
+      isDefault
+    }
+  }
+}
+</code></pre>
+
+<hr>
+
+<h3>8. Usage Tracking</h3>
+
+<h4>Search Usage Records</h4>
+
+<pre><code class="language-graphql">query SearchUsageRecords {
+  searchUsageRecords(
+    filter: {
+      accountId: "ACC-001"
+      usageDateFrom: "2026-02-01"
+      usageDateTo: "2026-02-28"
+      usageType: VOICE
+    }
+    pagination: { page: 0, size: 100 }
+    sort: { field: "usageDate", direction: DESC }
+  ) {
+    totalElements
+    totalAmount
+    content {
+      usageRecordId
+      usageDate
+      usageType
+      quantity
+      units
+      rate
+      amount
+      details {
+        destinationNumber
+        duration
+        callType
+      }
+    }
+  }
+}
+</code></pre>
+<h4>Get Usage Summary</h4>
+
+<pre><code class="language-graphql">query GetUsageSummary {
+  getUsageSummary(
+    accountId: "ACC-001"
+    startDate: "2026-02-01"
+    endDate: "2026-02-28"
+    groupBy: USAGE_TYPE
+  ) {
+    usageType
+    totalQuantity
+    totalAmount
+    breakdown {
+      date
+      quantity
+      amount
+    }
+  }
+}
+</code></pre>
+<h4>Get Balance Information</h4>
+
+<pre><code class="language-graphql">query GetBalance($accountId: String!) {
+  account(accountId: $accountId) {
+    accountId
+    balance {
+      currentBalance
+      creditBalance
+      unbilledAmount
+      prepaidBalance {
+        currencyBalance
+        grantBalances {
+          grantType
+          remainingUnits
+          expirationDate
+        }
+      }
+    }
+  }
+}
+</code></pre>
+
+<hr>
+
+<h3>9. Revenue Recognition</h3>
+
+<h4>Search Revenue Journals</h4>
+
+<pre><code class="language-graphql">query SearchRevenueJournals {
+  searchRevenueJournals(
+    filter: {
+      accountId: "ACC-001"
+      recognitionDateFrom: "2026-01-01"
+      recognitionDateTo: "2026-12-31"
+      status: PENDING
+    }
+  ) {
+    content {
+      journalId
+      invoiceId
+      amount
+      recognitionDate
+      status
+      glAccount
+    }
+  }
+}
+</code></pre>
+<h4>Recognize Revenue</h4>
+
+<pre><code class="language-graphql">mutation RecognizeRevenue {
+  recognizeRevenue(
+    recognitionDate: "2026-02-28"
+    dryRun: false
+  ) {
+    success
+    processedJournals
+    totalAmount
+    glEntries {
+      glAccount
+      debit
+      credit
+      description
+    }
+  }
+}
+</code></pre>
+
+<hr>
+
+<h3>10. User & Permission Management</h3>
+
+<h4>Create User</h4>
+
+<pre><code class="language-graphql">mutation CreateUser {
+  createUser(
+    user: {
+      username: "john.doe@techcorp.com"
+      email: "john.doe@techcorp.com"
+      firstName: "John"
+      lastName: "Doe"
+      role: ACCOUNT_MANAGER
+      accountIds: ["ACC-001"]
+      permissions: [
+        VIEW_ACCOUNTS
+        CREATE_ORDERS
+        VIEW_INVOICES
+        PROCESS_PAYMENTS
+      ]
+    }
+  ) {
+    userId
+    username
+    email
+    role
+    permissions
+  }
+}
+</code></pre>
+<h4>Authenticate User</h4>
+
+<pre><code class="language-graphql">mutation Login {
+  login(
+    username: "john.doe@techcorp.com"
+    password: "secure_password"
+  ) {
+    token
+    refreshToken
+    expiresIn
+    user {
+      userId
+      username
+      email
+      role
+      permissions
+    }
+  }
+}
+</code></pre>
+
+<hr>
+
+<h2>REST API</h2>
+
+<h3>Tax Engine API</h3>
+
+<strong>Base URL</strong>: <code>http://localhost:8080/api/v1</code>  
+<strong>Swagger UI</strong>: <code>http://localhost:8080/api/v1/swagger-ui.html</code>
+<h4>Calculate Tax</h4>
+
+<pre><code class="language-http">POST /api/v1/tax/calculate
+Content-Type: application/json
+Authorization: Bearer {token}
+
+{
+  "transactionDate": "2026-02-15",
+  "customerCode": "ACC-001",
+  "lineItems": [
+    {
+      "itemCode": "PROD-FIBER-100",
+      "description": "100 Mbps Fiber Internet",
+      "amount": 79.99,
+      "quantity": 1,
+      "taxIncluded": false
+    }
+  ],
+  "addresses": {
+    "shipFrom": {
+      "line1": "100 Corporate Blvd",
+      "city": "Austin",
+      "region": "TX",
+      "country": "US",
+      "postalCode": "78701"
+    },
+    "shipTo": {
+      "line1": "456 Oak Avenue",
+      "city": "San Francisco",
+      "region": "CA",
+      "country": "US",
+      "postalCode": "94102"
+    }
+  }
+}
+</code></pre>
+<strong>Response:</strong>
+<pre><code class="language-json">{
+  "transactionId": "TX-001",
+  "totalAmount": 79.99,
+  "totalTax": 6.80,
+  "totalWithTax": 86.79,
+  "lines": [
+    {
+      "lineNumber": 1,
+      "taxableAmount": 79.99,
+      "tax": 6.80,
+      "details": [
+        {
+          "taxName": "CA STATE TAX",
+          "rate": 0.0725,
+          "tax": 5.80,
+          "jurisCode": "CA",
+          "jurisName": "CALIFORNIA"
+        },
+        {
+          "taxName": "SF COUNTY TAX",
+          "rate": 0.0125,
+          "tax": 1.00,
+          "jurisCode": "SF",
+          "jurisName": "SAN FRANCISCO"
+        }
+      ]
+    }
+  ]
+}
+</code></pre>
+<h4>Validate Address</h4>
+
+<pre><code class="language-http">POST /api/v1/address/validate
+Content-Type: application/json
+
+{
+  "line1": "456 Oak Avenue",
+  "city": "San Francisco",
+  "region": "CA",
+  "country": "US",
+  "postalCode": "94102"
+}
+</code></pre>
+<strong>Response:</strong>
+<pre><code class="language-json">{
+  "validated": true,
+  "normalizedAddress": {
+    "line1": "456 OAK AVE",
+    "city": "SAN FRANCISCO",
+    "region": "CA",
+    "country": "US",
+    "postalCode": "94102-3456"
+  },
+  "validationMessages": []
+}
+</code></pre>
+
+<hr>
+
+<h2>Authentication & Authorization</h2>
+
+<h3>OAuth2 Flow</h3>
+
+<h4>1. Obtain Access Token</h4>
+
+<pre><code class="language-http">POST /oauth/token
+Content-Type: application/x-www-form-urlencoded
+
+grant_type=password&
+username=john.doe@techcorp.com&
+password=secure_password&
+client_id=embrix-client&
+client_secret=embrix-secret
+</code></pre>
+<strong>Response:</strong>
+<pre><code class="language-json">{
+  "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+  "token_type": "Bearer",
+  "expires_in": 3600,
+  "refresh_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+  "scope": "read write"
+}
+</code></pre>
+<h4>2. Use Access Token</h4>
+
+<pre><code class="language-http">POST /graphql
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+
+{
+  "query": "query { account(accountId: \"ACC-001\") { accountName } }"
+}
+</code></pre>
+<h4>3. Refresh Token</h4>
+
+<pre><code class="language-http">POST /oauth/token
+Content-Type: application/x-www-form-urlencoded
+
+grant_type=refresh_token&
+refresh_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...&
+client_id=embrix-client&
+client_secret=embrix-secret
+</code></pre>
+<h3>Permission Model</h3>
+
+<table>
+<thead><tr>
+<th>Role</th>
+<th>Permissions</th>
+</tr></thead><tbody>
+<tr>
+<td>------</td>
+<td>-------------</td>
+</tr>
+<tr>
+<td><strong>SUPER_ADMIN</strong></td>
+<td>All permissions</td>
+</tr>
+<tr>
+<td><strong>ACCOUNT_MANAGER</strong></td>
+<td>VIEW_ACCOUNTS, CREATE_ORDERS, VIEW_INVOICES, PROCESS_PAYMENTS</td>
+</tr>
+<tr>
+<td><strong>BILLING_ADMIN</strong></td>
+<td>RUN_BILLING, GENERATE_INVOICES, VIEW_CHARGES, ADJUST_CHARGES</td>
+</tr>
+<tr>
+<td><strong>SUPPORT_AGENT</strong></td>
+<td>VIEW_ACCOUNTS, VIEW_ORDERS, VIEW_INVOICES, CREATE_TICKETS</td>
+</tr>
+<tr>
+<td><strong>CUSTOMER</strong></td>
+<td>VIEW_OWN_ACCOUNT, VIEW_OWN_INVOICES, MAKE_PAYMENTS</td>
+</tr>
+</tbody></table>
+
+<hr>
+
+<h2>Common Patterns</h2>
+
+<h3>Pagination</h3>
+
+All list queries support pagination:
+<pre><code class="language-graphql">query {
+  searchAccounts(
+    pagination: {
+      page: 0        # Zero-based page index
+      size: 20       # Items per page
+    }
+  ) {
+    totalElements   # Total count across all pages
+    totalPages      # Total number of pages
+    number          # Current page number
+    size            # Page size
+    content {       # Array of items
+      # ... fields
+    }
+  }
+}
+</code></pre>
+<h3>Sorting</h3>
+
+<pre><code class="language-graphql">query {
+  searchAccounts(
+    sort: {
+      field: "createdDate"
+      direction: DESC  # ASC or DESC
+    }
+  ) {
+    content {
+      accountId
+      createdDate
+    }
+  }
+}
+</code></pre>
+<h3>Filtering</h3>
+
+<pre><code class="language-graphql">query {
+  searchOrders(
+    filter: {
+      accountId: "ACC-001"
+      status: [CREATED, SUBMITTED]
+      orderDateFrom: "2026-01-01"
+      orderDateTo: "2026-02-28"
+    }
+  ) {
+    content {
+      orderId
+      status
+    }
+  }
+}
+</code></pre>
+<h3>Variables</h3>
+
+Use variables for dynamic queries:
+<pre><code class="language-graphql">query GetAccount($accountId: String!) {
+  account(accountId: $accountId) {
+    accountId
+    accountName
+  }
+}
+</code></pre>
+Variables JSON:
+<pre><code class="language-json">{
+  "accountId": "ACC-001"
+}
+</code></pre>
+
+<hr>
+
+<h2>Error Handling</h2>
+
+<h3>GraphQL Errors</h3>
+
+GraphQL errors are returned in the <code>errors</code> array:
+<pre><code class="language-json">{
+  "data": null,
+  "errors": [
+    {
+      "message": "Account not found",
+      "locations": [{ "line": 2, "column": 3 }],
+      "path": ["account"],
+      "extensions": {
+        "code": "NOT_FOUND",
+        "accountId": "ACC-999"
+      }
+    }
+  ]
+}
+</code></pre>
+<h3>Error Codes</h3>
+
+<table>
+<thead><tr>
+<th>Code</th>
+<th>Description</th>
+<th>HTTP Status</th>
+</tr></thead><tbody>
+<tr>
+<td>------</td>
+<td>-------------</td>
+<td>-------------</td>
+</tr>
+<tr>
+<td><strong>VALIDATION_ERROR</strong></td>
+<td>Input validation failed</td>
+<td>400</td>
+</tr>
+<tr>
+<td><strong>NOT_FOUND</strong></td>
+<td>Resource not found</td>
+<td>404</td>
+</tr>
+<tr>
+<td><strong>UNAUTHORIZED</strong></td>
+<td>Authentication required</td>
+<td>401</td>
+</tr>
+<tr>
+<td><strong>FORBIDDEN</strong></td>
+<td>Insufficient permissions</td>
+<td>403</td>
+</tr>
+<tr>
+<td><strong>CONFLICT</strong></td>
+<td>Resource conflict</td>
+<td>409</td>
+</tr>
+<tr>
+<td><strong>INTERNAL_ERROR</strong></td>
+<td>Server error</td>
+<td>500</td>
+</tr>
+</tbody></table>
+<h3>REST API Errors</h3>
+
+<pre><code class="language-json">{
+  "timestamp": "2026-02-15T10:30:00Z",
+  "status": 404,
+  "error": "Not Found",
+  "message": "Account not found",
+  "path": "/api/v1/accounts/ACC-999",
+  "code": "NOT_FOUND"
+}
+</code></pre>
+
+<hr>
+
+<h2>Rate Limiting</h2>
+
+<h3>Rate Limit Headers</h3>
+
+<pre><code class="language-http">X-RateLimit-Limit: 1000
+X-RateLimit-Remaining: 999
+X-RateLimit-Reset: 1644930000
+</code></pre>
+<h3>Rate Limits</h3>
+
+<table>
+<thead><tr>
+<th>Tier</th>
+<th>Requests per minute</th>
+<th>Requests per hour</th>
+</tr></thead><tbody>
+<tr>
+<td>------</td>
+<td>---------------------</td>
+<td>-------------------</td>
+</tr>
+<tr>
+<td><strong>Free</strong></td>
+<td>60</td>
+<td>1,000</td>
+</tr>
+<tr>
+<td><strong>Basic</strong></td>
+<td>300</td>
+<td>10,000</td>
+</tr>
+<tr>
+<td><strong>Pro</strong></td>
+<td>1000</td>
+<td>50,000</td>
+</tr>
+<tr>
+<td><strong>Enterprise</strong></td>
+<td>Unlimited</td>
+<td>Unlimited</td>
+</tr>
+</tbody></table>
+<h3>Rate Limit Exceeded</h3>
+
+<pre><code class="language-json">{
+  "error": "Rate limit exceeded",
+  "code": "RATE_LIMIT_EXCEEDED",
+  "retryAfter": 60
+}
+</code></pre>
+
+<hr>
+
+<h2>Examples & Use Cases</h2>
+
+<h3>Complete Order-to-Invoice Flow</h3>
+
+<pre><code class="language-graphql"># Step 1: Create Account
+mutation {
+  processNewAccount(account: { ... }) {
+    accountId
+  }
+}
+
+# Step 2: Create Order
+mutation {
+  createOrder(order: { accountId: "ACC-001", ... }) {
+    orderId
+  }
+}
+
+# Step 3: Check Order Status
+query {
+  order(orderId: "ORD-001") {
+    status
+  }
+}
+
+# Step 4: Run Billing
+mutation {
+  runBillingCycle(billCycleDay: 1) {
+    success
+  }
+}
+
+# Step 5: Generate Invoice
+mutation {
+  generateInvoice(accountId: "ACC-001") {
+    invoiceId
+    totalAmount
+  }
+}
+
+# Step 6: Process Payment
+mutation {
+  applyPayment(payment: { ... }) {
+    paymentId
+    status
+  }
+}
+</code></pre>
+<h3>Usage-Based Billing</h3>
+
+<pre><code class="language-graphql"># Step 1: Import Usage Records
+mutation {
+  importUsageRecords(
+    file: "usage_202602.csv"
+    format: CSV
+  ) {
+    success
+    recordsImported
+  }
+}
+
+# Step 2: Rate Usage
+mutation {
+  rateUsageRecords(
+    accountId: "ACC-001"
+    startDate: "2026-02-01"
+    endDate: "2026-02-28"
+  ) {
+    success
+    recordsRated
+    totalAmount
+  }
+}
+
+# Step 3: View Usage Summary
+query {
+  getUsageSummary(
+    accountId: "ACC-001"
+    startDate: "2026-02-01"
+    endDate: "2026-02-28"
+  ) {
+    usageType
+    totalQuantity
+    totalAmount
+  }
+}
+</code></pre>
+
+<hr>
+
+<h2>GraphQL Schema Reference</h2>
+
+<h3>Enums</h3>
+
+<pre><code class="language-graphql">enum AccountStatus {
+  ACTIVE
+  SUSPENDED
+  CLOSED
+}
+
+enum OrderStatus {
+  CREATED
+  SUBMITTED
+  PROVISIONING_INITIATED
+  PROVISIONED
+  COMPLETED
+  CANCELLED
+}
+
+enum InvoiceStatus {
+  DRAFT
+  OPEN
+  PARTIALLY_PAID
+  PAID
+  CANCELLED
+  WRITTEN_OFF
+}
+
+enum PaymentMethod {
+  CREDIT_CARD
+  BANK_TRANSFER
+  CASH
+  CHECK
+  PAYPAL
+  APPLE_PAY
+}
+</code></pre>
+<h3>Input Types</h3>
+
+<pre><code class="language-graphql">input AccountInput {
+  accountName: String!
+  accountType: AccountType!
+  billingCycleDay: Int
+  currencyCode: String
+  status: AccountStatus
+  billingAddress: AddressInput
+  contacts: [ContactInput]
+}
+
+input OrderInput {
+  accountId: String!
+  orderType: OrderType!
+  orderDate: String
+  requestedActivationDate: String
+  serviceLines: [ServiceLineInput]!
+  bundleIds: [String]
+}
+
+input PaginationInput {
+  page: Int = 0
+  size: Int = 20
+}
+
+input SortInput {
+  field: String!
+  direction: SortDirection = ASC
+}
+</code></pre>
+
+<hr>
+
+<h2>Best Practices</h2>
+
+<h3>1. Use Variables</h3>
+
+✅ <strong>Good:</strong>
+<pre><code class="language-graphql">query GetAccount($id: String!) {
+  account(accountId: $id) { ... }
+}
+</code></pre>
+❌ <strong>Bad:</strong>
+<pre><code class="language-graphql">query {
+  account(accountId: "ACC-001") { ... }
+}
+</code></pre>
+<h3>2. Request Only Needed Fields</h3>
+
+✅ <strong>Good:</strong>
+<pre><code class="language-graphql">query {
+  account(accountId: "ACC-001") {
+    accountId
+    accountName
+  }
+}
+</code></pre>
+❌ <strong>Bad:</strong>
+<pre><code class="language-graphql">query {
+  account(accountId: "ACC-001") {
+    # Requesting all fields unnecessarily
+  }
+}
+</code></pre>
+<h3>3. Use Pagination</h3>
+
+✅ <strong>Good:</strong>
+<pre><code class="language-graphql">query {
+  searchAccounts(pagination: { page: 0, size: 20 }) {
+    content { ... }
+  }
+}
+</code></pre>
+❌ <strong>Bad:</strong>
+<pre><code class="language-graphql">query {
+  searchAccounts {  # Returns all records
+    content { ... }
+  }
+}
+</code></pre>
+<h3>4. Handle Errors Gracefully</h3>
+
+<pre><code class="language-javascript">const response = await fetch('/graphql', {
+  method: 'POST',
+  body: JSON.stringify({ query, variables }),
+  headers: { 'Content-Type': 'application/json' }
+});
+
+const { data, errors } = await response.json();
+
+if (errors) {
+  errors.forEach(error =&gt; {
+    console.error(`GraphQL Error: ${error.message}`);
+  });
+}
+</code></pre>
+
+<hr>
+
+<h2>Support</h2>
+
+<ul>
+<li><strong>GraphQL Playground</strong>: <code>http://localhost:8080/graphiql</code></li>
+<li><strong>Swagger UI</strong>: <code>http://localhost:8080/api/v1/swagger-ui.html</code></li>
+<li><strong>Documentation</strong>: <a href="docs/newcomer/README.md">Newcomer's Guide</a></li>
+<li><strong>Support</strong>: api-support@embrix.com</li>
+</ul>
+
+<hr>
+
+<strong>Last Updated</strong>: February 2026 • Version 3.1.9-SNAPSHOT</p>
+        <footer>
+            <p><strong>Embrix O2X Platform Documentation</strong></p>
+            <p>Version 3.1.9-SNAPSHOT • Last Updated: February 2026</p>
+        </footer>
+    </div>
+</body>
+</html>

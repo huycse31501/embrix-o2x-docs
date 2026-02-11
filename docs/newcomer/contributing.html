@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Embrix O2X Documentation Portal - Embrix O2X</title>
+    <title>🤝 Contributing Guide - Embrix O2X</title>
     
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -815,99 +815,716 @@
     <div class="container">
         <div class="nav-header"><div><h1>Embrix O2X Documentation</h1><small>Navigate between guides</small></div><div class="nav-links"><a href="index.html">Home</a><a href="guide-index.html">Guide Index</a><a href="guide-index.html">Part 1-5</a><a href="quick-start.html">Quick Start</a><a href="quick-reference.html">Quick Ref</a><a href="complete-system-overview.html">Architecture</a><a href="api-reference.html">API Reference</a><a href="troubleshooting-guide.html">Troubleshooting</a></div></div>
         
-<h1>Embrix O2X Knowledge Hub</h1>
+<h1>Contributing to Embrix O2X</h1>
 
-Welcome to the <strong>Embrix O2X Platform Knowledge Hub</strong> - your comprehensive guide to mastering our enterprise-grade Order-to-Cash management system.
+Thank you for your interest in contributing to Embrix O2X! This document provides guidelines and best practices for contributing to the project.
+
+<hr>
+
+<h2>Table of Contents</h2>
+
+<ol>
+<li><a href="#code-of-conduct">Code of Conduct</a></li>
+<li><a href="#getting-started">Getting Started</a></li>
+<li><a href="#development-workflow">Development Workflow</a></li>
+<li><a href="#coding-standards">Coding Standards</a></li>
+<li><a href="#testing-requirements">Testing Requirements</a></li>
+<li><a href="#pull-request-process">Pull Request Process</a></li>
+<li><a href="#commit-message-guidelines">Commit Message Guidelines</a></li>
+<li><a href="#documentation">Documentation</a></li>
+<li><a href="#code-review-guidelines">Code Review Guidelines</a></li>
+</ol>
+
+<hr>
+
+<h2>Code of Conduct</h2>
+
+<h3>Our Pledge</h3>
+
+We are committed to providing a welcoming and inspiring community for all. By participating in this project, you agree to abide by our Code of Conduct.
+<h3>Expected Behavior</h3>
+
+<ul>
+<li>Be respectful and inclusive</li>
+<li>Welcome newcomers and help them get started</li>
+<li>Accept constructive criticism gracefully</li>
+<li>Focus on what is best for the project and community</li>
+<li>Show empathy towards other community members</li>
+</ul>
+<h3>Unacceptable Behavior</h3>
+
+<ul>
+<li>Harassment, discrimination, or offensive comments</li>
+<li>Personal attacks or trolling</li>
+<li>Publishing others' private information</li>
+<li>Other conduct that could reasonably be considered inappropriate</li>
+</ul>
 
 <hr>
 
 <h2>Getting Started</h2>
 
-New to Embrix O2X? Start with these essential resources:
+<h3>Prerequisites</h3>
+
+Before you begin, ensure you have:
 <ul>
-<li><a href="quick-start.html">Quick Start Guide</a> - Get up and running quickly</li>
-<li><a href="guide-index.html">Complete Newcomer's Guide Index</a> - Your structured learning path</li>
-<li><a href="business-scenarios.html">Business Scenarios & Workflows</a> - Real-world use cases and examples</li>
+<li>Java 8 (JDK 1.8.0_181+)</li>
+<li>Maven 3.6+</li>
+<li>Docker & Docker Compose</li>
+<li>Git</li>
+<li>Your favorite IDE (IntelliJ IDEA recommended)</li>
+<li>Node.js 12+ (for frontend development)</li>
 </ul>
+<h3>Initial Setup</h3>
 
-<hr>
-
-<h2>Learning Path</h2>
-
-Follow this recommended sequence to master the platform:
 <ol>
-<li><a href="part1-business-architecture.html">Part 1: Business & Architecture</a> - Understand the business domain and high-level architecture</li>
-<li><a href="part2-technical-deep-dive.html">Part 2: Technical Deep Dive</a> - Explore technical architecture and design patterns</li>
-<li><a href="part3-services-development.html">Part 3: Services & Development</a> - Master microservices and backend development</li>
-<li><a href="part4-frontend-ui.html">Part 4: Frontend Applications & User Interfaces</a> - Learn UI architecture and frontend patterns</li>
-<li><a href="part5-message-queues.html">Part 5: Message Queue Architecture & Integration</a> - Understand async messaging and integration</li>
+<li><strong>Fork the repository:</strong><br><pre><code class="language-bash">   # Click "Fork" on GitHub
+   </code></pre></li>
+<li><strong>Clone your fork:</strong><br><pre><code class="language-bash">   git clone https://github.com/YOUR_USERNAME/embrix-o2x.git
+   cd embrix-o2x
+   </code></pre></li>
+<li><strong>Add upstream remote:</strong><br><pre><code class="language-bash">   git remote add upstream https://github.com/embrix/embrix-o2x.git
+   </code></pre></li>
+<li><strong>Set up infrastructure:</strong><br><pre><code class="language-bash">   # Start PostgreSQL, Redis, ActiveMQ, Vault
+   docker-compose up -d
+   </code></pre></li>
+<li><strong>Run database migrations:</strong><br><pre><code class="language-bash">   cd engine
+   mvn flyway:migrate -Dspring.profiles.active=dev
+   </code></pre></li>
+<li><strong>Build the project:</strong><br><pre><code class="language-bash">   # Build in correct order
+   cd common && mvn clean install
+   cd ../engine && mvn clean install
+   # ... continue with other modules
+   </code></pre></li>
+<li><strong>Run tests:</strong><br><pre><code class="language-bash">   mvn test
+   </code></pre></li>
 </ol>
 
 <hr>
 
-<h2>Architecture Documentation</h2>
+<h2>Development Workflow</h2>
 
-Deep dive into system architecture and design:
+<h3>Branch Naming Convention</h3>
+
+Use descriptive branch names that follow this pattern:
+<pre><code class="language-">&lt;type&gt;/&lt;ticket-number&gt;-&lt;short-description&gt;
+
+Examples:
+feature/EP-1234-add-usage-rating
+bugfix/EP-5678-fix-payment-allocation
+hotfix/EP-9012-urgent-invoice-fix
+refactor/EP-3456-simplify-billing-hub
+docs/EP-7890-update-api-documentation
+</code></pre>
+<strong>Types:</strong>
 <ul>
-<li><a href="complete-system-overview.html">Complete System Overview</a> - High-level system architecture and components</li>
-<li><a href="multi-tenant-architecture.html">Multi-Tenant Architecture</a> - Multi-tenancy design patterns and implementation</li>
-<li><a href="database-architecture.html">Database Architecture</a> - Data modeling, schema design, and database patterns</li>
-<li><a href="frontend-ui-architecture.html">Frontend & UI Architecture</a> - UI/UX patterns, components, and design system</li>
+<li><code>feature/</code> - New features</li>
+<li><code>bugfix/</code> - Bug fixes</li>
+<li><code>hotfix/</code> - Urgent production fixes</li>
+<li><code>refactor/</code> - Code refactoring</li>
+<li><code>docs/</code> - Documentation updates</li>
+<li><code>test/</code> - Test improvements</li>
+<li><code>chore/</code> - Build, CI/CD, or tooling changes</li>
+</ul>
+<h3>Typical Workflow</h3>
+
+<ol>
+<li><strong>Create a new branch:</strong><br><pre><code class="language-bash">   git checkout -b feature/EP-1234-add-usage-rating
+   </code></pre></li>
+<li><strong>Make your changes:</strong><br><ul><li>Write code following <a href="#coding-standards">coding standards</a></li></ul><br><ul><li>Add tests for new functionality</li></ul><br><ul><li>Update documentation as needed</li></ul></li>
+<li><strong>Commit your changes:</strong><br><pre><code class="language-bash">   git add .
+   git commit -m "feat(usage): add tiered rating for voice calls"
+   </code></pre></li>
+<li><strong>Keep your branch up to date:</strong><br><pre><code class="language-bash">   git fetch upstream
+   git rebase upstream/develop
+   </code></pre></li>
+<li><strong>Push to your fork:</strong><br><pre><code class="language-bash">   git push origin feature/EP-1234-add-usage-rating
+   </code></pre></li>
+<li><strong>Create a Pull Request:</strong><br><ul><li>Go to GitHub and create a PR</li></ul><br><ul><li>Fill out the PR template</li></ul><br><ul><li>Link to the relevant issue/ticket</li></ul></li>
+</ol>
+
+<hr>
+
+<h2>Coding Standards</h2>
+
+<h3>Groovy Style Guide</h3>
+
+<strong>Naming Conventions:</strong>
+<pre><code class="language-groovy">// Classes: PascalCase
+class CustomerHub { }
+
+// Methods: camelCase
+def processOrder() { }
+
+// Variables: camelCase
+def accountId = "ACC-001"
+
+// Constants: UPPER_SNAKE_CASE
+static final String DEFAULT_CURRENCY = "USD"
+
+// Private fields: camelCase with _ prefix
+private String _internalCache
+</code></pre>
+<strong>Formatting:</strong>
+<pre><code class="language-groovy">// Indentation: 4 spaces (not tabs)
+class BillingHub {
+    
+    // Space after keywords
+    if (condition) {
+        // code
+    }
+    
+    // Space around operators
+    def total = price + tax
+    
+    // No space before method call parentheses
+    def result = calculateTotal(amount, tax)
+    
+    // Space after commas
+    def list = [1, 2, 3]
+}
+</code></pre>
+<strong>Best Practices:</strong>
+<pre><code class="language-groovy">// Use def for local variables
+def accountName = "TechCorp"
+
+// Use explicit types for method parameters
+String findAccountById(String accountId) {
+    // ...
+}
+
+// Use @CompileStatic for performance-critical code
+@CompileStatic
+class UsageRatingService {
+    // ...
+}
+
+// Null safety
+def account = accountService.find(accountId)
+if (account != null) {
+    // safe to use
+}
+
+// Or use elvis operator
+def name = account?.accountName ?: "Unknown"
+</code></pre>
+<h3>Java Style Guide</h3>
+
+<strong>Naming:</strong>
+<pre><code class="language-java">// Classes: PascalCase
+public class PaymentService { }
+
+// Interfaces: PascalCase with "able" suffix or "I" prefix (avoid)
+public interface Billable { }
+
+// Methods: camelCase
+public void processPayment() { }
+
+// Constants: UPPER_SNAKE_CASE
+public static final int MAX_RETRIES = 3;
+</code></pre>
+<strong>Formatting:</strong>
+<pre><code class="language-java">// Braces on same line
+public class Account {
+    private String accountId;
+    
+    public String getAccountId() {
+        return accountId;
+    }
+}
+
+// Line length: 120 characters maximum
+// Use line breaks for long method chains
+String result = accountService
+    .findById(accountId)
+    .map(Account::getAccountName)
+    .orElse("Unknown");
+</code></pre>
+<h3>JOOQ Patterns</h3>
+
+<pre><code class="language-groovy">// Good: Select specific fields
+def accounts = dsl.select(
+    ACCOUNT.ACCOUNT_ID,
+    ACCOUNT.ACCOUNT_NAME,
+    ACCOUNT.STATUS
+)
+.from(ACCOUNT)
+.where(ACCOUNT.STATUS.eq(AccountStatus.ACTIVE))
+.fetch()
+
+// Good: Use type-safe conditions
+def condition = ACCOUNT.CREATED_DATE
+    .greaterOrEqual(startDate)
+    .and(ACCOUNT.CREATED_DATE.lessThan(endDate))
+
+// Good: Use fetch methods appropriately
+def singleAccount = dsl.selectFrom(ACCOUNT)
+    .where(ACCOUNT.ACCOUNT_ID.eq(accountId))
+    .fetchOne()  // Returns null if not found
+
+def accountList = dsl.selectFrom(ACCOUNT)
+    .where(ACCOUNT.STATUS.eq(AccountStatus.ACTIVE))
+    .fetch()  // Returns list (may be empty)
+</code></pre>
+<h3>GraphQL Schema Conventions</h3>
+
+<pre><code class="language-graphql"># Types: PascalCase
+type Account {
+    # Fields: camelCase
+    accountId: String!
+    accountName: String
+    status: AccountStatus!
+    
+    # Relations: camelCase (singular or plural)
+    subscriptions: [Subscription]
+    primaryContact: Contact
+}
+
+# Enums: PascalCase with UPPER_CASE values
+enum AccountStatus {
+    ACTIVE
+    SUSPENDED
+    CLOSED
+}
+
+# Mutations: verb + noun
+type Mutation {
+    createAccount(input: AccountInput!): Account
+    updateAccount(accountId: String!, input: AccountInput!): Account
+    deleteAccount(accountId: String!): Boolean
+}
+
+# Queries: noun or verb + noun
+type Query {
+    account(accountId: String!): Account
+    searchAccounts(filter: AccountFilter): AccountSearchResult
+}
+</code></pre>
+<h3>React/JavaScript Style Guide</h3>
+
+<pre><code class="language-javascript">// Components: PascalCase
+const AccountList = () =&gt; {
+    // Hooks at the top
+    const [accounts, setAccounts] = useState([]);
+    const dispatch = useDispatch();
+    
+    // Event handlers: handle + EventName
+    const handleAccountClick = (accountId) =&gt; {
+        // ...
+    };
+    
+    // Effects after state
+    useEffect(() =&gt; {
+        fetchAccounts();
+    }, []);
+    
+    return (
+        &lt;div className="account-list"&gt;
+            {accounts.map(account =&gt; (
+                &lt;AccountCard 
+                    key={account.accountId}
+                    account={account}
+                    onClick={handleAccountClick}
+                /&gt;
+            ))}
+        &lt;/div&gt;
+    );
+};
+
+// Props: camelCase, with PropTypes
+AccountCard.propTypes = {
+    account: PropTypes.object.isRequired,
+    onClick: PropTypes.func
+};
+</code></pre>
+
+<hr>
+
+<h2>Testing Requirements</h2>
+
+<h3>Test Coverage Targets</h3>
+
+<ul>
+<li><strong>Unit Tests</strong>: 75-85% coverage</li>
+<li><strong>Integration Tests</strong>: Critical paths covered</li>
+<li><strong>E2E Tests</strong>: Major user journeys</li>
+</ul>
+<h3>Unit Tests (Spock)</h3>
+
+<pre><code class="language-groovy">import spock.lang.Specification
+
+class BillingHubSpec extends Specification {
+    
+    BillingHub billingHub
+    AccountService accountService = Mock()
+    
+    def setup() {
+        billingHub = new BillingHub(accountService: accountService)
+    }
+    
+    def "should calculate prorated charge correctly"() {
+        given: "an account with mid-cycle subscription"
+        def account = new Account(accountId: "ACC-001")
+        def subscription = new Subscription(
+            startDate: LocalDate.of(2026, 2, 15),
+            monthlyCharge: 100.00
+        )
+        
+        when: "proration is calculated"
+        def proratedAmount = billingHub.calculateProration(
+            subscription, 
+            LocalDate.of(2026, 2, 1)
+        )
+        
+        then: "amount is prorated for partial month"
+        proratedAmount == 50.00  // 15 days out of 30
+        
+        and: "account service was called"
+        1 * accountService.find("ACC-001") &gt;&gt; account
+    }
+    
+    def "should throw exception when account not found"() {
+        given: "non-existent account"
+        accountService.find("ACC-999") &gt;&gt; null
+        
+        when: "billing is attempted"
+        billingHub.runBilling("ACC-999")
+        
+        then: "exception is thrown"
+        thrown(AccountNotFoundException)
+    }
+}
+</code></pre>
+<h3>Integration Tests</h3>
+
+<pre><code class="language-groovy">@SpringBootTest
+@Testcontainers
+class OrderProcessingIntegrationTest {
+    
+    @Container
+    static PostgreSQLContainer postgres = new PostgreSQLContainer("postgres:10.5")
+    
+    @Autowired
+    OrderProcessService orderProcessService
+    
+    @Autowired
+    DSLContext dsl
+    
+    @BeforeEach
+    void setup() {
+        // Clean test data
+        dsl.deleteFrom(ORDER).execute()
+    }
+    
+    @Test
+    void shouldProcessOrderEndToEnd() {
+        // given
+        def order = createTestOrder()
+        
+        // when
+        def result = orderProcessService.process(order)
+        
+        // then
+        assertThat(result.status).isEqualTo(OrderStatus.PROVISIONING_INITIATED)
+        
+        // verify database state
+        def dbOrder = dsl.selectFrom(ORDER)
+            .where(ORDER.ORDER_ID.eq(order.orderId))
+            .fetchOne()
+        assertThat(dbOrder).isNotNull()
+    }
+}
+</code></pre>
+<h3>Test Naming</h3>
+
+<pre><code class="language-groovy">// Pattern: should_expectedBehavior_when_stateUnderTest
+def "should calculate tax correctly when tax rate is 10 percent"() { }
+
+def "should throw exception when account is suspended"() { }
+
+def "should create subscription when order is completed"() { }
+</code></pre>
+<h3>Running Tests</h3>
+
+<pre><code class="language-bash"># All unit tests
+mvn test
+
+# Specific test class
+mvn test -Dtest=BillingHubSpec
+
+# Integration tests
+mvn verify -Pintegration-tests
+
+# Skip tests (use sparingly)
+mvn install -DskipTests
+</code></pre>
+
+<hr>
+
+<h2>Pull Request Process</h2>
+
+<h3>Before Submitting</h3>
+
+✅ <strong>Checklist:</strong>
+<ul>
+<li>[ ] Code follows style guidelines</li>
+<li>[ ] All tests pass (<code>mvn test</code>)</li>
+<li>[ ] New tests added for new features</li>
+<li>[ ] Documentation updated (if applicable)</li>
+<li>[ ] Commit messages follow guidelines</li>
+<li>[ ] Branch is up to date with <code>develop</code></li>
+<li>[ ] No merge conflicts</li>
+<li>[ ] Code has been self-reviewed</li>
+</ul>
+<h3>PR Title Format</h3>
+
+<pre><code class="language-">&lt;type&gt;(&lt;scope&gt;): &lt;short summary&gt;
+
+Examples:
+feat(billing): add tiered pricing support
+fix(payment): correct allocation logic for overpayment
+docs(api): update GraphQL schema documentation
+refactor(engine): simplify hub initialization
+test(usage): add integration tests for rating
+</code></pre>
+<h3>PR Description Template</h3>
+
+<pre><code class="language-markdown">## Description
+Brief description of what this PR does.
+
+## Related Issue
+Fixes #123
+Relates to EP-1234
+
+## Type of Change
+- [ ] Bug fix (non-breaking change which fixes an issue)
+- [ ] New feature (non-breaking change which adds functionality)
+- [ ] Breaking change (fix or feature that would cause existing functionality to not work as expected)
+- [ ] Documentation update
+
+## How Has This Been Tested?
+Describe the tests you ran to verify your changes.
+
+- [ ] Unit tests
+- [ ] Integration tests
+- [ ] Manual testing
+
+## Screenshots (if applicable)
+
+## Checklist
+- [ ] My code follows the style guidelines
+- [ ] I have performed a self-review
+- [ ] I have commented my code where necessary
+- [ ] I have updated the documentation
+- [ ] My changes generate no new warnings
+- [ ] I have added tests that prove my fix is effective or my feature works
+- [ ] New and existing unit tests pass locally
+- [ ] Any dependent changes have been merged
+</code></pre>
+<h3>Review Process</h3>
+
+<ol>
+<li><strong>Automated Checks:</strong><br><ul><li>Build must pass</li></ul><br><ul><li>Tests must pass</li></ul><br><ul><li>Code coverage must not decrease</li></ul></li>
+<li><strong>Code Review:</strong><br><ul><li>At least 1 approval required</li></ul><br><ul><li>All comments must be addressed</li></ul><br><ul><li>No unresolved conversations</li></ul></li>
+<li><strong>Merge:</strong><br><ul><li>Squash and merge (preferred)</li></ul><br><ul><li>Rebase and merge (for feature branches)</li></ul><br><ul><li>Create merge commit (for release branches)</li></ul></li>
+</ol>
+
+<hr>
+
+<h2>Commit Message Guidelines</h2>
+
+<h3>Format</h3>
+
+<pre><code class="language-">&lt;type&gt;(&lt;scope&gt;): &lt;subject&gt;
+
+&lt;body&gt;
+
+&lt;footer&gt;
+</code></pre>
+<h3>Types</h3>
+
+<ul>
+<li><code>feat</code>: New feature</li>
+<li><code>fix</code>: Bug fix</li>
+<li><code>docs</code>: Documentation changes</li>
+<li><code>style</code>: Formatting changes (no code change)</li>
+<li><code>refactor</code>: Code refactoring</li>
+<li><code>perf</code>: Performance improvements</li>
+<li><code>test</code>: Adding or updating tests</li>
+<li><code>chore</code>: Build process or tooling changes</li>
+<li><code>revert</code>: Reverting a previous commit</li>
+</ul>
+<h3>Scopes</h3>
+
+<ul>
+<li><code>billing</code> - Billing operations</li>
+<li><code>invoice</code> - Invoice generation</li>
+<li><code>payment</code> - Payment processing</li>
+<li><code>usage</code> - Usage tracking and rating</li>
+<li><code>order</code> - Order management</li>
+<li><code>account</code> - Account management</li>
+<li><code>pricing</code> - Product catalog and pricing</li>
+<li><code>revenue</code> - Revenue recognition</li>
+<li><code>gateway</code> - Gateway integrations</li>
+<li><code>api</code> - API changes</li>
+<li><code>db</code> - Database changes</li>
+<li><code>config</code> - Configuration changes</li>
+</ul>
+<h3>Examples</h3>
+
+<pre><code class="language-">feat(billing): add support for tiered pricing
+
+Implement tiered pricing model that supports:
+- Volume-based discounts
+- Graduated pricing tiers
+- Retroactive discount application
+
+Closes EP-1234
+
+---
+
+fix(payment): correct allocation logic for overpayments
+
+Previously, overpayments were not creating credit balances correctly.
+This fix ensures excess payment amount is added to account credit.
+
+Fixes EP-5678
+
+---
+
+docs(api): update GraphQL schema documentation
+
+Add examples for payment processing mutations and improve
+descriptions for invoice queries.
+</code></pre>
+
+<hr>
+
+<h2>Documentation</h2>
+
+<h3>When to Update Documentation</h3>
+
+Update documentation when you:
+<ul>
+<li>Add new features</li>
+<li>Change existing functionality</li>
+<li>Add new API endpoints</li>
+<li>Modify database schema</li>
+<li>Change configuration</li>
+<li>Fix important bugs</li>
+</ul>
+<h3>Documentation Types</h3>
+
+<ol>
+<li><strong>Code Comments:</strong><br><pre><code class="language-groovy">   /**
+    * Calculates prorated charges for mid-cycle subscription changes.
+    *
+    * @param subscription The subscription being prorated
+    * @param effectiveDate The date the change takes effect
+    * @return The prorated amount
+    * @throws IllegalArgumentException if effectiveDate is in the past
+    */
+   BigDecimal calculateProration(Subscription subscription, LocalDate effectiveDate) {
+       // ...
+   }
+   </code></pre></li>
+<li><strong>README Files:</strong><br><ul><li>Each module should have a README</li></ul><br><ul><li>Explain module purpose and usage</li></ul><br><ul><li>Include examples</li></ul></li>
+<li><strong>API Documentation:</strong><br><ul><li>Update GraphQL schema comments</li></ul><br><ul><li>Add examples to API_REFERENCE.md</li></ul><br><ul><li>Update Swagger annotations for REST APIs</li></ul></li>
+<li><strong>Architecture Documentation:</strong><br><ul><li>Update COMPREHENSIVE_ARCHITECTURE.md for major changes</li></ul><br><ul><li>Update diagrams when architecture changes</li></ul><br><ul><li>Keep NEWCOMER_GUIDE files current</li></ul></li>
+</ol>
+
+<hr>
+
+<h2>Code Review Guidelines</h2>
+
+<h3>For Authors</h3>
+
+<ul>
+<li>Keep PRs small and focused (< 400 lines if possible)</li>
+<li>Provide context in PR description</li>
+<li>Respond to feedback promptly</li>
+<li>Don't take feedback personally</li>
+</ul>
+<h3>For Reviewers</h3>
+
+<ul>
+<li>Be respectful and constructive</li>
+<li>Focus on the code, not the person</li>
+<li>Explain reasoning behind suggestions</li>
+<li>Approve when code meets standards</li>
+</ul>
+<h3>What to Look For</h3>
+
+<ul>
+<li><strong>Correctness</strong>: Does the code do what it's supposed to?</li>
+<li><strong>Testing</strong>: Are there adequate tests?</li>
+<li><strong>Design</strong>: Is the design sound?</li>
+<li><strong>Readability</strong>: Is the code easy to understand?</li>
+<li><strong>Performance</strong>: Are there performance concerns?</li>
+<li><strong>Security</strong>: Are there security vulnerabilities?</li>
+</ul>
+<h3>Review Checklist</h3>
+
+<ul>
+<li>[ ] Code follows style guidelines</li>
+<li>[ ] Logic is correct and handles edge cases</li>
+<li>[ ] Tests are comprehensive</li>
+<li>[ ] No obvious performance issues</li>
+<li>[ ] No security vulnerabilities</li>
+<li>[ ] Documentation is updated</li>
+<li>[ ] Error handling is appropriate</li>
+<li>[ ] Logging is appropriate</li>
+<li>[ ] No hardcoded values (use config)</li>
 </ul>
 
 <hr>
 
-<h2>System Reference</h2>
+<h2>Additional Resources</h2>
 
-Comprehensive documentation of all system components:
+<h3>Documentation</h3>
+
 <ul>
-<li><a href="complete-system-documentation.html">Complete System Documentation</a> - Full system documentation</li>
-<li><a href="complete-system-inventory.html">Complete System Inventory</a> - All components, services, and dependencies</li>
-<li><a href="complete-services-catalog.html">Complete Services Catalog</a> - Detailed service descriptions and APIs</li>
+<li><a href="docs/newcomer/README.md">Newcomer's Guide</a></li>
+<li><a href="API_REFERENCE.md">API Reference</a></li>
+<li><a href="context/COMPREHENSIVE_ARCHITECTURE.md">Architecture Guide</a></li>
+<li><a href="TROUBLESHOOTING_GUIDE.md">Troubleshooting</a></li>
+</ul>
+<h3>Tools</h3>
+
+<ul>
+<li><strong>IDE</strong>: IntelliJ IDEA (recommended)</li>
+<li><strong>Code Formatter</strong>: Use project .editorconfig</li>
+<li><strong>Git Client</strong>: Command line or GitKraken</li>
+<li><strong>Database Client</strong>: DBeaver or pgAdmin</li>
+</ul>
+<h3>Communication</h3>
+
+<ul>
+<li><strong>Slack</strong>: #embrix-development</li>
+<li><strong>Email</strong>: dev-team@embrix.com</li>
+<li><strong>Stand-ups</strong>: Daily at 9:00 AM</li>
+<li><strong>Sprint Planning</strong>: Every 2 weeks</li>
 </ul>
 
 <hr>
 
-<h2>Development Resources</h2>
+<h2>Questions?</h2>
 
-Essential resources for developers:
+If you have questions about contributing:
 <ul>
-<li><a href="api-reference.html">API Reference</a> - Complete REST API documentation</li>
-<li><a href="frontend-guide.html">Frontend Development Guide</a> - Frontend development best practices</li>
-<li><a href="quick-reference.html">Quick Reference Guide</a> - Commands, snippets, and quick tips</li>
-<li><a href="contributing.html">Contributing Guide</a> - How to contribute to the project</li>
+<li>Check the <a href="TROUBLESHOOTING_GUIDE.md">Troubleshooting Guide</a></li>
+<li>Ask in #embrix-development Slack channel</li>
+<li>Email dev-team@embrix.com</li>
+<li>Create a GitHub discussion</li>
 </ul>
 
 <hr>
 
-<h2>Troubleshooting & Support</h2>
-
-Get help when you need it:
-<ul>
-<li><a href="troubleshooting-guide.html">Troubleshooting Guide</a> - Common issues and solutions</li>
-<li><a href="glossary.html">Glossary of Terms</a> - Technical terminology and definitions</li>
-</ul>
+<strong>Thank you for contributing to Embrix O2X!</strong> 🎉
 
 <hr>
 
-<h2>Platform Information</h2>
-
-<strong>Version:</strong> 3.1.9-SNAPSHOT  
-<strong>Last Updated:</strong> February 2026  
-<strong>Technology Stack:</strong> Spring Boot, React, PostgreSQL, RabbitMQ, Redis  
-<strong>Architecture:</strong> Microservices, Multi-tenant, Event-driven
-<div class="metadata-field"><strong>Key Features:</strong> </div>
-<ul>
-<li>Multi-tenant SaaS platform</li>
-<li>Comprehensive Order-to-Cash workflow</li>
-<li>Real-time event processing</li>
-<li>Advanced pricing and taxation engines</li>
-<li>Self-service portal and admin interfaces</li>
-</ul>
-
-<hr>
-
-Happy learning! Start your journey with the <a href="guide-index.html">Complete Newcomer's Guide Index</a>.</p>
+<strong>Last Updated</strong>: February 2026 • Version 3.1.9-SNAPSHOT</p>
         <footer>
             <p><strong>Embrix O2X Platform Documentation</strong></p>
             <p>Version 3.1.9-SNAPSHOT • Last Updated: February 2026</p>

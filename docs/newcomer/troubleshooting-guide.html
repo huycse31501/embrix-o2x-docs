@@ -1,0 +1,1954 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🔧 Troubleshooting Guide - Embrix O2X</title>
+    
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+        font-size: 16px;
+        line-height: 1.7;
+        color: #1f2937;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+        background-attachment: fixed;
+        padding: 20px;
+        min-height: 100vh;
+    }
+
+    .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        background: rgba(255, 255, 255, 0.98);
+        padding: 40px 50px;
+        border-radius: 24px;
+        box-shadow: 0 20px 60px rgba(0,0,0,0.2), 0 0 100px rgba(102, 126, 234, 0.3);
+        position: relative;
+        overflow: hidden;
+        backdrop-filter: blur(10px);
+    }
+
+    .container::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 8px;
+        background: linear-gradient(90deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+        box-shadow: 0 2px 10px rgba(102, 126, 234, 0.5);
+    }
+    
+    .container::after {
+        content: '';
+        position: absolute;
+        top: -50%;
+        right: -10%;
+        width: 40%;
+        height: 200%;
+        background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, transparent 100%);
+        transform: rotate(-15deg);
+        pointer-events: none;
+    }
+
+    .nav-header {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+        color: white;
+        padding: 25px 30px;
+        border-radius: 20px;
+        margin-bottom: 35px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3), inset 0 1px 0 rgba(255,255,255,0.2);
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .nav-header::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        right: -20%;
+        width: 40%;
+        height: 200%;
+        background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, transparent 100%);
+        transform: rotate(-15deg);
+    }
+
+    .nav-header h1 {
+        font-size: 1.5em;
+        margin-bottom: 5px;
+        font-weight: 700;
+        text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        position: relative;
+        z-index: 1;
+    }
+
+    .nav-links {
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+        position: relative;
+        z-index: 1;
+    }
+
+    .nav-links a {
+        color: white;
+        text-decoration: none;
+        padding: 10px 18px;
+        background: rgba(255,255,255,0.15);
+        border-radius: 10px;
+        transition: all 0.3s ease;
+        font-weight: 500;
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255,255,255,0.2);
+        font-size: 0.9em;
+    }
+    
+    .nav-links a::after {
+        display: none;
+    }
+
+    .nav-links a:hover {
+        background: white;
+        color: #667eea;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+
+    h1 {
+        color: white;
+        margin: 35px 0 25px 0;
+        padding: 20px 25px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        font-size: 1.9em;
+        font-weight: 700;
+        border-radius: 16px;
+        box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3), 0 0 60px rgba(102, 126, 234, 0.1);
+        border: 3px solid rgba(255, 255, 255, 0.2);
+        position: relative;
+        overflow: hidden;
+        transform: translateY(0);
+        transition: all 0.3s ease;
+    }
+    
+    h1::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+        transition: left 0.5s;
+    }
+    
+    h1:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 12px 35px rgba(102, 126, 234, 0.4), 0 0 80px rgba(102, 126, 234, 0.15);
+    }
+    
+    h1:hover::before {
+        left: 100%;
+    }
+
+    h2 {
+        color: #764ba2;
+        margin: 30px 0 20px 0;
+        padding: 16px 20px;
+        background: linear-gradient(135deg, rgba(118, 75, 162, 0.08) 0%, rgba(240, 147, 251, 0.08) 100%);
+        border-left: 6px solid #764ba2;
+        border-radius: 12px;
+        font-size: 1.6em;
+        font-weight: 700;
+        box-shadow: 0 4px 15px rgba(118, 75, 162, 0.15);
+        position: relative;
+        transition: all 0.3s ease;
+    }
+    
+    h2::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 0;
+        height: 3px;
+        background: linear-gradient(90deg, #764ba2 0%, #f093fb 100%);
+        transition: width 0.4s ease;
+    }
+    
+    h2:hover {
+        transform: translateX(5px);
+        box-shadow: 0 6px 20px rgba(118, 75, 162, 0.25);
+    }
+    
+    h2:hover::after {
+        width: 100%;
+    }
+
+    h3 {
+        color: #667eea;
+        margin: 25px 0 15px 0;
+        padding: 14px 18px;
+        background: white;
+        border: 2px solid #667eea;
+        border-radius: 10px;
+        font-size: 1.3em;
+        font-weight: 600;
+        box-shadow: 0 3px 10px rgba(102, 126, 234, 0.1);
+        transition: all 0.3s ease;
+    }
+    
+    h3:hover {
+        background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, transparent 100%);
+        border-color: #764ba2;
+        transform: translateX(3px);
+        box-shadow: 0 5px 15px rgba(102, 126, 234, 0.2);
+    }
+
+    h4 {
+        color: #764ba2;
+        margin: 20px 0 12px 0;
+        padding: 6px 0 6px 10px;
+        border-left: 2px solid #764ba2;
+        background: linear-gradient(90deg, rgba(118, 75, 162, 0.03) 0%, transparent 100%);
+        font-size: 1.1em;
+        font-weight: 600;
+        border-radius: 0 4px 4px 0;
+    }
+
+    h5 {
+        color: #667eea;
+        margin: 18px 0 10px 0;
+        padding: 4px 0 4px 8px;
+        border-left: 2px solid #667eea;
+        font-size: 1.05em;
+        font-weight: 600;
+        background: linear-gradient(90deg, rgba(102, 126, 234, 0.02) 0%, transparent 100%);
+        border-radius: 0 3px 3px 0;
+    }
+
+    h6 {
+        color: #764ba2;
+        margin: 15px 0 8px 0;
+        font-size: 0.95em;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    p {
+        margin: 16px 0;
+        line-height: 1.8;
+        font-size: 1em;
+        color: #374151;
+    }
+    
+    /* Better spacing for paragraphs after headings */
+    h1 + p, h2 + p, h3 + p, h4 + p {
+        margin-top: 12px;
+    }
+    
+    /* First paragraph after heading gets special treatment */
+    h1 + p, h2 + p {
+        font-size: 1.05em;
+        color: #4b5563;
+        font-weight: 400;
+    }
+
+    ul, ol {
+        margin: 20px 0;
+        padding-left: 15px;
+        list-style: none;
+    }
+
+    li {
+        margin: 12px 0;
+        line-height: 1.7;
+        font-size: 0.95em;
+        position: relative;
+        padding: 14px 18px 14px 50px;
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        border-left: 4px solid #667eea;
+        transition: all 0.3s ease;
+    }
+    
+    ul li::before {
+        content: '▸';
+        position: absolute;
+        left: 18px;
+        color: white;
+        font-weight: bold;
+        font-size: 1.3em;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        width: 24px;
+        height: 24px;
+        border-radius: 6px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        line-height: 1;
+        box-shadow: 0 2px 6px rgba(102, 126, 234, 0.3);
+    }
+    
+    ol {
+        counter-reset: item;
+    }
+    
+    ol li::before {
+        content: counter(item);
+        counter-increment: item;
+        position: absolute;
+        left: 18px;
+        color: white;
+        font-weight: 700;
+        font-size: 0.9em;
+        background: linear-gradient(135deg, #764ba2 0%, #f093fb 100%);
+        width: 24px;
+        height: 24px;
+        border-radius: 6px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 2px 6px rgba(118, 75, 162, 0.3);
+    }
+
+    li:hover {
+        transform: translateX(5px);
+        box-shadow: 0 4px 15px rgba(102, 126, 234, 0.15);
+        border-left-width: 6px;
+        background: linear-gradient(90deg, rgba(102, 126, 234, 0.03) 0%, white 100%);
+    }
+
+    /* Nested lists */
+    li ul, li ol {
+        margin: 12px 0 8px 0;
+        padding-left: 10px;
+    }
+
+    /* Nested list items - smaller styling */
+    li li {
+        font-size: 0.92em;
+        margin: 8px 0;
+        padding: 10px 14px 10px 40px;
+        box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+        border-left-color: #764ba2;
+    }
+    
+    li li::before {
+        width: 20px;
+        height: 20px;
+        font-size: 0.85em;
+        left: 12px;
+    }
+
+    li li:hover {
+        border-left-color: #f093fb;
+    }
+
+    code {
+        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        padding: 2px 6px;
+        border-radius: 4px;
+        font-family: 'Fira Code', 'Courier New', Consolas, monospace;
+        font-size: 0.85em;
+        color: #d63384;
+        border: 1px solid #dee2e6;
+        font-weight: 500;
+    }
+
+    /* Inline code with special highlighting */
+    p code, li code, td code {
+        position: relative;
+    }
+
+    p code::before, li code::before, td code::before {
+        content: '';
+        position: absolute;
+        inset: -2px;
+        border-radius: 5px;
+        background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+        z-index: -1;
+        opacity: 0;
+        transition: opacity 0.2s;
+    }
+
+    p code:hover::before, li code:hover::before, td code:hover::before {
+        opacity: 1;
+    }
+
+    pre {
+        background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+        color: #e2e8f0;
+        padding: 24px;
+        border-radius: 16px;
+        overflow-x: auto;
+        margin: 25px 0;
+        border: 2px solid #334155;
+        box-shadow: 0 8px 25px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.05);
+        font-family: 'Cascadia Code', 'Fira Code', 'SF Mono', 'Consolas', 'Liberation Mono', monospace;
+        font-size: 0.88em;
+        line-height: 1.7;
+        position: relative;
+        font-feature-settings: "liga" 0;
+        text-rendering: optimizeLegibility;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+    }
+    
+    pre::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 35px;
+        background: linear-gradient(135deg, rgba(102, 126, 234, 0.15) 0%, rgba(118, 75, 162, 0.15) 100%);
+        border-radius: 14px 14px 0 0;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    pre code {
+        background: none;
+        color: inherit;
+        padding: 0;
+        border: none;
+        font-family: inherit;
+        font-weight: normal;
+        font-size: 1em;
+        display: block;
+        padding-top: 35px;
+    }
+    
+    /* Ensure consistent styling for all code content inside pre blocks */
+    pre code * {
+        font-size: inherit !important;
+        line-height: inherit !important;
+        color: inherit !important;
+        font-family: inherit !important;
+    }
+
+    /* Hover effect */
+    pre:hover {
+        border-color: #667eea;
+        box-shadow: 0 12px 35px rgba(0,0,0,0.4), 0 0 0 2px rgba(102, 126, 234, 0.2);
+        transform: translateY(-2px);
+        transition: all 0.3s ease;
+    }
+
+    /* Code block header indicator with dots */
+    pre::after {
+        content: '';
+        position: absolute;
+        top: 14px;
+        left: 16px;
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        background: #ff5f56;
+        box-shadow: 20px 0 0 #ffbd2e, 40px 0 0 #27c93f;
+    }
+
+    blockquote {
+        border-left: 6px solid #667eea;
+        padding: 22px 28px 22px 60px;
+        margin: 25px 0;
+        color: #555;
+        font-style: italic;
+        font-size: 1em;
+        background: linear-gradient(135deg, rgba(102, 126, 234, 0.08) 0%, rgba(240, 147, 251, 0.05) 100%);
+        border-radius: 16px;
+        position: relative;
+        box-shadow: 0 4px 15px rgba(102, 126, 234, 0.1);
+        transition: all 0.3s ease;
+    }
+
+    blockquote::before {
+        content: '"';
+        position: absolute;
+        left: 18px;
+        top: 50%;
+        transform: translateY(-50%);
+        font-size: 3em;
+        color: rgba(102, 126, 234, 0.2);
+        font-family: Georgia, serif;
+        font-weight: 700;
+        line-height: 1;
+    }
+    
+    blockquote:hover {
+        border-left-color: #764ba2;
+        transform: translateX(5px);
+        box-shadow: 0 6px 20px rgba(102, 126, 234, 0.2);
+    }
+
+    table {
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 0;
+        margin: 25px 0;
+        box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+        border-radius: 16px;
+        overflow: hidden;
+        background: white;
+        font-size: 0.9em;
+        border: 2px solid rgba(102, 126, 234, 0.1);
+    }
+
+    thead {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        position: relative;
+    }
+    
+    thead::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 3px;
+        background: linear-gradient(90deg, #f093fb 0%, transparent 50%, #f093fb 100%);
+    }
+
+    th {
+        color: white;
+        padding: 16px 18px;
+        text-align: left;
+        font-weight: 700;
+        text-transform: uppercase;
+        font-size: 0.8em;
+        letter-spacing: 0.5px;
+        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+    }
+
+    td {
+        padding: 14px 18px;
+        border-bottom: 1px solid rgba(102, 126, 234, 0.08);
+        vertical-align: top;
+        line-height: 1.6;
+        transition: all 0.2s ease;
+    }
+
+    tbody tr:last-child td {
+        border-bottom: none;
+    }
+
+    tbody tr {
+        transition: all 0.3s ease;
+    }
+
+    tbody tr:hover {
+        background: linear-gradient(90deg, rgba(102, 126, 234, 0.08) 0%, rgba(240, 147, 251, 0.05) 100%);
+        transform: scale(1.01);
+        box-shadow: inset 4px 0 0 #667eea;
+    }
+
+    tbody tr:nth-child(even) {
+        background: rgba(102, 126, 234, 0.02);
+    }
+
+    tbody tr:nth-child(even):hover {
+        background: linear-gradient(90deg, rgba(102, 126, 234, 0.08) 0%, rgba(240, 147, 251, 0.05) 100%);
+    }
+    
+    /* Better code in tables */
+    td code {
+        font-size: 0.85em;
+        padding: 3px 7px;
+    }
+
+    .info-box {
+        background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+        border: 3px solid #2196f3;
+        padding: 24px;
+        margin: 30px 0;
+        border-radius: 16px;
+        box-shadow: 0 8px 25px rgba(33, 150, 243, 0.25);
+        position: relative;
+        overflow: hidden;
+        transition: all 0.3s ease;
+    }
+    
+    .info-box::before {
+        content: 'ℹ️';
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        font-size: 2em;
+        opacity: 0.3;
+    }
+    
+    .info-box:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 12px 35px rgba(33, 150, 243, 0.35);
+    }
+
+    .warning-box {
+        background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%);
+        border: 3px solid #ff9800;
+        padding: 24px;
+        margin: 30px 0;
+        border-radius: 16px;
+        box-shadow: 0 8px 25px rgba(255, 152, 0, 0.25);
+        position: relative;
+        overflow: hidden;
+        transition: all 0.3s ease;
+    }
+    
+    .warning-box::before {
+        content: '⚠️';
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        font-size: 2em;
+        opacity: 0.3;
+    }
+    
+    .warning-box:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 12px 35px rgba(255, 152, 0, 0.35);
+    }
+
+    .success-box {
+        background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+        border: 3px solid #4caf50;
+        padding: 24px;
+        margin: 30px 0;
+        border-radius: 16px;
+        box-shadow: 0 8px 25px rgba(76, 175, 80, 0.25);
+        position: relative;
+        overflow: hidden;
+        transition: all 0.3s ease;
+    }
+    
+    .success-box::before {
+        content: '✅';
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        font-size: 2em;
+        opacity: 0.3;
+    }
+    
+    .success-box:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 12px 35px rgba(76, 175, 80, 0.35);
+    }
+
+    /* Better colors for syntax in diagrams */
+    pre {
+        /* Box drawing characters in nice blue */
+        color: #93c5fd;
+    }
+
+    /* JSON/code syntax in pre blocks */
+    pre {
+        white-space: pre;
+        word-wrap: normal;
+    }
+
+    .toc {
+        background: #f8f9fa;
+        padding: 20px;
+        border-radius: 8px;
+        margin: 20px 0;
+        border-left: 4px solid #667eea;
+    }
+
+    .toc h2 {
+        color: #667eea;
+        border-bottom: none;
+        margin-bottom: 15px;
+    }
+
+    .toc ul {
+        list-style: none;
+        padding-left: 0;
+    }
+
+    .toc li {
+        margin: 8px 0;
+    }
+
+    .toc a {
+        color: #667eea;
+        text-decoration: none;
+        transition: color 0.3s;
+    }
+
+    .toc a:hover {
+        color: #764ba2;
+    }
+
+    hr {
+        border: none;
+        border-top: 2px solid #f0f0f0;
+        margin: 30px 0;
+    }
+
+    .badge {
+        display: inline-block;
+        background: #667eea;
+        color: white;
+        padding: 4px 10px;
+        border-radius: 12px;
+        font-size: 0.85em;
+        margin-left: 10px;
+    }
+
+    a {
+        color: #667eea;
+        text-decoration: none;
+        position: relative;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        padding: 2px 0;
+    }
+    
+    a::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 0;
+        height: 2px;
+        background: linear-gradient(90deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+        transition: width 0.3s ease;
+    }
+
+    a:hover {
+        color: #764ba2;
+    }
+    
+    a:hover::after {
+        width: 100%;
+    }
+    
+    /* Better display for metadata fields */
+    strong {
+        color: #374151;
+        font-weight: 600;
+    }
+    
+    /* Metadata field styling - each field on its own line */
+    .metadata-field {
+        margin: 8px 0;
+        padding: 8px 14px;
+        background: linear-gradient(90deg, rgba(102, 126, 234, 0.04) 0%, transparent 100%);
+        border-left: 3px solid #667eea;
+        border-radius: 0 4px 4px 0;
+        line-height: 1.7;
+        font-size: 0.95em;
+        display: block;
+        clear: both;
+    }
+    
+    .metadata-field strong {
+        color: #667eea;
+        font-weight: 600;
+        margin-right: 8px;
+        display: inline-block;
+        min-width: 100px;
+    }
+    
+    .metadata-field code {
+        font-size: 0.88em;
+    }
+
+    footer {
+        margin-top: 50px;
+        padding-top: 30px;
+        border-top: 2px solid #f0f0f0;
+        text-align: center;
+        color: #888;
+    }
+
+    @media print {
+        body {
+            background: white;
+        }
+        .nav-header, .nav-links {
+            display: none;
+        }
+        pre {
+            break-inside: avoid;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .container {
+            padding: 20px;
+        }
+        .nav-header {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+        .nav-links {
+            margin-top: 15px;
+        }
+        h1 {
+            font-size: 2em;
+        }
+        h2 {
+            font-size: 1.5em;
+        }
+    }
+</style>
+
+</head>
+<body>
+    <div class="container">
+        <div class="nav-header"><div><h1>Embrix O2X Documentation</h1><small>Navigate between guides</small></div><div class="nav-links"><a href="index.html">Home</a><a href="guide-index.html">Guide Index</a><a href="guide-index.html">Part 1-5</a><a href="quick-start.html">Quick Start</a><a href="quick-reference.html">Quick Ref</a><a href="complete-system-overview.html">Architecture</a><a href="api-reference.html">API Reference</a><a href="troubleshooting-guide.html">Troubleshooting</a></div></div>
+        
+<h1>Embrix O2X - Troubleshooting Guide</h1>
+
+<strong>Version</strong>: 3.1.9-SNAPSHOT  
+<strong>Last Updated</strong>: February 2026  
+<strong>Purpose</strong>: Solutions to common issues and debugging strategies
+
+<hr>
+
+<h2>Table of Contents</h2>
+
+<ol>
+<li><a href="#build-and-compilation-issues">Build and Compilation Issues</a></li>
+<li><a href="#database-connection-problems">Database Connection Problems</a></li>
+<li><a href="#service-startup-failures">Service Startup Failures</a></li>
+<li><a href="#activemq-and-messaging-issues">ActiveMQ and Messaging Issues</a></li>
+<li><a href="#graphql-api-errors">GraphQL API Errors</a></li>
+<li><a href="#vault-and-secrets-management">Vault and Secrets Management</a></li>
+<li><a href="#performance-issues">Performance Issues</a></li>
+<li><a href="#multi-tenant-configuration-problems">Multi-Tenant Configuration Problems</a></li>
+<li><a href="#frontend-issues">Frontend Issues</a></li>
+<li><a href="#deployment-and-infrastructure">Deployment and Infrastructure</a></li>
+<li><a href="#testing-failures">Testing Failures</a></li>
+<li><a href="#debugging-tools-and-techniques">Debugging Tools and Techniques</a></li>
+</ol>
+
+<hr>
+
+<h2>Build and Compilation Issues</h2>
+
+<h3>Issue: Maven Build Fails with Dependency Errors</h3>
+
+<strong>Symptoms:</strong>
+<pre><code class="language-">[ERROR] Failed to execute goal on project service-billing: 
+Could not resolve dependencies for project com.embrix.core:service-billing:jar:3.1.9-SNAPSHOT
+</code></pre>
+<strong>Causes:</strong>
+<ul>
+<li>Modules built in wrong order</li>
+<li>Missing artifacts in local Maven repository</li>
+<li>Version mismatch between modules</li>
+</ul>
+<strong>Solutions:</strong>
+<ol>
+<li><strong>Build in correct order:</strong></li>
+</ol>
+<pre><code class="language-bash"># Foundation first
+cd common && mvn clean install
+cd ../engine && mvn clean install
+cd ../gateway-common && mvn clean install
+cd ../oms-component && mvn clean install
+cd ../jobs-common && mvn clean install
+
+# Then services
+cd ../core/service-billing && mvn clean install
+</code></pre>
+<ol>
+<li><strong>Clean Maven cache:</strong></li>
+</ol>
+<pre><code class="language-bash">mvn dependency:purge-local-repository
+mvn clean install
+</code></pre>
+<ol>
+<li><strong>Check version consistency:</strong></li>
+</ol>
+<pre><code class="language-bash"># Verify all modules use same version
+grep -r "3.1.9-SNAPSHOT" pom.xml
+</code></pre>
+
+<hr>
+
+<h3>Issue: Groovy Compilation Errors</h3>
+
+<strong>Symptoms:</strong>
+<pre><code class="language-">[ERROR] Failed to execute goal org.codehaus.gmavenplus:gmavenplus-plugin:1.6:compile
+</code></pre>
+<strong>Causes:</strong>
+<ul>
+<li>Groovy version mismatch</li>
+<li>Mixed Java/Groovy source issues</li>
+<li>IDE and Maven using different Groovy versions</li>
+</ul>
+<strong>Solutions:</strong>
+<ol>
+<li><strong>Verify Groovy version:</strong></li>
+</ol>
+<pre><code class="language-xml">&lt;groovy.version&gt;2.4.15&lt;/groovy.version&gt;
+</code></pre>
+<ol>
+<li><strong>Clean and rebuild:</strong></li>
+</ol>
+<pre><code class="language-bash">mvn clean compile -U
+</code></pre>
+<ol>
+<li><strong>Check IDE Groovy plugin:</strong></li>
+</ol>
+<ul>
+<li>IntelliJ: Settings → Plugins → Groovy (ensure version 2.4.15)</li>
+<li>Eclipse: Install Groovy Eclipse plugin</li>
+</ul>
+
+<hr>
+
+<h3>Issue: JOOQ Code Generation Fails</h3>
+
+<strong>Symptoms:</strong>
+<pre><code class="language-">[ERROR] Error while generating jOOQ code: 
+org.jooq.exception.DataAccessException: SQL [SELECT ...]; ERROR: relation "account" does not exist
+</code></pre>
+<strong>Causes:</strong>
+<ul>
+<li>Database not initialized</li>
+<li>Flyway migrations not run</li>
+<li>Wrong database connection</li>
+</ul>
+<strong>Solutions:</strong>
+<ol>
+<li><strong>Run Flyway migrations first:</strong></li>
+</ol>
+<pre><code class="language-bash">mvn flyway:migrate -Dspring.profiles.active=dev
+</code></pre>
+<ol>
+<li><strong>Verify database connection:</strong></li>
+</ol>
+<pre><code class="language-bash">psql -U omsadmin -d omsdevdb -c "\dt"
+</code></pre>
+<ol>
+<li><strong>Generate JOOQ code:</strong></li>
+</ol>
+<pre><code class="language-bash">cd engine
+mvn clean compile -Pjooq-codegen
+</code></pre>
+
+<hr>
+
+<h2>Database Connection Problems</h2>
+
+<h3>Issue: Cannot Connect to PostgreSQL</h3>
+
+<strong>Symptoms:</strong>
+<pre><code class="language-">org.postgresql.util.PSQLException: Connection to localhost:5432 refused
+</code></pre>
+<strong>Solutions:</strong>
+<ol>
+<li><strong>Verify PostgreSQL is running:</strong></li>
+</ol>
+<pre><code class="language-bash">docker ps | grep postgres
+</code></pre>
+<ol>
+<li><strong>Start PostgreSQL if not running:</strong></li>
+</ol>
+<pre><code class="language-bash">docker run -d --name postgres \
+  -p 5432:5432 \
+  -e POSTGRES_USER=omsadmin \
+  -e POSTGRES_PASSWORD=omsadmin \
+  -e POSTGRES_DB=omsdevdb \
+  postgres:10.5
+</code></pre>
+<ol>
+<li><strong>Check port availability:</strong></li>
+</ol>
+<pre><code class="language-bash">netstat -an | grep 5432
+</code></pre>
+<ol>
+<li><strong>Test connection:</strong></li>
+</ol>
+<pre><code class="language-bash">psql -h localhost -U omsadmin -d omsdevdb
+</code></pre>
+
+<hr>
+
+<h3>Issue: Flyway Migration Failures</h3>
+
+<strong>Symptoms:</strong>
+<pre><code class="language-">FlywayException: Validate failed: 
+Migration checksum mismatch for migration version 1.0
+</code></pre>
+<strong>Causes:</strong>
+<ul>
+<li>Migration files modified after execution</li>
+<li>Database schema manually changed</li>
+<li>Version conflicts</li>
+</ul>
+<strong>Solutions:</strong>
+<ol>
+<li><strong>Check migration history:</strong></li>
+</ol>
+<pre><code class="language-bash">mvn flyway:info -Dspring.profiles.active=dev
+</code></pre>
+<ol>
+<li><strong>Repair flyway_schema_history:</strong></li>
+</ol>
+<pre><code class="language-bash">mvn flyway:repair -Dspring.profiles.active=dev
+</code></pre>
+<ol>
+<li><strong>Baseline and re-migrate (WARNING: only for dev):</strong></li>
+</ol>
+<pre><code class="language-bash">mvn flyway:clean -Dspring.profiles.active=dev
+mvn flyway:migrate -Dspring.profiles.active=dev
+</code></pre>
+<ol>
+<li><strong>For production, create repair migration:</strong></li>
+</ol>
+<pre><code class="language-sql">-- V100__repair_schema.sql
+-- Add specific fixes here
+</code></pre>
+
+<hr>
+
+<h3>Issue: Database Connection Pool Exhausted</h3>
+
+<strong>Symptoms:</strong>
+<pre><code class="language-">HikariPool-1 - Connection is not available, request timed out after 30000ms
+</code></pre>
+<strong>Causes:</strong>
+<ul>
+<li>Too many open connections</li>
+<li>Long-running queries</li>
+<li>Connection leaks</li>
+</ul>
+<strong>Solutions:</strong>
+<ol>
+<li><strong>Check active connections:</strong></li>
+</ol>
+<pre><code class="language-sql">SELECT 
+    count(*),
+    state,
+    application_name
+FROM pg_stat_activity
+GROUP BY state, application_name;
+</code></pre>
+<ol>
+<li><strong>Increase pool size:</strong></li>
+</ol>
+<pre><code class="language-yaml">spring:
+  datasource:
+    hikari:
+      maximum-pool-size: 20
+      minimum-idle: 5
+</code></pre>
+<ol>
+<li><strong>Find long-running queries:</strong></li>
+</ol>
+<pre><code class="language-sql">SELECT 
+    pid,
+    now() - pg_stat_activity.query_start AS duration,
+    query
+FROM pg_stat_activity
+WHERE state = 'active'
+ORDER BY duration DESC;
+</code></pre>
+<ol>
+<li><strong>Kill problematic connection:</strong></li>
+</ol>
+<pre><code class="language-sql">SELECT pg_terminate_backend(pid);
+</code></pre>
+
+<hr>
+
+<h2>Service Startup Failures</h2>
+
+<h3>Issue: Spring Boot Application Won't Start</h3>
+
+<strong>Symptoms:</strong>
+<pre><code class="language-">APPLICATION FAILED TO START
+Description: Failed to configure a DataSource: 'url' attribute is not specified
+</code></pre>
+<strong>Causes:</strong>
+<ul>
+<li>Missing environment variables</li>
+<li>Vault connection failure</li>
+<li>Application.yml misconfiguration</li>
+</ul>
+<strong>Solutions:</strong>
+<ol>
+<li><strong>Check required environment variables:</strong></li>
+</ol>
+<pre><code class="language-bash">export DB_URL=jdbc:postgresql://localhost:5432/omsdevdb
+export DB_USER=omsadmin
+export DB_PASSWORD=omsadmin
+export VAULT_URI=http://localhost:8200
+export VAULT_TOKEN=myroot
+export AMQ_BROKER_URL=tcp://localhost:61616
+</code></pre>
+<ol>
+<li><strong>Verify Vault connection:</strong></li>
+</ol>
+<pre><code class="language-bash">curl -H "X-Vault-Token: myroot" http://localhost:8200/v1/sys/health
+</code></pre>
+<ol>
+<li><strong>Use application-dev.yml for local development:</strong></li>
+</ol>
+<pre><code class="language-yaml">spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/omsdevdb
+    username: omsadmin
+    password: omsadmin
+</code></pre>
+<ol>
+<li><strong>Start with specific profile:</strong></li>
+</ol>
+<pre><code class="language-bash">mvn spring-boot:run -Dspring.profiles.active=dev
+</code></pre>
+
+<hr>
+
+<h3>Issue: Port Already in Use</h3>
+
+<strong>Symptoms:</strong>
+<pre><code class="language-">Web server failed to start. Port 8080 was already in use.
+</code></pre>
+<strong>Solutions:</strong>
+<ol>
+<li><strong>Find process using port:</strong></li>
+</ol>
+<pre><code class="language-bash"># Windows
+netstat -ano | findstr :8080
+taskkill /PID &lt;PID&gt; /F
+
+# Linux/Mac
+lsof -ti:8080
+kill -9 &lt;PID&gt;
+</code></pre>
+<ol>
+<li><strong>Change service port:</strong></li>
+</ol>
+<pre><code class="language-yaml">server:
+  port: 8081
+</code></pre>
+<ol>
+<li><strong>Use random port for tests:</strong></li>
+</ol>
+<pre><code class="language-yaml">server:
+  port: 0  # Random available port
+</code></pre>
+
+<hr>
+
+<h3>Issue: Bean Creation Failures</h3>
+
+<strong>Symptoms:</strong>
+<pre><code class="language-">Error creating bean with name 'customerHub': Unsatisfied dependency expressed through field 'accountService'
+</code></pre>
+<strong>Causes:</strong>
+<ul>
+<li>Circular dependencies</li>
+<li>Missing @Component annotations</li>
+<li>Configuration class not scanned</li>
+</ul>
+<strong>Solutions:</strong>
+<ol>
+<li><strong>Check component scanning:</strong></li>
+</ol>
+<pre><code class="language-java">@SpringBootApplication
+@ComponentScan(basePackages = {
+    "com.embrix.core.engine",
+    "com.embrix.core.common"
+})
+public class Application {
+    // ...
+}
+</code></pre>
+<ol>
+<li><strong>Break circular dependency:</strong></li>
+</ol>
+<pre><code class="language-java">// Use @Lazy injection
+@Autowired
+@Lazy
+private AccountService accountService;
+</code></pre>
+<ol>
+<li><strong>Verify @Component/@Service annotations:</strong></li>
+</ol>
+<pre><code class="language-groovy">@Service
+class CustomerHub {
+    // ...
+}
+</code></pre>
+
+<hr>
+
+<h2>ActiveMQ and Messaging Issues</h2>
+
+<h3>Issue: Cannot Connect to ActiveMQ</h3>
+
+<strong>Symptoms:</strong>
+<pre><code class="language-">javax.jms.JMSException: Could not connect to broker URL: tcp://localhost:61616
+</code></pre>
+<strong>Solutions:</strong>
+<ol>
+<li><strong>Verify ActiveMQ is running:</strong></li>
+</ol>
+<pre><code class="language-bash">docker ps | grep activemq
+</code></pre>
+<ol>
+<li><strong>Start ActiveMQ:</strong></li>
+</ol>
+<pre><code class="language-bash">docker run -d --name activemq \
+  -p 61616:61616 \
+  -p 8161:8161 \
+  webcenter/activemq:5.14.3
+</code></pre>
+<ol>
+<li><strong>Check ActiveMQ console:</strong></li>
+</ol>
+<pre><code class="language-">http://localhost:8161/admin
+Username: admin
+Password: admin
+</code></pre>
+<ol>
+<li><strong>Verify broker URL:</strong></li>
+</ol>
+<pre><code class="language-yaml">spring:
+  activemq:
+    broker-url: tcp://localhost:61616
+    user: admin
+    password: admin
+</code></pre>
+
+<hr>
+
+<h3>Issue: Messages Not Being Consumed</h3>
+
+<strong>Symptoms:</strong>
+<ul>
+<li>Messages accumulate in queue</li>
+<li>No consumer activity</li>
+<li>Orders stuck in CREATED status</li>
+</ul>
+<strong>Causes:</strong>
+<ul>
+<li>Consumer not running</li>
+<li>Message selector mismatch</li>
+<li>Consumer exceptions</li>
+</ul>
+<strong>Solutions:</strong>
+<ol>
+<li><strong>Check queue depth in ActiveMQ console:</strong></li>
+</ol>
+<pre><code class="language-">http://localhost:8161/admin/queues.jsp
+</code></pre>
+<ol>
+<li><strong>Verify consumer is registered:</strong></li>
+</ol>
+<pre><code class="language-java">@JmsListener(destination = "OMS")
+public void receiveMessage(String message) {
+    log.info("Received: {}", message);
+}
+</code></pre>
+<ol>
+<li><strong>Check consumer logs for exceptions:</strong></li>
+</ol>
+<pre><code class="language-bash">tail -f logs/application.log | grep "JmsListener"
+</code></pre>
+<ol>
+<li><strong>Manually browse queue:</strong></li>
+</ol>
+<pre><code class="language-bash"># Use JMX or ActiveMQ browse feature
+curl -u admin:admin http://localhost:8161/api/message/OMS?type=queue
+</code></pre>
+
+<hr>
+
+<h3>Issue: Message Redelivery Loop</h3>
+
+<strong>Symptoms:</strong>
+<pre><code class="language-">Message redelivered 6 times, moving to DLQ
+</code></pre>
+<strong>Causes:</strong>
+<ul>
+<li>Consumer throwing exceptions</li>
+<li>Transaction rollback</li>
+<li>Invalid message format</li>
+</ul>
+<strong>Solutions:</strong>
+<ol>
+<li><strong>Check Dead Letter Queue:</strong></li>
+</ol>
+<pre><code class="language-">Queue: ActiveMQ.DLQ
+</code></pre>
+<ol>
+<li><strong>Review error logs:</strong></li>
+</ol>
+<pre><code class="language-bash">grep "MessageListenerException" logs/application.log
+</code></pre>
+<ol>
+<li><strong>Fix consumer logic:</strong></li>
+</ol>
+<pre><code class="language-groovy">@JmsListener(destination = "OMS")
+void processOrder(String message) {
+    try {
+        // Process message
+    } catch (Exception e) {
+        log.error("Failed to process: {}", message, e)
+        // Don't rethrow - acknowledge message
+    }
+}
+</code></pre>
+<ol>
+<li><strong>Configure redelivery policy:</strong></li>
+</ol>
+<pre><code class="language-yaml">application:
+  queues:
+    redeliveryPolicy:
+      maxRetries: 3
+      delay: 1000
+      multiplier: 2
+</code></pre>
+
+<hr>
+
+<h2>GraphQL API Errors</h2>
+
+<h3>Issue: GraphQL 404 Not Found</h3>
+
+<strong>Symptoms:</strong>
+<pre><code class="language-">404 Not Found: GET /graphql
+</code></pre>
+<strong>Causes:</strong>
+<ul>
+<li>Service not started</li>
+<li>Wrong endpoint URL</li>
+<li>GraphQL not enabled</li>
+</ul>
+<strong>Solutions:</strong>
+<ol>
+<li><strong>Verify service is running:</strong></li>
+</ol>
+<pre><code class="language-bash">curl http://localhost:8080/actuator/health
+</code></pre>
+<ol>
+<li><strong>Check GraphQL endpoint:</strong></li>
+</ol>
+<pre><code class="language-bash">curl -X POST http://localhost:8080/graphql \
+  -H "Content-Type: application/json" \
+  -d '{"query": "{ __typename }"}'
+</code></pre>
+<ol>
+<li><strong>Access GraphiQL playground:</strong></li>
+</ol>
+<pre><code class="language-">http://localhost:8080/graphiql
+</code></pre>
+<ol>
+<li><strong>Verify GraphQL dependency:</strong></li>
+</ol>
+<pre><code class="language-xml">&lt;dependency&gt;
+    &lt;groupId&gt;com.graphql-java&lt;/groupId&gt;
+    &lt;artifactId&gt;graphql-spring-boot-starter&lt;/artifactId&gt;
+&lt;/dependency&gt;
+</code></pre>
+
+<hr>
+
+<h3>Issue: GraphQL Validation Errors</h3>
+
+<strong>Symptoms:</strong>
+<pre><code class="language-json">{
+  "errors": [
+    {
+      "message": "Validation error of type FieldUndefined: Field 'accountId' is undefined"
+    }
+  ]
+}
+</code></pre>
+<strong>Causes:</strong>
+<ul>
+<li>Field doesn't exist in schema</li>
+<li>Typo in field name</li>
+<li>Schema not reloaded</li>
+</ul>
+<strong>Solutions:</strong>
+<ol>
+<li><strong>Check GraphQL schema:</strong></li>
+</ol>
+<pre><code class="language-graphql"># schema.graphqls
+type Account {
+    accountId: String!
+    accountName: String
+}
+</code></pre>
+<ol>
+<li><strong>Verify field resolver:</strong></li>
+</ol>
+<pre><code class="language-groovy">class AccountResolver {
+    String accountId(Account account) {
+        return account.accountId
+    }
+}
+</code></pre>
+<ol>
+<li><strong>Reload schema (dev mode):</strong></li>
+</ol>
+<pre><code class="language-bash"># Restart service
+mvn spring-boot:run
+</code></pre>
+
+<hr>
+
+<h3>Issue: GraphQL Performance Issues</h3>
+
+<strong>Symptoms:</strong>
+<ul>
+<li>Slow query execution</li>
+<li>Timeout errors</li>
+<li>N+1 query problem</li>
+</ul>
+<strong>Solutions:</strong>
+<ol>
+<li><strong>Use DataLoader for batch loading:</strong></li>
+</ol>
+<pre><code class="language-java">@Bean
+public DataLoader&lt;String, Account&gt; accountDataLoader() {
+    return DataLoader.newDataLoader(accountIds -&gt; 
+        accountService.findByIds(accountIds)
+    );
+}
+</code></pre>
+<ol>
+<li><strong>Limit query depth:</strong></li>
+</ol>
+<pre><code class="language-java">@Bean
+public GraphQLFieldDefinition rootQuery() {
+    return GraphQLFieldDefinition.newFieldDefinition()
+        .type(queryType)
+        .dataFetcher(env -&gt; {
+            int depth = env.getField().getSelectionSet().getFields().size();
+            if (depth &gt; 5) {
+                throw new RuntimeException("Query too complex");
+            }
+            // ...
+        });
+}
+</code></pre>
+<ol>
+<li><strong>Add pagination:</strong></li>
+</ol>
+<pre><code class="language-graphql">query {
+  searchAccounts(pagination: { page: 0, size: 20 }) {
+    content { ... }
+  }
+}
+</code></pre>
+
+<hr>
+
+<h2>Vault and Secrets Management</h2>
+
+<h3>Issue: Vault Connection Refused</h3>
+
+<strong>Symptoms:</strong>
+<pre><code class="language-">VaultException: Status 500, Connection refused: localhost/127.0.0.1:8200
+</code></pre>
+<strong>Solutions:</strong>
+<ol>
+<li><strong>Start Vault in dev mode:</strong></li>
+</ol>
+<pre><code class="language-bash">docker run -d --name vault \
+  -p 8200:8200 \
+  -e VAULT_DEV_ROOT_TOKEN_ID=myroot \
+  vault:latest
+</code></pre>
+<ol>
+<li><strong>Verify Vault is running:</strong></li>
+</ol>
+<pre><code class="language-bash">curl http://localhost:8200/v1/sys/health
+</code></pre>
+<ol>
+<li><strong>Set environment variables:</strong></li>
+</ol>
+<pre><code class="language-bash">export VAULT_URI=http://localhost:8200
+export VAULT_TOKEN=myroot
+</code></pre>
+
+<hr>
+
+<h3>Issue: Vault Secrets Not Found</h3>
+
+<strong>Symptoms:</strong>
+<pre><code class="language-">VaultException: Status 404, Path 'secret/ctg-oms/dev' not found
+</code></pre>
+<strong>Solutions:</strong>
+<ol>
+<li><strong>Write secrets to Vault:</strong></li>
+</ol>
+<pre><code class="language-bash"># Using Vault CLI
+vault kv put secret/ctg-oms/dev \
+  db.url=jdbc:postgresql://localhost:5432/omsdevdb \
+  db.username=omsadmin \
+  db.password=omsadmin
+
+# Using curl
+curl -H "X-Vault-Token: myroot" \
+  -X POST \
+  -d '{"db.url":"jdbc:postgresql://localhost:5432/omsdevdb"}' \
+  http://localhost:8200/v1/secret/ctg-oms/dev
+</code></pre>
+<ol>
+<li><strong>Verify secret path:</strong></li>
+</ol>
+<pre><code class="language-bash">vault kv list secret/
+vault kv get secret/ctg-oms/dev
+</code></pre>
+<ol>
+<li><strong>Check application configuration:</strong></li>
+</ol>
+<pre><code class="language-yaml">spring:
+  cloud:
+    vault:
+      uri: ${VAULT_URI:http://localhost:8200}
+      token: ${VAULT_TOKEN}
+      application-name: ctg-oms
+</code></pre>
+
+<hr>
+
+<h2>Performance Issues</h2>
+
+<h3>Issue: Slow Database Queries</h3>
+
+<strong>Symptoms:</strong>
+<ul>
+<li>Long response times</li>
+<li>High CPU usage</li>
+<li>Database connection timeouts</li>
+</ul>
+<strong>Solutions:</strong>
+<ol>
+<li><strong>Identify slow queries:</strong></li>
+</ol>
+<pre><code class="language-sql">SELECT 
+    query,
+    mean_exec_time,
+    calls
+FROM pg_stat_statements
+ORDER BY mean_exec_time DESC
+LIMIT 10;
+</code></pre>
+<ol>
+<li><strong>Analyze query plan:</strong></li>
+</ol>
+<pre><code class="language-sql">EXPLAIN ANALYZE
+SELECT * FROM account WHERE account_name = 'TechCorp';
+</code></pre>
+<ol>
+<li><strong>Add missing indexes:</strong></li>
+</ol>
+<pre><code class="language-sql">CREATE INDEX idx_account_name ON account(account_name);
+CREATE INDEX idx_order_account_id ON order(account_id);
+CREATE INDEX idx_invoice_account_id ON invoice(account_id);
+</code></pre>
+<ol>
+<li><strong>Optimize JOOQ queries:</strong></li>
+</ol>
+<pre><code class="language-groovy">// Bad: Fetches all fields
+def accounts = dsl.selectFrom(ACCOUNT).fetch()
+
+// Good: Select specific fields
+def accounts = dsl.select(
+    ACCOUNT.ACCOUNT_ID,
+    ACCOUNT.ACCOUNT_NAME
+).from(ACCOUNT).fetch()
+</code></pre>
+
+<hr>
+
+<h3>Issue: High Memory Usage</h3>
+
+<strong>Symptoms:</strong>
+<pre><code class="language-">java.lang.OutOfMemoryError: Java heap space
+</code></pre>
+<strong>Solutions:</strong>
+<ol>
+<li><strong>Increase heap size:</strong></li>
+</ol>
+<pre><code class="language-bash">export JAVA_OPTS="-Xms512m -Xmx2048m"
+mvn spring-boot:run
+</code></pre>
+<ol>
+<li><strong>Profile memory usage:</strong></li>
+</ol>
+<pre><code class="language-bash">jmap -heap &lt;PID&gt;
+jstat -gc &lt;PID&gt; 1000
+</code></pre>
+<ol>
+<li><strong>Check for memory leaks:</strong></li>
+</ol>
+<pre><code class="language-bash"># Generate heap dump
+jmap -dump:live,format=b,file=heap.bin &lt;PID&gt;
+
+# Analyze with Eclipse MAT or VisualVM
+</code></pre>
+<ol>
+<li><strong>Optimize list operations:</strong></li>
+</ol>
+<pre><code class="language-groovy">// Bad: Loads everything into memory
+def allAccounts = accountService.findAll()
+
+// Good: Use pagination
+def page = accountService.findAll(PageRequest.of(0, 100))
+</code></pre>
+
+<hr>
+
+<h2>Multi-Tenant Configuration Problems</h2>
+
+<h3>Issue: Wrong Tenant Data Returned</h3>
+
+<strong>Symptoms:</strong>
+<ul>
+<li>User sees data from different tenant</li>
+<li>Orders appear in wrong tenant</li>
+</ul>
+<strong>Causes:</strong>
+<ul>
+<li>Tenant context not set</li>
+<li>Missing tenant filter in queries</li>
+<li>Cache key doesn't include tenant</li>
+</ul>
+<strong>Solutions:</strong>
+<ol>
+<li><strong>Verify tenant context:</strong></li>
+</ol>
+<pre><code class="language-groovy">def tenantId = TenantContext.getCurrentTenant()
+log.info("Current tenant: {}", tenantId)
+</code></pre>
+<ol>
+<li><strong>Add tenant filter to queries:</strong></li>
+</ol>
+<pre><code class="language-groovy">def accounts = dsl.selectFrom(ACCOUNT)
+    .where(ACCOUNT.TENANT_ID.eq(tenantId))
+    .fetch()
+</code></pre>
+<ol>
+<li><strong>Include tenant in cache keys:</strong></li>
+</ol>
+<pre><code class="language-groovy">@Cacheable(value = "accounts", key = "#tenantId + ':' + #accountId")
+def findAccount(String tenantId, String accountId) {
+    // ...
+}
+</code></pre>
+
+<hr>
+
+<h3>Issue: Tenant-Specific Configuration Not Loading</h3>
+
+<strong>Symptoms:</strong>
+<pre><code class="language-">Using default configuration instead of tenant-specific
+</code></pre>
+<strong>Solutions:</strong>
+<ol>
+<li><strong>Verify Helm values exist:</strong></li>
+</ol>
+<pre><code class="language-bash">ls core/service-billing/helm_values/urbanos/
+</code></pre>
+<ol>
+<li><strong>Check tenant configuration in database:</strong></li>
+</ol>
+<pre><code class="language-sql">SELECT * FROM core_config.tenant WHERE tenant_id = 'TIDLT-100005';
+</code></pre>
+<ol>
+<li><strong>Verify environment variable:</strong></li>
+</ol>
+<pre><code class="language-bash">echo $TENANT_ID
+</code></pre>
+<ol>
+<li><strong>Load tenant config explicitly:</strong></li>
+</ol>
+<pre><code class="language-groovy">@Value("\${tenant.id}")
+String tenantId
+
+@PostConstruct
+void loadTenantConfig() {
+    def config = tenantConfigService.load(tenantId)
+    log.info("Loaded config for tenant: {}", tenantId)
+}
+</code></pre>
+
+<hr>
+
+<h2>Frontend Issues</h2>
+
+<h3>Issue: React App Won't Start</h3>
+
+<strong>Symptoms:</strong>
+<pre><code class="language-">Error: ENOSPC: System limit for number of file watchers reached
+</code></pre>
+<strong>Solutions:</strong>
+<ol>
+<li><strong>Increase file watcher limit (Linux):</strong></li>
+</ol>
+<pre><code class="language-bash">echo fs.inotify.max_user_watches=524288 | sudo tee -a /etc/sysctl.conf
+sudo sysctl -p
+</code></pre>
+<ol>
+<li><strong>Clear node_modules and reinstall:</strong></li>
+</ol>
+<pre><code class="language-bash">rm -rf node_modules package-lock.json
+npm install
+</code></pre>
+<ol>
+<li><strong>Check Node.js version:</strong></li>
+</ol>
+<pre><code class="language-bash">node --version  # Should be 12.x or higher
+npm --version
+</code></pre>
+
+<hr>
+
+<h3>Issue: Apollo Client Network Errors</h3>
+
+<strong>Symptoms:</strong>
+<pre><code class="language-">Error: Network error: Failed to fetch
+</code></pre>
+<strong>Solutions:</strong>
+<ol>
+<li><strong>Check backend is running:</strong></li>
+</ol>
+<pre><code class="language-bash">curl http://localhost:8080/graphql
+</code></pre>
+<ol>
+<li><strong>Verify Apollo configuration:</strong></li>
+</ol>
+<pre><code class="language-javascript">const client = new ApolloClient({
+  uri: process.env.REACT_APP_APOLLO_API_URL || 'http://localhost:8080/graphql',
+  cache: new InMemoryCache()
+});
+</code></pre>
+<ol>
+<li><strong>Check CORS configuration:</strong></li>
+</ol>
+<pre><code class="language-java">@Configuration
+public class CorsConfig {
+    @Bean
+    public WebMvcConfigurer corsConfigurer() {
+        return new WebMvcConfigurer() {
+            @Override
+            public void addCorsMappings(CorsRegistry registry) {
+                registry.addMapping("/graphql")
+                    .allowedOrigins("http://localhost:3000")
+                    .allowedMethods("GET", "POST");
+            }
+        };
+    }
+}
+</code></pre>
+
+<hr>
+
+<h2>Deployment and Infrastructure</h2>
+
+<h3>Issue: Docker Container Won't Start</h3>
+
+<strong>Symptoms:</strong>
+<pre><code class="language-">Error: Container exits immediately
+</code></pre>
+<strong>Solutions:</strong>
+<ol>
+<li><strong>Check container logs:</strong></li>
+</ol>
+<pre><code class="language-bash">docker logs &lt;container-id&gt;
+docker logs --tail 100 postgres
+</code></pre>
+<ol>
+<li><strong>Verify port mapping:</strong></li>
+</ol>
+<pre><code class="language-bash">docker ps
+netstat -an | grep 5432
+</code></pre>
+<ol>
+<li><strong>Check resource limits:</strong></li>
+</ol>
+<pre><code class="language-bash">docker stats
+</code></pre>
+<ol>
+<li><strong>Inspect container:</strong></li>
+</ol>
+<pre><code class="language-bash">docker inspect &lt;container-id&gt;
+</code></pre>
+
+<hr>
+
+<h3>Issue: Kubernetes Pod CrashLoopBackOff</h3>
+
+<strong>Symptoms:</strong>
+<pre><code class="language-">NAME                     READY   STATUS             RESTARTS   AGE
+service-billing-xxx      0/1     CrashLoopBackOff   5          5m
+</code></pre>
+<strong>Solutions:</strong>
+<ol>
+<li><strong>Check pod logs:</strong></li>
+</ol>
+<pre><code class="language-bash">kubectl logs service-billing-xxx
+kubectl logs service-billing-xxx --previous
+</code></pre>
+<ol>
+<li><strong>Describe pod:</strong></li>
+</ol>
+<pre><code class="language-bash">kubectl describe pod service-billing-xxx
+</code></pre>
+<ol>
+<li><strong>Check events:</strong></li>
+</ol>
+<pre><code class="language-bash">kubectl get events --sort-by='.lastTimestamp'
+</code></pre>
+<ol>
+<li><strong>Verify ConfigMap and Secrets:</strong></li>
+</ol>
+<pre><code class="language-bash">kubectl get configmap
+kubectl get secret
+kubectl describe configmap service-billing-config
+</code></pre>
+
+<hr>
+
+<h2>Testing Failures</h2>
+
+<h3>Issue: Integration Tests Fail</h3>
+
+<strong>Symptoms:</strong>
+<pre><code class="language-">Tests run: 50, Failures: 10, Errors: 5, Skipped: 0
+</code></pre>
+<strong>Solutions:</strong>
+<ol>
+<li><strong>Check test database:</strong></li>
+</ol>
+<pre><code class="language-bash">docker ps | grep postgres-test
+</code></pre>
+<ol>
+<li><strong>Use Testcontainers:</strong></li>
+</ol>
+<pre><code class="language-groovy">@Testcontainers
+class IntegrationTest {
+    @Container
+    static PostgreSQLContainer postgres = new PostgreSQLContainer("postgres:10.5")
+        .withDatabaseName("test")
+        .withUsername("test")
+        .withPassword("test")
+}
+</code></pre>
+<ol>
+<li><strong>Clean test data between tests:</strong></li>
+</ol>
+<pre><code class="language-groovy">@BeforeEach
+void setup() {
+    dsl.deleteFrom(ACCOUNT).execute()
+    dsl.deleteFrom(ORDER).execute()
+}
+</code></pre>
+
+<hr>
+
+<h2>Debugging Tools and Techniques</h2>
+
+<h3>Enable Debug Logging</h3>
+
+<pre><code class="language-yaml">logging:
+  level:
+    com.embrix.core: DEBUG
+    org.jooq: DEBUG
+    org.springframework: INFO
+</code></pre>
+<h3>Remote Debugging</h3>
+
+<pre><code class="language-bash">mvn spring-boot:run -Dagentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005
+</code></pre>
+In IntelliJ: Run → Edit Configurations → + → Remote JVM Debug → Port 5005
+<h3>Database Query Logging</h3>
+
+<pre><code class="language-yaml">spring:
+  jpa:
+    show-sql: true
+    properties:
+      hibernate.format_sql: true
+</code></pre>
+<h3>Monitor with Actuator</h3>
+
+<pre><code class="language-bash"># Health check
+curl http://localhost:8080/actuator/health
+
+# Metrics
+curl http://localhost:8080/actuator/metrics
+
+# Thread dump
+curl http://localhost:8080/actuator/threaddump
+
+# Heap dump
+curl http://localhost:8080/actuator/heapdump &gt; heap.hprof
+</code></pre>
+
+<hr>
+
+<h2>Getting Additional Help</h2>
+
+<h3>Documentation</h3>
+
+<ul>
+<li><a href="docs/newcomer/README.md">Newcomer's Guide</a></li>
+<li><a href="API_REFERENCE.md">API Reference</a></li>
+<li><a href="context/COMPREHENSIVE_ARCHITECTURE.md">Architecture Guide</a></li>
+</ul>
+<h3>Support Channels</h3>
+
+<ul>
+<li><strong>Technical Support</strong>: support@embrix.com</li>
+<li><strong>Development Team</strong>: dev-team@embrix.com</li>
+<li><strong>Documentation</strong>: docs@embrix.com</li>
+</ul>
+<h3>Useful Commands</h3>
+
+<pre><code class="language-bash"># Check all services
+docker ps
+
+# View all logs
+docker-compose logs -f
+
+# Database shell
+psql -U omsadmin -d omsdevdb
+
+# ActiveMQ console
+open http://localhost:8161
+
+# GraphQL playground
+open http://localhost:8080/graphiql
+
+# Vault UI
+open http://localhost:8200/ui
+</code></pre>
+
+<hr>
+
+<strong>Last Updated</strong>: February 2026 • Version 3.1.9-SNAPSHOT</p>
+        <footer>
+            <p><strong>Embrix O2X Platform Documentation</strong></p>
+            <p>Version 3.1.9-SNAPSHOT • Last Updated: February 2026</p>
+        </footer>
+    </div>
+</body>
+</html>

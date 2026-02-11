@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Embrix O2X Documentation Portal - Embrix O2X</title>
+    <title>🎯 Quick Start Guide - Embrix O2X</title>
     
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -815,99 +815,188 @@
     <div class="container">
         <div class="nav-header"><div><h1>Embrix O2X Documentation</h1><small>Navigate between guides</small></div><div class="nav-links"><a href="index.html">Home</a><a href="guide-index.html">Guide Index</a><a href="guide-index.html">Part 1-5</a><a href="quick-start.html">Quick Start</a><a href="quick-reference.html">Quick Ref</a><a href="complete-system-overview.html">Architecture</a><a href="api-reference.html">API Reference</a><a href="troubleshooting-guide.html">Troubleshooting</a></div></div>
         
-<h1>Embrix O2X Knowledge Hub</h1>
+<h1>Quick Start: Deploy to GitLab Pages</h1>
 
-Welcome to the <strong>Embrix O2X Platform Knowledge Hub</strong> - your comprehensive guide to mastering our enterprise-grade Order-to-Cash management system.
+<strong>Target</strong>: https://gitlab.com/embrix-o2x
 
 <hr>
 
-<h2>Getting Started</h2>
+<h2>🚀 Fastest Way (3 Steps)</h2>
 
-New to Embrix O2X? Start with these essential resources:
+<h3>Step 1: Run the Deployment Script</h3>
+
+<pre><code class="language-powershell"># Open PowerShell in this directory
+cd c:\Users\quang\IdeaProjects\embrix-o2x
+
+# Run the deployment script
+.\deploy-to-gitlab.ps1
+</code></pre>
+The script will:
 <ul>
-<li><a href="quick-start.html">Quick Start Guide</a> - Get up and running quickly</li>
-<li><a href="guide-index.html">Complete Newcomer's Guide Index</a> - Your structured learning path</li>
-<li><a href="business-scenarios.html">Business Scenarios & Workflows</a> - Real-world use cases and examples</li>
+<li>✅ Check prerequisites (git, python)</li>
+<li>✅ Initialize git repository (if needed)</li>
+<li>✅ Regenerate HTML files</li>
+<li>✅ Add GitLab remote</li>
+<li>✅ Commit all files</li>
+<li>✅ Push to GitLab</li>
 </ul>
+<h3>Step 2: Enter Project Name</h3>
+
+When prompted, enter your GitLab project name:
+<ul>
+<li>If URL is <code>https://gitlab.com/embrix-o2x/embrix-o2x</code> → Enter: <code>embrix-o2x</code></li>
+<li>If URL is <code>https://gitlab.com/embrix-o2x/documentation</code> → Enter: <code>documentation</code></li>
+</ul>
+<h3>Step 3: Access Your Documentation</h3>
+
+After pipeline completes (1-3 minutes):
+<pre><code class="language-">https://embrix-o2x.gitlab.io/&lt;project-name&gt;/
+</code></pre>
 
 <hr>
 
-<h2>Learning Path</h2>
+<h2>📖 Manual Method (If Script Doesn't Work)</h2>
 
-Follow this recommended sequence to master the platform:
+<h3>Option A: Repository Already Exists</h3>
+
+<pre><code class="language-bash"># 1. Clone repository
+cd c:\Users\quang\IdeaProjects
+git clone https://gitlab.com/embrix-o2x/&lt;project-name&gt;.git
+cd &lt;project-name&gt;
+
+# 2. Copy files from embrix-o2x
+xcopy /E /I ..\embrix-o2x\docs\newcomer docs\newcomer
+copy ..\embrix-o2x\.gitlab-ci.yml .
+copy ..\embrix-o2x\convert_to_html.py .
+copy ..\embrix-o2x\*.md .
+
+# 3. Commit and push
+git add .
+git commit -m "Add documentation"
+git push origin main
+</code></pre>
+<h3>Option B: New Repository</h3>
+
+<pre><code class="language-bash"># 1. Initialize git
+cd c:\Users\quang\IdeaProjects\embrix-o2x
+git init
+
+# 2. Add remote
+git remote add origin https://gitlab.com/embrix-o2x/&lt;project-name&gt;.git
+
+# 3. Add files
+git add .gitlab-ci.yml convert_to_html.py docs/ *.md
+
+# 4. Commit
+git commit -m "Add documentation"
+
+# 5. Push
+git push -u origin main
+</code></pre>
+
+<hr>
+
+<h2>🔐 Authentication</h2>
+
+<h3>Using Personal Access Token</h3>
+
 <ol>
-<li><a href="part1-business-architecture.html">Part 1: Business & Architecture</a> - Understand the business domain and high-level architecture</li>
-<li><a href="part2-technical-deep-dive.html">Part 2: Technical Deep Dive</a> - Explore technical architecture and design patterns</li>
-<li><a href="part3-services-development.html">Part 3: Services & Development</a> - Master microservices and backend development</li>
-<li><a href="part4-frontend-ui.html">Part 4: Frontend Applications & User Interfaces</a> - Learn UI architecture and frontend patterns</li>
-<li><a href="part5-message-queues.html">Part 5: Message Queue Architecture & Integration</a> - Understand async messaging and integration</li>
+<li>Go to: https://gitlab.com/embrix-o2x</li>
+<li>Click avatar → <strong>Settings</strong> → <strong>Access Tokens</strong></li>
+<li>Create token with scopes: <code>api</code>, <code>write_repository</code></li>
+<li>Copy token</li>
+<li>When pushing, use token as password</li>
 </ol>
+<h3>Using SSH (Recommended)</h3>
+
+<pre><code class="language-bash"># Generate SSH key
+ssh-keygen -t ed25519 -C "your_email@example.com"
+
+# Copy public key
+cat ~/.ssh/id_ed25519.pub
+
+# Add to GitLab: Settings → SSH Keys
+
+# Change remote to SSH
+git remote set-url origin git@gitlab.com:embrix-o2x/&lt;project-name&gt;.git
+</code></pre>
 
 <hr>
 
-<h2>Architecture Documentation</h2>
+<h2>✅ Verification</h2>
 
-Deep dive into system architecture and design:
+<h3>1. Check Pipeline</h3>
+
+Go to: <code>https://gitlab.com/embrix-o2x/<project-name>/-/pipelines</code>
 <ul>
-<li><a href="complete-system-overview.html">Complete System Overview</a> - High-level system architecture and components</li>
-<li><a href="multi-tenant-architecture.html">Multi-Tenant Architecture</a> - Multi-tenancy design patterns and implementation</li>
-<li><a href="database-architecture.html">Database Architecture</a> - Data modeling, schema design, and database patterns</li>
-<li><a href="frontend-ui-architecture.html">Frontend & UI Architecture</a> - UI/UX patterns, components, and design system</li>
+<li>Should show green checkmark ✓</li>
+</ul>
+<h3>2. Check Pages</h3>
+
+Go to: <code>https://gitlab.com/embrix-o2x/<project-name>/-/settings/pages</code>
+<ul>
+<li>Should show Pages URL</li>
+</ul>
+<h3>3. Access Documentation</h3>
+
+Open: <code>https://embrix-o2x.gitlab.io/<project-name>/</code>
+<ul>
+<li>Should load the documentation</li>
 </ul>
 
 <hr>
 
-<h2>System Reference</h2>
+<h2>🆘 Troubleshooting</h2>
 
-Comprehensive documentation of all system components:
+<h3>"fatal: not a git repository"</h3>
+
+<strong>Solution</strong>: Run <code>git init</code> first
+<h3>"Authentication failed"</h3>
+
+<strong>Solution</strong>: Use Personal Access Token instead of password
+<h3>"Repository not found"</h3>
+
+<strong>Solution</strong>: Create repository first on GitLab
+<h3>"Pipeline failed"</h3>
+
+<strong>Solution</strong>: Check pipeline logs in GitLab
+<h3>"Pages not accessible"</h3>
+
+<strong>Solution</strong>: Wait 5-10 minutes after first deployment
+
+<hr>
+
+<h2>📞 Need More Help?</h2>
+
+See detailed guides:
 <ul>
-<li><a href="complete-system-documentation.html">Complete System Documentation</a> - Full system documentation</li>
-<li><a href="complete-system-inventory.html">Complete System Inventory</a> - All components, services, and dependencies</li>
-<li><a href="complete-services-catalog.html">Complete Services Catalog</a> - Detailed service descriptions and APIs</li>
+<li><strong>DEPLOYMENT_GUIDE.md</strong> - Complete step-by-step instructions</li>
+<li><strong>GITLAB_PAGES_SETUP.md</strong> - GitLab Pages configuration details</li>
 </ul>
 
 <hr>
 
-<h2>Development Resources</h2>
+<h2>🎯 URLs After Deployment</h2>
 
-Essential resources for developers:
-<ul>
-<li><a href="api-reference.html">API Reference</a> - Complete REST API documentation</li>
-<li><a href="frontend-guide.html">Frontend Development Guide</a> - Frontend development best practices</li>
-<li><a href="quick-reference.html">Quick Reference Guide</a> - Commands, snippets, and quick tips</li>
-<li><a href="contributing.html">Contributing Guide</a> - How to contribute to the project</li>
-</ul>
+Replace <code><project-name></code> with your actual project name:
+<pre><code class="language-">Main Index:
+https://embrix-o2x.gitlab.io/&lt;project-name&gt;/
 
-<hr>
+Complete Guide:
+https://embrix-o2x.gitlab.io/&lt;project-name&gt;/guide-index.html
 
-<h2>Troubleshooting & Support</h2>
+Multi-Tenant Guide:
+https://embrix-o2x.gitlab.io/&lt;project-name&gt;/multi-tenant-complete-guide.html
 
-Get help when you need it:
-<ul>
-<li><a href="troubleshooting-guide.html">Troubleshooting Guide</a> - Common issues and solutions</li>
-<li><a href="glossary.html">Glossary of Terms</a> - Technical terminology and definitions</li>
-</ul>
+Quick Reference:
+https://embrix-o2x.gitlab.io/&lt;project-name&gt;/quick-reference.html
+</code></pre>
 
 <hr>
 
-<h2>Platform Information</h2>
-
-<strong>Version:</strong> 3.1.9-SNAPSHOT  
-<strong>Last Updated:</strong> February 2026  
-<strong>Technology Stack:</strong> Spring Boot, React, PostgreSQL, RabbitMQ, Redis  
-<strong>Architecture:</strong> Microservices, Multi-tenant, Event-driven
-<div class="metadata-field"><strong>Key Features:</strong> </div>
-<ul>
-<li>Multi-tenant SaaS platform</li>
-<li>Comprehensive Order-to-Cash workflow</li>
-<li>Real-time event processing</li>
-<li>Advanced pricing and taxation engines</li>
-<li>Self-service portal and admin interfaces</li>
-</ul>
-
-<hr>
-
-Happy learning! Start your journey with the <a href="guide-index.html">Complete Newcomer's Guide Index</a>.</p>
+<strong>Ready? Run the script now!</strong>
+<pre><code class="language-powershell">.\deploy-to-gitlab.ps1
+</code></pre></p>
         <footer>
             <p><strong>Embrix O2X Platform Documentation</strong></p>
             <p>Version 3.1.9-SNAPSHOT • Last Updated: February 2026</p>

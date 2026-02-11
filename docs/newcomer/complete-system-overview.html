@@ -1,0 +1,2228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🌐 Complete System Overview - Embrix O2X</title>
+    
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+        font-size: 16px;
+        line-height: 1.7;
+        color: #1f2937;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+        background-attachment: fixed;
+        padding: 20px;
+        min-height: 100vh;
+    }
+
+    .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        background: rgba(255, 255, 255, 0.98);
+        padding: 40px 50px;
+        border-radius: 24px;
+        box-shadow: 0 20px 60px rgba(0,0,0,0.2), 0 0 100px rgba(102, 126, 234, 0.3);
+        position: relative;
+        overflow: hidden;
+        backdrop-filter: blur(10px);
+    }
+
+    .container::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 8px;
+        background: linear-gradient(90deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+        box-shadow: 0 2px 10px rgba(102, 126, 234, 0.5);
+    }
+    
+    .container::after {
+        content: '';
+        position: absolute;
+        top: -50%;
+        right: -10%;
+        width: 40%;
+        height: 200%;
+        background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, transparent 100%);
+        transform: rotate(-15deg);
+        pointer-events: none;
+    }
+
+    .nav-header {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+        color: white;
+        padding: 25px 30px;
+        border-radius: 20px;
+        margin-bottom: 35px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3), inset 0 1px 0 rgba(255,255,255,0.2);
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .nav-header::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        right: -20%;
+        width: 40%;
+        height: 200%;
+        background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, transparent 100%);
+        transform: rotate(-15deg);
+    }
+
+    .nav-header h1 {
+        font-size: 1.5em;
+        margin-bottom: 5px;
+        font-weight: 700;
+        text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        position: relative;
+        z-index: 1;
+    }
+
+    .nav-links {
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+        position: relative;
+        z-index: 1;
+    }
+
+    .nav-links a {
+        color: white;
+        text-decoration: none;
+        padding: 10px 18px;
+        background: rgba(255,255,255,0.15);
+        border-radius: 10px;
+        transition: all 0.3s ease;
+        font-weight: 500;
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255,255,255,0.2);
+        font-size: 0.9em;
+    }
+    
+    .nav-links a::after {
+        display: none;
+    }
+
+    .nav-links a:hover {
+        background: white;
+        color: #667eea;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+
+    h1 {
+        color: white;
+        margin: 35px 0 25px 0;
+        padding: 20px 25px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        font-size: 1.9em;
+        font-weight: 700;
+        border-radius: 16px;
+        box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3), 0 0 60px rgba(102, 126, 234, 0.1);
+        border: 3px solid rgba(255, 255, 255, 0.2);
+        position: relative;
+        overflow: hidden;
+        transform: translateY(0);
+        transition: all 0.3s ease;
+    }
+    
+    h1::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+        transition: left 0.5s;
+    }
+    
+    h1:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 12px 35px rgba(102, 126, 234, 0.4), 0 0 80px rgba(102, 126, 234, 0.15);
+    }
+    
+    h1:hover::before {
+        left: 100%;
+    }
+
+    h2 {
+        color: #764ba2;
+        margin: 30px 0 20px 0;
+        padding: 16px 20px;
+        background: linear-gradient(135deg, rgba(118, 75, 162, 0.08) 0%, rgba(240, 147, 251, 0.08) 100%);
+        border-left: 6px solid #764ba2;
+        border-radius: 12px;
+        font-size: 1.6em;
+        font-weight: 700;
+        box-shadow: 0 4px 15px rgba(118, 75, 162, 0.15);
+        position: relative;
+        transition: all 0.3s ease;
+    }
+    
+    h2::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 0;
+        height: 3px;
+        background: linear-gradient(90deg, #764ba2 0%, #f093fb 100%);
+        transition: width 0.4s ease;
+    }
+    
+    h2:hover {
+        transform: translateX(5px);
+        box-shadow: 0 6px 20px rgba(118, 75, 162, 0.25);
+    }
+    
+    h2:hover::after {
+        width: 100%;
+    }
+
+    h3 {
+        color: #667eea;
+        margin: 25px 0 15px 0;
+        padding: 14px 18px;
+        background: white;
+        border: 2px solid #667eea;
+        border-radius: 10px;
+        font-size: 1.3em;
+        font-weight: 600;
+        box-shadow: 0 3px 10px rgba(102, 126, 234, 0.1);
+        transition: all 0.3s ease;
+    }
+    
+    h3:hover {
+        background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, transparent 100%);
+        border-color: #764ba2;
+        transform: translateX(3px);
+        box-shadow: 0 5px 15px rgba(102, 126, 234, 0.2);
+    }
+
+    h4 {
+        color: #764ba2;
+        margin: 20px 0 12px 0;
+        padding: 6px 0 6px 10px;
+        border-left: 2px solid #764ba2;
+        background: linear-gradient(90deg, rgba(118, 75, 162, 0.03) 0%, transparent 100%);
+        font-size: 1.1em;
+        font-weight: 600;
+        border-radius: 0 4px 4px 0;
+    }
+
+    h5 {
+        color: #667eea;
+        margin: 18px 0 10px 0;
+        padding: 4px 0 4px 8px;
+        border-left: 2px solid #667eea;
+        font-size: 1.05em;
+        font-weight: 600;
+        background: linear-gradient(90deg, rgba(102, 126, 234, 0.02) 0%, transparent 100%);
+        border-radius: 0 3px 3px 0;
+    }
+
+    h6 {
+        color: #764ba2;
+        margin: 15px 0 8px 0;
+        font-size: 0.95em;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    p {
+        margin: 16px 0;
+        line-height: 1.8;
+        font-size: 1em;
+        color: #374151;
+    }
+    
+    /* Better spacing for paragraphs after headings */
+    h1 + p, h2 + p, h3 + p, h4 + p {
+        margin-top: 12px;
+    }
+    
+    /* First paragraph after heading gets special treatment */
+    h1 + p, h2 + p {
+        font-size: 1.05em;
+        color: #4b5563;
+        font-weight: 400;
+    }
+
+    ul, ol {
+        margin: 20px 0;
+        padding-left: 15px;
+        list-style: none;
+    }
+
+    li {
+        margin: 12px 0;
+        line-height: 1.7;
+        font-size: 0.95em;
+        position: relative;
+        padding: 14px 18px 14px 50px;
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        border-left: 4px solid #667eea;
+        transition: all 0.3s ease;
+    }
+    
+    ul li::before {
+        content: '▸';
+        position: absolute;
+        left: 18px;
+        color: white;
+        font-weight: bold;
+        font-size: 1.3em;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        width: 24px;
+        height: 24px;
+        border-radius: 6px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        line-height: 1;
+        box-shadow: 0 2px 6px rgba(102, 126, 234, 0.3);
+    }
+    
+    ol {
+        counter-reset: item;
+    }
+    
+    ol li::before {
+        content: counter(item);
+        counter-increment: item;
+        position: absolute;
+        left: 18px;
+        color: white;
+        font-weight: 700;
+        font-size: 0.9em;
+        background: linear-gradient(135deg, #764ba2 0%, #f093fb 100%);
+        width: 24px;
+        height: 24px;
+        border-radius: 6px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 2px 6px rgba(118, 75, 162, 0.3);
+    }
+
+    li:hover {
+        transform: translateX(5px);
+        box-shadow: 0 4px 15px rgba(102, 126, 234, 0.15);
+        border-left-width: 6px;
+        background: linear-gradient(90deg, rgba(102, 126, 234, 0.03) 0%, white 100%);
+    }
+
+    /* Nested lists */
+    li ul, li ol {
+        margin: 12px 0 8px 0;
+        padding-left: 10px;
+    }
+
+    /* Nested list items - smaller styling */
+    li li {
+        font-size: 0.92em;
+        margin: 8px 0;
+        padding: 10px 14px 10px 40px;
+        box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+        border-left-color: #764ba2;
+    }
+    
+    li li::before {
+        width: 20px;
+        height: 20px;
+        font-size: 0.85em;
+        left: 12px;
+    }
+
+    li li:hover {
+        border-left-color: #f093fb;
+    }
+
+    code {
+        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        padding: 2px 6px;
+        border-radius: 4px;
+        font-family: 'Fira Code', 'Courier New', Consolas, monospace;
+        font-size: 0.85em;
+        color: #d63384;
+        border: 1px solid #dee2e6;
+        font-weight: 500;
+    }
+
+    /* Inline code with special highlighting */
+    p code, li code, td code {
+        position: relative;
+    }
+
+    p code::before, li code::before, td code::before {
+        content: '';
+        position: absolute;
+        inset: -2px;
+        border-radius: 5px;
+        background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+        z-index: -1;
+        opacity: 0;
+        transition: opacity 0.2s;
+    }
+
+    p code:hover::before, li code:hover::before, td code:hover::before {
+        opacity: 1;
+    }
+
+    pre {
+        background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+        color: #e2e8f0;
+        padding: 24px;
+        border-radius: 16px;
+        overflow-x: auto;
+        margin: 25px 0;
+        border: 2px solid #334155;
+        box-shadow: 0 8px 25px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.05);
+        font-family: 'Cascadia Code', 'Fira Code', 'SF Mono', 'Consolas', 'Liberation Mono', monospace;
+        font-size: 0.88em;
+        line-height: 1.7;
+        position: relative;
+        font-feature-settings: "liga" 0;
+        text-rendering: optimizeLegibility;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+    }
+    
+    pre::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 35px;
+        background: linear-gradient(135deg, rgba(102, 126, 234, 0.15) 0%, rgba(118, 75, 162, 0.15) 100%);
+        border-radius: 14px 14px 0 0;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    pre code {
+        background: none;
+        color: inherit;
+        padding: 0;
+        border: none;
+        font-family: inherit;
+        font-weight: normal;
+        font-size: 1em;
+        display: block;
+        padding-top: 35px;
+    }
+    
+    /* Ensure consistent styling for all code content inside pre blocks */
+    pre code * {
+        font-size: inherit !important;
+        line-height: inherit !important;
+        color: inherit !important;
+        font-family: inherit !important;
+    }
+
+    /* Hover effect */
+    pre:hover {
+        border-color: #667eea;
+        box-shadow: 0 12px 35px rgba(0,0,0,0.4), 0 0 0 2px rgba(102, 126, 234, 0.2);
+        transform: translateY(-2px);
+        transition: all 0.3s ease;
+    }
+
+    /* Code block header indicator with dots */
+    pre::after {
+        content: '';
+        position: absolute;
+        top: 14px;
+        left: 16px;
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        background: #ff5f56;
+        box-shadow: 20px 0 0 #ffbd2e, 40px 0 0 #27c93f;
+    }
+
+    blockquote {
+        border-left: 6px solid #667eea;
+        padding: 22px 28px 22px 60px;
+        margin: 25px 0;
+        color: #555;
+        font-style: italic;
+        font-size: 1em;
+        background: linear-gradient(135deg, rgba(102, 126, 234, 0.08) 0%, rgba(240, 147, 251, 0.05) 100%);
+        border-radius: 16px;
+        position: relative;
+        box-shadow: 0 4px 15px rgba(102, 126, 234, 0.1);
+        transition: all 0.3s ease;
+    }
+
+    blockquote::before {
+        content: '"';
+        position: absolute;
+        left: 18px;
+        top: 50%;
+        transform: translateY(-50%);
+        font-size: 3em;
+        color: rgba(102, 126, 234, 0.2);
+        font-family: Georgia, serif;
+        font-weight: 700;
+        line-height: 1;
+    }
+    
+    blockquote:hover {
+        border-left-color: #764ba2;
+        transform: translateX(5px);
+        box-shadow: 0 6px 20px rgba(102, 126, 234, 0.2);
+    }
+
+    table {
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 0;
+        margin: 25px 0;
+        box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+        border-radius: 16px;
+        overflow: hidden;
+        background: white;
+        font-size: 0.9em;
+        border: 2px solid rgba(102, 126, 234, 0.1);
+    }
+
+    thead {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        position: relative;
+    }
+    
+    thead::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 3px;
+        background: linear-gradient(90deg, #f093fb 0%, transparent 50%, #f093fb 100%);
+    }
+
+    th {
+        color: white;
+        padding: 16px 18px;
+        text-align: left;
+        font-weight: 700;
+        text-transform: uppercase;
+        font-size: 0.8em;
+        letter-spacing: 0.5px;
+        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+    }
+
+    td {
+        padding: 14px 18px;
+        border-bottom: 1px solid rgba(102, 126, 234, 0.08);
+        vertical-align: top;
+        line-height: 1.6;
+        transition: all 0.2s ease;
+    }
+
+    tbody tr:last-child td {
+        border-bottom: none;
+    }
+
+    tbody tr {
+        transition: all 0.3s ease;
+    }
+
+    tbody tr:hover {
+        background: linear-gradient(90deg, rgba(102, 126, 234, 0.08) 0%, rgba(240, 147, 251, 0.05) 100%);
+        transform: scale(1.01);
+        box-shadow: inset 4px 0 0 #667eea;
+    }
+
+    tbody tr:nth-child(even) {
+        background: rgba(102, 126, 234, 0.02);
+    }
+
+    tbody tr:nth-child(even):hover {
+        background: linear-gradient(90deg, rgba(102, 126, 234, 0.08) 0%, rgba(240, 147, 251, 0.05) 100%);
+    }
+    
+    /* Better code in tables */
+    td code {
+        font-size: 0.85em;
+        padding: 3px 7px;
+    }
+
+    .info-box {
+        background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+        border: 3px solid #2196f3;
+        padding: 24px;
+        margin: 30px 0;
+        border-radius: 16px;
+        box-shadow: 0 8px 25px rgba(33, 150, 243, 0.25);
+        position: relative;
+        overflow: hidden;
+        transition: all 0.3s ease;
+    }
+    
+    .info-box::before {
+        content: 'ℹ️';
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        font-size: 2em;
+        opacity: 0.3;
+    }
+    
+    .info-box:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 12px 35px rgba(33, 150, 243, 0.35);
+    }
+
+    .warning-box {
+        background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%);
+        border: 3px solid #ff9800;
+        padding: 24px;
+        margin: 30px 0;
+        border-radius: 16px;
+        box-shadow: 0 8px 25px rgba(255, 152, 0, 0.25);
+        position: relative;
+        overflow: hidden;
+        transition: all 0.3s ease;
+    }
+    
+    .warning-box::before {
+        content: '⚠️';
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        font-size: 2em;
+        opacity: 0.3;
+    }
+    
+    .warning-box:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 12px 35px rgba(255, 152, 0, 0.35);
+    }
+
+    .success-box {
+        background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+        border: 3px solid #4caf50;
+        padding: 24px;
+        margin: 30px 0;
+        border-radius: 16px;
+        box-shadow: 0 8px 25px rgba(76, 175, 80, 0.25);
+        position: relative;
+        overflow: hidden;
+        transition: all 0.3s ease;
+    }
+    
+    .success-box::before {
+        content: '✅';
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        font-size: 2em;
+        opacity: 0.3;
+    }
+    
+    .success-box:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 12px 35px rgba(76, 175, 80, 0.35);
+    }
+
+    /* Better colors for syntax in diagrams */
+    pre {
+        /* Box drawing characters in nice blue */
+        color: #93c5fd;
+    }
+
+    /* JSON/code syntax in pre blocks */
+    pre {
+        white-space: pre;
+        word-wrap: normal;
+    }
+
+    .toc {
+        background: #f8f9fa;
+        padding: 20px;
+        border-radius: 8px;
+        margin: 20px 0;
+        border-left: 4px solid #667eea;
+    }
+
+    .toc h2 {
+        color: #667eea;
+        border-bottom: none;
+        margin-bottom: 15px;
+    }
+
+    .toc ul {
+        list-style: none;
+        padding-left: 0;
+    }
+
+    .toc li {
+        margin: 8px 0;
+    }
+
+    .toc a {
+        color: #667eea;
+        text-decoration: none;
+        transition: color 0.3s;
+    }
+
+    .toc a:hover {
+        color: #764ba2;
+    }
+
+    hr {
+        border: none;
+        border-top: 2px solid #f0f0f0;
+        margin: 30px 0;
+    }
+
+    .badge {
+        display: inline-block;
+        background: #667eea;
+        color: white;
+        padding: 4px 10px;
+        border-radius: 12px;
+        font-size: 0.85em;
+        margin-left: 10px;
+    }
+
+    a {
+        color: #667eea;
+        text-decoration: none;
+        position: relative;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        padding: 2px 0;
+    }
+    
+    a::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 0;
+        height: 2px;
+        background: linear-gradient(90deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+        transition: width 0.3s ease;
+    }
+
+    a:hover {
+        color: #764ba2;
+    }
+    
+    a:hover::after {
+        width: 100%;
+    }
+    
+    /* Better display for metadata fields */
+    strong {
+        color: #374151;
+        font-weight: 600;
+    }
+    
+    /* Metadata field styling - each field on its own line */
+    .metadata-field {
+        margin: 8px 0;
+        padding: 8px 14px;
+        background: linear-gradient(90deg, rgba(102, 126, 234, 0.04) 0%, transparent 100%);
+        border-left: 3px solid #667eea;
+        border-radius: 0 4px 4px 0;
+        line-height: 1.7;
+        font-size: 0.95em;
+        display: block;
+        clear: both;
+    }
+    
+    .metadata-field strong {
+        color: #667eea;
+        font-weight: 600;
+        margin-right: 8px;
+        display: inline-block;
+        min-width: 100px;
+    }
+    
+    .metadata-field code {
+        font-size: 0.88em;
+    }
+
+    footer {
+        margin-top: 50px;
+        padding-top: 30px;
+        border-top: 2px solid #f0f0f0;
+        text-align: center;
+        color: #888;
+    }
+
+    @media print {
+        body {
+            background: white;
+        }
+        .nav-header, .nav-links {
+            display: none;
+        }
+        pre {
+            break-inside: avoid;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .container {
+            padding: 20px;
+        }
+        .nav-header {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+        .nav-links {
+            margin-top: 15px;
+        }
+        h1 {
+            font-size: 2em;
+        }
+        h2 {
+            font-size: 1.5em;
+        }
+    }
+</style>
+
+</head>
+<body>
+    <div class="container">
+        <div class="nav-header"><div><h1>Embrix O2X Documentation</h1><small>Navigate between guides</small></div><div class="nav-links"><a href="index.html">Home</a><a href="guide-index.html">Guide Index</a><a href="guide-index.html">Part 1-5</a><a href="quick-start.html">Quick Start</a><a href="quick-reference.html">Quick Ref</a><a href="complete-system-overview.html">Architecture</a><a href="api-reference.html">API Reference</a><a href="troubleshooting-guide.html">Troubleshooting</a></div></div>
+        
+<h1>Embrix O2X Platform - Complete System Overview</h1>
+
+<strong>Version</strong>: 3.1.9-SNAPSHOT  
+<strong>Last Updated</strong>: February 2026  
+<strong>Purpose</strong>: Comprehensive bird's-eye view of the entire system architecture
+
+<hr>
+
+<h2>Executive Summary</h2>
+
+<strong>Embrix O2X</strong> (Order-to-X) is an enterprise-grade <strong>BSS/OSS platform</strong> for telecommunications and service providers. It handles the complete order-to-cash lifecycle: from order entry through provisioning, usage tracking, billing, invoicing, payment processing, and revenue recognition.
+<strong>Platform Scale</strong>:
+<ul>
+<li><strong>23 Services</strong>: 9 core services + 6 gateways + 5 foundation libraries + 3 additional</li>
+<li><strong>50+ Database Tables</strong>: Organized across 8 PostgreSQL schemas</li>
+<li><strong>11 Business Hubs</strong>: Domain-driven business logic organization</li>
+<li><strong>7 Production Tenants</strong>: Currently serving real customers</li>
+<li><strong>Multi-tenant Architecture</strong>: Database-per-tenant with complete isolation</li>
+</ul>
+
+<hr>
+
+<h2>System Architecture Layers</h2>
+
+<pre><code class="language-">┌─────────────────────────────────────────────────────────────────┐
+│                    EXTERNAL SYSTEMS                              │
+│  Salesforce │ Nokia ESB │ Tax Providers │ Banks │ QuickBooks   │
+└──────────────────────────┬──────────────────────────────────────┘
+                           │
+┌──────────────────────────▼──────────────────────────────────────┐
+│                     GATEWAY LAYER                                │
+│  crm_gateway │ provision_gateway │ tax-gateway │ payment-gateway│
+│  finance-gateway │ diameter-gateway                              │
+└──────────────────────────┬──────────────────────────────────────┘
+                           │
+┌──────────────────────────▼──────────────────────────────────────┐
+│                  MESSAGING LAYER (ActiveMQ)                      │
+│  OMS │ MEDIATION │ USAGE │ PROVISIONING_RESPONSE │ BULK         │
+└──────────────────────────┬──────────────────────────────────────┘
+                           │
+┌──────────────────────────▼──────────────────────────────────────┐
+│                   CORE SERVICES LAYER                            │
+│  service-billing │ service-invoice │ service-usage              │
+│  service-mediation │ service-payment │ service-revenue          │
+│  service-transactional │ service-sso │ batch-process            │
+└──────────────────────────┬──────────────────────────────────────┘
+                           │
+┌──────────────────────────▼──────────────────────────────────────┐
+│                   FOUNDATION LAYER                               │
+│  engine (Business Logic) │ oms-component (Orchestration)        │
+│  common (DTOs/Enums) │ gateway-common │ jobs-common             │
+└──────────────────────────┬──────────────────────────────────────┘
+                           │
+┌──────────────────────────▼──────────────────────────────────────┐
+│                   INFRASTRUCTURE                                 │
+│  PostgreSQL │ Redis │ ActiveMQ │ Vault │ S3 │ Kubernetes       │
+└─────────────────────────────────────────────────────────────────┘
+</code></pre>
+
+<hr>
+
+<h2>Technology Stack</h2>
+
+<h3>Backend Technologies</h3>
+
+<table>
+<thead><tr>
+<th>Layer</th>
+<th>Technology</th>
+<th>Version</th>
+<th>Purpose</th>
+</tr></thead><tbody>
+<tr>
+<td>-------</td>
+<td>------------</td>
+<td>---------</td>
+<td>---------</td>
+</tr>
+<tr>
+<td><strong>Language</strong></td>
+<td>Java</td>
+<td>8 → 17 (upgrading)</td>
+<td>Core runtime</td>
+</tr>
+<tr>
+<td></td>
+<td>Groovy</td>
+<td>2.4.15 → 4.0.23</td>
+<td>Business logic</td>
+</tr>
+<tr>
+<td><strong>Framework</strong></td>
+<td>Spring Boot</td>
+<td>2.1.4 → 3.3.5</td>
+<td>Microservices</td>
+</tr>
+<tr>
+<td></td>
+<td>Spring Security</td>
+<td>5.4.5 → 6.3.x</td>
+<td>Authentication</td>
+</tr>
+<tr>
+<td><strong>API</strong></td>
+<td>GraphQL Java</td>
+<td>5.0.2 → 22.3</td>
+<td>Primary API</td>
+</tr>
+<tr>
+<td></td>
+<td>REST</td>
+<td>Various</td>
+<td>Legacy/Gateway APIs</td>
+</tr>
+<tr>
+<td><strong>Data Access</strong></td>
+<td>JOOQ</td>
+<td>3.11.10 → 3.19.15</td>
+<td>Type-safe SQL</td>
+</tr>
+<tr>
+<td></td>
+<td>Flyway</td>
+<td>5.2.4 → 10.21.0</td>
+<td>Migrations</td>
+</tr>
+<tr>
+<td></td>
+<td>HikariCP</td>
+<td>Auto</td>
+<td>Connection pooling</td>
+</tr>
+<tr>
+<td><strong>Messaging</strong></td>
+<td>Apache Camel</td>
+<td>2.23.1 → 4.9.0</td>
+<td>Integration</td>
+</tr>
+<tr>
+<td></td>
+<td>ActiveMQ</td>
+<td>5.15.9 → 6.1.3</td>
+<td>Message broker</td>
+</tr>
+<tr>
+<td><strong>Database</strong></td>
+<td>PostgreSQL</td>
+<td>10.5+</td>
+<td>Primary datastore</td>
+</tr>
+<tr>
+<td><strong>Cache</strong></td>
+<td>Redis</td>
+<td>6.2+ (Jedis)</td>
+<td>Caching/Sessions</td>
+</tr>
+<tr>
+<td><strong>Security</strong></td>
+<td>HashiCorp Vault</td>
+<td>2.0.2</td>
+<td>Secrets mgmt</td>
+</tr>
+<tr>
+<td><strong>Documents</strong></td>
+<td>iText</td>
+<td>7.1.5</td>
+<td>PDF generation</td>
+</tr>
+<tr>
+<td></td>
+<td>Thymeleaf</td>
+<td>3.0.11</td>
+<td>Templates</td>
+</tr>
+<tr>
+<td><strong>Build</strong></td>
+<td>Maven</td>
+<td>3.6+</td>
+<td>Dependency mgmt</td>
+</tr>
+<tr>
+<td><strong>Container</strong></td>
+<td>Docker</td>
+<td>Latest</td>
+<td>Containerization</td>
+</tr>
+<tr>
+<td><strong>Orchestration</strong></td>
+<td>Kubernetes</td>
+<td>Latest</td>
+<td>Container mgmt</td>
+</tr>
+</tbody></table>
+<h3>Frontend Technologies</h3>
+
+<table>
+<thead><tr>
+<th>Application</th>
+<th>Framework</th>
+<th>Version</th>
+<th>Purpose</th>
+</tr></thead><tbody>
+<tr>
+<td>-------------</td>
+<td>-----------</td>
+<td>---------</td>
+<td>---------</td>
+</tr>
+<tr>
+<td><strong>ui-core</strong></td>
+<td>React</td>
+<td>16.12.0</td>
+<td>Admin portal</td>
+</tr>
+<tr>
+<td><strong>selfcare</strong></td>
+<td>React</td>
+<td>16.8.6</td>
+<td>Customer portal</td>
+</tr>
+<tr>
+<td><strong>embrix-lite</strong></td>
+<td>React</td>
+<td>16.12.0</td>
+<td>Lightweight app</td>
+</tr>
+<tr>
+<td><strong>ui</strong></td>
+<td>React</td>
+<td>16.12.0</td>
+<td>Public site</td>
+</tr>
+</tbody></table>
+
+<hr>
+
+<h2>Complete Service Inventory</h2>
+
+<h3>Foundation Libraries (5)</h3>
+
+<table>
+<thead><tr>
+<th>Library</th>
+<th>Artifact</th>
+<th>Dependencies</th>
+<th>Purpose</th>
+</tr></thead><tbody>
+<tr>
+<td>---------</td>
+<td>----------</td>
+<td>--------------</td>
+<td>---------</td>
+</tr>
+<tr>
+<td><strong>common</strong></td>
+<td><code>engine-common</code></td>
+<td>None</td>
+<td>Shared DTOs, enums, constants</td>
+</tr>
+<tr>
+<td><strong>engine</strong></td>
+<td><code>engine</code></td>
+<td>common</td>
+<td>Core business logic (11 hubs)</td>
+</tr>
+<tr>
+<td><strong>oms-component</strong></td>
+<td><code>oms-component</code></td>
+<td>engine</td>
+<td>Order orchestration framework</td>
+</tr>
+<tr>
+<td><strong>gateway-common</strong></td>
+<td><code>gateway-common</code></td>
+<td>common</td>
+<td>Gateway utilities</td>
+</tr>
+<tr>
+<td><strong>jobs-common</strong></td>
+<td><code>jobs-common</code></td>
+<td>engine</td>
+<td>Batch processing utilities</td>
+</tr>
+</tbody></table>
+<h3>Core Services (9)</h3>
+
+<table>
+<thead><tr>
+<th>Service</th>
+<th>Port</th>
+<th>Dependencies</th>
+<th>Purpose</th>
+</tr></thead><tbody>
+<tr>
+<td>---------</td>
+<td>------</td>
+<td>--------------</td>
+<td>---------</td>
+</tr>
+<tr>
+<td><strong>service-billing</strong></td>
+<td>8090</td>
+<td>engine</td>
+<td>Billing cycle execution</td>
+</tr>
+<tr>
+<td><strong>service-invoice</strong></td>
+<td>8091</td>
+<td>engine</td>
+<td>Invoice document generation</td>
+</tr>
+<tr>
+<td><strong>service-usage</strong></td>
+<td>8092</td>
+<td>engine</td>
+<td>Usage data repository</td>
+</tr>
+<tr>
+<td><strong>service-mediation</strong></td>
+<td>8093</td>
+<td>engine</td>
+<td>CDR ingestion/normalization</td>
+</tr>
+<tr>
+<td><strong>service-payment</strong></td>
+<td>8094</td>
+<td>engine</td>
+<td>Payment processing</td>
+</tr>
+<tr>
+<td><strong>service-revenue</strong></td>
+<td>8095</td>
+<td>engine</td>
+<td>Revenue recognition</td>
+</tr>
+<tr>
+<td><strong>service-transactional</strong></td>
+<td>8096</td>
+<td>engine</td>
+<td>Real-time transactions</td>
+</tr>
+<tr>
+<td><strong>service-sso</strong></td>
+<td>8097</td>
+<td>engine</td>
+<td>Single sign-on</td>
+</tr>
+<tr>
+<td><strong>batch-process</strong></td>
+<td>N/A</td>
+<td>engine, jobs-common</td>
+<td>Background jobs</td>
+</tr>
+</tbody></table>
+<h3>Gateway Services (6)</h3>
+
+<table>
+<thead><tr>
+<th>Gateway</th>
+<th>Port</th>
+<th>Integration Target</th>
+<th>Purpose</th>
+</tr></thead><tbody>
+<tr>
+<td>---------</td>
+<td>------</td>
+<td>-------------------</td>
+<td>---------</td>
+</tr>
+<tr>
+<td><strong>crm_gateway</strong></td>
+<td>8080</td>
+<td>Salesforce, CRM</td>
+<td>Order capture, GraphQL API</td>
+</tr>
+<tr>
+<td><strong>provision_gateway</strong></td>
+<td>8081</td>
+<td>Nokia, ServiceNow</td>
+<td>Network provisioning</td>
+</tr>
+<tr>
+<td><strong>tax-gateway</strong></td>
+<td>8082</td>
+<td>Avalara, PAC</td>
+<td>Tax calculation</td>
+</tr>
+<tr>
+<td><strong>payment-gateway</strong></td>
+<td>8083</td>
+<td>Stripe, Banks</td>
+<td>Payment processing</td>
+</tr>
+<tr>
+<td><strong>finance-gateway</strong></td>
+<td>8084</td>
+<td>QuickBooks, SAP</td>
+<td>ERP integration</td>
+</tr>
+<tr>
+<td><strong>diameter-gateway</strong></td>
+<td>8085</td>
+<td>Network elements</td>
+<td>Real-time charging</td>
+</tr>
+</tbody></table>
+<h3>Frontend Applications (4)</h3>
+
+<table>
+<thead><tr>
+<th>Application</th>
+<th>Technology</th>
+<th>Purpose</th>
+</tr></thead><tbody>
+<tr>
+<td>-------------</td>
+<td>------------</td>
+<td>---------</td>
+</tr>
+<tr>
+<td><strong>ui-core</strong></td>
+<td>React 16.12.0</td>
+<td>Admin portal (tenant mgmt)</td>
+</tr>
+<tr>
+<td><strong>selfcare</strong></td>
+<td>React 16.8.6</td>
+<td>Customer self-service</td>
+</tr>
+<tr>
+<td><strong>embrix-lite</strong></td>
+<td>React 16.12.0</td>
+<td>Lightweight application</td>
+</tr>
+<tr>
+<td><strong>ui</strong></td>
+<td>React 16.12.0</td>
+<td>Public marketing site</td>
+</tr>
+</tbody></table>
+
+<hr>
+
+<h2>Business Logic Organization (Engine Hubs)</h2>
+
+The <code>engine</code> module contains all business logic organized into 11 domain-driven hubs:
+<h3>Core Business Hubs</h3>
+
+<table>
+<thead><tr>
+<th>Hub</th>
+<th>Package</th>
+<th>Key Responsibilities</th>
+</tr></thead><tbody>
+<tr>
+<td>-----</td>
+<td>---------</td>
+<td>---------------------</td>
+</tr>
+<tr>
+<td><strong>arHub</strong></td>
+<td><code>engine.arHub</code></td>
+<td>Payments, collections, credit/debit notes</td>
+</tr>
+<tr>
+<td><strong>billingHub</strong></td>
+<td><code>engine.billingHub</code></td>
+<td>Billing cycles, proration, invoicing, taxation</td>
+</tr>
+<tr>
+<td><strong>customerHub</strong></td>
+<td><code>engine.customerHub</code></td>
+<td>Accounts, orders, subscriptions, quotes</td>
+</tr>
+<tr>
+<td><strong>pricingHub</strong></td>
+<td><code>engine.pricingHub</code></td>
+<td>Product catalog, pricing, bundles</td>
+</tr>
+<tr>
+<td><strong>revenueHub</strong></td>
+<td><code>engine.revenueHub</code></td>
+<td>Revenue recognition (IFRS 15, ASC 606)</td>
+</tr>
+<tr>
+<td><strong>usageProcessHub</strong></td>
+<td><code>engine.usageProcessHub</code></td>
+<td>Usage rating, charge calculation</td>
+</tr>
+<tr>
+<td><strong>mediationHub</strong></td>
+<td><code>engine.mediationHub</code></td>
+<td>CDR processing, normalization</td>
+</tr>
+<tr>
+<td><strong>opsHub</strong></td>
+<td><code>engine.opsHub</code></td>
+<td>Users, jobs, notifications, tenant onboarding</td>
+</tr>
+<tr>
+<td><strong>commonHub</strong></td>
+<td><code>engine.commonHub</code></td>
+<td>Documents, files, templates</td>
+</tr>
+<tr>
+<td><strong>migrationHub</strong></td>
+<td><code>engine.migrationHub</code></td>
+<td>Data migration utilities</td>
+</tr>
+<tr>
+<td><strong>selfCareHub</strong></td>
+<td><code>engine.selfCareHub</code></td>
+<td>Customer self-service APIs</td>
+</tr>
+</tbody></table>
+
+<hr>
+
+<h2>Database Architecture</h2>
+
+<h3>Schema Organization</h3>
+
+<table>
+<thead><tr>
+<th>Schema</th>
+<th>Tables</th>
+<th>Purpose</th>
+</tr></thead><tbody>
+<tr>
+<td>--------</td>
+<td>--------</td>
+<td>---------</td>
+</tr>
+<tr>
+<td><strong>core_engine</strong></td>
+<td>15+</td>
+<td>Core entities (account, subscription, user)</td>
+</tr>
+<tr>
+<td><strong>core_oms</strong></td>
+<td>8+</td>
+<td>Order management</td>
+</tr>
+<tr>
+<td><strong>core_billing</strong></td>
+<td>12+</td>
+<td>Financial transactions</td>
+</tr>
+<tr>
+<td><strong>core_pricing</strong></td>
+<td>10+</td>
+<td>Product catalog</td>
+</tr>
+<tr>
+<td><strong>core_usage</strong></td>
+<td>5+</td>
+<td>Usage data (partitioned)</td>
+</tr>
+<tr>
+<td><strong>core_revenue</strong></td>
+<td>6+</td>
+<td>Revenue recognition</td>
+</tr>
+<tr>
+<td><strong>core_config</strong></td>
+<td>10+</td>
+<td>Configuration (shared)</td>
+</tr>
+<tr>
+<td><strong>core_mediation</strong></td>
+<td>5+</td>
+<td>CDR processing</td>
+</tr>
+</tbody></table>
+<h3>Key Entities</h3>
+
+<strong>Customer & Orders</strong>:
+<ul>
+<li><code>account</code> - Customer accounts (hierarchical)</li>
+<li><code>subscription</code> - Active service subscriptions</li>
+<li><code>order</code> - Order records</li>
+<li><code>service_line</code> - Order line items</li>
+</ul>
+<strong>Billing & Payments</strong>:
+<ul>
+<li><code>charge</code> - Individual charges</li>
+<li><code>invoice</code> - Generated invoices</li>
+<li><code>payment</code> - Payment transactions</li>
+<li><code>payment_allocation</code> - Payment-to-invoice mapping</li>
+</ul>
+<strong>Product Catalog</strong>:
+<ul>
+<li><code>product</code> - Product definitions</li>
+<li><code>price_offer</code> - Pricing plans</li>
+<li><code>bundle</code> - Product bundles</li>
+<li><code>discount</code> - Promotions</li>
+</ul>
+<strong>Usage</strong>:
+<ul>
+<li><code>usage_record</code> - CDR records (partitioned by month)</li>
+<li><code>usage_accumulator</code> - Aggregated usage</li>
+<li><code>usage_quota</code> - Quota limits</li>
+</ul>
+<strong>Revenue</strong>:
+<ul>
+<li><code>deferred_revenue</code> - Deferred revenue tracking</li>
+<li><code>journal_entry</code> - GL entries</li>
+<li><code>performance_obligation</code> - Revenue obligations</li>
+</ul>
+
+<hr>
+
+<h2>Multi-Tenant Architecture</h2>
+
+<h3>Deployment Model</h3>
+
+<strong>Pattern</strong>: Deployment-level multi-tenancy (database-per-tenant)
+<strong>Isolation Approach</strong>:
+<ul>
+<li>✅ Dedicated Kubernetes deployment per tenant</li>
+<li>✅ Dedicated PostgreSQL database per tenant</li>
+<li>✅ Shared infrastructure (K8s cluster, AWS resources)</li>
+<li>✅ Tenant-specific Helm values</li>
+<li>✅ Tenant-scoped secrets in Vault</li>
+</ul>
+<h3>Current Tenants</h3>
+
+<table>
+<thead><tr>
+<th>Tenant ID</th>
+<th>Tenant Name</th>
+<th>Environment</th>
+<th>Database</th>
+<th>Status</th>
+</tr></thead><tbody>
+<tr>
+<td>-----------</td>
+<td>-------------</td>
+<td>-------------</td>
+<td>----------</td>
+<td>--------</td>
+</tr>
+<tr>
+<td>TIDLT-100001</td>
+<td>coopeg-sbx</td>
+<td>Sandbox</td>
+<td>coredb-coopeg-sbx</td>
+<td>Active</td>
+</tr>
+<tr>
+<td>TIDLT-100002</td>
+<td>demo</td>
+<td>Demo</td>
+<td>coredb-demo</td>
+<td>Active</td>
+</tr>
+<tr>
+<td>TIDLT-100003</td>
+<td>dev</td>
+<td>Development</td>
+<td>enginedevdb</td>
+<td>Active</td>
+</tr>
+<tr>
+<td>TIDLT-100004</td>
+<td>shm</td>
+<td>Production</td>
+<td>coredb-shm</td>
+<td>Active</td>
+</tr>
+<tr>
+<td>TIDLT-100005</td>
+<td>urbanos</td>
+<td>Development</td>
+<td>coredb-urbanos</td>
+<td>Active</td>
+</tr>
+<tr>
+<td>TIDLT-100006</td>
+<td>coopeg-prd</td>
+<td>Production</td>
+<td>coredb-coopeg-prd</td>
+<td>Active</td>
+</tr>
+<tr>
+<td>TIDLT-100007</td>
+<td>coopegenergy</td>
+<td>Production</td>
+<td>coredb-coopegenergy</td>
+<td>Active</td>
+</tr>
+</tbody></table>
+<h3>Benefits of Database-per-Tenant</h3>
+
+<table>
+<thead><tr>
+<th>Aspect</th>
+<th>Benefit</th>
+</tr></thead><tbody>
+<tr>
+<td>--------</td>
+<td>---------</td>
+</tr>
+<tr>
+<td><strong>Data Isolation</strong></td>
+<td>Complete separation, no cross-tenant data leakage</td>
+</tr>
+<tr>
+<td><strong>Compliance</strong></td>
+<td>Simplified auditing, data residency requirements</td>
+</tr>
+<tr>
+<td><strong>Customization</strong></td>
+<td>Per-tenant schema modifications if needed</td>
+</tr>
+<tr>
+<td><strong>Performance</strong></td>
+<td>No noisy neighbor problem</td>
+</tr>
+<tr>
+<td><strong>Scalability</strong></td>
+<td>Independent scaling per tenant</td>
+</tr>
+<tr>
+<td><strong>Backup/Restore</strong></td>
+<td>Per-tenant backup and recovery</td>
+</tr>
+</tbody></table>
+
+<hr>
+
+<h2>Integration Architecture</h2>
+
+<h3>External System Integrations</h3>
+
+<strong>CRM Integration</strong> (via <code>crm_gateway</code>):
+<ul>
+<li>Salesforce</li>
+<li>Microsoft Dynamics</li>
+<li>Custom CRMs</li>
+</ul>
+<strong>Network Provisioning</strong> (via <code>provision_gateway</code>):
+<ul>
+<li>Nokia ESB (MCM Telecom)</li>
+<li>ServiceNow</li>
+<li>Cisco ACI</li>
+<li>AWS (network automation)</li>
+</ul>
+<strong>Tax Calculation</strong> (via <code>tax-gateway</code>):
+<ul>
+<li>Avalara AvaTax</li>
+<li>PAC providers (Mexico CFDI)</li>
+<li>Custom tax engines</li>
+</ul>
+<strong>Payment Processing</strong> (via <code>payment-gateway</code>):
+<ul>
+<li>Stripe</li>
+<li>PayPal</li>
+<li>Braintree</li>
+<li>Apple Pay</li>
+<li>Bank file processing (CSV)<br><ul><li>Banamex</li></ul><br><ul><li>BBVA</li></ul><br><ul><li>Banorte</li></ul><br><ul><li>Santander</li></ul><br><ul><li>Scotiabank</li></ul></li>
+</ul>
+<strong>ERP Integration</strong> (via <code>finance-gateway</code>):
+<ul>
+<li>QuickBooks Online (OAuth2)</li>
+<li>NetSuite (planned)</li>
+<li>Oracle EBS (planned)</li>
+<li>SAP (planned)</li>
+</ul>
+<strong>Real-Time Charging</strong> (via <code>diameter-gateway</code>):
+<ul>
+<li>Network elements (GGSN/PGW)</li>
+<li>Diameter protocol (RFC 6733)</li>
+<li>Prepaid balance checks</li>
+</ul>
+
+<hr>
+
+<h2>Message Queue Architecture</h2>
+
+<h3>ActiveMQ Queues</h3>
+
+<table>
+<thead><tr>
+<th>Queue Name</th>
+<th>Purpose</th>
+<th>Producer</th>
+<th>Consumer</th>
+</tr></thead><tbody>
+<tr>
+<td>------------</td>
+<td>---------</td>
+<td>----------</td>
+<td>----------</td>
+</tr>
+<tr>
+<td><strong>OMS</strong></td>
+<td>Order intake</td>
+<td>crm_gateway</td>
+<td>Orchestrators</td>
+</tr>
+<tr>
+<td><strong>OMS_ARCHIVE</strong></td>
+<td>Audit trail</td>
+<td>crm_gateway</td>
+<td>None (archive)</td>
+</tr>
+<tr>
+<td><strong>OMS_ERROR</strong></td>
+<td>Failed orders</td>
+<td>crm_gateway</td>
+<td>None (error log)</td>
+</tr>
+<tr>
+<td><strong>OMS_RESPONSE</strong></td>
+<td>Success responses</td>
+<td>crm_gateway</td>
+<td>External systems</td>
+</tr>
+<tr>
+<td><strong>PROVISIONING_RESPONSE</strong></td>
+<td>Provisioning results</td>
+<td>provision_gateway</td>
+<td>crm_gateway</td>
+</tr>
+<tr>
+<td><strong>MEDIATION</strong></td>
+<td>CDR files</td>
+<td>External systems</td>
+<td>service-mediation</td>
+</tr>
+<tr>
+<td><strong>USAGE</strong></td>
+<td>Usage batches</td>
+<td>External systems</td>
+<td>service-usage</td>
+</tr>
+<tr>
+<td><strong>BULK</strong></td>
+<td>Bulk operations</td>
+<td>service-proxy</td>
+<td>jobs-common</td>
+</tr>
+<tr>
+<td><strong>price-sync</strong></td>
+<td>Price updates</td>
+<td>External vendor</td>
+<td>pricing_sync</td>
+</tr>
+</tbody></table>
+<h3>Message Flow Patterns</h3>
+
+<strong>Order Processing</strong>:
+<pre><code class="language-">Salesforce → crm_gateway → OMS queue → Orchestrator → 
+  provision_gateway → PROVISIONING_RESPONSE → crm_gateway → 
+  OMS_RESPONSE → Salesforce
+</code></pre>
+<strong>Usage Processing</strong>:
+<pre><code class="language-">Network → SFTP → service-mediation → MEDIATION queue → 
+  Normalization → USAGE queue → service-usage → Rating → 
+  Billing cycle
+</code></pre>
+
+<hr>
+
+<h2>API Architecture</h2>
+
+<h3>GraphQL API (Primary)</h3>
+
+<strong>Endpoint</strong>: <code>http://localhost:8080/graphql</code>  
+<strong>Playground</strong>: <code>http://localhost:8080/graphiql</code>
+<strong>Key Resolvers</strong>:
+<ul>
+<li><strong>OrderResolver</strong>: Order management (create, search, update)</li>
+<li><strong>AccountResolver</strong>: Account operations</li>
+<li><strong>InvoiceResolver</strong>: Invoice queries</li>
+<li><strong>PaymentResolver</strong>: Payment processing</li>
+<li><strong>UsageResolver</strong>: Usage queries</li>
+<li><strong>ProductResolver</strong>: Product catalog</li>
+</ul>
+<strong>Sample Query</strong>:
+<pre><code class="language-graphql">query {
+  searchOrders(filter: {
+    accountId: "ACC-001"
+    status: COMPLETED
+  }) {
+    id
+    type
+    status
+    services {
+      id
+      product {
+        name
+        price
+      }
+    }
+  }
+}
+</code></pre>
+<strong>Sample Mutation</strong>:
+<pre><code class="language-graphql">mutation {
+  createOrder(input: {
+    accountId: "ACC-001"
+    type: NEW_SERVICE
+    services: [
+      {
+        productId: "PROD-100"
+        quantity: 1
+      }
+    ]
+  }) {
+    id
+    status
+  }
+}
+</code></pre>
+<h3>REST API (Legacy/Gateway)</h3>
+
+<strong>Tax Gateway</strong> (<code>tax-gateway:8082</code>):
+<ul>
+<li><code>POST /api/v1/tax/calculate</code> - Calculate tax</li>
+<li><code>POST /api/v1/tax/validate-address</code> - Validate address</li>
+</ul>
+<strong>Payment Gateway</strong> (<code>payment-gateway:8083</code>):
+<ul>
+<li><code>POST /api/v1/payment/process</code> - Process payment</li>
+<li><code>POST /api/v1/payment/tokenize</code> - Tokenize card</li>
+</ul>
+<strong>Finance Gateway</strong> (<code>finance-gateway:8084</code>):
+<ul>
+<li><code>POST /api/v1/finance/sync-invoice</code> - Sync to ERP</li>
+<li><code>POST /api/v1/finance/sync-payment</code> - Sync payment</li>
+</ul>
+
+<hr>
+
+<h2>Security Architecture</h2>
+
+<h3>Authentication</h3>
+
+<strong>OAuth2 Flow</strong>:
+<ol>
+<li>Client requests token from <code>crm_gateway:8080/oauth/token</code></li>
+<li>Validates client credentials (from Vault)</li>
+<li>Issues JWT token with tenant and permissions</li>
+<li>Client includes token in Authorization header</li>
+</ol>
+<strong>Token Structure</strong>:
+<pre><code class="language-json">{
+  "sub": "client-id",
+  "tenant_id": "TIDLT-100008",
+  "scopes": ["all"],
+  "permissions": ["CREATE_ORDER", "VIEW_INVOICE"],
+  "exp": 1234567890
+}
+</code></pre>
+<h3>Authorization</h3>
+
+<strong>Permission-Based</strong>:
+<ul>
+<li>Permissions checked via JWT claims</li>
+<li>Method-level security: <code>@PreAuthorize("hasPermission('CREATE_ORDER')")</code></li>
+<li>Tenant context extracted from token</li>
+</ul>
+<h3>Secrets Management</h3>
+
+<strong>HashiCorp Vault</strong>:
+<ul>
+<li>Secret paths: <code>secret/{application}/{profile}</code></li>
+<li>Stored secrets:<br><ul><li>Database credentials</li></ul><br><ul><li>ActiveMQ credentials</li></ul><br><ul><li>OAuth client secrets</li></ul><br><ul><li>JWT signing keys</li></ul><br><ul><li>External API keys</li></ul><br><ul><li>Slack webhooks</li></ul></li>
+</ul>
+<strong>Spring Cloud Vault Integration</strong>:
+<pre><code class="language-yaml">spring:
+  cloud:
+    vault:
+      uri: ${VAULT_URI}
+      token: ${VAULT_TOKEN}
+      generic:
+        enabled: true
+        application-name: ctg-oms
+</code></pre>
+
+<hr>
+
+<h2>Infrastructure Components</h2>
+
+<h3>Compute</h3>
+
+<strong>Kubernetes (EKS)</strong>:
+<ul>
+<li>Deployment pattern: <code>{tenant}-{service}</code> (e.g., <code>urbanos-service-billing</code>)</li>
+<li>Resource limits: CPU, memory per service</li>
+<li>Auto-scaling: HPA (Horizontal Pod Autoscaler)</li>
+<li>Health checks: Liveness, readiness probes</li>
+</ul>
+<h3>Data Storage</h3>
+
+<strong>PostgreSQL (RDS)</strong>:
+<ul>
+<li>Version: 10.5+</li>
+<li>Instance: <code>embrix-rds-dev-db.chg5bgdk4yyp.us-east-1.rds.amazonaws.com</code></li>
+<li>Pattern: One database per tenant</li>
+<li>Backup: Daily automated snapshots</li>
+</ul>
+<strong>Redis (ElastiCache)</strong>:
+<ul>
+<li>Version: 6.2+</li>
+<li>Endpoint: <code>master.{env}-cache-rg.8fxuvv.use1.cache.amazonaws.com</code></li>
+<li>Use cases: Session storage, pricing cache, quota counters</li>
+</ul>
+<strong>S3</strong>:
+<ul>
+<li>Invoice PDFs: <code>s3://embrix-invoices-{env}/</code></li>
+<li>CDR files: <code>s3://embrix-cdr-{env}/</code></li>
+<li>Maven repo: <code>s3://embrix-maven-repo/</code></li>
+</ul>
+<h3>Messaging</h3>
+
+<strong>Amazon MQ (ActiveMQ)</strong>:
+<ul>
+<li>Version: 5.15.9 (upgrading to 6.1.3)</li>
+<li>Endpoint: <code>ssl://broker.mq.us-east-1.amazonaws.com:61617</code></li>
+<li>Failover: Active/Standby configuration</li>
+<li>Persistence: Enabled</li>
+</ul>
+<h3>Monitoring</h3>
+
+<strong>Prometheus + Grafana</strong>:
+<ul>
+<li>Metrics: CPU, memory, requests/sec, error rate</li>
+<li>Dashboards: Per-service and aggregate views</li>
+<li>Alerting: AlertManager + Slack</li>
+</ul>
+<strong>ELK Stack</strong>:
+<ul>
+<li>Logs: JSON format via Logstash encoder</li>
+<li>Aggregation: Elasticsearch</li>
+<li>Visualization: Kibana</li>
+<li>Retention: 30 days</li>
+</ul>
+
+<hr>
+
+<h2>Deployment Architecture</h2>
+
+<h3>CI/CD Pipeline</h3>
+
+<strong>GitLab CI/CD</strong>:
+<pre><code class="language-yaml">stages:
+  - build
+  - test
+  - deploy
+
+build:
+  - mvn clean install
+  - docker build
+
+test:
+  - mvn test
+  - Integration tests
+
+deploy:
+  - helm upgrade --install
+</code></pre>
+<h3>Deployment Process</h3>
+
+<ol>
+<li><strong>Build</strong>: Maven builds JAR, Docker builds image</li>
+<li><strong>Test</strong>: Unit and integration tests</li>
+<li><strong>Push</strong>: Docker image to registry</li>
+<li><strong>Deploy</strong>: Helm chart deployment to K8s</li>
+<li><strong>Verify</strong>: Health checks and smoke tests</li>
+</ol>
+<h3>Kubernetes Deployment Pattern</h3>
+
+<pre><code class="language-yaml">apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: urbanos-service-billing
+  namespace: urbanos
+spec:
+  replicas: 2
+  template:
+    spec:
+      containers:
+      - name: service-billing
+        image: embrix/service-billing:3.1.9
+        env:
+        - name: TENANT_ID
+          value: "TIDLT-100005"
+        - name: SPRING_PROFILES_ACTIVE
+          value: "prod"
+</code></pre>
+
+<hr>
+
+<h2>Performance Characteristics</h2>
+
+<h3>Database Performance</h3>
+
+<strong>Partitioning</strong>:
+<ul>
+<li><code>usage_record</code> partitioned by month</li>
+<li>Benefits: Faster queries, easier archival</li>
+</ul>
+<strong>Indexing</strong>:
+<ul>
+<li>B-tree indexes on foreign keys</li>
+<li>Composite indexes on query patterns</li>
+<li>Partial indexes on filtered queries</li>
+<li>GIN indexes on JSONB columns</li>
+</ul>
+<strong>Connection Pooling</strong>:
+<ul>
+<li>HikariCP: 20-50 connections per service</li>
+<li>Connection timeout: 30s</li>
+<li>Max lifetime: 30 minutes</li>
+</ul>
+<h3>Caching Strategy</h3>
+
+<strong>Redis Caching</strong>:
+<ul>
+<li>Pricing catalog: 1-hour TTL</li>
+<li>Session data: Session lifetime</li>
+<li>Quota counters: Real-time updates</li>
+</ul>
+<strong>Application Caching</strong>:
+<ul>
+<li>Spring <code>@Cacheable</code> on expensive operations</li>
+<li>Cache names: <code>customers</code>, <code>products</code>, <code>pricing</code></li>
+</ul>
+<h3>Message Processing</h3>
+
+<strong>ActiveMQ Throughput</strong>:
+<ul>
+<li>OMS queue: 100-500 messages/minute</li>
+<li>USAGE queue: 1000-5000 messages/minute</li>
+<li>Retry policy: 7 retries, exponential backoff</li>
+</ul>
+
+<hr>
+
+<h2>Business Capabilities</h2>
+
+<h3>Order Management</h3>
+
+<ul>
+<li>Order capture (new, change, disconnect)</li>
+<li>Order validation</li>
+<li>Order orchestration</li>
+<li>Service provisioning</li>
+<li>Order fulfillment tracking</li>
+</ul>
+<h3>Billing Operations</h3>
+
+<ul>
+<li>Recurring billing cycles</li>
+<li>Usage-based billing</li>
+<li>One-time charges</li>
+<li>Proration calculations</li>
+<li>Discount application</li>
+<li>Tax calculation</li>
+<li>Invoice generation (PDF, HTML, XML)</li>
+<li>CFDI compliance (Mexico)</li>
+</ul>
+<h3>Payment Processing</h3>
+
+<ul>
+<li>Multiple payment methods (card, ACH, wire)</li>
+<li>Payment tokenization (PCI-compliant)</li>
+<li>Payment allocation</li>
+<li>Refunds and reversals</li>
+<li>Payment file processing</li>
+<li>Auto-resume suspended accounts</li>
+</ul>
+<h3>Usage Management</h3>
+
+<ul>
+<li>CDR ingestion (SFTP, API)</li>
+<li>Data normalization</li>
+<li>Deduplication</li>
+<li>Usage rating</li>
+<li>Quota management</li>
+<li>Real-time balance checks</li>
+</ul>
+<h3>Revenue Recognition</h3>
+
+<ul>
+<li>IFRS 15 / ASC 606 compliance</li>
+<li>Deferred revenue tracking</li>
+<li>Revenue schedule generation</li>
+<li>Journal entry creation</li>
+<li>Financial reporting</li>
+</ul>
+<h3>Customer Self-Service</h3>
+
+<ul>
+<li>Online registration</li>
+<li>Package selection</li>
+<li>Service configuration</li>
+<li>Payment method management</li>
+<li>Usage viewing</li>
+<li>Invoice download</li>
+<li>Service requests</li>
+</ul>
+
+<hr>
+
+<h2>Key Design Patterns</h2>
+
+<h3>Shared Engine Pattern</h3>
+
+<strong>Principle</strong>: Centralize business logic  
+<strong>Implementation</strong>: All services depend on <code>engine</code> library  
+<strong>Benefit</strong>: Single source of truth, consistency
+<h3>Event-Driven Architecture</h3>
+
+<strong>Principle</strong>: Asynchronous communication  
+<strong>Implementation</strong>: ActiveMQ message queues  
+<strong>Benefit</strong>: Resilience, scalability, decoupling
+<h3>Gateway Pattern</h3>
+
+<strong>Principle</strong>: Isolate external dependencies  
+<strong>Implementation</strong>: Gateway services normalize external APIs  
+<strong>Benefit</strong>: Change external systems without breaking core logic
+<h3>Hub-Based Organization</h3>
+
+<strong>Principle</strong>: Domain-driven design  
+<strong>Implementation</strong>: Engine organized into business hubs  
+<strong>Benefit</strong>: Clear responsibility boundaries, maintainability
+<h3>Multi-Tenant Deployment</h3>
+
+<strong>Principle</strong>: Complete tenant isolation  
+<strong>Implementation</strong>: Database-per-tenant, deployment-per-tenant  
+<strong>Benefit</strong>: Data security, customization flexibility
+
+<hr>
+
+<h2>Compliance & Standards</h2>
+
+<h3>Financial Standards</h3>
+
+<ul>
+<li><strong>IFRS 15</strong>: Revenue from Contracts with Customers</li>
+<li><strong>ASC 606</strong>: Revenue Recognition</li>
+<li><strong>GAAP</strong>: Generally Accepted Accounting Principles</li>
+</ul>
+<h3>Telecom Standards</h3>
+
+<ul>
+<li><strong>TM Forum</strong>: SID (Shared Information/Data Model)</li>
+<li><strong>3GPP</strong>: Diameter protocol for real-time charging</li>
+<li><strong>ETSI</strong>: European telecom standards</li>
+</ul>
+<h3>Security Standards</h3>
+
+<ul>
+<li><strong>PCI-DSS</strong>: Payment card data security</li>
+<li><strong>OAuth 2.0</strong>: Authorization framework</li>
+<li><strong>JWT</strong>: Token-based authentication</li>
+</ul>
+<h3>Regional Compliance</h3>
+
+<ul>
+<li><strong>CFDI</strong> (Mexico): Electronic invoicing</li>
+<li><strong>GDPR</strong> (EU): Data privacy (if applicable)</li>
+<li><strong>SOC 2</strong> (US): Service organization controls</li>
+</ul>
+
+<hr>
+
+<h2>Current State & Roadmap</h2>
+
+<h3>Current Version</h3>
+
+<strong>3.1.9-SNAPSHOT</strong>: Production-ready platform
+<strong>Production Deployments</strong>:
+<ul>
+<li>MCM Telecom (Mexico) - Telecom services</li>
+<li>CoopeG (Costa Rica) - ISP services</li>
+<li>Urbanos (Development) - Testing environment</li>
+</ul>
+<h3>Upgrade Roadmap</h3>
+
+<strong>Phase 1: Foundation</strong>:
+<ul>
+<li>Java 8 → 17</li>
+<li>Groovy 2.4.15 → 4.0.23</li>
+<li>Spring Boot 2.1.4 → 3.3.5+</li>
+</ul>
+<strong>Phase 2: Dependencies</strong>:
+<ul>
+<li>JOOQ 3.11.10 → 3.19.15</li>
+<li>Camel 2.23.1 → 4.9.0</li>
+<li>ActiveMQ 5.15.9 → 6.1.3</li>
+</ul>
+<strong>Phase 3: Security</strong>:
+<ul>
+<li>Spring Security 5.4.5 → 6.3.x</li>
+<li>OAuth2 Authorization Server upgrade</li>
+</ul>
+
+<hr>
+
+<h2>Documentation Resources</h2>
+
+<h3>Main Guides</h3>
+
+<ul>
+<li><strong>NEWCOMER_GUIDE_INDEX.md</strong> - Start here</li>
+<li><strong>NEWCOMER_GUIDE_PART1_BUSINESS_AND_ARCHITECTURE.md</strong> - Business context</li>
+<li><strong>NEWCOMER_GUIDE_PART2_TECHNICAL_DEEP_DIVE.md</strong> - Technical details</li>
+<li><strong>NEWCOMER_GUIDE_PART3_SERVICES_AND_DEVELOPMENT.md</strong> - Development guide</li>
+<li><strong>BUSINESS_SCENARIOS_AND_WORKFLOWS.md</strong> - Real-world scenarios</li>
+<li><strong>MULTI_TENANT_ARCHITECTURE.md</strong> - Multi-tenancy details</li>
+<li><strong>COMPLETE_SYSTEM_OVERVIEW.md</strong> - This document</li>
+</ul>
+<h3>Specialized Guides</h3>
+
+<ul>
+<li><strong>QUICK_START.md</strong> - Quick setup guide</li>
+<li><strong>DEPLOYMENT_GUIDE.md</strong> - Deployment procedures</li>
+<li><strong>UPGRADE_PROGRESS_TRACKER.md</strong> - Dependency upgrade tracking</li>
+</ul>
+<h3>API Documentation</h3>
+
+<ul>
+<li>GraphQL Playground: <code>http://localhost:8080/graphiql</code></li>
+<li>Swagger (tax-engine): <code>http://localhost:8082/swagger-ui.html</code></li>
+</ul>
+
+<hr>
+
+<h2>Quick Reference</h2>
+
+<h3>Environment Variables</h3>
+
+<pre><code class="language-bash"># Tenant Configuration
+TENANT_ID=TIDLT-100008
+SPRING_PROFILES_ACTIVE=dev
+
+# Database
+DATABASE_URL=jdbc:postgresql://localhost:5432/coredb-urbanos
+DATABASE_USERNAME=omsadmin
+DATABASE_PASSWORD=&lt;from Vault&gt;
+
+# Messaging
+AMQ_BROKER_URL=ssl://broker.mq.us-east-1.amazonaws.com:61617
+AMQ_USERNAME=&lt;from Vault&gt;
+AMQ_PASSWORD=&lt;from Vault&gt;
+
+# Cache
+REDIS_HOST=master.dev-cache-rg.8fxuvv.use1.cache.amazonaws.com
+REDIS_PORT=6379
+
+# Security
+VAULT_URI=http://localhost:8200
+VAULT_TOKEN=&lt;vault token&gt;
+
+# Storage
+AWS_S3_PUBLICURL=https://s3.amazonaws.com/embrix-public-dev
+</code></pre>
+<h3>Build Order</h3>
+
+<pre><code class="language-bash"># 1. Foundation
+cd common && mvn clean install
+cd ../engine && mvn clean install
+cd ../oms-component && mvn clean install
+cd ../gateway-common && mvn clean install
+
+# 2. Core Services
+cd ../core/service-billing && mvn clean install
+cd ../service-invoice && mvn clean install
+# ... other services
+
+# 3. Gateways
+cd ../../crm_gateway && mvn clean install
+cd ../provision_gateway && mvn clean install
+# ... other gateways
+</code></pre>
+<h3>Docker Commands</h3>
+
+<pre><code class="language-bash"># Infrastructure
+docker run -d --name postgres -p 5432:5432 postgres:10.5
+docker run -d --name redis -p 6379:6379 redis:6.2
+docker run -d --name activemq -p 61616:61616 -p 8161:8161 apache/activemq-classic:5.18.6
+docker run -d --name vault -p 8200:8200 hashicorp/vault:latest
+
+# Services
+docker run -d --name crm-gateway -p 8080:8080 embrix/crm_gateway:3.1.9
+docker run -d --name service-billing -p 8090:8090 embrix/service-billing:3.1.9
+</code></pre>
+
+<hr>
+
+<h2>Contact & Support</h2>
+
+<strong>Development Team</strong>: Embrix O2X Engineering  
+<strong>Documentation Maintained</strong>: Quarterly reviews  
+<strong>Last Updated</strong>: February 2026
+
+<hr>
+
+<strong>This document provides a complete system overview. For detailed information, refer to the specialized guides in the newcomer documentation suite.</strong></p>
+        <footer>
+            <p><strong>Embrix O2X Platform Documentation</strong></p>
+            <p>Version 3.1.9-SNAPSHOT • Last Updated: February 2026</p>
+        </footer>
+    </div>
+</body>
+</html>

@@ -1,0 +1,3274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Database Architecture Complete - Embrix O2X</title>
+    
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+        font-size: 16px;
+        line-height: 1.7;
+        color: #1f2937;
+        background: linear-gradient(135deg, #f5f7fa 0%, #e9ecef 100%);
+        background-attachment: fixed;
+        padding: 20px;
+    }
+
+    .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        background: white;
+        padding: 40px 50px;
+        border-radius: 16px;
+        box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .container::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 5px;
+        background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+    }
+
+    .nav-header {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 20px;
+        border-radius: 8px;
+        margin-bottom: 30px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+    }
+
+    .nav-header h1 {
+        font-size: 1.4em;
+        margin-bottom: 5px;
+        font-weight: 600;
+    }
+
+    .nav-links {
+        display: flex;
+        gap: 15px;
+        flex-wrap: wrap;
+    }
+
+    .nav-links a {
+        color: white;
+        text-decoration: none;
+        padding: 8px 16px;
+        background: rgba(255,255,255,0.2);
+        border-radius: 5px;
+        transition: background 0.3s;
+    }
+
+    .nav-links a:hover {
+        background: rgba(255,255,255,0.3);
+    }
+
+    h1 {
+        color: #667eea;
+        margin: 35px 0 20px 0;
+        padding: 12px 0 12px 18px;
+        border-left: 5px solid #667eea;
+        border-bottom: 2px solid #667eea;
+        background: linear-gradient(90deg, rgba(102, 126, 234, 0.05) 0%, rgba(255,255,255,0) 100%);
+        font-size: 1.8em;
+        font-weight: 700;
+        border-radius: 0 8px 0 0;
+    }
+
+    h2 {
+        color: #764ba2;
+        margin: 30px 0 18px 0;
+        padding: 10px 0 10px 15px;
+        border-left: 4px solid #764ba2;
+        border-bottom: 2px solid #f0f0f0;
+        background: linear-gradient(90deg, rgba(118, 75, 162, 0.03) 0%, rgba(255,255,255,0) 100%);
+        font-size: 1.5em;
+        font-weight: 700;
+        border-radius: 0 6px 0 0;
+    }
+
+    h3 {
+        color: #667eea;
+        margin: 25px 0 15px 0;
+        padding: 8px 0 8px 12px;
+        border-left: 3px solid #667eea;
+        background: linear-gradient(90deg, rgba(102, 126, 234, 0.04) 0%, transparent 100%);
+        font-size: 1.25em;
+        font-weight: 600;
+        border-radius: 0 6px 6px 0;
+    }
+
+    h4 {
+        color: #764ba2;
+        margin: 20px 0 12px 0;
+        padding: 6px 0 6px 10px;
+        border-left: 2px solid #764ba2;
+        background: linear-gradient(90deg, rgba(118, 75, 162, 0.03) 0%, transparent 100%);
+        font-size: 1.1em;
+        font-weight: 600;
+        border-radius: 0 4px 4px 0;
+    }
+
+    h5 {
+        color: #667eea;
+        margin: 18px 0 10px 0;
+        padding: 4px 0 4px 8px;
+        border-left: 2px solid #667eea;
+        font-size: 1.05em;
+        font-weight: 600;
+        background: linear-gradient(90deg, rgba(102, 126, 234, 0.02) 0%, transparent 100%);
+        border-radius: 0 3px 3px 0;
+    }
+
+    h6 {
+        color: #764ba2;
+        margin: 15px 0 8px 0;
+        font-size: 0.95em;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    p {
+        margin: 12px 0;
+        line-height: 1.7;
+        font-size: 0.95em;
+        color: #374151;
+    }
+    
+    /* Better spacing for paragraphs after headings */
+    h1 + p, h2 + p, h3 + p, h4 + p {
+        margin-top: 10px;
+    }
+
+    ul, ol {
+        margin: 20px 0;
+        padding-left: 35px;
+    }
+
+    li {
+        margin: 10px 0;
+        line-height: 1.7;
+        font-size: 0.95em;
+        position: relative;
+        padding-left: 8px;
+    }
+
+    ul li::marker {
+        color: #667eea;
+        font-weight: bold;
+        font-size: 1.1em;
+    }
+
+    ol li::marker {
+        color: #764ba2;
+        font-weight: bold;
+        font-size: 1em;
+    }
+
+    /* Better list item styling */
+    li {
+        background: linear-gradient(90deg, rgba(102, 126, 234, 0.02) 0%, transparent 100%);
+        border-left: 2px solid transparent;
+        padding: 8px 8px 8px 12px;
+        border-radius: 0 4px 4px 0;
+        transition: all 0.2s ease;
+    }
+
+    li:hover {
+        background: linear-gradient(90deg, rgba(102, 126, 234, 0.05) 0%, transparent 100%);
+        border-left-color: #667eea;
+        padding-left: 16px;
+    }
+
+    /* Nested lists */
+    li ul, li ol {
+        margin: 8px 0 8px 10px;
+    }
+
+    /* Nested list items - smaller styling */
+    li li {
+        font-size: 0.92em;
+        margin: 6px 0;
+        background: linear-gradient(90deg, rgba(118, 75, 162, 0.02) 0%, transparent 100%);
+    }
+
+    li li:hover {
+        background: linear-gradient(90deg, rgba(118, 75, 162, 0.05) 0%, transparent 100%);
+        border-left-color: #764ba2;
+    }
+
+    code {
+        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        padding: 2px 6px;
+        border-radius: 4px;
+        font-family: 'Fira Code', 'Courier New', Consolas, monospace;
+        font-size: 0.85em;
+        color: #d63384;
+        border: 1px solid #dee2e6;
+        font-weight: 500;
+    }
+
+    /* Inline code with special highlighting */
+    p code, li code, td code {
+        position: relative;
+    }
+
+    p code::before, li code::before, td code::before {
+        content: '';
+        position: absolute;
+        inset: -2px;
+        border-radius: 5px;
+        background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+        z-index: -1;
+        opacity: 0;
+        transition: opacity 0.2s;
+    }
+
+    p code:hover::before, li code:hover::before, td code:hover::before {
+        opacity: 1;
+    }
+
+    pre {
+        background: #1e293b;
+        color: #e2e8f0;
+        padding: 16px 18px;
+        border-radius: 8px;
+        overflow-x: auto;
+        margin: 18px 0;
+        border: 1px solid #334155;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+        font-family: 'Cascadia Code', 'Fira Code', 'SF Mono', 'Consolas', 'Liberation Mono', monospace;
+        font-size: 0.85em;
+        line-height: 1.6;
+        position: relative;
+        font-feature-settings: "liga" 0;
+        text-rendering: optimizeLegibility;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+    }
+
+    pre code {
+        background: none;
+        color: inherit;
+        padding: 0;
+        border: none;
+        font-family: inherit;
+        font-weight: normal;
+        font-size: 1em;
+        display: block;
+    }
+    
+    /* Ensure consistent styling for all code content inside pre blocks */
+    pre code * {
+        font-size: inherit !important;
+        line-height: inherit !important;
+        color: inherit !important;
+        font-family: inherit !important;
+    }
+
+    /* Hover effect */
+    pre:hover {
+        border-color: #475569;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.12);
+        transition: all 0.3s ease;
+    }
+
+    /* Code block header indicator */
+    pre::after {
+        content: 'CODE';
+        position: absolute;
+        top: 8px;
+        right: 12px;
+        font-size: 0.65em;
+        color: #64748b;
+        font-weight: 600;
+        letter-spacing: 0.05em;
+        opacity: 0.5;
+    }
+
+    blockquote {
+        border-left: 4px solid #667eea;
+        padding: 15px 20px;
+        margin: 20px 0;
+        color: #555;
+        font-style: italic;
+        font-size: 0.95em;
+        background: linear-gradient(90deg, rgba(102, 126, 234, 0.05) 0%, rgba(255,255,255,0) 100%);
+        border-radius: 0 6px 6px 0;
+        position: relative;
+    }
+
+    blockquote::before {
+        content: '"';
+        position: absolute;
+        left: -10px;
+        top: -10px;
+        font-size: 4em;
+        color: rgba(102, 126, 234, 0.1);
+        font-family: Georgia, serif;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 20px 0;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+        border-radius: 8px;
+        overflow: hidden;
+        background: white;
+        font-size: 0.9em;
+    }
+
+    thead {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    }
+
+    th {
+        color: white;
+        padding: 12px 15px;
+        text-align: left;
+        font-weight: 600;
+        text-transform: uppercase;
+        font-size: 0.82em;
+        letter-spacing: 0.3px;
+    }
+
+    td {
+        padding: 10px 15px;
+        border-bottom: 1px solid #e5e7eb;
+        vertical-align: top;
+        line-height: 1.6;
+    }
+
+    tbody tr:last-child td {
+        border-bottom: none;
+    }
+
+    tbody tr:hover {
+        background: rgba(102, 126, 234, 0.04);
+        transition: background 0.2s ease;
+    }
+
+    tbody tr:nth-child(even) {
+        background: rgba(102, 126, 234, 0.02);
+    }
+
+    tbody tr:nth-child(even):hover {
+        background: rgba(102, 126, 234, 0.05);
+    }
+    
+    /* Better code in tables */
+    td code {
+        font-size: 0.85em;
+        padding: 2px 6px;
+    }
+
+    .info-box {
+        background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+        border-left: 5px solid #2196f3;
+        padding: 20px;
+        margin: 25px 0;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(33, 150, 243, 0.2);
+    }
+
+    .warning-box {
+        background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%);
+        border-left: 5px solid #ff9800;
+        padding: 20px;
+        margin: 25px 0;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(255, 152, 0, 0.2);
+    }
+
+    .success-box {
+        background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+        border-left: 5px solid #4caf50;
+        padding: 20px;
+        margin: 25px 0;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(76, 175, 80, 0.2);
+    }
+
+    /* Better colors for syntax in diagrams */
+    pre {
+        /* Box drawing characters in nice blue */
+        color: #93c5fd;
+    }
+
+    /* JSON/code syntax in pre blocks */
+    pre {
+        white-space: pre;
+        word-wrap: normal;
+    }
+
+    .toc {
+        background: #f8f9fa;
+        padding: 20px;
+        border-radius: 8px;
+        margin: 20px 0;
+        border-left: 4px solid #667eea;
+    }
+
+    .toc h2 {
+        color: #667eea;
+        border-bottom: none;
+        margin-bottom: 15px;
+    }
+
+    .toc ul {
+        list-style: none;
+        padding-left: 0;
+    }
+
+    .toc li {
+        margin: 8px 0;
+    }
+
+    .toc a {
+        color: #667eea;
+        text-decoration: none;
+        transition: color 0.3s;
+    }
+
+    .toc a:hover {
+        color: #764ba2;
+    }
+
+    hr {
+        border: none;
+        border-top: 2px solid #f0f0f0;
+        margin: 30px 0;
+    }
+
+    .badge {
+        display: inline-block;
+        background: #667eea;
+        color: white;
+        padding: 4px 10px;
+        border-radius: 12px;
+        font-size: 0.85em;
+        margin-left: 10px;
+    }
+
+    a {
+        color: #667eea;
+        text-decoration: none;
+        transition: color 0.3s;
+    }
+
+    a:hover {
+        color: #764ba2;
+        text-decoration: underline;
+    }
+    
+    /* Better display for metadata fields */
+    strong {
+        color: #374151;
+        font-weight: 600;
+    }
+    
+    /* Metadata field styling - each field on its own line */
+    .metadata-field {
+        margin: 8px 0;
+        padding: 8px 14px;
+        background: linear-gradient(90deg, rgba(102, 126, 234, 0.04) 0%, transparent 100%);
+        border-left: 3px solid #667eea;
+        border-radius: 0 4px 4px 0;
+        line-height: 1.7;
+        font-size: 0.95em;
+        display: block;
+        clear: both;
+    }
+    
+    .metadata-field strong {
+        color: #667eea;
+        font-weight: 600;
+        margin-right: 8px;
+        display: inline-block;
+        min-width: 100px;
+    }
+    
+    .metadata-field code {
+        font-size: 0.88em;
+    }
+
+    footer {
+        margin-top: 50px;
+        padding-top: 30px;
+        border-top: 2px solid #f0f0f0;
+        text-align: center;
+        color: #888;
+    }
+
+    @media print {
+        body {
+            background: white;
+        }
+        .nav-header, .nav-links {
+            display: none;
+        }
+        pre {
+            break-inside: avoid;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .container {
+            padding: 20px;
+        }
+        .nav-header {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+        .nav-links {
+            margin-top: 15px;
+        }
+        h1 {
+            font-size: 2em;
+        }
+        h2 {
+            font-size: 1.5em;
+        }
+    }
+</style>
+
+</head>
+<body>
+    <div class="container">
+        <div class="nav-header"><div><h1>Embrix O2X Documentation</h1><small>Navigate between guides</small></div><div class="nav-links"><a href="index.html">📑 Index</a></div></div>
+        
+<h1>Embrix O2X Platform - Complete Database Architecture Guide</h1>
+
+<strong>Version</strong>: 3.1.9-SNAPSHOT  
+<strong>Last Updated</strong>: February 2026  
+<strong>Purpose</strong>: Comprehensive guide to database structure, patterns, and operations
+
+<hr>
+
+<h2>Table of Contents</h2>
+
+<ol>
+<li><a href="#database-technology-overview">Database Technology Overview</a></li>
+<li><a href="#multi-tenant-data-architecture">Multi-Tenant Data Architecture</a></li>
+<li><a href="#schema-organization">Schema Organization</a></li>
+<li><a href="#complete-entity-reference">Complete Entity Reference</a></li>
+<li><a href="#relationships--foreign-keys">Relationships & Foreign Keys</a></li>
+<li><a href="#indexes--performance">Indexes & Performance</a></li>
+<li><a href="#partitioning-strategy">Partitioning Strategy</a></li>
+<li><a href="#database-migrations">Database Migrations</a></li>
+<li><a href="#data-access-patterns">Data Access Patterns</a></li>
+<li><a href="#backup--recovery">Backup & Recovery</a></li>
+</ol>
+
+<hr>
+
+<h2>Database Technology Overview</h2>
+
+<h3>PostgreSQL Configuration</h3>
+
+<table>
+<thead><tr>
+<th>Property</th>
+<th>Value</th>
+<th>Purpose</th>
+</tr></thead><tbody>
+<tr>
+<td>----------</td>
+<td>-------</td>
+<td>---------</td>
+</tr>
+<tr>
+<td><strong>Database</strong></td>
+<td>PostgreSQL</td>
+<td>Primary RDBMS</td>
+</tr>
+<tr>
+<td><strong>Version</strong></td>
+<td>10.5+</td>
+<td>Production version</td>
+</tr>
+<tr>
+<td><strong>Hosting</strong></td>
+<td>AWS RDS</td>
+<td>Managed database service</td>
+</tr>
+<tr>
+<td><strong>Instance</strong></td>
+<td><code>embrix-rds-dev-db.chg5bgdk4yyp.us-east-1.rds.amazonaws.com</code></td>
+<td>Development endpoint</td>
+</tr>
+<tr>
+<td><strong>Port</strong></td>
+<td>5432</td>
+<td>Default PostgreSQL port</td>
+</tr>
+<tr>
+<td><strong>SSL Mode</strong></td>
+<td>require</td>
+<td>Encrypted connections</td>
+</tr>
+</tbody></table>
+<h3>Data Access Stack</h3>
+
+<table>
+<thead><tr>
+<th>Component</th>
+<th>Technology</th>
+<th>Version</th>
+<th>Purpose</th>
+</tr></thead><tbody>
+<tr>
+<td>-----------</td>
+<td>------------</td>
+<td>---------</td>
+<td>---------</td>
+</tr>
+<tr>
+<td><strong>ORM</strong></td>
+<td>JOOQ</td>
+<td>3.11.10 → 3.19.15</td>
+<td>Type-safe SQL queries</td>
+</tr>
+<tr>
+<td><strong>Migration</strong></td>
+<td>Flyway</td>
+<td>5.2.4 → 10.21.0</td>
+<td>Version-controlled migrations</td>
+</tr>
+<tr>
+<td><strong>Connection Pool</strong></td>
+<td>HikariCP</td>
+<td>Latest</td>
+<td>High-performance pooling</td>
+</tr>
+<tr>
+<td><strong>JDBC Driver</strong></td>
+<td>PostgreSQL</td>
+<td>42.2.4</td>
+<td>Database connectivity</td>
+</tr>
+</tbody></table>
+<h3>Connection Configuration</h3>
+
+<strong>Spring Boot Configuration</strong>:
+<pre><code class="language-yaml">spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/coredb-urbanos?sslmode=require
+    username: omsadmin
+    password: ${DB_PASSWORD} # From Vault
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      maximum-pool-size: 50
+      minimum-idle: 10
+      connection-timeout: 30000
+      idle-timeout: 600000
+      max-lifetime: 1800000
+      leak-detection-threshold: 60000
+</code></pre>
+
+<hr>
+
+<h2>Multi-Tenant Data Architecture</h2>
+
+<h3>Database-per-Tenant Pattern</h3>
+
+<strong>Architecture Principle</strong>: Complete database isolation per tenant
+<strong>Benefits</strong>:
+<ul>
+<li>✅ <strong>Strong Data Isolation</strong>: Zero risk of cross-tenant data leakage</li>
+<li>✅ <strong>Compliance</strong>: Simplified audit trails and data residency</li>
+<li>✅ <strong>Customization</strong>: Per-tenant schema modifications if needed</li>
+<li>✅ <strong>Performance</strong>: No noisy neighbor problem</li>
+<li>✅ <strong>Scalability</strong>: Independent scaling and optimization</li>
+<li>✅ <strong>Backup/Restore</strong>: Granular per-tenant operations</li>
+</ul>
+<strong>Drawbacks</strong>:
+<ul>
+<li>⚠️ <strong>Resource Overhead</strong>: More database instances</li>
+<li>⚠️ <strong>Schema Changes</strong>: Must apply to all tenant databases</li>
+<li>⚠️ <strong>Cross-Tenant Queries</strong>: Not possible (by design)</li>
+</ul>
+<h3>Tenant Database Mapping</h3>
+
+<table>
+<thead><tr>
+<th>Tenant ID</th>
+<th>Tenant Name</th>
+<th>Database Name</th>
+<th>Environment</th>
+<th>Status</th>
+</tr></thead><tbody>
+<tr>
+<td>-----------</td>
+<td>-------------</td>
+<td>---------------</td>
+<td>-------------</td>
+<td>--------</td>
+</tr>
+<tr>
+<td>TIDLT-100001</td>
+<td>coopeg-sbx</td>
+<td>coredb-coopeg-sbx</td>
+<td>Sandbox</td>
+<td>Active</td>
+</tr>
+<tr>
+<td>TIDLT-100002</td>
+<td>demo</td>
+<td>coredb-demo</td>
+<td>Demo</td>
+<td>Active</td>
+</tr>
+<tr>
+<td>TIDLT-100003</td>
+<td>dev</td>
+<td>enginedevdb</td>
+<td>Development</td>
+<td>Active</td>
+</tr>
+<tr>
+<td>TIDLT-100004</td>
+<td>shm</td>
+<td>coredb-shm</td>
+<td>Production</td>
+<td>Active</td>
+</tr>
+<tr>
+<td>TIDLT-100005</td>
+<td>urbanos</td>
+<td>coredb-urbanos</td>
+<td>Development</td>
+<td>Active</td>
+</tr>
+<tr>
+<td>TIDLT-100006</td>
+<td>coopeg-prd</td>
+<td>coredb-coopeg-prd</td>
+<td>Production</td>
+<td>Active</td>
+</tr>
+<tr>
+<td>TIDLT-100007</td>
+<td>coopegenergy</td>
+<td>coredb-coopegenergy</td>
+<td>Production</td>
+<td>Active</td>
+</tr>
+</tbody></table>
+<h3>Shared Configuration Schema</h3>
+
+<strong><code>core_config</code> schema</strong>: Shared across tenants for global configuration
+<strong>Tables</strong>:
+<ul>
+<li><code>tenant</code> - Tenant master data</li>
+<li><code>tenant_merchants</code> - Gateway configurations per tenant</li>
+<li><code>oauth1_attributes</code> / <code>oauth2_attributes</code> - OAuth credentials</li>
+<li><code>finance_gateway_attributes</code> - ERP integration settings</li>
+<li><code>payment_gateway_attributes</code> - Payment processor settings</li>
+<li><code>tax_gateway_attributes</code> - Tax provider settings</li>
+<li><code>feature_flags</code> - Feature toggle configuration</li>
+</ul>
+<strong>Storage</strong>: Stored in separate shared database or centralized schema
+
+<hr>
+
+<h2>Schema Organization</h2>
+
+<h3>Schema Structure</h3>
+
+Each tenant database contains 8 business schemas:
+<pre><code class="language-">Tenant Database (e.g., coredb-urbanos)
+├── core_engine         # Core domain entities
+├── core_oms            # Order management
+├── core_billing        # Financial transactions
+├── core_pricing        # Product catalog
+├── core_usage          # Usage data (high volume)
+├── core_revenue        # Revenue recognition
+├── core_config         # Configuration (tenant-specific)
+└── core_mediation      # CDR processing
+</code></pre>
+<h3>Schema Responsibilities</h3>
+
+<table>
+<thead><tr>
+<th>Schema</th>
+<th>Purpose</th>
+<th>Table Count</th>
+<th>Key Characteristics</th>
+</tr></thead><tbody>
+<tr>
+<td>--------</td>
+<td>---------</td>
+<td>-------------</td>
+<td>---------------------</td>
+</tr>
+<tr>
+<td><strong>core_engine</strong></td>
+<td>Core business entities</td>
+<td>15+</td>
+<td>Accounts, subscriptions, users</td>
+</tr>
+<tr>
+<td><strong>core_oms</strong></td>
+<td>Order lifecycle</td>
+<td>8+</td>
+<td>Orders, service lines, orchestration</td>
+</tr>
+<tr>
+<td><strong>core_billing</strong></td>
+<td>Financial operations</td>
+<td>12+</td>
+<td>Charges, invoices, payments</td>
+</tr>
+<tr>
+<td><strong>core_pricing</strong></td>
+<td>Product catalog</td>
+<td>10+</td>
+<td>Products, prices, bundles</td>
+</tr>
+<tr>
+<td><strong>core_usage</strong></td>
+<td>Usage records</td>
+<td>5+</td>
+<td>High-volume, partitioned</td>
+</tr>
+<tr>
+<td><strong>core_revenue</strong></td>
+<td>Accounting</td>
+<td>6+</td>
+<td>Deferred revenue, GL entries</td>
+</tr>
+<tr>
+<td><strong>core_config</strong></td>
+<td>Configuration</td>
+<td>10+</td>
+<td>Settings, attributes</td>
+</tr>
+<tr>
+<td><strong>core_mediation</strong></td>
+<td>CDR processing</td>
+<td>5+</td>
+<td>File tracking, errors</td>
+</tr>
+</tbody></table>
+
+<hr>
+
+<h2>Complete Entity Reference</h2>
+
+<h3>1. core_engine Schema</h3>
+
+<h4>account (Customer Accounts)</h4>
+
+<strong>Purpose</strong>: Customer account master records
+<table>
+<thead><tr>
+<th>Column</th>
+<th>Type</th>
+<th>Constraints</th>
+<th>Description</th>
+</tr></thead><tbody>
+<tr>
+<td>--------</td>
+<td>------</td>
+<td>-------------</td>
+<td>-------------</td>
+</tr>
+<tr>
+<td>id</td>
+<td>VARCHAR(50)</td>
+<td>PRIMARY KEY</td>
+<td>Account ID (ACC-xxxxx)</td>
+</tr>
+<tr>
+<td>parent_account_id</td>
+<td>VARCHAR(50)</td>
+<td>FK → account.id</td>
+<td>Hierarchical accounts</td>
+</tr>
+<tr>
+<td>account_number</td>
+<td>VARCHAR(50)</td>
+<td>UNIQUE</td>
+<td>Customer-facing number</td>
+</tr>
+<tr>
+<td>account_type</td>
+<td>VARCHAR(20)</td>
+<td>NOT NULL</td>
+<td>INDIVIDUAL, BUSINESS</td>
+</tr>
+<tr>
+<td>status</td>
+<td>VARCHAR(20)</td>
+<td>NOT NULL</td>
+<td>ACTIVE, SUSPENDED, TERMINATED</td>
+</tr>
+<tr>
+<td>balance</td>
+<td>NUMERIC(19,4)</td>
+<td>DEFAULT 0</td>
+<td>Current balance</td>
+</tr>
+<tr>
+<td>credit_limit</td>
+<td>NUMERIC(19,4)</td>
+<td></td>
+<td>Credit limit</td>
+</tr>
+<tr>
+<td>bill_cycle_day</td>
+<td>INTEGER</td>
+<td></td>
+<td>Billing cycle day (1-31)</td>
+</tr>
+<tr>
+<td>currency_code</td>
+<td>VARCHAR(3)</td>
+<td>DEFAULT 'USD'</td>
+<td>ISO currency code</td>
+</tr>
+<tr>
+<td>created_date</td>
+<td>TIMESTAMP</td>
+<td>NOT NULL</td>
+<td>Record creation</td>
+</tr>
+<tr>
+<td>modified_date</td>
+<td>TIMESTAMP</td>
+<td></td>
+<td>Last modification</td>
+</tr>
+<tr>
+<td>created_by</td>
+<td>VARCHAR(50)</td>
+<td></td>
+<td>User who created</td>
+</tr>
+<tr>
+<td>modified_by</td>
+<td>VARCHAR(50)</td>
+<td></td>
+<td>User who modified</td>
+</tr>
+</tbody></table>
+<strong>Indexes</strong>:
+<pre><code class="language-sql">CREATE INDEX idx_account_parent ON account(parent_account_id);
+CREATE INDEX idx_account_status ON account(status);
+CREATE INDEX idx_account_bill_cycle ON account(bill_cycle_day);
+CREATE INDEX idx_account_number ON account(account_number);
+</code></pre>
+<strong>Business Rules</strong>:
+<ul>
+<li>Hierarchical support: <code>parent_account_id</code> allows account hierarchy</li>
+<li>Bill cycle day: 1-31, determines billing schedule</li>
+<li>Balance: Positive = credit, Negative = debt</li>
+</ul>
+
+<hr>
+
+<h4>subscription (Service Subscriptions)</h4>
+
+<strong>Purpose</strong>: Active service subscriptions linking accounts to products
+<table>
+<thead><tr>
+<th>Column</th>
+<th>Type</th>
+<th>Constraints</th>
+<th>Description</th>
+</tr></thead><tbody>
+<tr>
+<td>--------</td>
+<td>------</td>
+<td>-------------</td>
+<td>-------------</td>
+</tr>
+<tr>
+<td>id</td>
+<td>VARCHAR(50)</td>
+<td>PRIMARY KEY</td>
+<td>Subscription ID (SUB-xxxxx)</td>
+</tr>
+<tr>
+<td>account_id</td>
+<td>VARCHAR(50)</td>
+<td>FK → account.id</td>
+<td>Account reference</td>
+</tr>
+<tr>
+<td>product_id</td>
+<td>VARCHAR(50)</td>
+<td>FK → product.id</td>
+<td>Product reference</td>
+</tr>
+<tr>
+<td>price_offer_id</td>
+<td>VARCHAR(50)</td>
+<td>FK → price_offer.id</td>
+<td>Pricing plan</td>
+</tr>
+<tr>
+<td>subscription_number</td>
+<td>VARCHAR(50)</td>
+<td>UNIQUE</td>
+<td>Display number</td>
+</tr>
+<tr>
+<td>status</td>
+<td>VARCHAR(20)</td>
+<td>NOT NULL</td>
+<td>ACTIVE, SUSPENDED, TERMINATED</td>
+</tr>
+<tr>
+<td>start_date</td>
+<td>DATE</td>
+<td>NOT NULL</td>
+<td>Subscription start</td>
+</tr>
+<tr>
+<td>end_date</td>
+<td>DATE</td>
+<td></td>
+<td>Subscription end (NULL = ongoing)</td>
+</tr>
+<tr>
+<td>next_billing_date</td>
+<td>DATE</td>
+<td></td>
+<td>Next billing date</td>
+</tr>
+<tr>
+<td>billing_frequency</td>
+<td>VARCHAR(20)</td>
+<td></td>
+<td>MONTHLY, QUARTERLY, ANNUALLY</td>
+</tr>
+<tr>
+<td>recurring_amount</td>
+<td>NUMERIC(19,4)</td>
+<td></td>
+<td>Recurring charge</td>
+</tr>
+<tr>
+<td>created_date</td>
+<td>TIMESTAMP</td>
+<td>NOT NULL</td>
+<td>Record creation</td>
+</tr>
+</tbody></table>
+<strong>Indexes</strong>:
+<pre><code class="language-sql">CREATE INDEX idx_subscription_account ON subscription(account_id);
+CREATE INDEX idx_subscription_product ON subscription(product_id);
+CREATE INDEX idx_subscription_status ON subscription(status);
+CREATE INDEX idx_subscription_next_billing ON subscription(next_billing_date);
+</code></pre>
+
+<hr>
+
+<h4>user (User Accounts)</h4>
+
+<strong>Purpose</strong>: User authentication and authorization
+<table>
+<thead><tr>
+<th>Column</th>
+<th>Type</th>
+<th>Constraints</th>
+<th>Description</th>
+</tr></thead><tbody>
+<tr>
+<td>--------</td>
+<td>------</td>
+<td>-------------</td>
+<td>-------------</td>
+</tr>
+<tr>
+<td>id</td>
+<td>VARCHAR(50)</td>
+<td>PRIMARY KEY</td>
+<td>User ID</td>
+</tr>
+<tr>
+<td>username</td>
+<td>VARCHAR(100)</td>
+<td>UNIQUE, NOT NULL</td>
+<td>Login username</td>
+</tr>
+<tr>
+<td>password_hash</td>
+<td>VARCHAR(255)</td>
+<td>NOT NULL</td>
+<td>BCrypt hash</td>
+</tr>
+<tr>
+<td>email</td>
+<td>VARCHAR(255)</td>
+<td>UNIQUE, NOT NULL</td>
+<td>Email address</td>
+</tr>
+<tr>
+<td>account_id</td>
+<td>VARCHAR(50)</td>
+<td>FK → account.id</td>
+<td>Associated account</td>
+</tr>
+<tr>
+<td>role</td>
+<td>VARCHAR(50)</td>
+<td>NOT NULL</td>
+<td>ADMIN, USER, CUSTOMER</td>
+</tr>
+<tr>
+<td>status</td>
+<td>VARCHAR(20)</td>
+<td>NOT NULL</td>
+<td>ACTIVE, LOCKED, EXPIRED</td>
+</tr>
+<tr>
+<td>last_login</td>
+<td>TIMESTAMP</td>
+<td></td>
+<td>Last login timestamp</td>
+</tr>
+<tr>
+<td>created_date</td>
+<td>TIMESTAMP</td>
+<td>NOT NULL</td>
+<td>Record creation</td>
+</tr>
+</tbody></table>
+
+<hr>
+
+<h4>address (Addresses)</h4>
+
+<strong>Purpose</strong>: Customer addresses (billing, service, shipping)
+<table>
+<thead><tr>
+<th>Column</th>
+<th>Type</th>
+<th>Constraints</th>
+<th>Description</th>
+</tr></thead><tbody>
+<tr>
+<td>--------</td>
+<td>------</td>
+<td>-------------</td>
+<td>-------------</td>
+</tr>
+<tr>
+<td>id</td>
+<td>VARCHAR(50)</td>
+<td>PRIMARY KEY</td>
+<td>Address ID</td>
+</tr>
+<tr>
+<td>account_id</td>
+<td>VARCHAR(50)</td>
+<td>FK → account.id</td>
+<td>Account reference</td>
+</tr>
+<tr>
+<td>address_type</td>
+<td>VARCHAR(20)</td>
+<td>NOT NULL</td>
+<td>BILLING, SERVICE, SHIPPING</td>
+</tr>
+<tr>
+<td>street_address</td>
+<td>VARCHAR(255)</td>
+<td>NOT NULL</td>
+<td>Street address</td>
+</tr>
+<tr>
+<td>city</td>
+<td>VARCHAR(100)</td>
+<td>NOT NULL</td>
+<td>City</td>
+</tr>
+<tr>
+<td>state</td>
+<td>VARCHAR(50)</td>
+<td>NOT NULL</td>
+<td>State/Province</td>
+</tr>
+<tr>
+<td>postal_code</td>
+<td>VARCHAR(20)</td>
+<td>NOT NULL</td>
+<td>ZIP/Postal code</td>
+</tr>
+<tr>
+<td>country</td>
+<td>VARCHAR(3)</td>
+<td>NOT NULL</td>
+<td>ISO country code</td>
+</tr>
+<tr>
+<td>is_default</td>
+<td>BOOLEAN</td>
+<td>DEFAULT false</td>
+<td>Default address flag</td>
+</tr>
+<tr>
+<td>validated</td>
+<td>BOOLEAN</td>
+<td>DEFAULT false</td>
+<td>Address validation status</td>
+</tr>
+<tr>
+<td>created_date</td>
+<td>TIMESTAMP</td>
+<td>NOT NULL</td>
+<td>Record creation</td>
+</tr>
+</tbody></table>
+<strong>Indexes</strong>:
+<pre><code class="language-sql">CREATE INDEX idx_address_account ON address(account_id);
+CREATE INDEX idx_address_type ON address(address_type);
+CREATE INDEX idx_address_postal ON address(postal_code);
+</code></pre>
+
+<hr>
+
+<h3>2. core_oms Schema</h3>
+
+<h4>order (Order Records)</h4>
+
+<strong>Purpose</strong>: Customer orders (new, change, disconnect)
+<table>
+<thead><tr>
+<th>Column</th>
+<th>Type</th>
+<th>Constraints</th>
+<th>Description</th>
+</tr></thead><tbody>
+<tr>
+<td>--------</td>
+<td>------</td>
+<td>-------------</td>
+<td>-------------</td>
+</tr>
+<tr>
+<td>id</td>
+<td>VARCHAR(50)</td>
+<td>PRIMARY KEY</td>
+<td>Order ID (ORD-xxxxx)</td>
+</tr>
+<tr>
+<td>account_id</td>
+<td>VARCHAR(50)</td>
+<td>FK → account.id</td>
+<td>Account reference</td>
+</tr>
+<tr>
+<td>order_number</td>
+<td>VARCHAR(50)</td>
+<td>UNIQUE</td>
+<td>Display order number</td>
+</tr>
+<tr>
+<td>order_type</td>
+<td>VARCHAR(20)</td>
+<td>NOT NULL</td>
+<td>NEW_SERVICE, CHANGE, DISCONNECT</td>
+</tr>
+<tr>
+<td>status</td>
+<td>VARCHAR(20)</td>
+<td>NOT NULL</td>
+<td>CREATED, VALIDATED, PROVISIONING, COMPLETED, FAILED, CANCELLED</td>
+</tr>
+<tr>
+<td>source_system</td>
+<td>VARCHAR(50)</td>
+<td></td>
+<td>Salesforce, Portal, API</td>
+</tr>
+<tr>
+<td>external_order_id</td>
+<td>VARCHAR(100)</td>
+<td></td>
+<td>External system reference</td>
+</tr>
+<tr>
+<td>extended_data</td>
+<td>JSONB</td>
+<td></td>
+<td>Flexible order attributes</td>
+</tr>
+<tr>
+<td>error_message</td>
+<td>TEXT</td>
+<td></td>
+<td>Error details if failed</td>
+</tr>
+<tr>
+<td>created_date</td>
+<td>TIMESTAMP</td>
+<td>NOT NULL</td>
+<td>Order creation</td>
+</tr>
+<tr>
+<td>completed_date</td>
+<td>TIMESTAMP</td>
+<td></td>
+<td>Order completion</td>
+</tr>
+</tbody></table>
+<strong>Indexes</strong>:
+<pre><code class="language-sql">CREATE INDEX idx_order_account ON order(account_id);
+CREATE INDEX idx_order_status ON order(status);
+CREATE INDEX idx_order_type ON order(order_type);
+CREATE INDEX idx_order_created ON order(created_date DESC);
+CREATE INDEX idx_order_extended_data ON order USING GIN (extended_data);
+</code></pre>
+<strong>Status Flow</strong>:
+<pre><code class="language-">CREATED → VALIDATED → PROVISIONING → COMPLETED
+                ↓
+              FAILED
+                ↓
+            CANCELLED
+</code></pre>
+
+<hr>
+
+<h4>service_line (Order Line Items)</h4>
+
+<strong>Purpose</strong>: Individual services/products within an order
+<table>
+<thead><tr>
+<th>Column</th>
+<th>Type</th>
+<th>Constraints</th>
+<th>Description</th>
+</tr></thead><tbody>
+<tr>
+<td>--------</td>
+<td>------</td>
+<td>-------------</td>
+<td>-------------</td>
+</tr>
+<tr>
+<td>id</td>
+<td>VARCHAR(50)</td>
+<td>PRIMARY KEY</td>
+<td>Service line ID</td>
+</tr>
+<tr>
+<td>order_id</td>
+<td>VARCHAR(50)</td>
+<td>FK → order.id</td>
+<td>Parent order</td>
+</tr>
+<tr>
+<td>product_id</td>
+<td>VARCHAR(50)</td>
+<td>FK → product.id</td>
+<td>Product reference</td>
+</tr>
+<tr>
+<td>price_offer_id</td>
+<td>VARCHAR(50)</td>
+<td>FK → price_offer.id</td>
+<td>Pricing plan</td>
+</tr>
+<tr>
+<td>quantity</td>
+<td>INTEGER</td>
+<td>DEFAULT 1</td>
+<td>Quantity ordered</td>
+</tr>
+<tr>
+<td>action</td>
+<td>VARCHAR(20)</td>
+<td>NOT NULL</td>
+<td>ADD, CHANGE, REMOVE</td>
+</tr>
+<tr>
+<td>service_identifier</td>
+<td>VARCHAR(100)</td>
+<td></td>
+<td>Phone number, IP, etc.</td>
+</tr>
+<tr>
+<td>status</td>
+<td>VARCHAR(20)</td>
+<td>NOT NULL</td>
+<td>PENDING, PROVISIONED, FAILED</td>
+</tr>
+<tr>
+<td>extended_data</td>
+<td>JSONB</td>
+<td></td>
+<td>Service-specific attributes</td>
+</tr>
+<tr>
+<td>created_date</td>
+<td>TIMESTAMP</td>
+<td>NOT NULL</td>
+<td>Record creation</td>
+</tr>
+</tbody></table>
+<strong>Indexes</strong>:
+<pre><code class="language-sql">CREATE INDEX idx_service_line_order ON service_line(order_id);
+CREATE INDEX idx_service_line_product ON service_line(product_id);
+CREATE INDEX idx_service_line_status ON service_line(status);
+</code></pre>
+
+<hr>
+
+<h4>order_activity (Order Audit Trail)</h4>
+
+<strong>Purpose</strong>: Track all order status changes and activities
+<table>
+<thead><tr>
+<th>Column</th>
+<th>Type</th>
+<th>Constraints</th>
+<th>Description</th>
+</tr></thead><tbody>
+<tr>
+<td>--------</td>
+<td>------</td>
+<td>-------------</td>
+<td>-------------</td>
+</tr>
+<tr>
+<td>id</td>
+<td>VARCHAR(50)</td>
+<td>PRIMARY KEY</td>
+<td>Activity ID</td>
+</tr>
+<tr>
+<td>order_id</td>
+<td>VARCHAR(50)</td>
+<td>FK → order.id</td>
+<td>Order reference</td>
+</tr>
+<tr>
+<td>old_status</td>
+<td>VARCHAR(20)</td>
+<td></td>
+<td>Previous status</td>
+</tr>
+<tr>
+<td>new_status</td>
+<td>VARCHAR(20)</td>
+<td>NOT NULL</td>
+<td>New status</td>
+</tr>
+<tr>
+<td>activity_type</td>
+<td>VARCHAR(50)</td>
+<td>NOT NULL</td>
+<td>STATUS_CHANGE, PROVISIONING, ERROR</td>
+</tr>
+<tr>
+<td>description</td>
+<td>TEXT</td>
+<td></td>
+<td>Activity description</td>
+</tr>
+<tr>
+<td>performed_by</td>
+<td>VARCHAR(50)</td>
+<td></td>
+<td>User/system who performed</td>
+</tr>
+<tr>
+<td>created_date</td>
+<td>TIMESTAMP</td>
+<td>NOT NULL</td>
+<td>Activity timestamp</td>
+</tr>
+</tbody></table>
+<strong>Indexes</strong>:
+<pre><code class="language-sql">CREATE INDEX idx_order_activity_order ON order_activity(order_id);
+CREATE INDEX idx_order_activity_created ON order_activity(created_date DESC);
+</code></pre>
+
+<hr>
+
+<h4>orchestration_state (Orchestration Tracking)</h4>
+
+<strong>Purpose</strong>: Track order processing through orchestration pipeline
+<table>
+<thead><tr>
+<th>Column</th>
+<th>Type</th>
+<th>Constraints</th>
+<th>Description</th>
+</tr></thead><tbody>
+<tr>
+<td>--------</td>
+<td>------</td>
+<td>-------------</td>
+<td>-------------</td>
+</tr>
+<tr>
+<td>id</td>
+<td>VARCHAR(50)</td>
+<td>PRIMARY KEY</td>
+<td>State ID</td>
+</tr>
+<tr>
+<td>order_id</td>
+<td>VARCHAR(50)</td>
+<td>FK → order.id</td>
+<td>Order reference</td>
+</tr>
+<tr>
+<td>current_step</td>
+<td>VARCHAR(50)</td>
+<td>NOT NULL</td>
+<td>OrderLoader, OrderValidator, etc.</td>
+</tr>
+<tr>
+<td>step_status</td>
+<td>VARCHAR(20)</td>
+<td>NOT NULL</td>
+<td>IN_PROGRESS, COMPLETED, FAILED</td>
+</tr>
+<tr>
+<td>retry_count</td>
+<td>INTEGER</td>
+<td>DEFAULT 0</td>
+<td>Number of retries</td>
+</tr>
+<tr>
+<td>error_details</td>
+<td>TEXT</td>
+<td></td>
+<td>Error information</td>
+</tr>
+<tr>
+<td>last_updated</td>
+<td>TIMESTAMP</td>
+<td>NOT NULL</td>
+<td>Last state update</td>
+</tr>
+</tbody></table>
+<strong>Orchestration Steps</strong>:
+<ol>
+<li>OrderLoader - Load order data</li>
+<li>OrderValidator - Validate business rules</li>
+<li>OrderProcessor - Execute business logic</li>
+<li>OrderUpdater - Update order status</li>
+<li>RouteHandler - Route to external systems</li>
+</ol>
+
+<hr>
+
+<h3>3. core_billing Schema</h3>
+
+<h4>charge (Individual Charges)</h4>
+
+<strong>Purpose</strong>: Billable charges (recurring, usage, one-time)
+<table>
+<thead><tr>
+<th>Column</th>
+<th>Type</th>
+<th>Constraints</th>
+<th>Description</th>
+</tr></thead><tbody>
+<tr>
+<td>--------</td>
+<td>------</td>
+<td>-------------</td>
+<td>-------------</td>
+</tr>
+<tr>
+<td>id</td>
+<td>VARCHAR(50)</td>
+<td>PRIMARY KEY</td>
+<td>Charge ID (CHG-xxxxx)</td>
+</tr>
+<tr>
+<td>account_id</td>
+<td>VARCHAR(50)</td>
+<td>FK → account.id</td>
+<td>Account reference</td>
+</tr>
+<tr>
+<td>subscription_id</td>
+<td>VARCHAR(50)</td>
+<td>FK → subscription.id</td>
+<td>Subscription reference</td>
+</tr>
+<tr>
+<td>invoice_id</td>
+<td>VARCHAR(50)</td>
+<td>FK → invoice.id</td>
+<td>Invoice reference (NULL if unbilled)</td>
+</tr>
+<tr>
+<td>charge_type</td>
+<td>VARCHAR(20)</td>
+<td>NOT NULL</td>
+<td>RECURRING, ONE_TIME, USAGE, ADHOC, ADJUSTMENT</td>
+</tr>
+<tr>
+<td>description</td>
+<td>VARCHAR(255)</td>
+<td>NOT NULL</td>
+<td>Charge description</td>
+</tr>
+<tr>
+<td>amount</td>
+<td>NUMERIC(19,4)</td>
+<td>NOT NULL</td>
+<td>Charge amount</td>
+</tr>
+<tr>
+<td>tax_amount</td>
+<td>NUMERIC(19,4)</td>
+<td>DEFAULT 0</td>
+<td>Tax amount</td>
+</tr>
+<tr>
+<td>total_amount</td>
+<td>NUMERIC(19,4)</td>
+<td>NOT NULL</td>
+<td>Amount + tax</td>
+</tr>
+<tr>
+<td>billing_date</td>
+<td>DATE</td>
+<td>NOT NULL</td>
+<td>Date charged</td>
+</tr>
+<tr>
+<td>status</td>
+<td>VARCHAR(20)</td>
+<td>NOT NULL</td>
+<td>PENDING, BILLED, CANCELLED</td>
+</tr>
+<tr>
+<td>created_date</td>
+<td>TIMESTAMP</td>
+<td>NOT NULL</td>
+<td>Record creation</td>
+</tr>
+</tbody></table>
+<strong>Indexes</strong>:
+<pre><code class="language-sql">CREATE INDEX idx_charge_account ON charge(account_id);
+CREATE INDEX idx_charge_subscription ON charge(subscription_id);
+CREATE INDEX idx_charge_invoice ON charge(invoice_id);
+CREATE INDEX idx_charge_billing_date ON charge(billing_date);
+CREATE INDEX idx_charge_status ON charge(status);
+</code></pre>
+<strong>Charge Types</strong>:
+<ul>
+<li><strong>RECURRING</strong>: Monthly, quarterly, annual subscription fees</li>
+<li><strong>ONE_TIME</strong>: Setup fees, hardware sales</li>
+<li><strong>USAGE</strong>: Metered usage (calls, data, SMS)</li>
+<li><strong>ADHOC</strong>: Manual charges</li>
+<li><strong>ADJUSTMENT</strong>: Corrections, credits</li>
+</ul>
+
+<hr>
+
+<h4>invoice (Customer Invoices)</h4>
+
+<strong>Purpose</strong>: Generated customer invoices
+<table>
+<thead><tr>
+<th>Column</th>
+<th>Type</th>
+<th>Constraints</th>
+<th>Description</th>
+</tr></thead><tbody>
+<tr>
+<td>--------</td>
+<td>------</td>
+<td>-------------</td>
+<td>-------------</td>
+</tr>
+<tr>
+<td>id</td>
+<td>VARCHAR(50)</td>
+<td>PRIMARY KEY</td>
+<td>Invoice ID (INV-xxxxx)</td>
+</tr>
+<tr>
+<td>account_id</td>
+<td>VARCHAR(50)</td>
+<td>FK → account.id</td>
+<td>Account reference</td>
+</tr>
+<tr>
+<td>invoice_number</td>
+<td>VARCHAR(50)</td>
+<td>UNIQUE</td>
+<td>Display invoice number</td>
+</tr>
+<tr>
+<td>invoice_date</td>
+<td>DATE</td>
+<td>NOT NULL</td>
+<td>Invoice generation date</td>
+</tr>
+<tr>
+<td>due_date</td>
+<td>DATE</td>
+<td>NOT NULL</td>
+<td>Payment due date</td>
+</tr>
+<tr>
+<td>subtotal</td>
+<td>NUMERIC(19,4)</td>
+<td>NOT NULL</td>
+<td>Pre-tax total</td>
+</tr>
+<tr>
+<td>tax_total</td>
+<td>NUMERIC(19,4)</td>
+<td>NOT NULL</td>
+<td>Total tax</td>
+</tr>
+<tr>
+<td>total_amount</td>
+<td>NUMERIC(19,4)</td>
+<td>NOT NULL</td>
+<td>Invoice total</td>
+</tr>
+<tr>
+<td>amount_paid</td>
+<td>NUMERIC(19,4)</td>
+<td>DEFAULT 0</td>
+<td>Amount paid</td>
+</tr>
+<tr>
+<td>balance</td>
+<td>NUMERIC(19,4)</td>
+<td>NOT NULL</td>
+<td>Outstanding balance</td>
+</tr>
+<tr>
+<td>status</td>
+<td>VARCHAR(20)</td>
+<td>NOT NULL</td>
+<td>PENDING, SENT, PAID, OVERDUE, CANCELLED</td>
+</tr>
+<tr>
+<td>pdf_url</td>
+<td>VARCHAR(500)</td>
+<td></td>
+<td>S3 URL for PDF</td>
+</tr>
+<tr>
+<td>uuid</td>
+<td>VARCHAR(36)</td>
+<td></td>
+<td>CFDI UUID (Mexico)</td>
+</tr>
+<tr>
+<td>cfdi_xml</td>
+<td>TEXT</td>
+<td></td>
+<td>CFDI XML (Mexico)</td>
+</tr>
+<tr>
+<td>created_date</td>
+<td>TIMESTAMP</td>
+<td>NOT NULL</td>
+<td>Record creation</td>
+</tr>
+</tbody></table>
+<strong>Indexes</strong>:
+<pre><code class="language-sql">CREATE INDEX idx_invoice_account ON invoice(account_id);
+CREATE INDEX idx_invoice_number ON invoice(invoice_number);
+CREATE INDEX idx_invoice_status ON invoice(status);
+CREATE INDEX idx_invoice_due_date ON invoice(due_date);
+CREATE INDEX idx_unpaid_invoices ON invoice(account_id) WHERE status IN ('PENDING', 'SENT', 'OVERDUE');
+</code></pre>
+<strong>Status Flow</strong>:
+<pre><code class="language-">PENDING → SENT → PAID
+            ↓
+        OVERDUE → PAID
+            ↓
+        CANCELLED
+</code></pre>
+
+<hr>
+
+<h4>payment (Payment Transactions)</h4>
+
+<strong>Purpose</strong>: Payment records
+<table>
+<thead><tr>
+<th>Column</th>
+<th>Type</th>
+<th>Constraints</th>
+<th>Description</th>
+</tr></thead><tbody>
+<tr>
+<td>--------</td>
+<td>------</td>
+<td>-------------</td>
+<td>-------------</td>
+</tr>
+<tr>
+<td>id</td>
+<td>VARCHAR(50)</td>
+<td>PRIMARY KEY</td>
+<td>Payment ID (PAY-xxxxx)</td>
+</tr>
+<tr>
+<td>account_id</td>
+<td>VARCHAR(50)</td>
+<td>FK → account.id</td>
+<td>Account reference</td>
+</tr>
+<tr>
+<td>payment_method_id</td>
+<td>VARCHAR(50)</td>
+<td></td>
+<td>Payment method reference</td>
+</tr>
+<tr>
+<td>payment_number</td>
+<td>VARCHAR(50)</td>
+<td>UNIQUE</td>
+<td>Display payment number</td>
+</tr>
+<tr>
+<td>amount</td>
+<td>NUMERIC(19,4)</td>
+<td>NOT NULL</td>
+<td>Payment amount</td>
+</tr>
+<tr>
+<td>payment_date</td>
+<td>DATE</td>
+<td>NOT NULL</td>
+<td>Payment date</td>
+</tr>
+<tr>
+<td>payment_type</td>
+<td>VARCHAR(20)</td>
+<td>NOT NULL</td>
+<td>CARD, ACH, WIRE, CASH, CHECK</td>
+</tr>
+<tr>
+<td>external_transaction_id</td>
+<td>VARCHAR(100)</td>
+<td></td>
+<td>Gateway transaction ID</td>
+</tr>
+<tr>
+<td>status</td>
+<td>VARCHAR(20)</td>
+<td>NOT NULL</td>
+<td>PENDING, COMPLETED, FAILED, REFUNDED</td>
+</tr>
+<tr>
+<td>notes</td>
+<td>TEXT</td>
+<td></td>
+<td>Payment notes</td>
+</tr>
+<tr>
+<td>created_date</td>
+<td>TIMESTAMP</td>
+<td>NOT NULL</td>
+<td>Record creation</td>
+</tr>
+</tbody></table>
+<strong>Indexes</strong>:
+<pre><code class="language-sql">CREATE INDEX idx_payment_account ON payment(account_id);
+CREATE INDEX idx_payment_date ON payment(payment_date DESC);
+CREATE INDEX idx_payment_status ON payment(status);
+CREATE INDEX idx_payment_external ON payment(external_transaction_id);
+</code></pre>
+
+<hr>
+
+<h4>payment_allocation (Payment-to-Invoice Allocation)</h4>
+
+<strong>Purpose</strong>: Link payments to invoices
+<table>
+<thead><tr>
+<th>Column</th>
+<th>Type</th>
+<th>Constraints</th>
+<th>Description</th>
+</tr></thead><tbody>
+<tr>
+<td>--------</td>
+<td>------</td>
+<td>-------------</td>
+<td>-------------</td>
+</tr>
+<tr>
+<td>id</td>
+<td>VARCHAR(50)</td>
+<td>PRIMARY KEY</td>
+<td>Allocation ID</td>
+</tr>
+<tr>
+<td>payment_id</td>
+<td>VARCHAR(50)</td>
+<td>FK → payment.id</td>
+<td>Payment reference</td>
+</tr>
+<tr>
+<td>invoice_id</td>
+<td>VARCHAR(50)</td>
+<td>FK → invoice.id</td>
+<td>Invoice reference</td>
+</tr>
+<tr>
+<td>allocated_amount</td>
+<td>NUMERIC(19,4)</td>
+<td>NOT NULL</td>
+<td>Amount allocated</td>
+</tr>
+<tr>
+<td>allocation_date</td>
+<td>DATE</td>
+<td>NOT NULL</td>
+<td>Allocation date</td>
+</tr>
+<tr>
+<td>created_date</td>
+<td>TIMESTAMP</td>
+<td>NOT NULL</td>
+<td>Record creation</td>
+</tr>
+</tbody></table>
+<strong>Business Rules</strong>:
+<ul>
+<li>One payment can be allocated to multiple invoices</li>
+<li>One invoice can receive allocations from multiple payments</li>
+<li>Sum of allocations cannot exceed payment amount</li>
+</ul>
+<strong>Indexes</strong>:
+<pre><code class="language-sql">CREATE INDEX idx_payment_allocation_payment ON payment_allocation(payment_id);
+CREATE INDEX idx_payment_allocation_invoice ON payment_allocation(invoice_id);
+</code></pre>
+
+<hr>
+
+<h4>balance_impact (Account Balance Changes)</h4>
+
+<strong>Purpose</strong>: Audit trail for all balance changes
+<table>
+<thead><tr>
+<th>Column</th>
+<th>Type</th>
+<th>Constraints</th>
+<th>Description</th>
+</tr></thead><tbody>
+<tr>
+<td>--------</td>
+<td>------</td>
+<td>-------------</td>
+<td>-------------</td>
+</tr>
+<tr>
+<td>id</td>
+<td>VARCHAR(50)</td>
+<td>PRIMARY KEY</td>
+<td>Impact ID</td>
+</tr>
+<tr>
+<td>account_id</td>
+<td>VARCHAR(50)</td>
+<td>FK → account.id</td>
+<td>Account reference</td>
+</tr>
+<tr>
+<td>impact_type</td>
+<td>VARCHAR(20)</td>
+<td>NOT NULL</td>
+<td>CHARGE, PAYMENT, ADJUSTMENT, REFUND</td>
+</tr>
+<tr>
+<td>amount</td>
+<td>NUMERIC(19,4)</td>
+<td>NOT NULL</td>
+<td>Impact amount (+ or -)</td>
+</tr>
+<tr>
+<td>old_balance</td>
+<td>NUMERIC(19,4)</td>
+<td>NOT NULL</td>
+<td>Balance before</td>
+</tr>
+<tr>
+<td>new_balance</td>
+<td>NUMERIC(19,4)</td>
+<td>NOT NULL</td>
+<td>Balance after</td>
+</tr>
+<tr>
+<td>reference_id</td>
+<td>VARCHAR(50)</td>
+<td></td>
+<td>Charge ID, Payment ID, etc.</td>
+</tr>
+<tr>
+<td>description</td>
+<td>VARCHAR(255)</td>
+<td></td>
+<td>Impact description</td>
+</tr>
+<tr>
+<td>created_date</td>
+<td>TIMESTAMP</td>
+<td>NOT NULL</td>
+<td>Impact timestamp</td>
+</tr>
+</tbody></table>
+<strong>Indexes</strong>:
+<pre><code class="language-sql">CREATE INDEX idx_balance_impact_account ON balance_impact(account_id);
+CREATE INDEX idx_balance_impact_created ON balance_impact(created_date DESC);
+CREATE INDEX idx_balance_impact_type ON balance_impact(impact_type);
+</code></pre>
+
+<hr>
+
+<h3>4. core_pricing Schema</h3>
+
+<h4>product (Product Catalog)</h4>
+
+<strong>Purpose</strong>: Product/service definitions
+<table>
+<thead><tr>
+<th>Column</th>
+<th>Type</th>
+<th>Constraints</th>
+<th>Description</th>
+</tr></thead><tbody>
+<tr>
+<td>--------</td>
+<td>------</td>
+<td>-------------</td>
+<td>-------------</td>
+</tr>
+<tr>
+<td>id</td>
+<td>VARCHAR(50)</td>
+<td>PRIMARY KEY</td>
+<td>Product ID (PROD-xxxxx)</td>
+</tr>
+<tr>
+<td>product_code</td>
+<td>VARCHAR(50)</td>
+<td>UNIQUE</td>
+<td>SKU/Product code</td>
+</tr>
+<tr>
+<td>name</td>
+<td>VARCHAR(255)</td>
+<td>NOT NULL</td>
+<td>Product name</td>
+</tr>
+<tr>
+<td>description</td>
+<td>TEXT</td>
+<td></td>
+<td>Product description</td>
+</tr>
+<tr>
+<td>product_type</td>
+<td>VARCHAR(20)</td>
+<td>NOT NULL</td>
+<td>SERVICE, HARDWARE, SOFTWARE</td>
+</tr>
+<tr>
+<td>category</td>
+<td>VARCHAR(50)</td>
+<td></td>
+<td>Product category</td>
+</tr>
+<tr>
+<td>status</td>
+<td>VARCHAR(20)</td>
+<td>NOT NULL</td>
+<td>ACTIVE, INACTIVE, DISCONTINUED</td>
+</tr>
+<tr>
+<td>requires_provisioning</td>
+<td>BOOLEAN</td>
+<td>DEFAULT false</td>
+<td>Needs network provisioning</td>
+</tr>
+<tr>
+<td>created_date</td>
+<td>TIMESTAMP</td>
+<td>NOT NULL</td>
+<td>Record creation</td>
+</tr>
+</tbody></table>
+<strong>Indexes</strong>:
+<pre><code class="language-sql">CREATE INDEX idx_product_code ON product(product_code);
+CREATE INDEX idx_product_status ON product(status);
+CREATE INDEX idx_product_category ON product(category);
+</code></pre>
+
+<hr>
+
+<h4>price_offer (Pricing Plans)</h4>
+
+<strong>Purpose</strong>: Pricing configuration for products
+<table>
+<thead><tr>
+<th>Column</th>
+<th>Type</th>
+<th>Constraints</th>
+<th>Description</th>
+</tr></thead><tbody>
+<tr>
+<td>--------</td>
+<td>------</td>
+<td>-------------</td>
+<td>-------------</td>
+</tr>
+<tr>
+<td>id</td>
+<td>VARCHAR(50)</td>
+<td>PRIMARY KEY</td>
+<td>Price offer ID</td>
+</tr>
+<tr>
+<td>product_id</td>
+<td>VARCHAR(50)</td>
+<td>FK → product.id</td>
+<td>Product reference</td>
+</tr>
+<tr>
+<td>offer_code</td>
+<td>VARCHAR(50)</td>
+<td>UNIQUE</td>
+<td>Pricing code</td>
+</tr>
+<tr>
+<td>name</td>
+<td>VARCHAR(255)</td>
+<td>NOT NULL</td>
+<td>Offer name</td>
+</tr>
+<tr>
+<td>price</td>
+<td>NUMERIC(19,4)</td>
+<td>NOT NULL</td>
+<td>Price amount</td>
+</tr>
+<tr>
+<td>currency_code</td>
+<td>VARCHAR(3)</td>
+<td>DEFAULT 'USD'</td>
+<td>Currency</td>
+</tr>
+<tr>
+<td>billing_frequency</td>
+<td>VARCHAR(20)</td>
+<td>NOT NULL</td>
+<td>MONTHLY, QUARTERLY, ANNUALLY</td>
+</tr>
+<tr>
+<td>effective_date</td>
+<td>DATE</td>
+<td>NOT NULL</td>
+<td>Offer start date</td>
+</tr>
+<tr>
+<td>expiration_date</td>
+<td>DATE</td>
+<td></td>
+<td>Offer end date</td>
+</tr>
+<tr>
+<td>status</td>
+<td>VARCHAR(20)</td>
+<td>NOT NULL</td>
+<td>ACTIVE, INACTIVE, EXPIRED</td>
+</tr>
+<tr>
+<td>created_date</td>
+<td>TIMESTAMP</td>
+<td>NOT NULL</td>
+<td>Record creation</td>
+</tr>
+</tbody></table>
+<strong>Indexes</strong>:
+<pre><code class="language-sql">CREATE INDEX idx_price_offer_product ON price_offer(product_id);
+CREATE INDEX idx_price_offer_code ON price_offer(offer_code);
+CREATE INDEX idx_price_offer_effective ON price_offer(effective_date);
+</code></pre>
+
+<hr>
+
+<h4>bundle (Product Bundles)</h4>
+
+<strong>Purpose</strong>: Product bundles/packages
+<table>
+<thead><tr>
+<th>Column</th>
+<th>Type</th>
+<th>Constraints</th>
+<th>Description</th>
+</tr></thead><tbody>
+<tr>
+<td>--------</td>
+<td>------</td>
+<td>-------------</td>
+<td>-------------</td>
+</tr>
+<tr>
+<td>id</td>
+<td>VARCHAR(50)</td>
+<td>PRIMARY KEY</td>
+<td>Bundle ID</td>
+</tr>
+<tr>
+<td>bundle_code</td>
+<td>VARCHAR(50)</td>
+<td>UNIQUE</td>
+<td>Bundle code</td>
+</tr>
+<tr>
+<td>name</td>
+<td>VARCHAR(255)</td>
+<td>NOT NULL</td>
+<td>Bundle name</td>
+</tr>
+<tr>
+<td>description</td>
+<td>TEXT</td>
+<td></td>
+<td>Bundle description</td>
+</tr>
+<tr>
+<td>bundle_type</td>
+<td>VARCHAR(20)</td>
+<td>NOT NULL</td>
+<td>FIXED, FLEXIBLE</td>
+</tr>
+<tr>
+<td>status</td>
+<td>VARCHAR(20)</td>
+<td>NOT NULL</td>
+<td>ACTIVE, INACTIVE</td>
+</tr>
+<tr>
+<td>created_date</td>
+<td>TIMESTAMP</td>
+<td>NOT NULL</td>
+<td>Record creation</td>
+</tr>
+</tbody></table>
+
+<hr>
+
+<h4>discount (Discounts & Promotions)</h4>
+
+<strong>Purpose</strong>: Discount configuration
+<table>
+<thead><tr>
+<th>Column</th>
+<th>Type</th>
+<th>Constraints</th>
+<th>Description</th>
+</tr></thead><tbody>
+<tr>
+<td>--------</td>
+<td>------</td>
+<td>-------------</td>
+<td>-------------</td>
+</tr>
+<tr>
+<td>id</td>
+<td>VARCHAR(50)</td>
+<td>PRIMARY KEY</td>
+<td>Discount ID</td>
+</tr>
+<tr>
+<td>discount_code</td>
+<td>VARCHAR(50)</td>
+<td>UNIQUE</td>
+<td>Promo code</td>
+</tr>
+<tr>
+<td>name</td>
+<td>VARCHAR(255)</td>
+<td>NOT NULL</td>
+<td>Discount name</td>
+</tr>
+<tr>
+<td>discount_type</td>
+<td>VARCHAR(20)</td>
+<td>NOT NULL</td>
+<td>PERCENTAGE, FIXED_AMOUNT</td>
+</tr>
+<tr>
+<td>discount_value</td>
+<td>NUMERIC(19,4)</td>
+<td>NOT NULL</td>
+<td>Discount value</td>
+</tr>
+<tr>
+<td>applicable_products</td>
+<td>VARCHAR(500)</td>
+<td></td>
+<td>Product IDs (comma-separated)</td>
+</tr>
+<tr>
+<td>effective_date</td>
+<td>DATE</td>
+<td>NOT NULL</td>
+<td>Start date</td>
+</tr>
+<tr>
+<td>expiration_date</td>
+<td>DATE</td>
+<td></td>
+<td>End date</td>
+</tr>
+<tr>
+<td>max_uses</td>
+<td>INTEGER</td>
+<td></td>
+<td>Usage limit</td>
+</tr>
+<tr>
+<td>current_uses</td>
+<td>INTEGER</td>
+<td>DEFAULT 0</td>
+<td>Usage count</td>
+</tr>
+<tr>
+<td>status</td>
+<td>VARCHAR(20)</td>
+<td>NOT NULL</td>
+<td>ACTIVE, INACTIVE, EXPIRED</td>
+</tr>
+<tr>
+<td>created_date</td>
+<td>TIMESTAMP</td>
+<td>NOT NULL</td>
+<td>Record creation</td>
+</tr>
+</tbody></table>
+
+<hr>
+
+<h3>5. core_usage Schema</h3>
+
+<h4>usage_record (Usage Data - Partitioned)</h4>
+
+<strong>Purpose</strong>: High-volume usage records (CDRs)
+<table>
+<thead><tr>
+<th>Column</th>
+<th>Type</th>
+<th>Constraints</th>
+<th>Description</th>
+</tr></thead><tbody>
+<tr>
+<td>--------</td>
+<td>------</td>
+<td>-------------</td>
+<td>-------------</td>
+</tr>
+<tr>
+<td>id</td>
+<td>VARCHAR(50)</td>
+<td>PRIMARY KEY</td>
+<td>Usage record ID</td>
+</tr>
+<tr>
+<td>account_id</td>
+<td>VARCHAR(50)</td>
+<td>FK → account.id</td>
+<td>Account reference</td>
+</tr>
+<tr>
+<td>subscription_id</td>
+<td>VARCHAR(50)</td>
+<td>FK → subscription.id</td>
+<td>Subscription reference</td>
+</tr>
+<tr>
+<td>source_id</td>
+<td>VARCHAR(100)</td>
+<td></td>
+<td>Source identifier (phone, IP)</td>
+</tr>
+<tr>
+<td>destination_id</td>
+<td>VARCHAR(100)</td>
+<td></td>
+<td>Destination (phone, URL)</td>
+</tr>
+<tr>
+<td>usage_date</td>
+<td>DATE</td>
+<td>NOT NULL</td>
+<td>Usage date (partition key)</td>
+</tr>
+<tr>
+<td>start_time</td>
+<td>TIMESTAMP</td>
+<td>NOT NULL</td>
+<td>Usage start time</td>
+</tr>
+<tr>
+<td>duration</td>
+<td>INTEGER</td>
+<td></td>
+<td>Duration in seconds</td>
+</tr>
+<tr>
+<td>volume</td>
+<td>NUMERIC(19,4)</td>
+<td></td>
+<td>Volume (MB, minutes, count)</td>
+</tr>
+<tr>
+<td>service_type</td>
+<td>VARCHAR(20)</td>
+<td>NOT NULL</td>
+<td>VOICE, DATA, SMS</td>
+</tr>
+<tr>
+<td>rated</td>
+<td>BOOLEAN</td>
+<td>DEFAULT false</td>
+<td>Rating complete</td>
+</tr>
+<tr>
+<td>rated_amount</td>
+<td>NUMERIC(19,4)</td>
+<td></td>
+<td>Calculated charge</td>
+</tr>
+<tr>
+<td>billed</td>
+<td>BOOLEAN</td>
+<td>DEFAULT false</td>
+<td>Included in invoice</td>
+</tr>
+<tr>
+<td>created_date</td>
+<td>TIMESTAMP</td>
+<td>NOT NULL</td>
+<td>Record creation</td>
+</tr>
+</tbody></table>
+<strong>Partitioning</strong>:
+<pre><code class="language-sql">-- Partitioned by month
+CREATE TABLE usage_record_2026_01 PARTITION OF usage_record
+FOR VALUES FROM ('2026-01-01') TO ('2026-02-01');
+
+CREATE TABLE usage_record_2026_02 PARTITION OF usage_record
+FOR VALUES FROM ('2026-02-01') TO ('2026-03-01');
+</code></pre>
+<strong>Indexes (per partition)</strong>:
+<pre><code class="language-sql">CREATE INDEX idx_usage_account_2026_01 ON usage_record_2026_01(account_id);
+CREATE INDEX idx_usage_subscription_2026_01 ON usage_record_2026_01(subscription_id);
+CREATE INDEX idx_usage_date_2026_01 ON usage_record_2026_01(usage_date);
+CREATE INDEX idx_usage_rated_2026_01 ON usage_record_2026_01(rated) WHERE rated = false;
+CREATE INDEX idx_usage_billed_2026_01 ON usage_record_2026_01(billed) WHERE billed = false;
+</code></pre>
+
+<hr>
+
+<h4>usage_accumulator (Aggregated Usage)</h4>
+
+<strong>Purpose</strong>: Real-time usage accumulation for quota management
+<table>
+<thead><tr>
+<th>Column</th>
+<th>Type</th>
+<th>Constraints</th>
+<th>Description</th>
+</tr></thead><tbody>
+<tr>
+<td>--------</td>
+<td>------</td>
+<td>-------------</td>
+<td>-------------</td>
+</tr>
+<tr>
+<td>id</td>
+<td>VARCHAR(50)</td>
+<td>PRIMARY KEY</td>
+<td>Accumulator ID</td>
+</tr>
+<tr>
+<td>subscription_id</td>
+<td>VARCHAR(50)</td>
+<td>FK → subscription.id</td>
+<td>Subscription reference</td>
+</tr>
+<tr>
+<td>accumulator_type</td>
+<td>VARCHAR(20)</td>
+<td>NOT NULL</td>
+<td>VOICE_MINUTES, DATA_GB, SMS_COUNT</td>
+</tr>
+<tr>
+<td>accumulation_period</td>
+<td>VARCHAR(20)</td>
+<td>NOT NULL</td>
+<td>MONTHLY, DAILY</td>
+</tr>
+<tr>
+<td>period_start</td>
+<td>DATE</td>
+<td>NOT NULL</td>
+<td>Period start date</td>
+</tr>
+<tr>
+<td>period_end</td>
+<td>DATE</td>
+<td>NOT NULL</td>
+<td>Period end date</td>
+</tr>
+<tr>
+<td>accumulated_value</td>
+<td>NUMERIC(19,4)</td>
+<td>DEFAULT 0</td>
+<td>Accumulated usage</td>
+</tr>
+<tr>
+<td>last_updated</td>
+<td>TIMESTAMP</td>
+<td>NOT NULL</td>
+<td>Last update time</td>
+</tr>
+</tbody></table>
+<strong>Business Use</strong>: Track usage quotas and overage
+<strong>Indexes</strong>:
+<pre><code class="language-sql">CREATE INDEX idx_usage_accumulator_subscription ON usage_accumulator(subscription_id);
+CREATE INDEX idx_usage_accumulator_period ON usage_accumulator(period_start, period_end);
+</code></pre>
+
+<hr>
+
+<h4>usage_quota (Usage Quota Limits)</h4>
+
+<strong>Purpose</strong>: Define usage quotas for subscriptions
+<table>
+<thead><tr>
+<th>Column</th>
+<th>Type</th>
+<th>Constraints</th>
+<th>Description</th>
+</tr></thead><tbody>
+<tr>
+<td>--------</td>
+<td>------</td>
+<td>-------------</td>
+<td>-------------</td>
+</tr>
+<tr>
+<td>id</td>
+<td>VARCHAR(50)</td>
+<td>PRIMARY KEY</td>
+<td>Quota ID</td>
+</tr>
+<tr>
+<td>subscription_id</td>
+<td>VARCHAR(50)</td>
+<td>FK → subscription.id</td>
+<td>Subscription reference</td>
+</tr>
+<tr>
+<td>quota_type</td>
+<td>VARCHAR(20)</td>
+<td>NOT NULL</td>
+<td>VOICE_MINUTES, DATA_GB, SMS_COUNT</td>
+</tr>
+<tr>
+<td>quota_limit</td>
+<td>NUMERIC(19,4)</td>
+<td>NOT NULL</td>
+<td>Quota limit</td>
+</tr>
+<tr>
+<td>warning_threshold</td>
+<td>NUMERIC(19,4)</td>
+<td></td>
+<td>Warning threshold (%)</td>
+</tr>
+<tr>
+<td>action_on_exceed</td>
+<td>VARCHAR(20)</td>
+<td>NOT NULL</td>
+<td>BLOCK, CHARGE, WARN</td>
+</tr>
+<tr>
+<td>created_date</td>
+<td>TIMESTAMP</td>
+<td>NOT NULL</td>
+<td>Record creation</td>
+</tr>
+</tbody></table>
+<strong>Business Use</strong>: Implement usage-based controls
+
+<hr>
+
+<h3>6. core_revenue Schema</h3>
+
+<h4>deferred_revenue (Deferred Revenue Tracking)</h4>
+
+<strong>Purpose</strong>: Track deferred revenue for compliance (IFRS 15, ASC 606)
+<table>
+<thead><tr>
+<th>Column</th>
+<th>Type</th>
+<th>Constraints</th>
+<th>Description</th>
+</tr></thead><tbody>
+<tr>
+<td>--------</td>
+<td>------</td>
+<td>-------------</td>
+<td>-------------</td>
+</tr>
+<tr>
+<td>id</td>
+<td>VARCHAR(50)</td>
+<td>PRIMARY KEY</td>
+<td>Deferred revenue ID</td>
+</tr>
+<tr>
+<td>charge_id</td>
+<td>VARCHAR(50)</td>
+<td>FK → charge.id</td>
+<td>Source charge</td>
+</tr>
+<tr>
+<td>total_amount</td>
+<td>NUMERIC(19,4)</td>
+<td>NOT NULL</td>
+<td>Total deferred amount</td>
+</tr>
+<tr>
+<td>recognized_amount</td>
+<td>NUMERIC(19,4)</td>
+<td>DEFAULT 0</td>
+<td>Amount recognized</td>
+</tr>
+<tr>
+<td>remaining_amount</td>
+<td>NUMERIC(19,4)</td>
+<td>NOT NULL</td>
+<td>Amount remaining</td>
+</tr>
+<tr>
+<td>recognition_start_date</td>
+<td>DATE</td>
+<td>NOT NULL</td>
+<td>Recognition start</td>
+</tr>
+<tr>
+<td>recognition_end_date</td>
+<td>DATE</td>
+<td>NOT NULL</td>
+<td>Recognition end</td>
+</tr>
+<tr>
+<td>recognition_method</td>
+<td>VARCHAR(20)</td>
+<td>NOT NULL</td>
+<td>STRAIGHT_LINE, MILESTONE</td>
+</tr>
+<tr>
+<td>status</td>
+<td>VARCHAR(20)</td>
+<td>NOT NULL</td>
+<td>PENDING, IN_PROGRESS, COMPLETED</td>
+</tr>
+<tr>
+<td>created_date</td>
+<td>TIMESTAMP</td>
+<td>NOT NULL</td>
+<td>Record creation</td>
+</tr>
+</tbody></table>
+<strong>Business Use</strong>: Monthly revenue recognition processing
+<strong>Indexes</strong>:
+<pre><code class="language-sql">CREATE INDEX idx_deferred_revenue_charge ON deferred_revenue(charge_id);
+CREATE INDEX idx_deferred_revenue_status ON deferred_revenue(status);
+CREATE INDEX idx_deferred_revenue_dates ON deferred_revenue(recognition_start_date, recognition_end_date);
+</code></pre>
+
+<hr>
+
+<h4>journal_entry (General Ledger Entries)</h4>
+
+<strong>Purpose</strong>: Financial journal entries for ERP integration
+<table>
+<thead><tr>
+<th>Column</th>
+<th>Type</th>
+<th>Constraints</th>
+<th>Description</th>
+</tr></thead><tbody>
+<tr>
+<td>--------</td>
+<td>------</td>
+<td>-------------</td>
+<td>-------------</td>
+</tr>
+<tr>
+<td>id</td>
+<td>VARCHAR(50)</td>
+<td>PRIMARY KEY</td>
+<td>Journal entry ID</td>
+</tr>
+<tr>
+<td>entry_date</td>
+<td>DATE</td>
+<td>NOT NULL</td>
+<td>Entry date</td>
+</tr>
+<tr>
+<td>entry_type</td>
+<td>VARCHAR(20)</td>
+<td>NOT NULL</td>
+<td>REVENUE, EXPENSE, ADJUSTMENT</td>
+</tr>
+<tr>
+<td>debit_account</td>
+<td>VARCHAR(50)</td>
+<td>NOT NULL</td>
+<td>GL account (debit)</td>
+</tr>
+<tr>
+<td>credit_account</td>
+<td>VARCHAR(50)</td>
+<td>NOT NULL</td>
+<td>GL account (credit)</td>
+</tr>
+<tr>
+<td>amount</td>
+<td>NUMERIC(19,4)</td>
+<td>NOT NULL</td>
+<td>Entry amount</td>
+</tr>
+<tr>
+<td>description</td>
+<td>VARCHAR(255)</td>
+<td></td>
+<td>Entry description</td>
+</tr>
+<tr>
+<td>reference_id</td>
+<td>VARCHAR(50)</td>
+<td></td>
+<td>Invoice ID, Payment ID, etc.</td>
+</tr>
+<tr>
+<td>posted</td>
+<td>BOOLEAN</td>
+<td>DEFAULT false</td>
+<td>Posted to ERP</td>
+</tr>
+<tr>
+<td>created_date</td>
+<td>TIMESTAMP</td>
+<td>NOT NULL</td>
+<td>Record creation</td>
+</tr>
+</tbody></table>
+<strong>Indexes</strong>:
+<pre><code class="language-sql">CREATE INDEX idx_journal_entry_date ON journal_entry(entry_date DESC);
+CREATE INDEX idx_journal_entry_type ON journal_entry(entry_type);
+CREATE INDEX idx_journal_entry_posted ON journal_entry(posted) WHERE posted = false;
+</code></pre>
+
+<hr>
+
+<h3>7. core_mediation Schema</h3>
+
+<h4>cdr_file (CDR File Tracking)</h4>
+
+<strong>Purpose</strong>: Track CDR file ingestion
+<table>
+<thead><tr>
+<th>Column</th>
+<th>Type</th>
+<th>Constraints</th>
+<th>Description</th>
+</tr></thead><tbody>
+<tr>
+<td>--------</td>
+<td>------</td>
+<td>-------------</td>
+<td>-------------</td>
+</tr>
+<tr>
+<td>id</td>
+<td>VARCHAR(50)</td>
+<td>PRIMARY KEY</td>
+<td>File ID</td>
+</tr>
+<tr>
+<td>file_name</td>
+<td>VARCHAR(255)</td>
+<td>NOT NULL</td>
+<td>Original file name</td>
+</tr>
+<tr>
+<td>file_path</td>
+<td>VARCHAR(500)</td>
+<td></td>
+<td>S3/SFTP path</td>
+</tr>
+<tr>
+<td>file_size</td>
+<td>BIGINT</td>
+<td></td>
+<td>File size in bytes</td>
+</tr>
+<tr>
+<td>record_count</td>
+<td>INTEGER</td>
+<td></td>
+<td>Total records</td>
+</tr>
+<tr>
+<td>processed_count</td>
+<td>INTEGER</td>
+<td>DEFAULT 0</td>
+<td>Processed records</td>
+</tr>
+<tr>
+<td>error_count</td>
+<td>INTEGER</td>
+<td>DEFAULT 0</td>
+<td>Error records</td>
+</tr>
+<tr>
+<td>status</td>
+<td>VARCHAR(20)</td>
+<td>NOT NULL</td>
+<td>PENDING, PROCESSING, COMPLETED, FAILED</td>
+</tr>
+<tr>
+<td>started_at</td>
+<td>TIMESTAMP</td>
+<td></td>
+<td>Processing start</td>
+</tr>
+<tr>
+<td>completed_at</td>
+<td>TIMESTAMP</td>
+<td></td>
+<td>Processing end</td>
+</tr>
+<tr>
+<td>created_date</td>
+<td>TIMESTAMP</td>
+<td>NOT NULL</td>
+<td>File received</td>
+</tr>
+</tbody></table>
+<strong>Indexes</strong>:
+<pre><code class="language-sql">CREATE INDEX idx_cdr_file_status ON cdr_file(status);
+CREATE INDEX idx_cdr_file_created ON cdr_file(created_date DESC);
+</code></pre>
+
+<hr>
+
+<h4>cdr_error (CDR Processing Errors)</h4>
+
+<strong>Purpose</strong>: Track CDR processing errors
+<table>
+<thead><tr>
+<th>Column</th>
+<th>Type</th>
+<th>Constraints</th>
+<th>Description</th>
+</tr></thead><tbody>
+<tr>
+<td>--------</td>
+<td>------</td>
+<td>-------------</td>
+<td>-------------</td>
+</tr>
+<tr>
+<td>id</td>
+<td>VARCHAR(50)</td>
+<td>PRIMARY KEY</td>
+<td>Error ID</td>
+</tr>
+<tr>
+<td>cdr_file_id</td>
+<td>VARCHAR(50)</td>
+<td>FK → cdr_file.id</td>
+<td>File reference</td>
+</tr>
+<tr>
+<td>line_number</td>
+<td>INTEGER</td>
+<td></td>
+<td>Line number in file</td>
+</tr>
+<tr>
+<td>raw_data</td>
+<td>TEXT</td>
+<td></td>
+<td>Original CDR data</td>
+</tr>
+<tr>
+<td>error_type</td>
+<td>VARCHAR(50)</td>
+<td>NOT NULL</td>
+<td>INVALID_FORMAT, DUPLICATE, etc.</td>
+</tr>
+<tr>
+<td>error_message</td>
+<td>TEXT</td>
+<td></td>
+<td>Error details</td>
+</tr>
+<tr>
+<td>created_date</td>
+<td>TIMESTAMP</td>
+<td>NOT NULL</td>
+<td>Error timestamp</td>
+</tr>
+</tbody></table>
+
+<hr>
+
+<h2>Relationships & Foreign Keys</h2>
+
+<h3>Primary Relationships</h3>
+
+<strong>Account-Centric</strong>:
+<pre><code class="language-">account (1) ──&lt; (N) subscription
+account (1) ──&lt; (N) order
+account (1) ──&lt; (N) invoice
+account (1) ──&lt; (N) payment
+account (1) ──&lt; (N) charge
+account (1) ──&lt; (N) address
+account (1) ──&lt; (N) user
+account (1) ──&lt; (N) usage_record
+account (1) ──&lt; (N) balance_impact
+</code></pre>
+<strong>Order Processing</strong>:
+<pre><code class="language-">order (1) ──&lt; (N) service_line
+order (1) ──&lt; (N) order_activity
+order (1) ──&lt; (1) orchestration_state
+</code></pre>
+<strong>Billing & Payments</strong>:
+<pre><code class="language-">subscription (1) ──&lt; (N) charge
+invoice (1) ──&lt; (N) charge
+payment (1) ──&lt; (N) payment_allocation
+invoice (1) ──&lt; (N) payment_allocation
+charge (1) ──&lt; (1) deferred_revenue
+</code></pre>
+<strong>Product Catalog</strong>:
+<pre><code class="language-">product (1) ──&lt; (N) price_offer
+product (1) ──&lt; (N) subscription
+product (1) ──&lt; (N) service_line
+price_offer (1) ──&lt; (N) subscription
+</code></pre>
+<strong>Usage</strong>:
+<pre><code class="language-">subscription (1) ──&lt; (N) usage_record
+subscription (1) ──&lt; (N) usage_accumulator
+subscription (1) ──&lt; (N) usage_quota
+</code></pre>
+
+<hr>
+
+<h2>Indexes & Performance</h2>
+
+<h3>Index Types</h3>
+
+<strong>B-Tree Indexes</strong> (Default):
+<ul>
+<li>Foreign keys (account_id, subscription_id, etc.)</li>
+<li>Status columns (frequently filtered)</li>
+<li>Date columns (range queries)</li>
+</ul>
+<strong>Composite Indexes</strong>:
+<pre><code class="language-sql">-- Multi-column queries
+CREATE INDEX idx_invoice_account_status ON invoice(account_id, status);
+CREATE INDEX idx_charge_account_billing_date ON charge(account_id, billing_date);
+</code></pre>
+<strong>Partial Indexes</strong>:
+<pre><code class="language-sql">-- Filtered queries
+CREATE INDEX idx_unpaid_invoices ON invoice(account_id) 
+WHERE status IN ('PENDING', 'SENT', 'OVERDUE');
+
+CREATE INDEX idx_unrated_usage ON usage_record(subscription_id) 
+WHERE rated = false;
+</code></pre>
+<strong>GIN Indexes</strong> (JSONB):
+<pre><code class="language-sql">-- JSONB columns
+CREATE INDEX idx_order_extended_data ON order USING GIN (extended_data);
+CREATE INDEX idx_service_line_extended_data ON service_line USING GIN (extended_data);
+</code></pre>
+<h3>Performance Statistics</h3>
+
+<strong>Query Performance Targets</strong>:
+<ul>
+<li>Account lookup: < 50ms</li>
+<li>Invoice list: < 200ms</li>
+<li>Usage query: < 500ms</li>
+<li>Order search: < 300ms</li>
+</ul>
+
+<hr>
+
+<h2>Partitioning Strategy</h2>
+
+<h3>Usage Record Partitioning</h3>
+
+<strong>Partition Key</strong>: <code>usage_date</code> (monthly partitions)
+<strong>Benefits</strong>:
+<ul>
+<li>Faster queries (partition pruning)</li>
+<li>Easier archival (detach old partitions)</li>
+<li>Better vacuum performance</li>
+<li>Improved index maintenance</li>
+</ul>
+<strong>Partition Management</strong>:
+<pre><code class="language-sql">-- Create next month's partition
+CREATE TABLE usage_record_2026_03 PARTITION OF usage_record
+FOR VALUES FROM ('2026-03-01') TO ('2026-04-01');
+
+-- Create indexes on new partition
+CREATE INDEX idx_usage_account_2026_03 ON usage_record_2026_03(account_id);
+-- ... other indexes
+
+-- Archive old partition (after 24 months)
+ALTER TABLE usage_record DETACH PARTITION usage_record_2024_01;
+-- Move to archive table or delete
+</code></pre>
+<strong>Automated Partition Creation</strong>:
+<ul>
+<li>Scheduled job runs monthly</li>
+<li>Creates partition 2 months ahead</li>
+<li>Archives partitions older than 24 months</li>
+</ul>
+
+<hr>
+
+<h2>Database Migrations</h2>
+
+<h3>Flyway Migration Structure</h3>
+
+<strong>Location</strong>: <code>engine/src/main/resources/db/migration/</code>
+<strong>Naming Convention</strong>: <code>V{version}__{description}.sql</code>
+<strong>Migration Sequence</strong>:
+<pre><code class="language-">V1__Create_Schema.sql
+V2__Create_Enum_Types.sql
+V3__Create_Config_Tables.sql
+V4__Create_Engine_Tables.sql
+V5__Create_OMS_Tables.sql
+V6__Create_Billing_Tables.sql
+V7__Create_Pricing_Tables.sql
+V8__Create_Usage_Tables.sql
+V9__Create_Revenue_Tables.sql
+V10__Create_Mediation_Tables.sql
+V11__Create_Indexes.sql
+V12__Create_Foreign_Keys.sql
+V13__Create_Views.sql
+V14__Create_Functions.sql
+V15__Create_Triggers.sql
+V16__Initial_Config_Data.sql
+</code></pre>
+<h3>Migration Execution</h3>
+
+<strong>Automatic (Spring Boot)</strong>:
+<pre><code class="language-yaml">spring:
+  flyway:
+    enabled: true
+    baseline-on-migrate: true
+    locations: classpath:db/migration
+    validate-on-migrate: true
+</code></pre>
+<strong>Manual</strong>:
+<pre><code class="language-bash">mvn flyway:migrate -Dspring.profiles.active=dev
+mvn flyway:info     # Show migration status
+mvn flyway:validate # Validate migration checksums
+</code></pre>
+<h3>Migration Best Practices</h3>
+
+<strong>DO</strong>:
+<ul>
+<li>✅ Always write backward-compatible migrations</li>
+<li>✅ Test migrations on dev/staging first</li>
+<li>✅ Use transactions (BEGIN/COMMIT)</li>
+<li>✅ Add descriptive comments</li>
+<li>✅ Create indexes CONCURRENTLY in production</li>
+</ul>
+<strong>DON'T</strong>:
+<ul>
+<li>❌ Modify existing migrations (breaks checksums)</li>
+<li>❌ Use DROP statements without extreme caution</li>
+<li>❌ Run data migrations in peak hours</li>
+<li>❌ Skip migration testing</li>
+</ul>
+
+<hr>
+
+<h2>Data Access Patterns</h2>
+
+<h3>JOOQ Type-Safe Queries</h3>
+
+<strong>Example: Find Account with Subscriptions</strong>:
+<pre><code class="language-groovy">// Generated JOOQ classes
+import static com.embrix.core.engine.db.tables.Account.ACCOUNT
+import static com.embrix.core.engine.db.tables.Subscription.SUBSCRIPTION
+
+class AccountRepository {
+    @Autowired
+    DSLContext dsl
+    
+    Account findAccountWithSubscriptions(String accountId) {
+        def accountRecord = dsl
+            .select()
+            .from(ACCOUNT)
+            .where(ACCOUNT.ID.eq(accountId))
+            .fetchOne()
+        
+        if (!accountRecord) return null
+        
+        def subscriptions = dsl
+            .select()
+            .from(SUBSCRIPTION)
+            .where(SUBSCRIPTION.ACCOUNT_ID.eq(accountId))
+            .and(SUBSCRIPTION.STATUS.eq('ACTIVE'))
+            .fetch()
+        
+        return mapToAccount(accountRecord, subscriptions)
+    }
+}
+</code></pre>
+<strong>Example: Complex Query with Joins</strong>:
+<pre><code class="language-groovy">def invoicesWithCharges = dsl
+    .select(
+        INVOICE.ID,
+        INVOICE.INVOICE_NUMBER,
+        INVOICE.TOTAL_AMOUNT,
+        CHARGE.ID,
+        CHARGE.DESCRIPTION,
+        CHARGE.AMOUNT
+    )
+    .from(INVOICE)
+    .leftJoin(CHARGE).on(CHARGE.INVOICE_ID.eq(INVOICE.ID))
+    .where(INVOICE.ACCOUNT_ID.eq(accountId))
+    .and(INVOICE.STATUS.in('PENDING', 'OVERDUE'))
+    .orderBy(INVOICE.INVOICE_DATE.desc())
+    .fetch()
+</code></pre>
+<strong>Example: Pagination</strong>:
+<pre><code class="language-groovy">def orders = dsl
+    .select()
+    .from(ORDER)
+    .where(ORDER.ACCOUNT_ID.eq(accountId))
+    .orderBy(ORDER.CREATED_DATE.desc())
+    .limit(pageSize)
+    .offset(pageNumber * pageSize)
+    .fetch()
+</code></pre>
+
+<hr>
+
+<h2>Backup & Recovery</h2>
+
+<h3>Backup Strategy</h3>
+
+<strong>Automated Backups</strong> (AWS RDS):
+<ul>
+<li>Daily automated snapshots (7-day retention)</li>
+<li>30-minute backup window (low-traffic period)</li>
+<li>Point-in-time recovery (up to backup retention period)</li>
+</ul>
+<strong>Manual Backups</strong>:
+<pre><code class="language-bash"># On-demand snapshot
+aws rds create-db-snapshot \
+  --db-instance-identifier embrix-rds-urbanos \
+  --db-snapshot-identifier urbanos-manual-$(date +%Y%m%d)
+
+# Export to S3
+aws rds export-db-snapshot-to-s3 \
+  --snapshot-identifier urbanos-manual-20260211 \
+  --s3-bucket-name embrix-backups \
+  --iam-role-arn arn:aws:iam::123456789012:role/RDSExport
+</code></pre>
+<h3>Recovery Procedures</h3>
+
+<strong>Point-in-Time Recovery</strong>:
+<pre><code class="language-bash">aws rds restore-db-instance-to-point-in-time \
+  --source-db-instance-identifier embrix-rds-urbanos \
+  --target-db-instance-identifier embrix-rds-urbanos-restore \
+  --restore-time 2026-02-11T10:30:00Z
+</code></pre>
+<strong>Snapshot Restore</strong>:
+<pre><code class="language-bash">aws rds restore-db-instance-from-db-snapshot \
+  --db-instance-identifier embrix-rds-urbanos-restore \
+  --db-snapshot-identifier urbanos-manual-20260211
+</code></pre>
+
+<hr>
+
+<h2>Summary</h2>
+
+<h3>Database Architecture Highlights</h3>
+
+<ul>
+<li><strong>Technology</strong>: PostgreSQL 10.5+ with JOOQ for type-safe queries</li>
+<li><strong>Multi-Tenancy</strong>: Database-per-tenant with complete isolation</li>
+<li><strong>Schema Organization</strong>: 8 business schemas per tenant database</li>
+<li><strong>Entity Count</strong>: 50+ tables across all schemas</li>
+<li><strong>Partitioning</strong>: Monthly partitioning on high-volume usage_record table</li>
+<li><strong>Indexing</strong>: B-tree, composite, partial, and GIN indexes for performance</li>
+<li><strong>Migrations</strong>: Version-controlled via Flyway</li>
+<li><strong>Backup</strong>: Automated daily snapshots with point-in-time recovery</li>
+</ul>
+<h3>Key Performance Features</h3>
+
+<ul>
+<li>Connection pooling via HikariCP (20-50 connections)</li>
+<li>Partitioned usage tables for fast queries</li>
+<li>Strategic indexing on foreign keys and filters</li>
+<li>JSONB for flexible attributes with GIN indexes</li>
+<li>Caching layer (Redis) for expensive queries</li>
+</ul>
+
+<hr>
+
+<strong>For backend service integration details, see <code>NEWCOMER_GUIDE_PART2_TECHNICAL_DEEP_DIVE.md</code></strong></p>
+        <footer>
+            <p><strong>Embrix O2X Platform Documentation</strong></p>
+            <p>Version 3.1.9-SNAPSHOT • Last Updated: February 2026</p>
+        </footer>
+    </div>
+</body>
+</html>

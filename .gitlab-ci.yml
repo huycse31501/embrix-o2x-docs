@@ -1,56 +1,52 @@
-# GitLab CI/CD Pipeline for Embrix O2X Knowledge Hub
-# Deploys docs/big-new-comer to GitLab Pages
-#
-# Pages URL (no username in path): set project path to "embrixO2XDoc" in GitLab
-#   Settings > General > Advanced > Change path to "embrixO2XDoc"
-#   Then your docs URL: https://<namespace>.gitlab.io/embrixO2XDoc/
+# GitLab CI/CD Pipeline for Embrix O2X Documentation
+# This deploys docs/newcomer/ to GitLab Pages
 
 stages:
   - deploy
 
-# Deploy Knowledge Hub (docs/big-new-comer) to GitLab Pages
+# Job to deploy documentation to GitLab Pages
 pages:
   stage: deploy
   image: alpine:latest
-
-  before_script:
-    - echo "Deploying Embrix O2X Knowledge Hub from docs/big-new-comer..."
-
+  
   script:
-    # GitLab Pages serves from public/
-    - rm -rf public
-    - mkdir -p public
-    - cp -r docs/big-new-comer/* public/
+    - echo "Deploying docs/newcomer/ to GitLab Pages..."
+    - rm -rf public && mkdir -p public
+    - cp -r docs/newcomer/* public/
     - ls -la public/
     - echo "Documentation ready for deployment"
-
+  
   artifacts:
     paths:
       - public
     expire_in: 1 week
-
-  only:
-    - main
-    - master
+  
+  rules:
+    - if: $CI_COMMIT_BRANCH == "main" || $CI_COMMIT_BRANCH == "master"
+      changes:
+        - docs/newcomer/**
+    - when: never
 
 # Optional: Preview job for merge requests
 pages:preview:
   stage: deploy
   image: alpine:latest
-
+  
   script:
-    - rm -rf public
-    - mkdir -p public
-    - cp -r docs/big-new-comer/* public/
-
+    - rm -rf public && mkdir -p public
+    - cp -r docs/newcomer/* public/
+  
   artifacts:
     paths:
       - public
     expire_in: 1 day
-
-  only:
-    - merge_requests
-
+  
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+      changes:
+        - docs/newcomer/**
+    - when: never
+  
   environment:
     name: review/$CI_COMMIT_REF_NAME
     url: https://$CI_PROJECT_NAMESPACE.gitlab.io/-/$CI_PROJECT_NAME/-/jobs/$CI_JOB_ID/artifacts/public/index.html
@@ -62,8 +58,8 @@ stop_preview:
   script:
     - echo "Cleaning up preview environment"
   when: manual
-  only:
-    - merge_requests
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
   environment:
     name: review/$CI_COMMIT_REF_NAME
     action: stop

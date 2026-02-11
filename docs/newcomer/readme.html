@@ -1,0 +1,1359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>📄 README - Embrix O2X</title>
+    
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+        font-size: 16px;
+        line-height: 1.7;
+        color: #1f2937;
+        background: linear-gradient(135deg, #f5f7fa 0%, #e9ecef 100%);
+        background-attachment: fixed;
+        padding: 20px;
+    }
+
+    .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        background: white;
+        padding: 40px 50px;
+        border-radius: 16px;
+        box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .container::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 5px;
+        background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+    }
+
+    .nav-header {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 20px;
+        border-radius: 8px;
+        margin-bottom: 30px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+    }
+
+    .nav-header h1 {
+        font-size: 1.4em;
+        margin-bottom: 5px;
+        font-weight: 600;
+    }
+
+    .nav-links {
+        display: flex;
+        gap: 15px;
+        flex-wrap: wrap;
+    }
+
+    .nav-links a {
+        color: white;
+        text-decoration: none;
+        padding: 8px 16px;
+        background: rgba(255,255,255,0.2);
+        border-radius: 5px;
+        transition: background 0.3s;
+    }
+
+    .nav-links a:hover {
+        background: rgba(255,255,255,0.3);
+    }
+
+    h1 {
+        color: #667eea;
+        margin: 35px 0 20px 0;
+        padding: 12px 0 12px 18px;
+        border-left: 5px solid #667eea;
+        border-bottom: 2px solid #667eea;
+        background: linear-gradient(90deg, rgba(102, 126, 234, 0.05) 0%, rgba(255,255,255,0) 100%);
+        font-size: 1.8em;
+        font-weight: 700;
+        border-radius: 0 8px 0 0;
+    }
+
+    h2 {
+        color: #764ba2;
+        margin: 30px 0 18px 0;
+        padding: 10px 0 10px 15px;
+        border-left: 4px solid #764ba2;
+        border-bottom: 2px solid #f0f0f0;
+        background: linear-gradient(90deg, rgba(118, 75, 162, 0.03) 0%, rgba(255,255,255,0) 100%);
+        font-size: 1.5em;
+        font-weight: 700;
+        border-radius: 0 6px 0 0;
+    }
+
+    h3 {
+        color: #667eea;
+        margin: 25px 0 15px 0;
+        padding: 8px 0 8px 12px;
+        border-left: 3px solid #667eea;
+        background: linear-gradient(90deg, rgba(102, 126, 234, 0.04) 0%, transparent 100%);
+        font-size: 1.25em;
+        font-weight: 600;
+        border-radius: 0 6px 6px 0;
+    }
+
+    h4 {
+        color: #764ba2;
+        margin: 20px 0 12px 0;
+        padding: 6px 0 6px 10px;
+        border-left: 2px solid #764ba2;
+        background: linear-gradient(90deg, rgba(118, 75, 162, 0.03) 0%, transparent 100%);
+        font-size: 1.1em;
+        font-weight: 600;
+        border-radius: 0 4px 4px 0;
+    }
+
+    h5 {
+        color: #667eea;
+        margin: 18px 0 10px 0;
+        padding: 4px 0 4px 8px;
+        border-left: 2px solid #667eea;
+        font-size: 1.05em;
+        font-weight: 600;
+        background: linear-gradient(90deg, rgba(102, 126, 234, 0.02) 0%, transparent 100%);
+        border-radius: 0 3px 3px 0;
+    }
+
+    h6 {
+        color: #764ba2;
+        margin: 15px 0 8px 0;
+        font-size: 0.95em;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    p {
+        margin: 12px 0;
+        line-height: 1.7;
+        font-size: 0.95em;
+        color: #374151;
+    }
+    
+    /* Better spacing for paragraphs after headings */
+    h1 + p, h2 + p, h3 + p, h4 + p {
+        margin-top: 10px;
+    }
+
+    ul, ol {
+        margin: 20px 0;
+        padding-left: 35px;
+    }
+
+    li {
+        margin: 10px 0;
+        line-height: 1.7;
+        font-size: 0.95em;
+        position: relative;
+        padding-left: 8px;
+    }
+
+    ul li::marker {
+        color: #667eea;
+        font-weight: bold;
+        font-size: 1.1em;
+    }
+
+    ol li::marker {
+        color: #764ba2;
+        font-weight: bold;
+        font-size: 1em;
+    }
+
+    /* Better list item styling */
+    li {
+        background: linear-gradient(90deg, rgba(102, 126, 234, 0.02) 0%, transparent 100%);
+        border-left: 2px solid transparent;
+        padding: 8px 8px 8px 12px;
+        border-radius: 0 4px 4px 0;
+        transition: all 0.2s ease;
+    }
+
+    li:hover {
+        background: linear-gradient(90deg, rgba(102, 126, 234, 0.05) 0%, transparent 100%);
+        border-left-color: #667eea;
+        padding-left: 16px;
+    }
+
+    /* Nested lists */
+    li ul, li ol {
+        margin: 8px 0 8px 10px;
+    }
+
+    /* Nested list items - smaller styling */
+    li li {
+        font-size: 0.92em;
+        margin: 6px 0;
+        background: linear-gradient(90deg, rgba(118, 75, 162, 0.02) 0%, transparent 100%);
+    }
+
+    li li:hover {
+        background: linear-gradient(90deg, rgba(118, 75, 162, 0.05) 0%, transparent 100%);
+        border-left-color: #764ba2;
+    }
+
+    code {
+        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        padding: 2px 6px;
+        border-radius: 4px;
+        font-family: 'Fira Code', 'Courier New', Consolas, monospace;
+        font-size: 0.85em;
+        color: #d63384;
+        border: 1px solid #dee2e6;
+        font-weight: 500;
+    }
+
+    /* Inline code with special highlighting */
+    p code, li code, td code {
+        position: relative;
+    }
+
+    p code::before, li code::before, td code::before {
+        content: '';
+        position: absolute;
+        inset: -2px;
+        border-radius: 5px;
+        background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+        z-index: -1;
+        opacity: 0;
+        transition: opacity 0.2s;
+    }
+
+    p code:hover::before, li code:hover::before, td code:hover::before {
+        opacity: 1;
+    }
+
+    pre {
+        background: #1e293b;
+        color: #e2e8f0;
+        padding: 16px 18px;
+        border-radius: 8px;
+        overflow-x: auto;
+        margin: 18px 0;
+        border: 1px solid #334155;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+        font-family: 'Cascadia Code', 'Fira Code', 'SF Mono', 'Consolas', 'Liberation Mono', monospace;
+        font-size: 0.85em;
+        line-height: 1.6;
+        position: relative;
+        font-feature-settings: "liga" 0;
+        text-rendering: optimizeLegibility;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+    }
+
+    pre code {
+        background: none;
+        color: inherit;
+        padding: 0;
+        border: none;
+        font-family: inherit;
+        font-weight: normal;
+        font-size: 1em;
+        display: block;
+    }
+    
+    /* Ensure consistent styling for all code content inside pre blocks */
+    pre code * {
+        font-size: inherit !important;
+        line-height: inherit !important;
+        color: inherit !important;
+        font-family: inherit !important;
+    }
+
+    /* Hover effect */
+    pre:hover {
+        border-color: #475569;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.12);
+        transition: all 0.3s ease;
+    }
+
+    /* Code block header indicator */
+    pre::after {
+        content: 'CODE';
+        position: absolute;
+        top: 8px;
+        right: 12px;
+        font-size: 0.65em;
+        color: #64748b;
+        font-weight: 600;
+        letter-spacing: 0.05em;
+        opacity: 0.5;
+    }
+
+    blockquote {
+        border-left: 4px solid #667eea;
+        padding: 15px 20px;
+        margin: 20px 0;
+        color: #555;
+        font-style: italic;
+        font-size: 0.95em;
+        background: linear-gradient(90deg, rgba(102, 126, 234, 0.05) 0%, rgba(255,255,255,0) 100%);
+        border-radius: 0 6px 6px 0;
+        position: relative;
+    }
+
+    blockquote::before {
+        content: '"';
+        position: absolute;
+        left: -10px;
+        top: -10px;
+        font-size: 4em;
+        color: rgba(102, 126, 234, 0.1);
+        font-family: Georgia, serif;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 20px 0;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+        border-radius: 8px;
+        overflow: hidden;
+        background: white;
+        font-size: 0.9em;
+    }
+
+    thead {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    }
+
+    th {
+        color: white;
+        padding: 12px 15px;
+        text-align: left;
+        font-weight: 600;
+        text-transform: uppercase;
+        font-size: 0.82em;
+        letter-spacing: 0.3px;
+    }
+
+    td {
+        padding: 10px 15px;
+        border-bottom: 1px solid #e5e7eb;
+        vertical-align: top;
+        line-height: 1.6;
+    }
+
+    tbody tr:last-child td {
+        border-bottom: none;
+    }
+
+    tbody tr:hover {
+        background: rgba(102, 126, 234, 0.04);
+        transition: background 0.2s ease;
+    }
+
+    tbody tr:nth-child(even) {
+        background: rgba(102, 126, 234, 0.02);
+    }
+
+    tbody tr:nth-child(even):hover {
+        background: rgba(102, 126, 234, 0.05);
+    }
+    
+    /* Better code in tables */
+    td code {
+        font-size: 0.85em;
+        padding: 2px 6px;
+    }
+
+    .info-box {
+        background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+        border-left: 5px solid #2196f3;
+        padding: 20px;
+        margin: 25px 0;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(33, 150, 243, 0.2);
+    }
+
+    .warning-box {
+        background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%);
+        border-left: 5px solid #ff9800;
+        padding: 20px;
+        margin: 25px 0;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(255, 152, 0, 0.2);
+    }
+
+    .success-box {
+        background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+        border-left: 5px solid #4caf50;
+        padding: 20px;
+        margin: 25px 0;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(76, 175, 80, 0.2);
+    }
+
+    /* Better colors for syntax in diagrams */
+    pre {
+        /* Box drawing characters in nice blue */
+        color: #93c5fd;
+    }
+
+    /* JSON/code syntax in pre blocks */
+    pre {
+        white-space: pre;
+        word-wrap: normal;
+    }
+
+    .toc {
+        background: #f8f9fa;
+        padding: 20px;
+        border-radius: 8px;
+        margin: 20px 0;
+        border-left: 4px solid #667eea;
+    }
+
+    .toc h2 {
+        color: #667eea;
+        border-bottom: none;
+        margin-bottom: 15px;
+    }
+
+    .toc ul {
+        list-style: none;
+        padding-left: 0;
+    }
+
+    .toc li {
+        margin: 8px 0;
+    }
+
+    .toc a {
+        color: #667eea;
+        text-decoration: none;
+        transition: color 0.3s;
+    }
+
+    .toc a:hover {
+        color: #764ba2;
+    }
+
+    hr {
+        border: none;
+        border-top: 2px solid #f0f0f0;
+        margin: 30px 0;
+    }
+
+    .badge {
+        display: inline-block;
+        background: #667eea;
+        color: white;
+        padding: 4px 10px;
+        border-radius: 12px;
+        font-size: 0.85em;
+        margin-left: 10px;
+    }
+
+    a {
+        color: #667eea;
+        text-decoration: none;
+        transition: color 0.3s;
+    }
+
+    a:hover {
+        color: #764ba2;
+        text-decoration: underline;
+    }
+    
+    /* Better display for metadata fields */
+    strong {
+        color: #374151;
+        font-weight: 600;
+    }
+    
+    /* Metadata field styling - each field on its own line */
+    .metadata-field {
+        margin: 8px 0;
+        padding: 8px 14px;
+        background: linear-gradient(90deg, rgba(102, 126, 234, 0.04) 0%, transparent 100%);
+        border-left: 3px solid #667eea;
+        border-radius: 0 4px 4px 0;
+        line-height: 1.7;
+        font-size: 0.95em;
+        display: block;
+        clear: both;
+    }
+    
+    .metadata-field strong {
+        color: #667eea;
+        font-weight: 600;
+        margin-right: 8px;
+        display: inline-block;
+        min-width: 100px;
+    }
+    
+    .metadata-field code {
+        font-size: 0.88em;
+    }
+
+    footer {
+        margin-top: 50px;
+        padding-top: 30px;
+        border-top: 2px solid #f0f0f0;
+        text-align: center;
+        color: #888;
+    }
+
+    @media print {
+        body {
+            background: white;
+        }
+        .nav-header, .nav-links {
+            display: none;
+        }
+        pre {
+            break-inside: avoid;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .container {
+            padding: 20px;
+        }
+        .nav-header {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+        .nav-links {
+            margin-top: 15px;
+        }
+        h1 {
+            font-size: 2em;
+        }
+        h2 {
+            font-size: 1.5em;
+        }
+    }
+</style>
+
+</head>
+<body>
+    <div class="container">
+        <div class="nav-header"><div><h1>Embrix O2X Documentation</h1><small>Navigate between guides</small></div><div class="nav-links"><a href="index.html">🏠 Home</a><a href="guide-index.html">📚 Guide Index</a><a href="part1-business-architecture.html">Part 1</a><a href="part2-technical-deep-dive.html">Part 2</a><a href="part3-services-development.html">Part 3</a><a href="part4-frontend-ui.html">Part 4</a><a href="part5-message-queues.html">Part 5</a><a href="quick-start.html">🎯 Quick Start</a><a href="quick-reference.html">📖 Quick Ref</a><a href="troubleshooting-guide.html">🔧 Troubleshooting</a></div></div>
+        
+<h1>Embrix O2X Platform - Complete Documentation</h1>
+
+<div align="center">
+<strong>Enterprise-Grade Billing and Order Management Platform</strong>
+<a href="https://img.shields.io/badge/version-3.1.9--SNAPSHOT-blue.svg">![Version</a>](https://github.com/embrix/o2x)
+<a href="https://img.shields.io/badge/Spring%20Boot-2.1.4-green.svg">![Spring Boot</a>](https://spring.io/projects/spring-boot)
+<a href="https://img.shields.io/badge/license-Proprietary-red.svg">![License</a>](LICENSE)
+<a href="#quick-start">Quick Start</a> • <a href="#documentation">Documentation</a> • <a href="#architecture">Architecture</a> • <a href="#contributing">Contributing</a> • <a href="#support">Support</a>
+</div>
+
+<hr>
+
+<h2>📖 What is Embrix O2X?</h2>
+
+Embrix O2X (Order-to-X) is a comprehensive billing and order management platform designed for telecommunications operators, SaaS companies, and multi-tenant service providers. It handles the complete customer lifecycle from order entry through provisioning, usage tracking, billing, invoicing, payment processing, and revenue recognition.
+<h3>Key Capabilities</h3>
+
+<ul>
+<li>✅ <strong>Multi-Tenant Architecture</strong> - Support multiple customers/brands on shared infrastructure</li>
+<li>✅ <strong>Order Management</strong> - Process complex orders with workflow automation</li>
+<li>✅ <strong>Service Provisioning</strong> - Automate service activation on network elements</li>
+<li>✅ <strong>Usage Processing</strong> - Handle millions of CDRs with real-time and batch rating</li>
+<li>✅ <strong>Flexible Billing</strong> - Recurring, usage-based, tiered, bundled pricing models</li>
+<li>✅ <strong>Revenue Recognition</strong> - IFRS 15 and ASC 606 compliant</li>
+<li>✅ <strong>Payment Processing</strong> - Multiple payment gateways (Braintree, Stripe, PayPal)</li>
+<li>✅ <strong>Tax Compliance</strong> - Avalara integration and CFDI (Mexico) support</li>
+<li>✅ <strong>ERP Integration</strong> - Pre-built connectors for QuickBooks, NetSuite, SAP</li>
+</ul>
+<h3>Production Deployments</h3>
+
+<table>
+<thead><tr>
+<th>Tenant</th>
+<th>Industry</th>
+<th>Services</th>
+<th>Scale</th>
+</tr></thead><tbody>
+<tr>
+<td>--------</td>
+<td>----------</td>
+<td>----------</td>
+<td>-------</td>
+</tr>
+<tr>
+<td><strong>MCM Telecom</strong></td>
+<td>Telecommunications</td>
+<td>Mobile, VoIP, Internet</td>
+<td>50,000+ subscribers</td>
+</tr>
+<tr>
+<td><strong>CoopeG</strong></td>
+<td>Energy & Telecom</td>
+<td>Electricity, Fiber Internet</td>
+<td>25,000+ customers</td>
+</tr>
+<tr>
+<td><strong>CoopeG Energy</strong></td>
+<td>Energy</td>
+<td>Electricity billing</td>
+<td>15,000+ meters</td>
+</tr>
+<tr>
+<td><strong>Urbanos</strong></td>
+<td>IoT/Smart City</td>
+<td>Vehicle tracking, fleet management</td>
+<td>10,000+ devices</td>
+</tr>
+<tr>
+<td><strong>SHM</strong></td>
+<td>Healthcare</td>
+<td>Medical equipment management</td>
+<td>Enterprise</td>
+</tr>
+</tbody></table>
+
+<hr>
+
+<h2>🚀 Quick Start</h2>
+
+<h3>For New Developers</h3>
+
+<strong>Start Here</strong>: <a href="docs/newcomer/README.md">Complete Newcomer's Guide</a> - 3-4 hours comprehensive onboarding
+<strong>Quick Path</strong> (30 minutes):
+<ol>
+<li>Read <a href="docs/newcomer/guide-index.html">Guide Index</a> - Overview and navigation</li>
+<li>Browse <a href="docs/newcomer/quick-reference.html">Quick Reference</a> - Essential commands and patterns</li>
+<li>Review <a href="#architecture">Architecture Diagram</a> below</li>
+</ol>
+<h3>For DevOps Engineers</h3>
+
+<ol>
+<li>Read <a href="docs/MULTI_TENANT_COMPLETE_GUIDE.md">Multi-Tenant Architecture Guide</a> - 90 minutes</li>
+<li>Review <a href="DEPLOYMENT_GUIDE.md">Deployment Guide</a></li>
+<li>Check <a href="#infrastructure-setup">Infrastructure Setup</a> below</li>
+</ol>
+<h3>For Business Analysts</h3>
+
+<ol>
+<li>Read <a href="BUSINESS_SCENARIOS_AND_WORKFLOWS.md">Business Scenarios & Workflows</a> - 60 minutes</li>
+<li>Review <a href="NEWCOMER_GUIDE_PART1_BUSINESS_AND_ARCHITECTURE.md">Part 1: Business Architecture</a></li>
+<li>Explore <a href="context/PRODUCT_FLOW_CUSTOMER_JOURNEY.md">Customer Journeys</a></li>
+</ol>
+
+<hr>
+
+<h2>📚 Documentation</h2>
+
+<h3>🎯 Primary Documentation</h3>
+
+<table>
+<thead><tr>
+<th>Document</th>
+<th>Purpose</th>
+<th>Time</th>
+<th>Audience</th>
+</tr></thead><tbody>
+<tr>
+<td>----------</td>
+<td>---------</td>
+<td>------</td>
+<td>----------</td>
+</tr>
+<tr>
+<td><strong><a href="docs/newcomer/README.md">Complete Newcomer's Guide</a></strong> ⭐</td>
+<td>Full platform onboarding</td>
+<td>3-4 hours</td>
+<td>All new team members</td>
+</tr>
+<tr>
+<td><strong><a href="NEWCOMER_GUIDE_INDEX.md">Guide Index</a></strong></td>
+<td>Master navigation & reading paths</td>
+<td>15 min</td>
+<td>Everyone</td>
+</tr>
+<tr>
+<td><strong><a href="NEWCOMER_GUIDE_PART1_BUSINESS_AND_ARCHITECTURE.md">Part 1: Business & Architecture</a></strong></td>
+<td>Business context, system design</td>
+<td>45-60 min</td>
+<td>Developers, BAs, Architects</td>
+</tr>
+<tr>
+<td><strong><a href="NEWCOMER_GUIDE_PART2_TECHNICAL_DEEP_DIVE.md">Part 2: Technical Deep Dive</a></strong></td>
+<td>Hubs, gateways, components</td>
+<td>60-90 min</td>
+<td>Developers, Architects</td>
+</tr>
+<tr>
+<td><strong><a href="NEWCOMER_GUIDE_PART3_SERVICES_AND_DEVELOPMENT.md">Part 3: Services & Development</a></strong></td>
+<td>Core services, flows, setup</td>
+<td>90-120 min</td>
+<td>Developers, QA, DevOps</td>
+</tr>
+<tr>
+<td><strong><a href="BUSINESS_SCENARIOS_AND_WORKFLOWS.md">Business Scenarios & Workflows</a></strong></td>
+<td>Real-world use cases</td>
+<td>60 min</td>
+<td>BAs, Product, Sales</td>
+</tr>
+<tr>
+<td><strong><a href="MULTI_TENANT_ARCHITECTURE.md">Multi-Tenant Architecture</a></strong></td>
+<td>Tenant isolation & management</td>
+<td>45 min</td>
+<td>DevOps, Architects</td>
+</tr>
+<tr>
+<td><strong><a href="QUICK_REFERENCE_GUIDE.md">Quick Reference</a></strong></td>
+<td>Daily development reference</td>
+<td>10 min</td>
+<td>Developers</td>
+</tr>
+</tbody></table>
+<h3>📖 Specialized Guides</h3>
+
+<table>
+<thead><tr>
+<th>Guide</th>
+<th>Description</th>
+</tr></thead><tbody>
+<tr>
+<td>-------</td>
+<td>-------------</td>
+</tr>
+<tr>
+<td><strong><a href="API_REFERENCE.md">API Reference</a></strong></td>
+<td>GraphQL schemas, REST endpoints, examples</td>
+</tr>
+<tr>
+<td><strong><a href="FRONTEND_GUIDE.md">Frontend Guide</a></strong></td>
+<td>React apps, UI architecture, development</td>
+</tr>
+<tr>
+<td><strong><a href="DATABASE_SCHEMA_GUIDE.md">Database Schema Guide</a></strong></td>
+<td>Complete schema documentation with diagrams</td>
+</tr>
+<tr>
+<td><strong><a href="TESTING_GUIDE.md">Testing Guide</a></strong></td>
+<td>Unit, integration, E2E testing strategies</td>
+</tr>
+<tr>
+<td><strong><a href="TROUBLESHOOTING_GUIDE.md">Troubleshooting Guide</a></strong></td>
+<td>Common issues and solutions</td>
+</tr>
+<tr>
+<td><strong><a href="CONTRIBUTING.md">Contributing Guide</a></strong></td>
+<td>How to contribute, PR process, standards</td>
+</tr>
+<tr>
+<td><strong><a href="GLOSSARY.md">Glossary</a></strong></td>
+<td>Complete terms and definitions</td>
+</tr>
+</tbody></table>
+<h3>🏢 Architecture Documentation</h3>
+
+<ul>
+<li><strong><a href="context/COMPREHENSIVE_ARCHITECTURE.md">Comprehensive Architecture</a></strong> - Complete system architecture (3,000+ lines)</li>
+<li><strong><a href="context/PRODUCT_FLOW_CUSTOMER_JOURNEY.md">Product Flow & Customer Journey</a></strong> - End-to-end customer flows</li>
+<li><strong><a href="context/amazonMQ_FINAL.md">Amazon MQ Integration</a></strong> - Messaging architecture</li>
+</ul>
+<h3>🔄 Upgrade Documentation</h3>
+
+<ul>
+<li><strong><a href="DEPENDENCY_UPGRADE_MASTER_PLAN.md">Upgrade Master Plan</a></strong> - Complete upgrade strategy</li>
+<li><strong><a href="UPGRADE_PROGRESS_TRACKER.md">Upgrade Progress Tracker</a></strong> - Current upgrade status</li>
+<li><strong><a href="docs/upgrade/ENGINE_UPGRADE.md">Engine Upgrade Guide</a></strong> - Engine module upgrade</li>
+<li><strong><a href="docs/upgrade/SERVICE_SSO_UPGRADE.md">Service SSO Upgrade Guide</a></strong> - SSO service upgrade</li>
+<li><strong><a href="docs/upgrade/CRM_GATEWAY_UPGRADE.md">CRM Gateway Upgrade Guide</a></strong> - CRM gateway upgrade</li>
+</ul>
+
+<hr>
+
+<h2>🏗️ Architecture</h2>
+
+<h3>System Overview</h3>
+
+<pre><code class="language-">┌─────────────────────────────────────────────────────────────────┐
+│                    EXTERNAL SYSTEMS                              │
+│  CRM (Salesforce) | Network Elements | Tax Providers | Banks    │
+└────────────┬────────────────────────────────────┬────────────────┘
+             │                                    │
+             ▼                                    ▼
+┌─────────────────────────────────────────────────────────────────┐
+│                      GATEWAY LAYER                               │
+│  crm_gateway | provision_gateway | tax-gateway | payment-gateway│
+│  diameter-gateway | finance-gateway                              │
+└────────────┬────────────────────────────────────┬────────────────┘
+             │                                    │
+             ▼                                    ▼
+┌─────────────────────────────────────────────────────────────────┐
+│              ORCHESTRATION & MESSAGING LAYER                     │
+│         ActiveMQ Broker + OMS Component Library                  │
+└────────────┬────────────────────────────────────┬────────────────┘
+             │                                    │
+             ▼                                    ▼
+┌─────────────────────────────────────────────────────────────────┐
+│                   CORE SERVICES LAYER                            │
+│  service-billing | service-invoice | service-usage               │
+│  service-payment | service-revenue | service-mediation           │
+│  service-sso | service-proxy | batch-process                     │
+└────────────┬────────────────────────────────────┬────────────────┘
+             │                                    │
+             ▼                                    ▼
+┌─────────────────────────────────────────────────────────────────┐
+│                  SHARED FOUNDATION LAYER                         │
+│  ENGINE (Business Logic) | COMMON (DTOs/Enums)                   │
+│  gateway-common | oms-component | jobs-common                    │
+└────────────┬────────────────────────────────────┬────────────────┘
+             │                                    │
+             ▼                                    ▼
+┌─────────────────────────────────────────────────────────────────┐
+│                   INFRASTRUCTURE LAYER                           │
+│  PostgreSQL | Redis | ActiveMQ | HashiCorp Vault | S3           │
+└─────────────────────────────────────────────────────────────────┘
+</code></pre>
+<h3>Technology Stack</h3>
+
+<table>
+<thead><tr>
+<th>Category</th>
+<th>Technologies</th>
+</tr></thead><tbody>
+<tr>
+<td>----------</td>
+<td>--------------</td>
+</tr>
+<tr>
+<td><strong>Backend</strong></td>
+<td>Java 8, Groovy 2.4.15, Spring Boot 2.1.4</td>
+</tr>
+<tr>
+<td><strong>Frontend</strong></td>
+<td>React 16.x, Redux, Apollo Client, Ant Design, Reactstrap</td>
+</tr>
+<tr>
+<td><strong>API</strong></td>
+<td>GraphQL Java 5.0.2, REST</td>
+</tr>
+<tr>
+<td><strong>Data</strong></td>
+<td>PostgreSQL 10.5+, JOOQ 3.11.10, Flyway 5.2.4</td>
+</tr>
+<tr>
+<td><strong>Messaging</strong></td>
+<td>ActiveMQ 5.15.x, Apache Camel 2.22-2.23</td>
+</tr>
+<tr>
+<td><strong>Caching</strong></td>
+<td>Redis (Jedis)</td>
+</tr>
+<tr>
+<td><strong>Security</strong></td>
+<td>HashiCorp Vault, OAuth2, JWT</td>
+</tr>
+<tr>
+<td><strong>Documents</strong></td>
+<td>iText 7.1.5, Thymeleaf 3.0.11</td>
+</tr>
+<tr>
+<td><strong>Storage</strong></td>
+<td>AWS S3</td>
+</tr>
+<tr>
+<td><strong>Deployment</strong></td>
+<td>Docker, Kubernetes, Helm</td>
+</tr>
+</tbody></table>
+<h3>Core Modules</h3>
+
+<table>
+<thead><tr>
+<th>Module</th>
+<th>Description</th>
+<th>Dependencies</th>
+</tr></thead><tbody>
+<tr>
+<td>--------</td>
+<td>-------------</td>
+<td>--------------</td>
+</tr>
+<tr>
+<td><strong>common</strong></td>
+<td>Shared DTOs, enums, constants</td>
+<td>None</td>
+</tr>
+<tr>
+<td><strong>engine</strong></td>
+<td>Core business logic (11 hubs)</td>
+<td>common</td>
+</tr>
+<tr>
+<td><strong>oms-component</strong></td>
+<td>Order orchestration framework</td>
+<td>engine, common</td>
+</tr>
+<tr>
+<td><strong>gateway-common</strong></td>
+<td>Gateway integration utilities</td>
+<td>common</td>
+</tr>
+<tr>
+<td><strong>jobs-common</strong></td>
+<td>Batch job framework</td>
+<td>engine, common</td>
+</tr>
+<tr>
+<td><strong>service-</strong>*</td>
+<td>Core microservices (9 services)</td>
+<td>engine, common</td>
+</tr>
+<tr>
+<td><strong>crm_gateway</strong></td>
+<td>CRM integration & GraphQL API</td>
+<td>engine, oms-component</td>
+</tr>
+<tr>
+<td><strong>*-gateway</strong></td>
+<td>External system integrations</td>
+<td>gateway-common</td>
+</tr>
+</tbody></table>
+
+<hr>
+
+<h2>💻 Development</h2>
+
+<h3>Prerequisites</h3>
+
+<ul>
+<li><strong>Java 8</strong> (JDK 1.8.0_181+)</li>
+<li><strong>Maven 3.6+</strong></li>
+<li><strong>Docker</strong> & <strong>Docker Compose</strong></li>
+<li><strong>PostgreSQL 10.5+</strong> (via Docker)</li>
+<li><strong>Redis</strong> (via Docker)</li>
+<li><strong>ActiveMQ 5.15.x</strong> (via Docker)</li>
+<li><strong>HashiCorp Vault</strong> (via Docker)</li>
+<li><strong>Git</strong></li>
+</ul>
+<h3>Infrastructure Setup</h3>
+
+Start required infrastructure services:
+<pre><code class="language-bash"># PostgreSQL
+docker run -d --name postgres \
+  -p 5432:5432 \
+  -e POSTGRES_USER=omsadmin \
+  -e POSTGRES_PASSWORD=omsadmin \
+  -e POSTGRES_DB=omsdevdb \
+  postgres:10.5
+
+# Redis
+docker run -d --name redis -p 6379:6379 redis:latest
+
+# ActiveMQ
+docker run -d --name activemq \
+  -p 61616:61616 \
+  -p 8161:8161 \
+  webcenter/activemq:5.14.3
+
+# HashiCorp Vault (dev mode)
+docker run -d --name vault \
+  -p 8200:8200 \
+  -e VAULT_DEV_ROOT_TOKEN_ID=myroot \
+  vault:latest
+</code></pre>
+<h3>Build Order</h3>
+
+Due to module dependencies, build in this order:
+<pre><code class="language-bash"># 1. Foundation
+cd common && mvn clean install
+cd ../engine && mvn clean install
+cd ../gateway-common && mvn clean install
+cd ../oms-component && mvn clean install
+cd ../jobs-common && mvn clean install
+
+# 2. Core Services
+cd ../core/service-billing && mvn clean install
+cd ../service-invoice && mvn clean install
+cd ../service-usage && mvn clean install
+cd ../service-payment && mvn clean install
+cd ../service-revenue && mvn clean install
+cd ../service-mediation && mvn clean install
+cd ../service-transactional && mvn clean install
+cd ../service-sso && mvn clean install
+cd ../service-proxy && mvn clean install
+cd ../batch-process && mvn clean install
+
+# 3. Gateways
+cd ../../crm_gateway && mvn clean install
+cd ../provision_gateway && mvn clean install
+cd ../tax-gateway && mvn clean install
+cd ../payment-gateway && mvn clean install
+cd ../finance-gateway && mvn clean install
+</code></pre>
+<h3>Running Services</h3>
+
+<pre><code class="language-bash"># crm_gateway (main API)
+cd crm_gateway
+mvn spring-boot:run -Dspring.profiles.active=dev
+
+# Access GraphQL Playground
+open http://localhost:8080/graphiql
+
+# ActiveMQ Console
+open http://localhost:8161 (admin/admin)
+
+# Vault UI
+open http://localhost:8200/ui (token: myroot)
+</code></pre>
+<h3>Frontend Development</h3>
+
+<pre><code class="language-bash"># ui-core (main admin app)
+cd ui-core
+npm install
+npm start  # http://localhost:3000
+
+# selfcare (customer portal)
+cd selfcare
+npm install
+npm start  # http://localhost:3001
+</code></pre>
+
+<hr>
+
+<h2>🧪 Testing</h2>
+
+<h3>Run Tests</h3>
+
+<pre><code class="language-bash"># Unit tests
+mvn test
+
+# Integration tests
+mvn verify -Pintegration-tests
+
+# Specific service tests
+cd core/service-billing
+mvn test
+</code></pre>
+<h3>Test Coverage</h3>
+
+<ul>
+<li><strong>Unit Tests</strong>: 60% coverage target</li>
+<li><strong>Integration Tests</strong>: 30% coverage target</li>
+<li><strong>E2E Tests</strong>: 10% coverage target</li>
+</ul>
+See <a href="TESTING_GUIDE.md">Testing Guide</a> for detailed testing strategies.
+
+<hr>
+
+<h2>🗄️ Database</h2>
+
+<h3>Schema Organization</h3>
+
+<table>
+<thead><tr>
+<th>Schema</th>
+<th>Purpose</th>
+<th>Key Tables</th>
+</tr></thead><tbody>
+<tr>
+<td>--------</td>
+<td>---------</td>
+<td>------------</td>
+</tr>
+<tr>
+<td><strong>core_engine</strong></td>
+<td>Core entities</td>
+<td>account, subscription, address, user</td>
+</tr>
+<tr>
+<td><strong>core_oms</strong></td>
+<td>Order management</td>
+<td>order, service_line, order_activity</td>
+</tr>
+<tr>
+<td><strong>core_billing</strong></td>
+<td>Billing & invoicing</td>
+<td>charge, invoice, payment, bill_unit</td>
+</tr>
+<tr>
+<td><strong>core_pricing</strong></td>
+<td>Product catalog</td>
+<td>product, price_offer, discount, bundle</td>
+</tr>
+<tr>
+<td><strong>core_usage</strong></td>
+<td>Usage tracking</td>
+<td>usage_record (partitioned), usage_accumulator</td>
+</tr>
+<tr>
+<td><strong>core_revenue</strong></td>
+<td>Revenue recognition</td>
+<td>journal_entry, deferred_revenue</td>
+</tr>
+<tr>
+<td><strong>core_mediation</strong></td>
+<td>CDR processing</td>
+<td>detail_record, mediation_session</td>
+</tr>
+<tr>
+<td><strong>core_config</strong></td>
+<td>Configuration</td>
+<td>tenant, tenant_merchants, oauth_attributes</td>
+</tr>
+<tr>
+<td><strong>core_enums</strong></td>
+<td>Enum definitions</td>
+<td>All enum types</td>
+</tr>
+</tbody></table>
+<h3>Database Migrations</h3>
+
+Migrations are managed by Flyway:
+<pre><code class="language-bash"># Run migrations
+mvn flyway:migrate -Dspring.profiles.active=dev
+
+# Check migration status
+mvn flyway:info
+
+# Baseline existing database
+mvn flyway:baseline
+</code></pre>
+See <a href="DATABASE_SCHEMA_GUIDE.md">Database Schema Guide</a> for complete schema documentation.
+
+<hr>
+
+<h2>🔌 API</h2>
+
+<h3>GraphQL API</h3>
+
+<strong>Endpoint</strong>: <code>http://localhost:8080/graphql</code>  
+<strong>Playground</strong>: <code>http://localhost:8080/graphiql</code>
+<strong>Common Operations</strong>:
+<pre><code class="language-graphql"># Create Account
+mutation {
+  processNewAccount(
+    account: {
+      accountName: "TechCorp Inc"
+      accountType: BUSINESS
+      billingAddress: { ... }
+    }
+  ) {
+    accountId
+    accountName
+  }
+}
+
+# Create Order
+mutation {
+  createOrder(
+    order: {
+      accountId: "ACC-001"
+      orderType: NEW
+      serviceLines: [ ... ]
+    }
+  ) {
+    orderId
+    status
+  }
+}
+
+# Search Usage
+query {
+  searchUsageRecords(
+    accountId: "ACC-001"
+    startDate: "2026-01-01"
+    endDate: "2026-01-31"
+  ) {
+    totalRecords
+    records { ... }
+  }
+}
+</code></pre>
+<h3>REST API</h3>
+
+<strong>Tax Engine</strong>: <code>http://localhost:8080/api/v1</code>  
+<strong>Swagger</strong>: <code>http://localhost:8080/api/v1/swagger-ui.html</code>
+See <a href="API_REFERENCE.md">API Reference</a> for complete API documentation.
+
+<hr>
+
+<h2>📊 Monitoring & Operations</h2>
+
+<h3>Health Checks</h3>
+
+<pre><code class="language-bash"># Service health
+curl http://localhost:8080/actuator/health
+
+# Service info
+curl http://localhost:8080/actuator/info
+
+# Metrics
+curl http://localhost:8080/actuator/metrics
+</code></pre>
+<h3>Logs</h3>
+
+<pre><code class="language-bash"># View logs
+tail -f logs/application.log
+
+# Search logs
+grep "ERROR" logs/application.log
+</code></pre>
+<h3>Common Operations</h3>
+
+<pre><code class="language-bash"># Run billing cycle
+curl -X POST http://localhost:8080/graphql \
+  -d '{"query": "mutation { runBillingCycle(billCycleDay: 1) { success } }"}'
+
+# Generate invoices
+curl -X POST http://localhost:8080/graphql \
+  -d '{"query": "mutation { generateInvoices(accountId: \"ACC-001\") { count } }"}'
+</code></pre>
+
+<hr>
+
+<h2>🤝 Contributing</h2>
+
+We welcome contributions! Please read our <a href="CONTRIBUTING.md">Contributing Guide</a> for details on:
+<ul>
+<li>Code of Conduct</li>
+<li>Development workflow</li>
+<li>Coding standards</li>
+<li>Pull request process</li>
+<li>Testing requirements</li>
+</ul>
+<h3>Quick Contribution Guide</h3>
+
+<ol>
+<li>Fork the repository</li>
+<li>Create a feature branch (<code>git checkout -b feature/amazing-feature</code>)</li>
+<li>Commit your changes (<code>git commit -m 'Add amazing feature'</code>)</li>
+<li>Push to the branch (<code>git push origin feature/amazing-feature</code>)</li>
+<li>Open a Pull Request</li>
+</ol>
+
+<hr>
+
+<h2>🆘 Support</h2>
+
+<h3>Getting Help</h3>
+
+<ul>
+<li><strong>Documentation</strong>: Start with <a href="docs/newcomer/README.md">Newcomer's Guide</a></li>
+<li><strong>Troubleshooting</strong>: Check <a href="TROUBLESHOOTING_GUIDE.md">Troubleshooting Guide</a></li>
+<li><strong>API Questions</strong>: See <a href="API_REFERENCE.md">API Reference</a></li>
+<li><strong>Business Questions</strong>: See <a href="BUSINESS_SCENARIOS_AND_WORKFLOWS.md">Business Scenarios</a></li>
+</ul>
+<h3>Common Issues</h3>
+
+<table>
+<thead><tr>
+<th>Issue</th>
+<th>Solution</th>
+</tr></thead><tbody>
+<tr>
+<td>-------</td>
+<td>----------</td>
+</tr>
+<tr>
+<td>Build fails</td>
+<td>Check <a href="#build-order">build order</a> and dependencies</td>
+</tr>
+<tr>
+<td>Database connection fails</td>
+<td>Verify Docker containers running (<code>docker ps</code>)</td>
+</tr>
+<tr>
+<td>GraphQL 404</td>
+<td>Check service started and port 8080 available</td>
+</tr>
+<tr>
+<td>Vault errors</td>
+<td>Verify <code>VAULT_URI</code> and <code>VAULT_TOKEN</code> environment variables</td>
+</tr>
+<tr>
+<td>ActiveMQ connection fails</td>
+<td>Verify broker running on port 61616</td>
+</tr>
+</tbody></table>
+See <a href="TROUBLESHOOTING_GUIDE.md">Troubleshooting Guide</a> for more solutions.
+
+<hr>
+
+<h2>📝 License</h2>
+
+This project is proprietary and confidential. Unauthorized copying, distribution, or use is strictly prohibited.
+<strong>Copyright © 2026 Embrix Corporation. All rights reserved.</strong>
+
+<hr>
+
+<h2>📞 Contact</h2>
+
+<ul>
+<li><strong>Development Team</strong>: dev-team@embrix.com</li>
+<li><strong>Documentation</strong>: docs@embrix.com</li>
+<li><strong>Support</strong>: support@embrix.com</li>
+</ul>
+
+<hr>
+
+<h2>🎯 Quick Links</h2>
+
+<h3>Documentation</h3>
+
+<ul>
+<li><a href="docs/newcomer/README.md">Complete Newcomer's Guide</a> ⭐</li>
+<li><a href="context/COMPREHENSIVE_ARCHITECTURE.md">Architecture Overview</a></li>
+<li><a href="BUSINESS_SCENARIOS_AND_WORKFLOWS.md">Business Scenarios</a></li>
+<li><a href="API_REFERENCE.md">API Reference</a></li>
+</ul>
+<h3>Development</h3>
+
+<ul>
+<li><a href="#development">Development Setup</a></li>
+<li><a href="#build-order">Build Order</a></li>
+<li><a href="TESTING_GUIDE.md">Testing Guide</a></li>
+<li><a href="CONTRIBUTING.md">Contributing Guide</a></li>
+</ul>
+<h3>Operations</h3>
+
+<ul>
+<li><a href="MULTI_TENANT_ARCHITECTURE.md">Multi-Tenant Architecture</a></li>
+<li><a href="DEPLOYMENT_GUIDE.md">Deployment Guide</a></li>
+<li><a href="TROUBLESHOOTING_GUIDE.md">Troubleshooting</a></li>
+<li><a href="#monitoring--operations">Monitoring</a></li>
+</ul>
+
+<hr>
+
+<div align="center">
+<strong>Welcome to Embrix O2X! Happy Coding! 🎉</strong>
+<em>Last Updated: February 2026 • Version 3.1.9-SNAPSHOT</em>
+</div>
+        <footer>
+            <p><strong>Embrix O2X Platform Documentation</strong></p>
+            <p>Version 3.1.9-SNAPSHOT • Last Updated: February 2026</p>
+        </footer>
+    </div>
+</body>
+</html>

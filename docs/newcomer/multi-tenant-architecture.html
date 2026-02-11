@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Embrix O2X Documentation Portal - Embrix O2X</title>
+    <title>🏢 Multi-Tenant Architecture - Embrix O2X</title>
     
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -815,99 +815,488 @@
     <div class="container">
         <div class="nav-header"><div><h1>Embrix O2X Documentation</h1><small>Navigate between guides</small></div><div class="nav-links"><a href="index.html">Home</a><a href="guide-index.html">Guide Index</a><a href="guide-index.html">Part 1-5</a><a href="quick-start.html">Quick Start</a><a href="quick-reference.html">Quick Ref</a><a href="complete-system-overview.html">Architecture</a><a href="api-reference.html">API Reference</a><a href="troubleshooting-guide.html">Troubleshooting</a></div></div>
         
-<h1>Embrix O2X Knowledge Hub</h1>
+<h1>Multi-Tenant Architecture - Embrix O2X</h1>
 
-Welcome to the <strong>Embrix O2X Platform Knowledge Hub</strong> - your comprehensive guide to mastering our enterprise-grade Order-to-Cash management system.
+<h2>Executive Summary</h2>
 
-<hr>
-
-<h2>Getting Started</h2>
-
-New to Embrix O2X? Start with these essential resources:
+<strong>Architecture Pattern:</strong> <strong>Deployment-Level Multi-Tenancy</strong> (also known as "Instance-per-Tenant" or "Dedicated Deployment")
+Each tenant gets:
 <ul>
-<li><a href="quick-start.html">Quick Start Guide</a> - Get up and running quickly</li>
-<li><a href="guide-index.html">Complete Newcomer's Guide Index</a> - Your structured learning path</li>
-<li><a href="business-scenarios.html">Business Scenarios & Workflows</a> - Real-world use cases and examples</li>
+<li>✅ Dedicated Kubernetes deployment</li>
+<li>✅ Dedicated database (<code>coredb-{tenant-name}</code>)</li>
+<li>✅ Dedicated service instances (core services, gateways)</li>
+<li>✅ Shared infrastructure (Kubernetes cluster, AWS resources)</li>
 </ul>
+<h2>Current Tenants</h2>
 
-<hr>
+Based on Helm configurations found:
+<table>
+<thead><tr>
+<th>Tenant ID</th>
+<th>Tenant Name</th>
+<th>Environment</th>
+<th>Database</th>
+</tr></thead><tbody>
+<tr>
+<td>-----------</td>
+<td>-------------</td>
+<td>-------------</td>
+<td>----------</td>
+</tr>
+<tr>
+<td>TIDLT-100001</td>
+<td>coopeg-sbx</td>
+<td>Sandbox</td>
+<td><code>coredb-coopeg-sbx</code></td>
+</tr>
+<tr>
+<td>TIDLT-100002</td>
+<td>demo</td>
+<td>Demo</td>
+<td><code>coredb-demo</code></td>
+</tr>
+<tr>
+<td>TIDLT-100003</td>
+<td>dev</td>
+<td>Development</td>
+<td><code>enginedevdb</code></td>
+</tr>
+<tr>
+<td>TIDLT-100004</td>
+<td>shm</td>
+<td>Production</td>
+<td><code>coredb-shm</code></td>
+</tr>
+<tr>
+<td>TIDLT-100005</td>
+<td>urbanos</td>
+<td>Development</td>
+<td><code>coredb-urbanos</code></td>
+</tr>
+<tr>
+<td>TIDLT-100006</td>
+<td>coopeg-prd</td>
+<td>Production</td>
+<td><code>coredb-coopeg-prd</code></td>
+</tr>
+<tr>
+<td>TIDLT-100007</td>
+<td>coopegenergy</td>
+<td>Production</td>
+<td><code>coredb-coopegenergy</code></td>
+</tr>
+</tbody></table>
+<h2>Architecture Layers</h2>
 
-<h2>Learning Path</h2>
+<h3>1. Database Layer</h3>
 
-Follow this recommended sequence to master the platform:
+<h4>Shared RDS Instance</h4>
+
+<pre><code class="language-">embrix-rds-dev-db.chg5bgdk4yyp.us-east-1.rds.amazonaws.com
+├── coredb-urbanos (TIDLT-100005)
+├── coredb-coopeg-sbx (TIDLT-100001)
+├── coredb-coopegenergy (TIDLT-100007)
+├── enginedevdb (TIDLT-100003)
+└── ... (one database per tenant)
+</code></pre>
+<strong>Key Points:</strong>
+<ul>
+<li>✅ Database-per-tenant isolation</li>
+<li>✅ Single PostgreSQL RDS instance hosting multiple tenant databases</li>
+<li>✅ No <code>tenant_id</code> columns in business tables (full schema isolation)</li>
+<li>✅ Shared configuration schema: <code>core_config</code> (contains tenant metadata)</li>
+</ul>
+<h4>Schema Structure</h4>
+
+<strong>Business Data (Isolated per Tenant):</strong>
+<ul>
+<li><code>account</code>, <code>subscription</code>, <code>order</code>, <code>invoice</code>, <code>payment</code>, etc.</li>
+<li>No tenant_id needed - full database isolation</li>
+</ul>
+<strong>Configuration Data (Shared <code>core_config</code> schema):</strong>
+<pre><code class="language-sql">core_config.tenant
+  ├── id (VARCHAR) - e.g., TIDLT-100005
+  ├── name (VARCHAR) - e.g., urbanos
+  ├── vaulturi, vaultpath - Vault credentials
+  └── licensekey
+
+core_config.tenant_merchants
+  ├── id (VARCHAR) - References tenant.id
+  ├── tenant_id (VARCHAR)
+  ├── name (VARCHAR) - Merchant name (NETSUITE, QUICKBOOKS, etc.)
+  ├── type (VARCHAR) - Gateway type
+  ├── status (VARCHAR) - ACTIVE/INACTIVE
+  └── authtype (VARCHAR) - OAUTH1, OAUTH2, etc.
+
+core_config.oauth1_attributes
+core_config.oauth2_attributes
+core_config.finance_gateway_attributes
+core_config.payment_gateway_attributes
+core_config.tax_gateway_attributes
+core_config.selfcare_config (tenantid column)
+</code></pre>
+<h3>2. Kubernetes Deployment Layer</h3>
+
+<h4>Service Naming Convention</h4>
+
+<pre><code class="language-">{tenant-name}-{service-name}
+
+Examples:
+  urbanos-service-transactional
+  urbanos-service-billing
+  urbanos-payment-gateway
+  urbanos-finance-gateway
+  coopeg-prd-service-transactional
+  coopeg-prd-tax-gateway
+</code></pre>
+<h4>Deployed Services per Tenant</h4>
+
+Each tenant gets their own instances of:
+<ul>
+<li><strong>Core Services:</strong><br><ul><li><code>service-transactional</code> (Customer, Order, Subscription)</li></ul><br><ul><li><code>service-billing</code> (Billing, Invoicing)</li></ul><br><ul><li><code>service-invoice</code></li></ul><br><ul><li><code>service-payment</code></li></ul><br><ul><li><code>service-revenue</code></li></ul><br><ul><li><code>service-usage</code> (Rating, Mediation)</li></ul><br><ul><li><code>service-mediation</code></li></ul><br><ul><li><code>service-sso</code> (Authentication)</li></ul><br><ul><li><code>service-proxy</code> (API Gateway)</li></ul><br><ul><li><code>batch-process</code></li></ul><br><ul><li><code>jobs-common</code></li></ul></li>
+<li><strong>Gateway Services:</strong><br><ul><li><code>payment-gateway</code> (Payment processing integrations)</li></ul><br><ul><li><code>tax-gateway</code> (Tax calculation integrations)</li></ul><br><ul><li><code>finance-gateway</code> (ERP/Finance integrations)</li></ul><br><ul><li><code>provision-gateway</code> (Service provisioning)</li></ul><br><ul><li><code>crm-gateway</code> (CRM integrations)</li></ul></li>
+</ul>
+<h3>3. Application Configuration</h3>
+
+<h4>Tenant Context Injection</h4>
+
+<strong>Via Environment Variables (Helm values):</strong>
+<pre><code class="language-yaml">app:
+  tenantId: TIDLT-100005
+  tenantName: urbanos
+  postgres:
+    url: jdbc:postgresql://.../coredb-urbanos
+  vault:
+    api: http://urbanos-vault-interface/
+</code></pre>
+<strong>In Application Code:</strong>
+<pre><code class="language-groovy">@Value('${tenant.id}')
+private String tenantId
+
+@Value('${TENANT_ID}')
+private String tenant_id
+</code></pre>
+<strong>Spring Security Context:</strong>
+<pre><code class="language-groovy">MDC.put('Tenant ID', getContext().authentication?.principal as String)
+</code></pre>
+<h4>Service-to-Service Communication</h4>
+
+Services within the same tenant deployment communicate via internal Kubernetes service names:
+<pre><code class="language-yaml">TAX_GATEWAY_URL: http://urbanos-tax-gateway
+PAYMENT_GATEWAY_URL: http://urbanos-payment-gateway
+FINANCE_GATEWAY_URL: http://urbanos-finance-gateway
+PROVISIONING_GATEWAY_URL: http://urbanos-provision-gateway
+CRM_GATEWAY_URL: http://urbanos-crm-gateway
+</code></pre>
+<h3>4. Gateway Multi-Tenant Configuration</h3>
+
+<h4>Merchant Configuration Lookup</h4>
+
+Gateways retrieve tenant-specific merchant configurations from shared <code>core_config</code>:
+<pre><code class="language-groovy">// From TenantRepositoryServiceImpl
+Tenant findByTenantId(String id, MerchantType gateway_type) {
+    jdbcTemplate.query(
+        "SELECT * FROM ${TABLE_TENANT_MERCHANT_ACCOUNTS} " +
+        "WHERE id='${id}' AND type='${gateway_type.name()}' AND status='ACTIVE'",
+        new TenantMerchantsRowMapper()
+    )
+}
+</code></pre>
+<h4>Example: QuickBooks OAuth2 (Finance Gateway)</h4>
+
 <ol>
-<li><a href="part1-business-architecture.html">Part 1: Business & Architecture</a> - Understand the business domain and high-level architecture</li>
-<li><a href="part2-technical-deep-dive.html">Part 2: Technical Deep Dive</a> - Explore technical architecture and design patterns</li>
-<li><a href="part3-services-development.html">Part 3: Services & Development</a> - Master microservices and backend development</li>
-<li><a href="part4-frontend-ui.html">Part 4: Frontend Applications & User Interfaces</a> - Learn UI architecture and frontend patterns</li>
-<li><a href="part5-message-queues.html">Part 5: Message Queue Architecture & Integration</a> - Understand async messaging and integration</li>
+<li>Finance gateway receives request with <code>tenantId=TIDLT-100005</code></li>
+<li>Queries <code>core_config.tenant_merchants</code> for finance gateway config</li>
+<li>Retrieves OAuth2 attributes from <code>core_config.oauth2_attributes</code></li>
+<li>Fetches credentials from Vault: <code>http://urbanos-vault-interface/</code></li>
+<li>Performs QuickBooks API call with tenant-specific credentials</li>
 </ol>
-
-<hr>
-
-<h2>Architecture Documentation</h2>
-
-Deep dive into system architecture and design:
+<strong>Files:</strong>
 <ul>
-<li><a href="complete-system-overview.html">Complete System Overview</a> - High-level system architecture and components</li>
-<li><a href="multi-tenant-architecture.html">Multi-Tenant Architecture</a> - Multi-tenancy design patterns and implementation</li>
-<li><a href="database-architecture.html">Database Architecture</a> - Data modeling, schema design, and database patterns</li>
-<li><a href="frontend-ui-architecture.html">Frontend & UI Architecture</a> - UI/UX patterns, components, and design system</li>
+<li><code>gateway-common/src/main/groovy/com/embrix/gateway/common/service/impl/TenantRepositoryServiceImpl.groovy</code></li>
+<li><code>finance-gateway/src/main/groovy/.../AuthenticationServiceImpl.groovy</code></li>
 </ul>
+<h3>5. Frontend Layer</h3>
 
-<hr>
+<h4>No Tenant Selection in UI</h4>
 
-<h2>System Reference</h2>
-
-Comprehensive documentation of all system components:
+Frontend applications (<code>ui-core</code>, <code>selfcare</code>) do not:
 <ul>
-<li><a href="complete-system-documentation.html">Complete System Documentation</a> - Full system documentation</li>
-<li><a href="complete-system-inventory.html">Complete System Inventory</a> - All components, services, and dependencies</li>
-<li><a href="complete-services-catalog.html">Complete Services Catalog</a> - Detailed service descriptions and APIs</li>
+<li>❌ Pass tenant ID in headers</li>
+<li>❌ Have tenant selection dropdowns</li>
+<li>❌ Use tenant-specific URLs</li>
 </ul>
+<strong>Reason:</strong> Each deployment is already tenant-specific. The backend knows its tenant from environment configuration.
+<h4>Tenant Configuration API</h4>
 
-<hr>
-
-<h2>Development Resources</h2>
-
-Essential resources for developers:
+<pre><code class="language-graphql">query {
+  getTenantConfig(input: {id: "TIDLT-100005"}) {
+    tenantId
+    tenantName
+    selfCareConfig {
+      # Tenant-specific branding/settings
+    }
+  }
+}
+</code></pre>
+<strong>Files:</strong>
 <ul>
-<li><a href="api-reference.html">API Reference</a> - Complete REST API documentation</li>
-<li><a href="frontend-guide.html">Frontend Development Guide</a> - Frontend development best practices</li>
-<li><a href="quick-reference.html">Quick Reference Guide</a> - Commands, snippets, and quick tips</li>
-<li><a href="contributing.html">Contributing Guide</a> - How to contribute to the project</li>
+<li><code>ui-core/src/api/tenant/getTenantConfig.js</code></li>
+<li><code>selfcare/src/api/getTenantSelfCareConfig.js</code></li>
 </ul>
+<h2>Advantages of This Architecture</h2>
 
-<hr>
+<h3>✅ Strong Data Isolation</h3>
 
-<h2>Troubleshooting & Support</h2>
-
-Get help when you need it:
 <ul>
-<li><a href="troubleshooting-guide.html">Troubleshooting Guide</a> - Common issues and solutions</li>
-<li><a href="glossary.html">Glossary of Terms</a> - Technical terminology and definitions</li>
+<li>Complete database separation</li>
+<li>No risk of cross-tenant data leaks</li>
+<li>Simplified compliance/auditing</li>
 </ul>
+<h3>✅ Performance Isolation</h3>
 
-<hr>
-
-<h2>Platform Information</h2>
-
-<strong>Version:</strong> 3.1.9-SNAPSHOT  
-<strong>Last Updated:</strong> February 2026  
-<strong>Technology Stack:</strong> Spring Boot, React, PostgreSQL, RabbitMQ, Redis  
-<strong>Architecture:</strong> Microservices, Multi-tenant, Event-driven
-<div class="metadata-field"><strong>Key Features:</strong> </div>
 <ul>
-<li>Multi-tenant SaaS platform</li>
-<li>Comprehensive Order-to-Cash workflow</li>
-<li>Real-time event processing</li>
-<li>Advanced pricing and taxation engines</li>
-<li>Self-service portal and admin interfaces</li>
+<li>One tenant's load doesn't impact others</li>
+<li>Dedicated resources per tenant</li>
+<li>Independent scaling</li>
 </ul>
+<h3>✅ Customization Flexibility</h3>
 
-<hr>
+<ul>
+<li>Can deploy different versions per tenant</li>
+<li>Tenant-specific configuration without code changes</li>
+<li>Easy A/B testing for specific tenants</li>
+</ul>
+<h3>✅ Simplified Development</h3>
 
-Happy learning! Start your journey with the <a href="guide-index.html">Complete Newcomer's Guide Index</a>.</p>
+<ul>
+<li>No <code>tenant_id</code> filtering in business logic</li>
+<li>No complex query interceptors</li>
+<li>Easier to test (no tenant context mocking)</li>
+</ul>
+<h3>✅ Independent Operations</h3>
+
+<ul>
+<li>Deploy/upgrade tenants independently</li>
+<li>Rollback single tenant without affecting others</li>
+<li>Different maintenance windows per tenant</li>
+</ul>
+<h2>Challenges & Considerations</h2>
+
+<h3>⚠️ Infrastructure Cost</h3>
+
+<ul>
+<li>Higher resource usage (one deployment per tenant)</li>
+<li>More Kubernetes pods to manage</li>
+<li>Database licensing considerations</li>
+</ul>
+<h3>⚠️ Operational Complexity</h3>
+
+<ul>
+<li>More deployments to monitor</li>
+<li>More CI/CD pipelines to maintain</li>
+<li>Helm chart management per tenant</li>
+</ul>
+<h3>⚠️ Onboarding Process</h3>
+
+<ul>
+<li>New tenant requires:<br>1. Database creation<br>2. Helm values configuration<br>3. Kubernetes deployment<br>4. Vault setup<br>5. DNS/ingress configuration</li>
+</ul>
+<h3>⚠️ Shared Resources</h3>
+
+<ul>
+<li>Single RDS instance (potential bottleneck)</li>
+<li>Shared Kubernetes cluster</li>
+<li>Shared Redis/ElastiCache</li>
+<li>Shared ActiveMQ broker</li>
+</ul>
+<h2>Multi-Tenant Onboarding Flow</h2>
+
+<h3>Adding a New Tenant</h3>
+
+<strong>1. Database Setup</strong>
+<pre><code class="language-sql">-- On shared RDS instance
+CREATE DATABASE "coredb-newtenant";
+
+-- Run migrations
+flyway migrate -schemas=public,core_config
+</code></pre>
+<strong>2. Tenant Configuration</strong>
+<pre><code class="language-sql">-- Insert into core_config.tenant
+INSERT INTO core_config.tenant (id, name, vaulturi, vaultpath, licensekey)
+VALUES ('TIDLT-100008', 'newtenant', 'http://vault', 'tenant/newtenant', 'license-key');
+
+-- Configure merchants
+INSERT INTO core_config.tenant_merchants (id, tenant_id, name, type, status, authtype)
+VALUES ('TIDLT-100008', 'TIDLT-100008', 'QUICKBOOKS', 'FINANCE_GATEWAY', 'ACTIVE', 'OAUTH2');
+</code></pre>
+<strong>3. Helm Configuration</strong>
+<pre><code class="language-bash"># Create helm values files
+mkdir -p core/helm_values/newtenant
+mkdir -p finance-gateway/helm_values/newtenant
+mkdir -p payment-gateway/helm_values/newtenant
+mkdir -p tax-gateway/helm_values/newtenant
+# ... etc for all services
+</code></pre>
+<strong>4. Deploy Services</strong>
+<pre><code class="language-bash">helm install newtenant-service-transactional ./core/service-transactional \
+  -f core/helm_values/newtenant/service-transactional.yaml
+
+helm install newtenant-finance-gateway ./finance-gateway \
+  -f finance-gateway/helm_values/newtenant/finance-gateway.yaml
+# ... etc
+</code></pre>
+<strong>5. Vault Setup</strong>
+<pre><code class="language-bash"># Store tenant-specific secrets
+vault kv put secret/tenant/newtenant/quickbooks \
+  clientId=xxx \
+  clientSecret=xxx \
+  accessToken=xxx \
+  refreshToken=xxx
+</code></pre>
+<h2>Key Files Reference</h2>
+
+<h3>Backend Services</h3>
+
+<table>
+<thead><tr>
+<th>Component</th>
+<th>File</th>
+<th>Purpose</th>
+</tr></thead><tbody>
+<tr>
+<td>-----------</td>
+<td>------</td>
+<td>---------</td>
+</tr>
+<tr>
+<td>Tenant Service</td>
+<td><code>engine/src/main/groovy/com/embrix/core/engine/opsHub/tenantOnboarding/service/impl/PGTenantService.groovy</code></td>
+<td>CRUD operations for tenants</td>
+</tr>
+<tr>
+<td>Tenant Repository</td>
+<td><code>gateway-common/src/main/groovy/com/embrix/gateway/common/service/impl/TenantRepositoryServiceImpl.groovy</code></td>
+<td>Gateway tenant config lookup</td>
+</tr>
+<tr>
+<td>Self-Care Config</td>
+<td><code>engine/src/main/groovy/com/embrix/core/engine/selfCareHub/service/impl/PGSelfCareConfigService.groovy</code></td>
+<td>Self-care portal configuration</td>
+</tr>
+</tbody></table>
+<h3>Database</h3>
+
+<table>
+<thead><tr>
+<th>Component</th>
+<th>File</th>
+<th>Purpose</th>
+</tr></thead><tbody>
+<tr>
+<td>-----------</td>
+<td>------</td>
+<td>---------</td>
+</tr>
+<tr>
+<td>Schema</td>
+<td><code>gateway-common/src/test/resources/db/migration/V1__init_schema.sql</code></td>
+<td>Tenant tables definition</td>
+</tr>
+<tr>
+<td>Baseline</td>
+<td><code>engine/db/scripts/baseline-3.1.8.sql</code></td>
+<td>Full schema baseline</td>
+</tr>
+</tbody></table>
+<h3>Configuration</h3>
+
+<table>
+<thead><tr>
+<th>Component</th>
+<th>Location</th>
+<th>Purpose</th>
+</tr></thead><tbody>
+<tr>
+<td>-----------</td>
+<td>----------</td>
+<td>---------</td>
+</tr>
+<tr>
+<td>Helm Values</td>
+<td><code>{service}/helm_values/{tenant}/</code></td>
+<td>Tenant-specific deployment config</td>
+</tr>
+<tr>
+<td>Application Config</td>
+<td><code>engine/src/main/resources/config/application.yml</code></td>
+<td>Spring Boot configuration</td>
+</tr>
+</tbody></table>
+<h3>Frontend</h3>
+
+<table>
+<thead><tr>
+<th>Component</th>
+<th>File</th>
+<th>Purpose</th>
+</tr></thead><tbody>
+<tr>
+<td>-----------</td>
+<td>------</td>
+<td>---------</td>
+</tr>
+<tr>
+<td>Tenant API</td>
+<td><code>ui-core/src/api/tenant/getTenantConfig.js</code></td>
+<td>Fetch tenant configuration</td>
+</tr>
+<tr>
+<td>Self-Care API</td>
+<td><code>selfcare/src/api/getTenantSelfCareConfig.js</code></td>
+<td>Self-care settings</td>
+</tr>
+<tr>
+<td>Tenant Management UI</td>
+<td><code>ui-core/src/containers/TenantManagement/</code></td>
+<td>Admin interface for tenant setup</td>
+</tr>
+</tbody></table>
+<h2>Recommendations</h2>
+
+<h3>For Current Architecture</h3>
+
+<ol>
+<li><strong>Document Tenant Onboarding Process</strong><br><ul><li>Create automated scripts for tenant provisioning</li></ul><br><ul><li>Standardize Helm values templates</li></ul><br><ul><li>Automate database setup</li></ul></li>
+<li><strong>Monitor Resource Usage</strong><br><ul><li>Track per-tenant resource consumption</li></ul><br><ul><li>Consider dedicated RDS instances for high-volume tenants</li></ul><br><ul><li>Implement resource quotas per tenant namespace</li></ul></li>
+<li><strong>Version Management</strong><br><ul><li>Maintain tenant-to-version mapping</li></ul><br><ul><li>Document upgrade procedures per tenant</li></ul><br><ul><li>Implement blue-green deployment for critical tenants</li></ul></li>
+<li><strong>Backup & DR</strong><br><ul><li>Per-tenant backup schedules</li></ul><br><ul><li>Document restore procedures</li></ul><br><ul><li>Test disaster recovery for each tenant</li></ul></li>
+</ol>
+<h3>If Scaling to Many Tenants</h3>
+
+Consider hybrid approach:
+<ul>
+<li><strong>Tier 1 (Enterprise):</strong> Dedicated deployment (current approach)</li>
+<li><strong>Tier 2 (SMB):</strong> Shared deployment with row-level tenant_id filtering</li>
+<li><strong>Tier 3 (Free/Trial):</strong> Highly shared, limited resources</li>
+</ul>
+This would require:
+<ul>
+<li>Adding <code>tenant_id</code> columns to business tables</li>
+<li>Implementing row-level security (Hibernate filters, JPA interceptors)</li>
+<li>Tenant context management (ThreadLocal, request scope)</li>
+<li>Multi-tenancy middleware layer</li>
+</ul>
+<h2>Conclusion</h2>
+
+The current architecture provides strong tenant isolation through <strong>deployment-level multi-tenancy</strong>, which is appropriate for:
+<ul>
+<li>✅ Small to medium number of tenants (< 50)</li>
+<li>✅ Enterprise customers requiring dedicated resources</li>
+<li>✅ Compliance requirements needing strict data separation</li>
+<li>✅ Customers with varying SLA requirements</li>
+</ul>
+The trade-off is operational complexity and infrastructure cost, which scales linearly with tenant count.</p>
         <footer>
             <p><strong>Embrix O2X Platform Documentation</strong></p>
             <p>Version 3.1.9-SNAPSHOT • Last Updated: February 2026</p>

@@ -1,0 +1,1092 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>📑 Master Documentation Index - Embrix O2X</title>
+    
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+        font-size: 16px;
+        line-height: 1.7;
+        color: #1f2937;
+        background: linear-gradient(135deg, #f5f7fa 0%, #e9ecef 100%);
+        background-attachment: fixed;
+        padding: 20px;
+    }
+
+    .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        background: white;
+        padding: 40px 50px;
+        border-radius: 16px;
+        box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .container::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 5px;
+        background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+    }
+
+    .nav-header {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 20px;
+        border-radius: 8px;
+        margin-bottom: 30px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+    }
+
+    .nav-header h1 {
+        font-size: 1.4em;
+        margin-bottom: 5px;
+        font-weight: 600;
+    }
+
+    .nav-links {
+        display: flex;
+        gap: 15px;
+        flex-wrap: wrap;
+    }
+
+    .nav-links a {
+        color: white;
+        text-decoration: none;
+        padding: 8px 16px;
+        background: rgba(255,255,255,0.2);
+        border-radius: 5px;
+        transition: background 0.3s;
+    }
+
+    .nav-links a:hover {
+        background: rgba(255,255,255,0.3);
+    }
+
+    h1 {
+        color: #667eea;
+        margin: 35px 0 20px 0;
+        padding: 12px 0 12px 18px;
+        border-left: 5px solid #667eea;
+        border-bottom: 2px solid #667eea;
+        background: linear-gradient(90deg, rgba(102, 126, 234, 0.05) 0%, rgba(255,255,255,0) 100%);
+        font-size: 1.8em;
+        font-weight: 700;
+        border-radius: 0 8px 0 0;
+    }
+
+    h2 {
+        color: #764ba2;
+        margin: 30px 0 18px 0;
+        padding: 10px 0 10px 15px;
+        border-left: 4px solid #764ba2;
+        border-bottom: 2px solid #f0f0f0;
+        background: linear-gradient(90deg, rgba(118, 75, 162, 0.03) 0%, rgba(255,255,255,0) 100%);
+        font-size: 1.5em;
+        font-weight: 700;
+        border-radius: 0 6px 0 0;
+    }
+
+    h3 {
+        color: #667eea;
+        margin: 25px 0 15px 0;
+        padding: 8px 0 8px 12px;
+        border-left: 3px solid #667eea;
+        background: linear-gradient(90deg, rgba(102, 126, 234, 0.04) 0%, transparent 100%);
+        font-size: 1.25em;
+        font-weight: 600;
+        border-radius: 0 6px 6px 0;
+    }
+
+    h4 {
+        color: #764ba2;
+        margin: 20px 0 12px 0;
+        padding: 6px 0 6px 10px;
+        border-left: 2px solid #764ba2;
+        background: linear-gradient(90deg, rgba(118, 75, 162, 0.03) 0%, transparent 100%);
+        font-size: 1.1em;
+        font-weight: 600;
+        border-radius: 0 4px 4px 0;
+    }
+
+    h5 {
+        color: #667eea;
+        margin: 18px 0 10px 0;
+        padding: 4px 0 4px 8px;
+        border-left: 2px solid #667eea;
+        font-size: 1.05em;
+        font-weight: 600;
+        background: linear-gradient(90deg, rgba(102, 126, 234, 0.02) 0%, transparent 100%);
+        border-radius: 0 3px 3px 0;
+    }
+
+    h6 {
+        color: #764ba2;
+        margin: 15px 0 8px 0;
+        font-size: 0.95em;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    p {
+        margin: 12px 0;
+        line-height: 1.7;
+        font-size: 0.95em;
+        color: #374151;
+    }
+    
+    /* Better spacing for paragraphs after headings */
+    h1 + p, h2 + p, h3 + p, h4 + p {
+        margin-top: 10px;
+    }
+
+    ul, ol {
+        margin: 20px 0;
+        padding-left: 35px;
+    }
+
+    li {
+        margin: 10px 0;
+        line-height: 1.7;
+        font-size: 0.95em;
+        position: relative;
+        padding-left: 8px;
+    }
+
+    ul li::marker {
+        color: #667eea;
+        font-weight: bold;
+        font-size: 1.1em;
+    }
+
+    ol li::marker {
+        color: #764ba2;
+        font-weight: bold;
+        font-size: 1em;
+    }
+
+    /* Better list item styling */
+    li {
+        background: linear-gradient(90deg, rgba(102, 126, 234, 0.02) 0%, transparent 100%);
+        border-left: 2px solid transparent;
+        padding: 8px 8px 8px 12px;
+        border-radius: 0 4px 4px 0;
+        transition: all 0.2s ease;
+    }
+
+    li:hover {
+        background: linear-gradient(90deg, rgba(102, 126, 234, 0.05) 0%, transparent 100%);
+        border-left-color: #667eea;
+        padding-left: 16px;
+    }
+
+    /* Nested lists */
+    li ul, li ol {
+        margin: 8px 0 8px 10px;
+    }
+
+    /* Nested list items - smaller styling */
+    li li {
+        font-size: 0.92em;
+        margin: 6px 0;
+        background: linear-gradient(90deg, rgba(118, 75, 162, 0.02) 0%, transparent 100%);
+    }
+
+    li li:hover {
+        background: linear-gradient(90deg, rgba(118, 75, 162, 0.05) 0%, transparent 100%);
+        border-left-color: #764ba2;
+    }
+
+    code {
+        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        padding: 2px 6px;
+        border-radius: 4px;
+        font-family: 'Fira Code', 'Courier New', Consolas, monospace;
+        font-size: 0.85em;
+        color: #d63384;
+        border: 1px solid #dee2e6;
+        font-weight: 500;
+    }
+
+    /* Inline code with special highlighting */
+    p code, li code, td code {
+        position: relative;
+    }
+
+    p code::before, li code::before, td code::before {
+        content: '';
+        position: absolute;
+        inset: -2px;
+        border-radius: 5px;
+        background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+        z-index: -1;
+        opacity: 0;
+        transition: opacity 0.2s;
+    }
+
+    p code:hover::before, li code:hover::before, td code:hover::before {
+        opacity: 1;
+    }
+
+    pre {
+        background: #1e293b;
+        color: #e2e8f0;
+        padding: 16px 18px;
+        border-radius: 8px;
+        overflow-x: auto;
+        margin: 18px 0;
+        border: 1px solid #334155;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+        font-family: 'Cascadia Code', 'Fira Code', 'SF Mono', 'Consolas', 'Liberation Mono', monospace;
+        font-size: 0.85em;
+        line-height: 1.6;
+        position: relative;
+        font-feature-settings: "liga" 0;
+        text-rendering: optimizeLegibility;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+    }
+
+    pre code {
+        background: none;
+        color: inherit;
+        padding: 0;
+        border: none;
+        font-family: inherit;
+        font-weight: normal;
+        font-size: 1em;
+        display: block;
+    }
+    
+    /* Ensure consistent styling for all code content inside pre blocks */
+    pre code * {
+        font-size: inherit !important;
+        line-height: inherit !important;
+        color: inherit !important;
+        font-family: inherit !important;
+    }
+
+    /* Hover effect */
+    pre:hover {
+        border-color: #475569;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.12);
+        transition: all 0.3s ease;
+    }
+
+    /* Code block header indicator */
+    pre::after {
+        content: 'CODE';
+        position: absolute;
+        top: 8px;
+        right: 12px;
+        font-size: 0.65em;
+        color: #64748b;
+        font-weight: 600;
+        letter-spacing: 0.05em;
+        opacity: 0.5;
+    }
+
+    blockquote {
+        border-left: 4px solid #667eea;
+        padding: 15px 20px;
+        margin: 20px 0;
+        color: #555;
+        font-style: italic;
+        font-size: 0.95em;
+        background: linear-gradient(90deg, rgba(102, 126, 234, 0.05) 0%, rgba(255,255,255,0) 100%);
+        border-radius: 0 6px 6px 0;
+        position: relative;
+    }
+
+    blockquote::before {
+        content: '"';
+        position: absolute;
+        left: -10px;
+        top: -10px;
+        font-size: 4em;
+        color: rgba(102, 126, 234, 0.1);
+        font-family: Georgia, serif;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 20px 0;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+        border-radius: 8px;
+        overflow: hidden;
+        background: white;
+        font-size: 0.9em;
+    }
+
+    thead {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    }
+
+    th {
+        color: white;
+        padding: 12px 15px;
+        text-align: left;
+        font-weight: 600;
+        text-transform: uppercase;
+        font-size: 0.82em;
+        letter-spacing: 0.3px;
+    }
+
+    td {
+        padding: 10px 15px;
+        border-bottom: 1px solid #e5e7eb;
+        vertical-align: top;
+        line-height: 1.6;
+    }
+
+    tbody tr:last-child td {
+        border-bottom: none;
+    }
+
+    tbody tr:hover {
+        background: rgba(102, 126, 234, 0.04);
+        transition: background 0.2s ease;
+    }
+
+    tbody tr:nth-child(even) {
+        background: rgba(102, 126, 234, 0.02);
+    }
+
+    tbody tr:nth-child(even):hover {
+        background: rgba(102, 126, 234, 0.05);
+    }
+    
+    /* Better code in tables */
+    td code {
+        font-size: 0.85em;
+        padding: 2px 6px;
+    }
+
+    .info-box {
+        background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+        border-left: 5px solid #2196f3;
+        padding: 20px;
+        margin: 25px 0;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(33, 150, 243, 0.2);
+    }
+
+    .warning-box {
+        background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%);
+        border-left: 5px solid #ff9800;
+        padding: 20px;
+        margin: 25px 0;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(255, 152, 0, 0.2);
+    }
+
+    .success-box {
+        background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+        border-left: 5px solid #4caf50;
+        padding: 20px;
+        margin: 25px 0;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(76, 175, 80, 0.2);
+    }
+
+    /* Better colors for syntax in diagrams */
+    pre {
+        /* Box drawing characters in nice blue */
+        color: #93c5fd;
+    }
+
+    /* JSON/code syntax in pre blocks */
+    pre {
+        white-space: pre;
+        word-wrap: normal;
+    }
+
+    .toc {
+        background: #f8f9fa;
+        padding: 20px;
+        border-radius: 8px;
+        margin: 20px 0;
+        border-left: 4px solid #667eea;
+    }
+
+    .toc h2 {
+        color: #667eea;
+        border-bottom: none;
+        margin-bottom: 15px;
+    }
+
+    .toc ul {
+        list-style: none;
+        padding-left: 0;
+    }
+
+    .toc li {
+        margin: 8px 0;
+    }
+
+    .toc a {
+        color: #667eea;
+        text-decoration: none;
+        transition: color 0.3s;
+    }
+
+    .toc a:hover {
+        color: #764ba2;
+    }
+
+    hr {
+        border: none;
+        border-top: 2px solid #f0f0f0;
+        margin: 30px 0;
+    }
+
+    .badge {
+        display: inline-block;
+        background: #667eea;
+        color: white;
+        padding: 4px 10px;
+        border-radius: 12px;
+        font-size: 0.85em;
+        margin-left: 10px;
+    }
+
+    a {
+        color: #667eea;
+        text-decoration: none;
+        transition: color 0.3s;
+    }
+
+    a:hover {
+        color: #764ba2;
+        text-decoration: underline;
+    }
+    
+    /* Better display for metadata fields */
+    strong {
+        color: #374151;
+        font-weight: 600;
+    }
+    
+    /* Metadata field styling - each field on its own line */
+    .metadata-field {
+        margin: 8px 0;
+        padding: 8px 14px;
+        background: linear-gradient(90deg, rgba(102, 126, 234, 0.04) 0%, transparent 100%);
+        border-left: 3px solid #667eea;
+        border-radius: 0 4px 4px 0;
+        line-height: 1.7;
+        font-size: 0.95em;
+        display: block;
+        clear: both;
+    }
+    
+    .metadata-field strong {
+        color: #667eea;
+        font-weight: 600;
+        margin-right: 8px;
+        display: inline-block;
+        min-width: 100px;
+    }
+    
+    .metadata-field code {
+        font-size: 0.88em;
+    }
+
+    footer {
+        margin-top: 50px;
+        padding-top: 30px;
+        border-top: 2px solid #f0f0f0;
+        text-align: center;
+        color: #888;
+    }
+
+    @media print {
+        body {
+            background: white;
+        }
+        .nav-header, .nav-links {
+            display: none;
+        }
+        pre {
+            break-inside: avoid;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .container {
+            padding: 20px;
+        }
+        .nav-header {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+        .nav-links {
+            margin-top: 15px;
+        }
+        h1 {
+            font-size: 2em;
+        }
+        h2 {
+            font-size: 1.5em;
+        }
+    }
+</style>
+
+</head>
+<body>
+    <div class="container">
+        <div class="nav-header"><div><h1>Embrix O2X Documentation</h1><small>Navigate between guides</small></div><div class="nav-links"><a href="index.html">🏠 Home</a><a href="guide-index.html">📚 Guide Index</a><a href="part1-business-architecture.html">Part 1</a><a href="part2-technical-deep-dive.html">Part 2</a><a href="part3-services-development.html">Part 3</a><a href="part4-frontend-ui.html">Part 4</a><a href="part5-message-queues.html">Part 5</a><a href="quick-start.html">🎯 Quick Start</a><a href="quick-reference.html">📖 Quick Ref</a><a href="troubleshooting-guide.html">🔧 Troubleshooting</a></div></div>
+        
+<h1>Embrix O2X Platform - Master Documentation Index</h1>
+
+<strong>Version</strong>: 3.1.9-SNAPSHOT  
+<strong>Last Updated</strong>: February 2026  
+<strong>Purpose</strong>: Central index to all platform documentation
+
+<hr>
+
+<h2>📚 Complete Documentation Suite</h2>
+
+<h3>🎯 New Comprehensive Reference Guides (February 2026)</h3>
+
+<table>
+<thead><tr>
+<th>Guide</th>
+<th>Description</th>
+<th>Pages</th>
+<th>Target Audience</th>
+</tr></thead><tbody>
+<tr>
+<td>-------</td>
+<td>-------------</td>
+<td>-------</td>
+<td>-----------------</td>
+</tr>
+<tr>
+<td><strong><a href="COMPLETE_SYSTEM_OVERVIEW.md">COMPLETE_SYSTEM_OVERVIEW</a></strong> ⭐</td>
+<td>Complete bird's-eye view of entire platform</td>
+<td>50+</td>
+<td>Everyone</td>
+</tr>
+<tr>
+<td><strong><a href="FRONTEND_UI_ARCHITECTURE.md">FRONTEND_UI_ARCHITECTURE</a></strong> ⭐</td>
+<td>All 4 React apps, GraphQL, multi-tenant UI</td>
+<td>40+</td>
+<td>Frontend devs, full-stack devs</td>
+</tr>
+<tr>
+<td><strong><a href="DATABASE_ARCHITECTURE_COMPLETE.md">DATABASE_ARCHITECTURE_COMPLETE</a></strong> ⭐</td>
+<td>All 50+ tables, JOOQ patterns, operations</td>
+<td>80+</td>
+<td>Backend devs, DBAs, architects</td>
+</tr>
+<tr>
+<td><strong><a href="INFRASTRUCTURE_OPERATIONS_GUIDE.md">INFRASTRUCTURE_OPERATIONS_GUIDE</a></strong> ⭐</td>
+<td>AWS, Kubernetes, monitoring, CI/CD</td>
+<td>70+</td>
+<td>DevOps, SREs, infrastructure</td>
+</tr>
+</tbody></table>
+
+<hr>
+
+<h3>📖 Core Three-Part Newcomer Series</h3>
+
+<table>
+<thead><tr>
+<th>Part</th>
+<th>Title</th>
+<th>Time</th>
+<th>What You'll Learn</th>
+</tr></thead><tbody>
+<tr>
+<td>------</td>
+<td>-------</td>
+<td>------</td>
+<td>-------------------</td>
+</tr>
+<tr>
+<td><strong><a href="NEWCOMER_GUIDE_PART1_BUSINESS_AND_ARCHITECTURE.md">Part 1</a></strong></td>
+<td>Business & Architecture</td>
+<td>60 min</td>
+<td>Business context, use cases, architecture, tech stack</td>
+</tr>
+<tr>
+<td><strong><a href="NEWCOMER_GUIDE_PART2_TECHNICAL_DEEP_DIVE.md">Part 2</a></strong></td>
+<td>Technical Deep Dive</td>
+<td>90 min</td>
+<td>Hubs, gateways, data access, integrations</td>
+</tr>
+<tr>
+<td><strong><a href="NEWCOMER_GUIDE_PART3_SERVICES_AND_DEVELOPMENT.md">Part 3</a></strong></td>
+<td>Services & Development</td>
+<td>120 min</td>
+<td>Core services, business flows, local dev setup</td>
+</tr>
+</tbody></table>
+<strong>Start Here</strong>: <a href="NEWCOMER_GUIDE_INDEX.md">NEWCOMER_GUIDE_INDEX</a> - Complete navigation and learning paths
+
+<hr>
+
+<h3>🏢 Specialized Guides</h3>
+
+<table>
+<thead><tr>
+<th>Guide</th>
+<th>Description</th>
+<th>Target Audience</th>
+</tr></thead><tbody>
+<tr>
+<td>-------</td>
+<td>-------------</td>
+<td>-----------------</td>
+</tr>
+<tr>
+<td><strong><a href="BUSINESS_SCENARIOS_AND_WORKFLOWS.md">BUSINESS_SCENARIOS_AND_WORKFLOWS</a></strong></td>
+<td>Real-world use cases, customer journeys</td>
+<td>Business analysts, product managers</td>
+</tr>
+<tr>
+<td><strong><a href="MULTI_TENANT_ARCHITECTURE.md">MULTI_TENANT_ARCHITECTURE</a></strong></td>
+<td>Deep dive into multi-tenancy</td>
+<td>Architects, DevOps</td>
+</tr>
+<tr>
+<td><strong><a href="QUICK_START.md">QUICK_START</a></strong></td>
+<td>Fast setup guide</td>
+<td>New developers</td>
+</tr>
+<tr>
+<td><strong><a href="QUICK_REFERENCE_GUIDE.md">QUICK_REFERENCE_GUIDE</a></strong></td>
+<td>Common tasks reference</td>
+<td>All developers</td>
+</tr>
+<tr>
+<td><strong><a href="DEPLOYMENT_GUIDE.md">DEPLOYMENT_GUIDE</a></strong></td>
+<td>Deployment procedures</td>
+<td>DevOps, release managers</td>
+</tr>
+<tr>
+<td><strong><a href="STEP_BY_STEP_DEPLOYMENT.md">STEP_BY_STEP_DEPLOYMENT</a></strong></td>
+<td>Step-by-step deployment</td>
+<td>DevOps</td>
+</tr>
+</tbody></table>
+
+<hr>
+
+<h2>🗺️ Quick Navigation by Topic</h2>
+
+<h3>Architecture & Design</h3>
+
+<ul>
+<li><a href="COMPLETE_SYSTEM_OVERVIEW.md">COMPLETE_SYSTEM_OVERVIEW</a> - Complete architecture overview ⭐</li>
+<li><a href="NEWCOMER_GUIDE_PART1_BUSINESS_AND_ARCHITECTURE.md">NEWCOMER_GUIDE_PART1</a> - System architecture</li>
+<li><a href="MULTI_TENANT_ARCHITECTURE.md">MULTI_TENANT_ARCHITECTURE</a> - Multi-tenancy details</li>
+<li><a href="context/COMPREHENSIVE_ARCHITECTURE.md">COMPREHENSIVE_ARCHITECTURE</a> - Original architecture doc</li>
+</ul>
+<h3>Backend Services</h3>
+
+<ul>
+<li><a href="NEWCOMER_GUIDE_PART2_TECHNICAL_DEEP_DIVE.md">NEWCOMER_GUIDE_PART2</a> - Hubs, gateways, patterns ⭐</li>
+<li><a href="NEWCOMER_GUIDE_PART3_SERVICES_AND_DEVELOPMENT.md">NEWCOMER_GUIDE_PART3</a> - Core services ⭐</li>
+<li><a href="COMPLETE_SYSTEM_OVERVIEW.md#complete-service-inventory">COMPLETE_SYSTEM_OVERVIEW - Services</a> - All 23 services</li>
+</ul>
+<h3>Frontend & UI</h3>
+
+<ul>
+<li><a href="FRONTEND_UI_ARCHITECTURE.md">FRONTEND_UI_ARCHITECTURE</a> - Complete frontend guide ⭐ <strong>NEW</strong></li>
+<li>All 4 React apps, GraphQL, multi-tenant UI, user journeys</li>
+</ul>
+<h3>Database</h3>
+
+<ul>
+<li><a href="DATABASE_ARCHITECTURE_COMPLETE.md">DATABASE_ARCHITECTURE_COMPLETE</a> - Complete database reference ⭐ <strong>NEW</strong></li>
+<li>All 50+ tables, relationships, indexes, partitioning, migrations, JOOQ patterns</li>
+</ul>
+<h3>Infrastructure & Operations</h3>
+
+<ul>
+<li><a href="INFRASTRUCTURE_OPERATIONS_GUIDE.md">INFRASTRUCTURE_OPERATIONS_GUIDE</a> - Complete ops guide ⭐ <strong>NEW</strong></li>
+<li>AWS, Kubernetes, monitoring, secrets, CI/CD, troubleshooting</li>
+</ul>
+<h3>Business Scenarios</h3>
+
+<ul>
+<li><a href="BUSINESS_SCENARIOS_AND_WORKFLOWS.md">BUSINESS_SCENARIOS_AND_WORKFLOWS</a> - Real-world use cases</li>
+<li><a href="NEWCOMER_GUIDE_PART3_SERVICES_AND_DEVELOPMENT.md#6-complete-business-flows">NEWCOMER_GUIDE_PART3 - Section 6</a> - End-to-end flows</li>
+<li><a href="context/PRODUCT_FLOW_CUSTOMER_JOURNEY.md">PRODUCT_FLOW_CUSTOMER_JOURNEY</a> - Customer journeys</li>
+</ul>
+<h3>Development</h3>
+
+<ul>
+<li><a href="QUICK_START.md">QUICK_START</a> - Quick setup</li>
+<li><a href="NEWCOMER_GUIDE_PART3_SERVICES_AND_DEVELOPMENT.md#4-development-environment-setup">NEWCOMER_GUIDE_PART3 - Section 4</a> - Local dev setup</li>
+<li><a href="QUICK_REFERENCE_GUIDE.md">QUICK_REFERENCE_GUIDE</a> - Common tasks</li>
+</ul>
+<h3>Deployment</h3>
+
+<ul>
+<li><a href="DEPLOYMENT_GUIDE.md">DEPLOYMENT_GUIDE</a> - Deployment procedures</li>
+<li><a href="STEP_BY_STEP_DEPLOYMENT.md">STEP_BY_STEP_DEPLOYMENT</a> - Step-by-step guide</li>
+<li><a href="INFRASTRUCTURE_OPERATIONS_GUIDE.md#cicd-pipeline">INFRASTRUCTURE_OPERATIONS_GUIDE - CI/CD</a> - Pipeline details</li>
+</ul>
+
+<hr>
+
+<h2>🎓 Learning Paths by Role</h2>
+
+<h3>New Backend Developer (3 days)</h3>
+
+<strong>Day 1: Understanding the System</strong> (4 hours)
+<ul>
+<li>☑️ <a href="COMPLETE_SYSTEM_OVERVIEW.md">COMPLETE_SYSTEM_OVERVIEW</a> (30 min)</li>
+<li>☑️ <a href="NEWCOMER_GUIDE_PART1_BUSINESS_AND_ARCHITECTURE.md">NEWCOMER_GUIDE_PART1</a> (60 min)</li>
+<li>☑️ <a href="NEWCOMER_GUIDE_PART2_TECHNICAL_DEEP_DIVE.md">NEWCOMER_GUIDE_PART2</a> (90 min)</li>
+<li>☑️ <a href="DATABASE_ARCHITECTURE_COMPLETE.md#schema-organization">DATABASE_ARCHITECTURE_COMPLETE - Overview</a> (30 min)</li>
+</ul>
+<strong>Day 2: Deep Dive</strong> (5 hours)
+<ul>
+<li>☑️ <a href="NEWCOMER_GUIDE_PART3_SERVICES_AND_DEVELOPMENT.md#core-services-layer">NEWCOMER_GUIDE_PART3 - Services</a> (60 min)</li>
+<li>☑️ <a href="DATABASE_ARCHITECTURE_COMPLETE.md">DATABASE_ARCHITECTURE_COMPLETE</a> - Full read (90 min)</li>
+<li>☑️ <a href="NEWCOMER_GUIDE_PART3_SERVICES_AND_DEVELOPMENT.md#6-complete-business-flows">NEWCOMER_GUIDE_PART3 - Business Flows</a> (90 min)</li>
+</ul>
+<strong>Day 3: Hands-On</strong> (Full day)
+<ul>
+<li>☑️ <a href="NEWCOMER_GUIDE_PART3_SERVICES_AND_DEVELOPMENT.md#4-development-environment-setup">NEWCOMER_GUIDE_PART3 - Dev Setup</a> (2 hours)</li>
+<li>☑️ Set up local environment (3 hours)</li>
+<li>☑️ Explore codebase with documentation (3 hours)</li>
+</ul>
+
+<hr>
+
+<h3>New Frontend Developer (2 days)</h3>
+
+<strong>Day 1: System & API Understanding</strong> (4 hours)
+<ul>
+<li>☑️ <a href="COMPLETE_SYSTEM_OVERVIEW.md">COMPLETE_SYSTEM_OVERVIEW</a> (30 min)</li>
+<li>☑️ <a href="NEWCOMER_GUIDE_PART1_BUSINESS_AND_ARCHITECTURE.md#what-is-embrix-o2x">NEWCOMER_GUIDE_PART1 - Business</a> (30 min)</li>
+<li>☑️ <a href="COMPLETE_SYSTEM_OVERVIEW.md#api-architecture">COMPLETE_SYSTEM_OVERVIEW - API Architecture</a> (30 min)</li>
+<li>☑️ <a href="FRONTEND_UI_ARCHITECTURE.md">FRONTEND_UI_ARCHITECTURE</a> - Full read (90 min)</li>
+</ul>
+<strong>Day 2: Implementation & Integration</strong> (5 hours)
+<ul>
+<li>☑️ <a href="FRONTEND_UI_ARCHITECTURE.md#api-integration-patterns">FRONTEND_UI_ARCHITECTURE - API Integration</a> (60 min)</li>
+<li>☑️ <a href="FRONTEND_UI_ARCHITECTURE.md#multi-tenant-ui-customization">FRONTEND_UI_ARCHITECTURE - Multi-tenant UI</a> (45 min)</li>
+<li>☑️ Set up frontend dev environment (2 hours)</li>
+<li>☑️ Explore frontend code (90 min)</li>
+</ul>
+
+<hr>
+
+<h3>DevOps / SRE (2 days)</h3>
+
+<strong>Day 1: Architecture & Infrastructure</strong> (5 hours)
+<ul>
+<li>☑️ <a href="COMPLETE_SYSTEM_OVERVIEW.md">COMPLETE_SYSTEM_OVERVIEW</a> (45 min)</li>
+<li>☑️ <a href="MULTI_TENANT_ARCHITECTURE.md">MULTI_TENANT_ARCHITECTURE</a> (60 min)</li>
+<li>☑️ <a href="INFRASTRUCTURE_OPERATIONS_GUIDE.md">INFRASTRUCTURE_OPERATIONS_GUIDE</a> - Full read (3 hours)</li>
+</ul>
+<strong>Day 2: Operations & Troubleshooting</strong> (5 hours)
+<ul>
+<li>☑️ <a href="INFRASTRUCTURE_OPERATIONS_GUIDE.md#kubernetes-deployment">INFRASTRUCTURE_OPERATIONS_GUIDE - Kubernetes</a> (60 min)</li>
+<li>☑️ <a href="INFRASTRUCTURE_OPERATIONS_GUIDE.md#monitoring--observability">INFRASTRUCTURE_OPERATIONS_GUIDE - Monitoring</a> (60 min)</li>
+<li>☑️ <a href="DATABASE_ARCHITECTURE_COMPLETE.md#database-operations">DATABASE_ARCHITECTURE_COMPLETE - Operations</a> (60 min)</li>
+<li>☑️ <a href="INFRASTRUCTURE_OPERATIONS_GUIDE.md#troubleshooting">INFRASTRUCTURE_OPERATIONS_GUIDE - Troubleshooting</a> (90 min)</li>
+</ul>
+
+<hr>
+
+<h3>Business Analyst / Product Manager (1 day)</h3>
+
+<strong>Phase 1: Business Context</strong> (2 hours)
+<ul>
+<li>☑️ <a href="COMPLETE_SYSTEM_OVERVIEW.md#business-capabilities">COMPLETE_SYSTEM_OVERVIEW - Business Capabilities</a> (30 min)</li>
+<li>☑️ <a href="NEWCOMER_GUIDE_PART1_BUSINESS_AND_ARCHITECTURE.md">NEWCOMER_GUIDE_PART1</a> (60 min)</li>
+<li>☑️ <a href="BUSINESS_SCENARIOS_AND_WORKFLOWS.md">BUSINESS_SCENARIOS_AND_WORKFLOWS</a> - Sections 1-2 (30 min)</li>
+</ul>
+<strong>Phase 2: Workflows & Integration</strong> (2 hours)
+<ul>
+<li>☑️ <a href="BUSINESS_SCENARIOS_AND_WORKFLOWS.md">BUSINESS_SCENARIOS_AND_WORKFLOWS</a> - Sections 3-4 (60 min)</li>
+<li>☑️ <a href="NEWCOMER_GUIDE_PART3_SERVICES_AND_DEVELOPMENT.md#6-complete-business-flows">NEWCOMER_GUIDE_PART3 - Business Flows</a> (60 min)</li>
+</ul>
+<strong>Phase 3: Features & Capabilities</strong> (1 hour)
+<ul>
+<li>☑️ <a href="FRONTEND_UI_ARCHITECTURE.md#user-journeys--workflows">FRONTEND_UI_ARCHITECTURE - User Journeys</a> (30 min)</li>
+<li>☑️ <a href="COMPLETE_SYSTEM_OVERVIEW.md#integration-architecture">COMPLETE_SYSTEM_OVERVIEW - Integration Architecture</a> (30 min)</li>
+</ul>
+
+<hr>
+
+<h3>Solutions Architect / Technical Evaluator (3 days)</h3>
+
+<strong>Day 1: Complete System Understanding</strong> (5 hours)
+<ul>
+<li>☑️ <a href="COMPLETE_SYSTEM_OVERVIEW.md">COMPLETE_SYSTEM_OVERVIEW</a> - Full read (90 min)</li>
+<li>☑️ <a href="NEWCOMER_GUIDE_PART1_BUSINESS_AND_ARCHITECTURE.md">NEWCOMER_GUIDE_PART1</a> - Full read (60 min)</li>
+<li>☑️ <a href="MULTI_TENANT_ARCHITECTURE.md">MULTI_TENANT_ARCHITECTURE</a> - Full read (90 min)</li>
+</ul>
+<strong>Day 2: Technical Architecture</strong> (5 hours)
+<ul>
+<li>☑️ <a href="NEWCOMER_GUIDE_PART2_TECHNICAL_DEEP_DIVE.md">NEWCOMER_GUIDE_PART2</a> - Full read (90 min)</li>
+<li>☑️ <a href="DATABASE_ARCHITECTURE_COMPLETE.md">DATABASE_ARCHITECTURE_COMPLETE</a> - Sections 1-6 (90 min)</li>
+<li>☑️ <a href="FRONTEND_UI_ARCHITECTURE.md">FRONTEND_UI_ARCHITECTURE</a> - Sections 1-5 (60 min)</li>
+</ul>
+<strong>Day 3: Infrastructure & Operations</strong> (5 hours)
+<ul>
+<li>☑️ <a href="INFRASTRUCTURE_OPERATIONS_GUIDE.md">INFRASTRUCTURE_OPERATIONS_GUIDE</a> - Full read (3 hours)</li>
+<li>☑️ <a href="BUSINESS_SCENARIOS_AND_WORKFLOWS.md">BUSINESS_SCENARIOS_AND_WORKFLOWS</a> - Key scenarios (90 min)</li>
+</ul>
+
+<hr>
+
+<h2>📊 Documentation Statistics</h2>
+
+<h3>Total Documentation</h3>
+
+<ul>
+<li><strong>Core Guides</strong>: 4 new comprehensive guides ⭐</li>
+<li><strong>Newcomer Series</strong>: 3-part series (Parts 1-3)</li>
+<li><strong>Specialized Guides</strong>: 7 additional guides</li>
+<li><strong>Total Pages</strong>: 600+ pages</li>
+<li><strong>Code Examples</strong>: 150+ examples</li>
+<li><strong>Diagrams</strong>: 25+ architecture diagrams</li>
+<li><strong>Business Flows</strong>: 5+ complete end-to-end flows</li>
+</ul>
+<h3>Coverage</h3>
+
+<ul>
+<li>✅ All 23 services documented</li>
+<li>✅ All 11 business hubs explained</li>
+<li>✅ All 50+ database tables detailed</li>
+<li>✅ All 4 frontend apps covered</li>
+<li>✅ Complete infrastructure guide</li>
+<li>✅ Multi-tenancy architecture</li>
+<li>✅ Business scenarios included</li>
+<li>✅ Development setup procedures</li>
+<li>✅ Deployment & operations</li>
+<li>✅ Troubleshooting guides</li>
+</ul>
+
+<hr>
+
+<h2>🔍 Search by Topic</h2>
+
+<h3>Quick Lookups</h3>
+
+<strong>"Where is business logic?"</strong>
+→ <a href="NEWCOMER_GUIDE_PART2_TECHNICAL_DEEP_DIVE.md#11-hub-based-organization">NEWCOMER_GUIDE_PART2 - Engine Hubs</a>
+<strong>"How do I add a GraphQL endpoint?"</strong>
+→ <a href="NEWCOMER_GUIDE_PART2_TECHNICAL_DEEP_DIVE.md#212-graphql-schema">NEWCOMER_GUIDE_PART2 - GraphQL</a>
+<strong>"What database tables exist?"</strong>
+→ <a href="DATABASE_ARCHITECTURE_COMPLETE.md#complete-entity-reference">DATABASE_ARCHITECTURE_COMPLETE - Complete Entity Reference</a>
+<strong>"How do I deploy to Kubernetes?"</strong>
+→ <a href="INFRASTRUCTURE_OPERATIONS_GUIDE.md#kubernetes-deployment">INFRASTRUCTURE_OPERATIONS_GUIDE - Kubernetes Deployment</a>
+<strong>"What are the frontend apps?"</strong>
+→ <a href="FRONTEND_UI_ARCHITECTURE.md#application-architecture">FRONTEND_UI_ARCHITECTURE - Application Architecture</a>
+<strong>"How does order processing work?"</strong>
+→ <a href="NEWCOMER_GUIDE_PART3_SERVICES_AND_DEVELOPMENT.md#31-flow-1-new-customer-signup--first-invoice">NEWCOMER_GUIDE_PART3 - Business Flow 1</a>
+<strong>"How do I set up local dev?"</strong>
+→ <a href="NEWCOMER_GUIDE_PART3_SERVICES_AND_DEVELOPMENT.md#4-development-environment-setup">NEWCOMER_GUIDE_PART3 - Dev Setup</a>
+<strong>"What's the multi-tenant architecture?"</strong>
+→ <a href="MULTI_TENANT_ARCHITECTURE.md">MULTI_TENANT_ARCHITECTURE</a> or <a href="DATABASE_ARCHITECTURE_COMPLETE.md#multi-tenant-data-architecture">DATABASE_ARCHITECTURE_COMPLETE - Multi-Tenant</a>
+<strong>"How do I monitor the system?"</strong>
+→ <a href="INFRASTRUCTURE_OPERATIONS_GUIDE.md#monitoring--observability">INFRASTRUCTURE_OPERATIONS_GUIDE - Monitoring</a>
+<strong>"What's the tech stack?"</strong>
+→ <a href="COMPLETE_SYSTEM_OVERVIEW.md#technology-stack">COMPLETE_SYSTEM_OVERVIEW - Technology Stack</a>
+
+<hr>
+
+<h2>🌐 HTML Documentation</h2>
+
+All documentation is available as HTML in <code>docs/newcomer/</code>:
+<ul>
+<li>Professional styling with gradient headers</li>
+<li>Easy navigation between documents</li>
+<li>Print-friendly formatting</li>
+<li>Mobile-responsive design</li>
+</ul>
+<strong>View Online</strong>: 
+<ul>
+<li>GitLab Pages: [Configured via <code>.gitlab-ci.yml</code>]</li>
+<li>GitHub Pages: [Configured via <code>.github/workflows/deploy-docs.yml</code>]</li>
+</ul>
+<strong>Regenerate HTML</strong>:
+<pre><code class="language-bash">python convert_to_html.py
+</code></pre>
+
+<hr>
+
+<h2>📝 Upgrade & Maintenance Documentation</h2>
+
+<h3>Dependency Upgrade Guides</h3>
+
+<ul>
+<li><a href="UPGRADE_PROGRESS_TRACKER.md">UPGRADE_PROGRESS_TRACKER</a> - Overall upgrade tracking</li>
+<li><a href="DEPENDENCIES_UPGRADE_GUIDE.md">DEPENDENCIES_UPGRADE_GUIDE</a> - Complete upgrade guide</li>
+<li><a href="DEPENDENCY_UPGRADE_MASTER_PLAN.md">DEPENDENCY_UPGRADE_MASTER_PLAN</a> - Master plan</li>
+<li><a href="DEPENDENCY_UPGRADE_ANALYSIS.md">DEPENDENCY_UPGRADE_ANALYSIS</a> - Analysis details</li>
+<li><a href="HIBERNATE_PROXY_BEST_PRACTICES.md">HIBERNATE_PROXY_BEST_PRACTICES</a> - Hibernate upgrade</li>
+</ul>
+<h3>Service-Specific Upgrade Docs</h3>
+
+<ul>
+<li><a href="docs/upgrade/ENGINE_UPGRADE.md">docs/upgrade/ENGINE_UPGRADE.md</a> - Engine module</li>
+<li><a href="docs/upgrade/CRM_GATEWAY_UPGRADE.md">docs/upgrade/CRM_GATEWAY_UPGRADE.md</a> - CRM Gateway</li>
+<li><a href="docs/upgrade/SERVICE_SSO_UPGRADE.md">docs/upgrade/SERVICE_SSO_UPGRADE.md</a> - SSO Service</li>
+</ul>
+
+<hr>
+
+<h2>💡 Tips for Using This Documentation</h2>
+
+<h3>First-Time Readers</h3>
+
+<ol>
+<li>Start with <a href="NEWCOMER_GUIDE_INDEX.md">NEWCOMER_GUIDE_INDEX</a></li>
+<li>Follow your role's learning path above</li>
+<li>Use reference guides as needed during development</li>
+</ol>
+<h3>Daily Development</h3>
+
+<ul>
+<li>Bookmark frequently-used guides</li>
+<li>Use browser search (Ctrl+F) to find topics</li>
+<li>Keep <a href="QUICK_REFERENCE_GUIDE.md">QUICK_REFERENCE_GUIDE</a> handy</li>
+<li>Refer to code examples when implementing features</li>
+</ul>
+<h3>Troubleshooting</h3>
+
+<ul>
+<li>Check <a href="INFRASTRUCTURE_OPERATIONS_GUIDE.md#troubleshooting">INFRASTRUCTURE_OPERATIONS_GUIDE - Troubleshooting</a></li>
+<li>Search documentation for error messages</li>
+<li>Review relevant architecture sections</li>
+<li>Consult database guide for data issues</li>
+</ul>
+
+<hr>
+
+<h2>🔄 Documentation Maintenance</h2>
+
+<h3>When to Update</h3>
+
+<ul>
+<li>New services or major features</li>
+<li>Architecture changes</li>
+<li>Technology stack upgrades</li>
+<li>Process changes</li>
+<li>Quarterly reviews</li>
+</ul>
+<h3>How to Update</h3>
+
+<ol>
+<li>Edit relevant markdown files</li>
+<li>Run <code>python convert_to_html.py</code></li>
+<li>Test locally</li>
+<li>Commit and push</li>
+<li>CI/CD auto-deploys HTML</li>
+</ol>
+
+<hr>
+
+<h2>🎯 Getting Started Now</h2>
+
+<h3>For Developers</h3>
+
+<ol>
+<li><strong>Start</strong>: <a href="NEWCOMER_GUIDE_INDEX.md">NEWCOMER_GUIDE_INDEX</a></li>
+<li><strong>Follow</strong>: Three-part series (Parts 1-3)</li>
+<li><strong>Reference</strong>: New comprehensive guides</li>
+<li><strong>Set up</strong>: Local development environment</li>
+<li><strong>Code</strong>: Start contributing!</li>
+</ol>
+<h3>For DevOps/SRE</h3>
+
+<ol>
+<li><strong>Start</strong>: <a href="COMPLETE_SYSTEM_OVERVIEW.md">COMPLETE_SYSTEM_OVERVIEW</a></li>
+<li><strong>Deep Dive</strong>: <a href="INFRASTRUCTURE_OPERATIONS_GUIDE.md">INFRASTRUCTURE_OPERATIONS_GUIDE</a></li>
+<li><strong>Multi-Tenancy</strong>: <a href="MULTI_TENANT_ARCHITECTURE.md">MULTI_TENANT_ARCHITECTURE</a></li>
+<li><strong>Operations</strong>: Set up monitoring, learn procedures</li>
+</ol>
+<h3>For Architects/Evaluators</h3>
+
+<ol>
+<li><strong>Overview</strong>: <a href="COMPLETE_SYSTEM_OVERVIEW.md">COMPLETE_SYSTEM_OVERVIEW</a></li>
+<li><strong>Architecture</strong>: All three newcomer parts</li>
+<li><strong>Technical Details</strong>: All new comprehensive guides</li>
+<li><strong>Assess</strong>: Architecture, scalability, maintainability</li>
+</ol>
+
+<hr>
+
+<h2>📞 Getting Help</h2>
+
+<h3>Documentation Questions</h3>
+
+<ul>
+<li>Check this index first</li>
+<li>Use browser search in relevant guide</li>
+<li>Review code examples</li>
+<li>Check troubleshooting sections</li>
+</ul>
+<h3>Technical Support</h3>
+
+<ul>
+<li>Refer to relevant documentation section</li>
+<li>Provide context from documentation</li>
+<li>Check operational procedures</li>
+<li>Contact team with specific questions</li>
+</ul>
+
+<hr>
+
+<h2>🎉 Welcome to Embrix O2X!</h2>
+
+You now have access to <strong>comprehensive documentation</strong> covering every aspect of the platform:
+✅ <strong>Complete System Overview</strong> - Bird's-eye view  
+✅ <strong>Frontend Architecture</strong> - All UI applications  
+✅ <strong>Database Architecture</strong> - Complete data model  
+✅ <strong>Infrastructure Operations</strong> - Full ops guide  
+✅ <strong>Newcomer Series</strong> - Three-part onboarding  
+✅ <strong>Business Scenarios</strong> - Real-world use cases  
+✅ <strong>Quick References</strong> - Daily development aids
+<strong>Total Investment</strong>: 8-10 hours for complete mastery  
+<strong>Worth It</strong>: Knowledge that would take weeks to acquire through code exploration alone
+
+<hr>
+
+<strong>Last Updated</strong>: February 2026  
+<strong>Version</strong>: 3.1.9-SNAPSHOT  
+<strong>Maintained By</strong>: Embrix O2X Engineering Team  
+<strong>Review Frequency</strong>: Quarterly
+<strong>Happy Learning! 🚀</strong></p>
+        <footer>
+            <p><strong>Embrix O2X Platform Documentation</strong></p>
+            <p>Version 3.1.9-SNAPSHOT • Last Updated: February 2026</p>
+        </footer>
+    </div>
+</body>
+</html>
