@@ -481,6 +481,7 @@ class UsageRecordDTO {
 **Purpose:** Standardized framework for building order orchestrators
 
 **What is an Orchestrator?**
+
 An orchestrator is a workflow processor that:
 1. Receives an order from ActiveMQ
 2. Validates the order
@@ -766,6 +767,7 @@ Gateways are the **entry and exit points** of the platform. They normalize exter
 **Port:** 8080 (default)  
 **Purpose:** Main entry point for external systems (CRM, portals)
 
+
 #### 2.1.1 Key Responsibilities
 
 1. **GraphQL API** - Expose order and account management endpoints
@@ -910,6 +912,7 @@ GraphQL Request
 **Port:** 8081 (default)  
 **Purpose:** Bridge to network provisioning systems
 
+
 #### 2.2.1 Supported Provisioning Systems
 
 **1. Nokia ESB (MCM Telecom)**
@@ -1029,6 +1032,7 @@ class DidService {
 
 **Location:** `/tax-gateway`, `/tax-engine`  
 **Purpose:** Unified tax calculation interface
+
 
 #### 2.3.1 Tax Calculation API
 
@@ -1186,6 +1190,7 @@ Invoice Generated in service-invoice
 **Location:** `/payment-gateway`  
 **Purpose:** Payment processor integration
 
+
 #### 2.4.1 Supported Payment Methods
 
 **1. Credit/Debit Cards (Stripe, PayPal)**
@@ -1245,6 +1250,7 @@ Date,Reference,Amount,BankTransactionId
 
 **Location:** `/finance-gateway`  
 **Purpose:** Sync billing data to ERP systems
+
 
 #### 2.5.1 Supported ERP Systems
 

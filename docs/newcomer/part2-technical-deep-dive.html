@@ -18,8 +18,9 @@
 
     body {
         font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+        font-size: 16px;
         line-height: 1.7;
-        color: #2d3748;
+        color: #1f2937;
         background: linear-gradient(135deg, #f5f7fa 0%, #e9ecef 100%);
         background-attachment: fixed;
         padding: 20px;
@@ -29,7 +30,7 @@
         max-width: 1200px;
         margin: 0 auto;
         background: white;
-        padding: 50px;
+        padding: 40px 50px;
         border-radius: 16px;
         box-shadow: 0 10px 40px rgba(0,0,0,0.1);
         position: relative;
@@ -59,8 +60,9 @@
     }
 
     .nav-header h1 {
-        font-size: 1.5em;
+        font-size: 1.4em;
         margin-bottom: 5px;
+        font-weight: 600;
     }
 
     .nav-links {
@@ -84,51 +86,54 @@
 
     h1 {
         color: #667eea;
-        margin: 40px 0 25px 0;
-        padding: 15px 0 15px 20px;
-        border-left: 6px solid #667eea;
-        border-bottom: 3px solid #667eea;
+        margin: 35px 0 20px 0;
+        padding: 12px 0 12px 18px;
+        border-left: 5px solid #667eea;
+        border-bottom: 2px solid #667eea;
         background: linear-gradient(90deg, rgba(102, 126, 234, 0.05) 0%, rgba(255,255,255,0) 100%);
-        font-size: 2.5em;
+        font-size: 1.8em;
+        font-weight: 700;
         border-radius: 0 8px 0 0;
     }
 
     h2 {
         color: #764ba2;
-        margin: 35px 0 20px 0;
-        padding: 12px 0 12px 15px;
-        border-left: 5px solid #764ba2;
+        margin: 30px 0 18px 0;
+        padding: 10px 0 10px 15px;
+        border-left: 4px solid #764ba2;
         border-bottom: 2px solid #f0f0f0;
         background: linear-gradient(90deg, rgba(118, 75, 162, 0.03) 0%, rgba(255,255,255,0) 100%);
-        font-size: 2em;
+        font-size: 1.5em;
+        font-weight: 700;
         border-radius: 0 6px 0 0;
     }
 
     h3 {
         color: #667eea;
-        margin: 30px 0 18px 0;
-        padding: 10px 0 10px 15px;
-        border-left: 4px solid #667eea;
+        margin: 25px 0 15px 0;
+        padding: 8px 0 8px 12px;
+        border-left: 3px solid #667eea;
         background: linear-gradient(90deg, rgba(102, 126, 234, 0.04) 0%, transparent 100%);
-        font-size: 1.5em;
+        font-size: 1.25em;
+        font-weight: 600;
         border-radius: 0 6px 6px 0;
     }
 
     h4 {
         color: #764ba2;
-        margin: 25px 0 15px 0;
-        padding: 8px 0 8px 12px;
-        border-left: 3px solid #764ba2;
+        margin: 20px 0 12px 0;
+        padding: 6px 0 6px 10px;
+        border-left: 2px solid #764ba2;
         background: linear-gradient(90deg, rgba(118, 75, 162, 0.03) 0%, transparent 100%);
-        font-size: 1.2em;
+        font-size: 1.1em;
         font-weight: 600;
         border-radius: 0 4px 4px 0;
     }
 
     h5 {
         color: #667eea;
-        margin: 20px 0 12px 0;
-        padding: 6px 0 6px 10px;
+        margin: 18px 0 10px 0;
+        padding: 4px 0 4px 8px;
         border-left: 2px solid #667eea;
         font-size: 1.05em;
         font-weight: 600;
@@ -138,16 +143,23 @@
 
     h6 {
         color: #764ba2;
-        margin: 15px 0 10px 0;
-        font-size: 1em;
+        margin: 15px 0 8px 0;
+        font-size: 0.95em;
         font-weight: 600;
         text-transform: uppercase;
         letter-spacing: 0.5px;
     }
 
     p {
-        margin: 15px 0;
-        line-height: 1.8;
+        margin: 12px 0;
+        line-height: 1.7;
+        font-size: 0.95em;
+        color: #374151;
+    }
+    
+    /* Better spacing for paragraphs after headings */
+    h1 + p, h2 + p, h3 + p, h4 + p {
+        margin-top: 10px;
     }
 
     ul, ol {
@@ -156,8 +168,9 @@
     }
 
     li {
-        margin: 12px 0;
-        line-height: 1.8;
+        margin: 10px 0;
+        line-height: 1.7;
+        font-size: 0.95em;
         position: relative;
         padding-left: 8px;
     }
@@ -196,7 +209,7 @@
 
     /* Nested list items - smaller styling */
     li li {
-        font-size: 0.95em;
+        font-size: 0.92em;
         margin: 6px 0;
         background: linear-gradient(90deg, rgba(118, 75, 162, 0.02) 0%, transparent 100%);
     }
@@ -208,10 +221,10 @@
 
     code {
         background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-        padding: 3px 8px;
-        border-radius: 5px;
+        padding: 2px 6px;
+        border-radius: 4px;
         font-family: 'Fira Code', 'Courier New', Consolas, monospace;
-        font-size: 0.88em;
+        font-size: 0.85em;
         color: #d63384;
         border: 1px solid #dee2e6;
         font-weight: 500;
@@ -239,17 +252,21 @@
 
     pre {
         background: #1e293b;
-        color: #e2e8f0;
-        padding: 24px;
-        border-radius: 10px;
+        color: #cbd5e1;
+        padding: 16px 18px;
+        border-radius: 8px;
         overflow-x: auto;
-        margin: 25px 0;
-        border: 2px solid #334155;
-        box-shadow: 0 4px 6px rgba(0,0,0,0.1), 0 0 0 1px rgba(102, 126, 234, 0.1);
+        margin: 18px 0;
+        border: 1px solid #334155;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.08);
         font-family: 'Cascadia Code', 'Fira Code', 'SF Mono', 'Consolas', 'Liberation Mono', monospace;
-        font-size: 0.875em;
-        line-height: 1.7;
+        font-size: 0.8em;
+        line-height: 1.5;
         position: relative;
+        font-feature-settings: "liga" 0;
+        text-rendering: optimizeLegibility;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
     }
 
     pre code {
@@ -259,20 +276,13 @@
         border: none;
         font-family: inherit;
         font-weight: normal;
-    }
-
-    /* Better rendering for box-drawing characters */
-    pre {
-        font-feature-settings: "liga" 0;
-        text-rendering: optimizeLegibility;
-        -webkit-font-smoothing: antialiased;
-        -moz-osx-font-smoothing: grayscale;
+        font-size: 1em;
     }
 
     /* Hover effect */
     pre:hover {
-        border-color: #667eea;
-        box-shadow: 0 6px 12px rgba(0,0,0,0.15), 0 0 0 2px rgba(102, 126, 234, 0.3);
+        border-color: #475569;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.12);
         transition: all 0.3s ease;
     }
 
@@ -290,13 +300,14 @@
     }
 
     blockquote {
-        border-left: 5px solid #667eea;
+        border-left: 4px solid #667eea;
         padding: 15px 20px;
-        margin: 25px 0;
+        margin: 20px 0;
         color: #555;
         font-style: italic;
+        font-size: 0.95em;
         background: linear-gradient(90deg, rgba(102, 126, 234, 0.05) 0%, rgba(255,255,255,0) 100%);
-        border-radius: 0 8px 8px 0;
+        border-radius: 0 6px 6px 0;
         position: relative;
     }
 
@@ -313,11 +324,12 @@
     table {
         width: 100%;
         border-collapse: collapse;
-        margin: 25px 0;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        margin: 20px 0;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.08);
         border-radius: 8px;
         overflow: hidden;
         background: white;
+        font-size: 0.9em;
     }
 
     thead {
@@ -326,18 +338,19 @@
 
     th {
         color: white;
-        padding: 15px 12px;
+        padding: 12px 15px;
         text-align: left;
         font-weight: 600;
         text-transform: uppercase;
-        font-size: 0.85em;
-        letter-spacing: 0.5px;
+        font-size: 0.82em;
+        letter-spacing: 0.3px;
     }
 
     td {
-        padding: 12px;
-        border-bottom: 1px solid #e0e0e0;
+        padding: 10px 15px;
+        border-bottom: 1px solid #e5e7eb;
         vertical-align: top;
+        line-height: 1.6;
     }
 
     tbody tr:last-child td {
@@ -345,16 +358,22 @@
     }
 
     tbody tr:hover {
-        background: #f8f9fa;
+        background: rgba(102, 126, 234, 0.04);
         transition: background 0.2s ease;
     }
 
     tbody tr:nth-child(even) {
-        background: #fafafa;
+        background: rgba(102, 126, 234, 0.02);
     }
 
     tbody tr:nth-child(even):hover {
-        background: #f0f0f0;
+        background: rgba(102, 126, 234, 0.05);
+    }
+    
+    /* Better code in tables */
+    td code {
+        font-size: 0.85em;
+        padding: 2px 6px;
     }
 
     .info-box {
@@ -455,6 +474,37 @@
         color: #764ba2;
         text-decoration: underline;
     }
+    
+    /* Better display for metadata fields */
+    strong {
+        color: #374151;
+        font-weight: 600;
+    }
+    
+    /* Metadata field styling - each field on its own line */
+    .metadata-field {
+        margin: 8px 0;
+        padding: 8px 14px;
+        background: linear-gradient(90deg, rgba(102, 126, 234, 0.04) 0%, transparent 100%);
+        border-left: 3px solid #667eea;
+        border-radius: 0 4px 4px 0;
+        line-height: 1.7;
+        font-size: 0.95em;
+        display: block;
+        clear: both;
+    }
+    
+    .metadata-field strong {
+        color: #667eea;
+        font-weight: 600;
+        margin-right: 8px;
+        display: inline-block;
+        min-width: 100px;
+    }
+    
+    .metadata-field code {
+        font-size: 0.88em;
+    }
 
     footer {
         margin-top: 50px;
@@ -528,10 +578,10 @@
 
 <h3>1.1 The <code>engine</code> Module - Heart of the System</h3>
 
-<strong>Location:</strong> <code>/engine</code>  
-<strong>Artifact:</strong> <code>com.embrix.core:engine:3.1.9-SNAPSHOT</code>  
-<strong>Purpose:</strong> Centralized business logic for entire platform
-<strong>Why Critical:</strong>
+<div class="metadata-field"><strong>Location:</strong> <code>/engine</code></div>
+<div class="metadata-field"><strong>Artifact:</strong> <code>com.embrix.core:engine:3.1.9-SNAPSHOT</code></div>
+<div class="metadata-field"><strong>Purpose:</strong> Centralized business logic for entire platform</div>
+<div class="metadata-field"><strong>Why Critical:</strong> </div>
 <ul>
 <li>✅ Every microservice depends on it</li>
 <li>✅ Single source of truth for business rules</li>
@@ -584,7 +634,7 @@ The engine is organized into "Hubs" - each representing a major business domain:
 </code></pre>
 <h4>1.1.2 Real-World Hub Example: billingHub</h4>
 
-<strong>Location:</strong> <code>engine/src/main/groovy/com/embrix/core/engine/billingHub/</code>
+<div class="metadata-field"><strong>Location:</strong> <code>engine/src/main/groovy/com/embrix/core/engine/billingHub/</code></div>
 <strong>Key Services:</strong>
 <strong>1. ProrationEngine</strong>
 <pre><code class="language-groovy">class ProrationEngine {
@@ -729,7 +779,7 @@ mvn generate-sources
 </code></pre>
 <h4>1.1.4 Database Migrations with Flyway</h4>
 
-<strong>Location:</strong> <code>engine/src/main/resources/db/migration/</code>
+<div class="metadata-field"><strong>Location:</strong> <code>engine/src/main/resources/db/migration/</code></div>
 <strong>Migration Structure:</strong>
 <pre><code class="language-">db/migration/
 ├── V1__Create_Schema.sql              # Core schemas
@@ -780,10 +830,10 @@ mvn flyway:migrate -Dspring.profiles.active=dev
 </code></pre>
 <h3>1.2 The <code>common</code> Module - Shared Data Model</h3>
 
-<strong>Location:</strong> <code>/common</code>  
-<strong>Artifact:</strong> <code>com.embrix.core:common:3.1.9-SNAPSHOT</code>  
-<strong>Purpose:</strong> Consistent DTOs, enums, and utilities across all services
-<strong>Why Important:</strong>
+<div class="metadata-field"><strong>Location:</strong> <code>/common</code></div>
+<div class="metadata-field"><strong>Artifact:</strong> <code>com.embrix.core:common:3.1.9-SNAPSHOT</code></div>
+<div class="metadata-field"><strong>Purpose:</strong> Consistent DTOs, enums, and utilities across all services</div>
+<div class="metadata-field"><strong>Why Important:</strong> </div>
 <ul>
 <li>Ensures all services use same data structures</li>
 <li>Prevents version skew between services</li>
@@ -933,9 +983,9 @@ class ServiceLineDTO {
 </code></pre>
 <h3>1.3 The <code>oms-component</code> Module - Orchestration Framework</h3>
 
-<strong>Location:</strong> <code>/oms-component</code>  
-<strong>Artifact:</strong> <code>com.congerotechnology:ctg-oms-component:0.0.1-SNAPSHOT</code>  
-<strong>Purpose:</strong> Standardized framework for building order orchestrators
+<div class="metadata-field"><strong>Location:</strong> <code>/oms-component</code></div>
+<div class="metadata-field"><strong>Artifact:</strong> <code>com.congerotechnology:ctg-oms-component:0.0.1-SNAPSHOT</code></div>
+<div class="metadata-field"><strong>Purpose:</strong> Standardized framework for building order orchestrators</div>
 <strong>What is an Orchestrator?</strong>
 An orchestrator is a workflow processor that:
 <ol>
@@ -1140,9 +1190,9 @@ When this orchestrator starts, OMS Component framework automatically:
 </code></pre>
 <h3>1.4 The <code>gateway-common</code> Module</h3>
 
-<strong>Location:</strong> <code>/gateway-common</code>  
-<strong>Artifact:</strong> <code>com.embrix.core:gateway-common:3.1.9-SNAPSHOT</code>  
-<strong>Purpose:</strong> Shared logic for external system integration
+<div class="metadata-field"><strong>Location:</strong> <code>/gateway-common</code></div>
+<div class="metadata-field"><strong>Artifact:</strong> <code>com.embrix.core:gateway-common:3.1.9-SNAPSHOT</code></div>
+<div class="metadata-field"><strong>Purpose:</strong> Shared logic for external system integration</div>
 <strong>Features:</strong>
 <ul>
 <li>Generic Request/Response envelopes</li>
@@ -1188,10 +1238,10 @@ When this orchestrator starts, OMS Component framework automatically:
 Gateways are the <strong>entry and exit points</strong> of the platform. They normalize external data and protect core services from external system changes.
 <h3>2.1 <code>crm_gateway</code> - The Front Door</h3>
 
-<strong>Location:</strong> <code>/crm_gateway</code>  
-<strong>Internal Name:</strong> <code>ctg-oms</code>  
-<strong>Port:</strong> 8080 (default)  
-<strong>Purpose:</strong> Main entry point for external systems (CRM, portals)
+<div class="metadata-field"><strong>Location:</strong> <code>/crm_gateway</code></div>
+<div class="metadata-field"><strong>Internal Name:</strong> <code>ctg-oms</code></div>
+<div class="metadata-field"><strong>Port:</strong> 8080 (default)</div>
+<div class="metadata-field"><strong>Purpose:</strong> Main entry point for external systems (CRM, portals)</div>
 <h4>2.1.1 Key Responsibilities</h4>
 
 <ol>
@@ -1321,9 +1371,9 @@ Gateways are the <strong>entry and exit points</strong> of the platform. They no
 </code></pre>
 <h3>2.2 <code>provision_gateway</code> - Service Activation</h3>
 
-<strong>Location:</strong> <code>/provision_gateway</code>  
-<strong>Port:</strong> 8081 (default)  
-<strong>Purpose:</strong> Bridge to network provisioning systems
+<div class="metadata-field"><strong>Location:</strong> <code>/provision_gateway</code></div>
+<div class="metadata-field"><strong>Port:</strong> 8081 (default)</div>
+<div class="metadata-field"><strong>Purpose:</strong> Bridge to network provisioning systems</div>
 <h4>2.2.1 Supported Provisioning Systems</h4>
 
 <strong>1. Nokia ESB (MCM Telecom)</strong>
@@ -1432,8 +1482,8 @@ Gateways are the <strong>entry and exit points</strong> of the platform. They no
 </code></pre>
 <h3>2.3 <code>tax-gateway</code> & <code>tax-engine</code> - Tax Compliance</h3>
 
-<strong>Location:</strong> <code>/tax-gateway</code>, <code>/tax-engine</code>  
-<strong>Purpose:</strong> Unified tax calculation interface
+<div class="metadata-field"><strong>Location:</strong> <code>/tax-gateway</code>, <code>/tax-engine</code></div>
+<div class="metadata-field"><strong>Purpose:</strong> Unified tax calculation interface</div>
 <h4>2.3.1 Tax Calculation API</h4>
 
 <strong>Request:</strong>
@@ -1575,8 +1625,8 @@ Gateways are the <strong>entry and exit points</strong> of the platform. They no
 </code></pre>
 <h3>2.4 <code>payment-gateway</code> - Payment Processing</h3>
 
-<strong>Location:</strong> <code>/payment-gateway</code>  
-<strong>Purpose:</strong> Payment processor integration
+<div class="metadata-field"><strong>Location:</strong> <code>/payment-gateway</code></div>
+<div class="metadata-field"><strong>Purpose:</strong> Payment processor integration</div>
 <h4>2.4.1 Supported Payment Methods</h4>
 
 <strong>1. Credit/Debit Cards (Stripe, PayPal)</strong>
@@ -1631,8 +1681,8 @@ Gateways are the <strong>entry and exit points</strong> of the platform. They no
 </code></pre>
 <h3>2.5 <code>finance-gateway</code> - ERP Integration</h3>
 
-<strong>Location:</strong> <code>/finance-gateway</code>  
-<strong>Purpose:</strong> Sync billing data to ERP systems
+<div class="metadata-field"><strong>Location:</strong> <code>/finance-gateway</code></div>
+<div class="metadata-field"><strong>Purpose:</strong> Sync billing data to ERP systems</div>
 <h4>2.5.1 Supported ERP Systems</h4>
 
 <strong>1. QuickBooks Online</strong>

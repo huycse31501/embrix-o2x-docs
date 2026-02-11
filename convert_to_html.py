@@ -256,17 +256,21 @@ CSS_TEMPLATE = """
 
     pre {
         background: #1e293b;
-        color: #e2e8f0;
-        padding: 20px;
+        color: #cbd5e1;
+        padding: 16px 18px;
         border-radius: 8px;
         overflow-x: auto;
-        margin: 20px 0;
-        border: 2px solid #334155;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        margin: 18px 0;
+        border: 1px solid #334155;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.08);
         font-family: 'Cascadia Code', 'Fira Code', 'SF Mono', 'Consolas', 'Liberation Mono', monospace;
-        font-size: 0.85em;
-        line-height: 1.6;
+        font-size: 0.8em;
+        line-height: 1.5;
         position: relative;
+        font-feature-settings: "liga" 0;
+        text-rendering: optimizeLegibility;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
     }
 
     pre code {
@@ -276,20 +280,13 @@ CSS_TEMPLATE = """
         border: none;
         font-family: inherit;
         font-weight: normal;
-    }
-
-    /* Better rendering for box-drawing characters */
-    pre {
-        font-feature-settings: "liga" 0;
-        text-rendering: optimizeLegibility;
-        -webkit-font-smoothing: antialiased;
-        -moz-osx-font-smoothing: grayscale;
+        font-size: 1em;
     }
 
     /* Hover effect */
     pre:hover {
-        border-color: #667eea;
-        box-shadow: 0 6px 12px rgba(0,0,0,0.15), 0 0 0 2px rgba(102, 126, 234, 0.3);
+        border-color: #475569;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.12);
         transition: all 0.3s ease;
     }
 
@@ -481,6 +478,37 @@ CSS_TEMPLATE = """
         color: #764ba2;
         text-decoration: underline;
     }
+    
+    /* Better display for metadata fields */
+    strong {
+        color: #374151;
+        font-weight: 600;
+    }
+    
+    /* Metadata field styling - each field on its own line */
+    .metadata-field {
+        margin: 8px 0;
+        padding: 8px 14px;
+        background: linear-gradient(90deg, rgba(102, 126, 234, 0.04) 0%, transparent 100%);
+        border-left: 3px solid #667eea;
+        border-radius: 0 4px 4px 0;
+        line-height: 1.7;
+        font-size: 0.95em;
+        display: block;
+        clear: both;
+    }
+    
+    .metadata-field strong {
+        color: #667eea;
+        font-weight: 600;
+        margin-right: 8px;
+        display: inline-block;
+        min-width: 100px;
+    }
+    
+    .metadata-field code {
+        font-size: 0.88em;
+    }
 
     footer {
         margin-top: 50px;
@@ -548,6 +576,24 @@ def convert_markdown_to_html(markdown_text, title, nav_links=None):
     markdown_text = re.sub(r'^## (.*?)$', r'<h2>\1</h2>', markdown_text, flags=re.MULTILINE)
     markdown_text = re.sub(r'^# (.*?)$', r'<h1>\1</h1>', markdown_text, flags=re.MULTILINE)
     
+    # CRITICAL: Mark metadata fields BEFORE bold processing
+    # This ensures Location:, Artifact:, Purpose: etc. get proper wrapping
+    # Pattern matches: **FieldName:** followed by any content until end of line
+    # Use [^\r\n]* instead of .* to avoid matching across line boundaries
+    metadata_pattern = r'^\*\*(Location|Artifact|Purpose|Port|Technology|Internal Name|Why (?:Important|Critical)|What is|Key (?:Operations|Concepts|Jobs|Features)|GraphQL Operations):\*\*[ \t]*([^\r\n]*)$'
+    
+    def metadata_replacer(match):
+        field_name = match.group(1)
+        field_value = match.group(2).strip()
+        return f'{{{{METADATA_START}}}}{field_name}{{{{METADATA_MID}}}}{field_value}{{{{METADATA_END}}}}'
+    
+    markdown_text = re.sub(
+        metadata_pattern,
+        metadata_replacer,
+        markdown_text,
+        flags=re.MULTILINE
+    )
+    
     # Bold and italic
     markdown_text = re.sub(r'\*\*(.*?)\*\*', r'<strong>\1</strong>', markdown_text)
     markdown_text = re.sub(r'\*(.*?)\*', r'<em>\1</em>', markdown_text)
@@ -577,6 +623,25 @@ def convert_markdown_to_html(markdown_text, title, nav_links=None):
     for i, line in enumerate(lines):
         stripped = line.strip()
         indent_level = len(line) - len(line.lstrip())
+        
+        # Detect metadata field markers - these should be isolated
+        if '{{METADATA_START}}' in line:
+            # Close any open lists before metadata field
+            if in_list or in_ordered_list:
+                flush_list_item()
+            if in_list:
+                result.append('</ul>')
+                in_list = False
+            if in_ordered_list:
+                result.append('</ol>')
+                in_ordered_list = False
+            if in_table:
+                result.append('</tbody></table>')
+                in_table = False
+            
+            # Add metadata field line as-is
+            result.append(line)
+            continue
         
         # Table detection
         if stripped.startswith('|') and stripped.endswith('|'):
@@ -724,6 +789,24 @@ def convert_markdown_to_html(markdown_text, title, nav_links=None):
     markdown_text = re.sub(r'(</ul>|</ol>|<hr>|</table>)\s*</p>', r'\1\n', markdown_text)
     markdown_text = re.sub(r'<p>\s*(<thead>|<tbody>)', r'\1', markdown_text)
     markdown_text = re.sub(r'(</thead>|</tbody>)\s*</p>', r'\1', markdown_text)
+    
+    # CRITICAL: Convert metadata markers to proper div wrappers AFTER paragraph processing
+    # Handle cases with paragraph wrapper
+    markdown_text = re.sub(
+        r'<p>\s*{{METADATA_START}}([^{]+){{METADATA_MID}}([^{]*){{METADATA_END}}\s*</p>',
+        r'<div class="metadata-field"><strong>\1:</strong> \2</div>',
+        markdown_text
+    )
+    # Also handle cases without paragraph wrapper
+    markdown_text = re.sub(
+        r'{{METADATA_START}}([^{]+){{METADATA_MID}}([^{]*){{METADATA_END}}',
+        r'<div class="metadata-field"><strong>\1:</strong> \2</div>',
+        markdown_text
+    )
+    # Clean up any remaining paragraph tags around metadata fields
+    markdown_text = re.sub(r'<p>\s*(<div class="metadata-field">)', r'\1', markdown_text)
+    markdown_text = re.sub(r'(</div>)\s*</p>', r'\1', markdown_text)
+    
     
     # Add spacing after headers
     markdown_text = re.sub(r'(</h[1-6]>)', r'\1\n', markdown_text)
