@@ -993,7 +993,7 @@ CRM_GATEWAY_URL: http://urbanos-crm-gateway
 
 <h4>Merchant Configuration Lookup</h4>
 
-Gateways retrieve tenant-specific merchant configurations from shared <code>core_config</code>:
+At runtime, each gateway (payment, tax, finance, CRM) looks up the <strong>right merchant configuration for the current tenant</strong> from the shared <code>core_config</code> schema:
 <pre><code class="language-groovy">// From TenantRepositoryServiceImpl
 Tenant findByTenantId(String id, MerchantType gateway_type) {
     jdbcTemplate.query(
@@ -1021,13 +1021,13 @@ Tenant findByTenantId(String id, MerchantType gateway_type) {
 
 <h4>No Tenant Selection in UI</h4>
 
-Frontend applications (<code>ui-core</code>, <code>selfcare</code>) do not:
+From an end-user perspective, each tenant simply gets <strong>its own portal</strong>. Frontend applications (<code>ui-core</code>, <code>selfcare</code>) do <em>not</em>:
 <ul>
 <li>❌ Pass tenant ID in headers</li>
-<li>❌ Have tenant selection dropdowns</li>
-<li>❌ Use tenant-specific URLs</li>
+<li>❌ Show any tenant selection dropdowns</li>
+<li>❌ Use special tenant-discriminator query params</li>
 </ul>
-<strong>Reason:</strong> Each deployment is already tenant-specific. The backend knows its tenant from environment configuration.
+Instead, each deployment is already tenant-specific (separate DNS + Helm values), and the backend infers its tenant purely from environment configuration.
 <h4>Tenant Configuration API</h4>
 
 <pre><code class="language-graphql">query {
