@@ -310,7 +310,8 @@
         counter-reset: item;
     }
     
-    ol li::before {
+    /* Only number top-level items in ordered lists, not nested bullets */
+    ol > li::before {
         content: counter(item);
         counter-increment: item;
         position: absolute;
@@ -826,6 +827,7 @@
 <h2>Table of Contents</h2>
 
 <ol>
+<li><a href="#high-level-erd-overview">High-Level ERD Overview</a></li>
 <li><a href="#database-technology-overview">Database Technology Overview</a></li>
 <li><a href="#multi-tenant-data-architecture">Multi-Tenant Data Architecture</a></li>
 <li><a href="#schema-organization">Schema Organization</a></li>
@@ -837,6 +839,32 @@
 <li><a href="#data-access-patterns">Data Access Patterns</a></li>
 <li><a href="#backup--recovery">Backup & Recovery</a></li>
 </ol>
+
+<hr>
+
+<h2>High-Level ERD Overview</h2>
+
+Before diving into schemas and individual tables, it helps to have a <strong>mental model of the ERD</strong>.  
+The diagram below shows the main entities and how they connect (same content as the standalone ERD page).
+<p style="margin: 16px 0;">
+  <img src="ERD.png"
+       alt="Embrix O2X Database ERD – High-Level Overview"
+       style="display:block;max-width:100%;height:auto;border-radius:8px;border:1px solid #e5e7eb;box-shadow:0 8px 24px rgba(15,23,42,0.35);" />
+</p>
+At a high level, the ERD is organized around five core domains:
+<ul>
+<li><strong>Customer & Identity</strong><br><ul><li><code>ACCOUNT</code> is the root entity. Almost everything ultimately hangs off an account.</li></ul><br><ul><li><code>ADDRESS</code> and <code>USER</code> are children of <code>ACCOUNT</code> (billing/service addresses, login users).</li></ul><br><ul><li>An account:</li></ul><br><ul><li><em>places</em> <code>ORDER</code>s</li></ul><br><ul><li><em>owns</em> <code>SUBSCRIPTION</code>s</li></ul><br><ul><li><em>is billed by</em> <code>INVOICE</code>s</li></ul><br><ul><li><em>pays with</em> <code>PAYMENT</code>s</li></ul><br><ul><li><em>generates</em> <code>USAGE_RECORD</code>s</li></ul><br><ul><li><em>has</em> <code>BALANCE_IMPACT</code>s that track AR changes</li></ul></li>
+<li><strong>Product, Pricing & Bundles</strong><br><ul><li><code>PRODUCT</code> defines what we sell (plans, add‑ons, bundles, usage products).</li></ul><br><ul><li><code>PRICE_OFFER</code> defines how a product is priced (amount, frequency, status).</li></ul><br><ul><li><code>BUNDLE</code> groups multiple products together; <code>DISCOUNT</code> attaches commercial discounts.</li></ul><br><ul><li>Relationships:</li></ul><br><ul><li>A <code>PRODUCT</code> is <strong>priced by</strong> many <code>PRICE_OFFER</code>s.</li></ul><br><ul><li>A <code>PRODUCT</code> can appear in many <code>SERVICE_LINE</code>s and <code>SUBSCRIPTION</code>s.</li></ul><br><ul><li>A <code>BUNDLE</code> <strong>contains</strong> multiple <code>PRODUCT</code>s; <code>DISCOUNT</code> <strong>applies to</strong> one or more <code>PRICE_OFFER</code>s.</li></ul></li>
+<li><strong>Orders & Subscriptions</strong><br><ul><li><code>"ORDER"</code> represents a commercial order coming from CRM or self‑care.</li></ul><br><ul><li><code>SERVICE_LINE</code> rows are the individual actions/items inside that order.</li></ul><br><ul><li><code>SUBSCRIPTION</code> is the long‑lived contractual relationship that results from orders.</li></ul><br><ul><li>Supporting entities:</li></ul><br><ul><li><code>ORCHESTRATION_STATE</code> tracks the current provisioning/billing workflow step.</li></ul><br><ul><li><code>ORDER_ACTIVITY</code> logs status changes and audit history.</li></ul><br><ul><li>Key relationships:</li></ul><br><ul><li>An <code>ACCOUNT</code> <strong>places</strong> many <code>"ORDER"</code>s.</li></ul><br><ul><li>An <code>"ORDER"</code> <strong>contains</strong> many <code>SERVICE_LINE</code>s and is <strong>tracked by</strong> one <code>ORCHESTRATION_STATE</code>.</li></ul><br><ul><li>A <code>SUBSCRIPTION</code> belongs to an <code>ACCOUNT</code>, references a <code>PRODUCT</code>, and uses a specific <code>PRICE_OFFER</code>.</li></ul></li>
+<li><strong>Billing, Invoicing & Accounts Receivable</strong><br><ul><li><code>CHARGE</code> is the atomic billing item produced by rating and billing runs.</li></ul><br><ul><li><code>INVOICE</code> aggregates many <code>CHARGE</code>s into a customer‑facing bill.</li></ul><br><ul><li><code>PAYMENT</code> records money received; <code>PAYMENT_ALLOCATION</code> ties payments to invoices/charges.</li></ul><br><ul><li><code>BALANCE_IMPACT</code> keeps the running AR position in sync.</li></ul><br><ul><li>Relationships:</li></ul><br><ul><li>A <code>SUBSCRIPTION</code> <strong>generates</strong> many <code>CHARGE</code>s.</li></ul><br><ul><li>An <code>INVOICE</code> <strong>aggregates</strong> many <code>CHARGE</code>s.</li></ul><br><ul><li>A <code>PAYMENT</code> <strong>allocates</strong> to one or more invoices via <code>PAYMENT_ALLOCATION</code>.</li></ul><br><ul><li>Both <code>PAYMENT</code> and <code>CHARGE</code> create <code>BALANCE_IMPACT</code> rows that roll up to the <code>ACCOUNT</code>.</li></ul></li>
+<li><strong>Usage, Mediation & Revenue Recognition</strong><br><ul><li><code>USAGE_RECORD</code> stores individual rated/ unrated events (CDRs).</li></ul><br><ul><li><code>USAGE_ACCUMULATOR</code> and <code>USAGE_QUOTA</code> track buckets (e.g., data bundles, fair‑use limits).</li></ul><br><ul><li><code>CDR_FILE</code> and <code>CDR_ERROR</code> model ingestion files and failed records.</li></ul><br><ul><li><code>DEFERRED_REVENUE</code> and <code>JOURNAL_ENTRY</code> model revenue that is recognized over time.</li></ul><br><ul><li>Relationships:</li></ul><br><ul><li>A <code>SUBSCRIPTION</code> <strong>consumes</strong> many <code>USAGE_RECORD</code>s and is <strong>tracked by</strong> <code>USAGE_ACCUMULATOR</code>/<code>USAGE_QUOTA</code>.</li></ul><br><ul><li>A <code>CDR_FILE</code> <strong>produces</strong> many <code>USAGE_RECORD</code>s and may have <code>CDR_ERROR</code> rows.</li></ul><br><ul><li>A <code>CHARGE</code> may <strong>defer</strong> into <code>DEFERRED_REVENUE</code>, which is then <strong>recognized by</strong> multiple <code>JOURNAL_ENTRY</code> rows.</li></ul></li>
+</ul>
+When reading the rest of this document, you can think in terms of these domains:
+<ul>
+<li>Start from <code>ACCOUNT</code>.</li>
+<li>Follow orders → subscriptions → charges → invoices/payments.</li>
+<li>Connect usage (<code>USAGE_RECORD</code>) and revenue (<code>DEFERRED_REVENUE</code> / <code>JOURNAL_ENTRY</code>) back to those core entities.</li>
+</ul>
 
 <hr>
 
@@ -3519,7 +3547,7 @@ aws rds export-db-snapshot-to-s3 \
 
 <hr>
 
-<strong>For backend service integration details, see <code>NEWCOMER_GUIDE_PART2_TECHNICAL_DEEP_DIVE.md</code></strong></p>
+<strong>For backend service integration details (engine hubs, gateways, transactions), see the Technical Deep Dive guide (<code>part2-technical-deep-dive.html</code>).</strong></p>
         <footer>
             <p><strong>Embrix O2X Platform Documentation</strong></p>
             <p>Version 3.1.9-SNAPSHOT • Last Updated: February 2026</p>

@@ -310,7 +310,8 @@
         counter-reset: item;
     }
     
-    ol li::before {
+    /* Only number top-level items in ordered lists, not nested bullets */
+    ol > li::before {
         content: counter(item);
         counter-increment: item;
         position: absolute;
@@ -1906,7 +1907,7 @@ aws cloudfront create-invalidation --distribution-id E123456 --paths "/*"
 
 <hr>
 
-<strong>For detailed backend integration, see <code>NEWCOMER_GUIDE_PART2_TECHNICAL_DEEP_DIVE.md</code></strong></p>
+<strong>For detailed backend integration patterns (hubs, gateways, GraphQL), see the Technical Deep Dive guide (<code>part2-technical-deep-dive.html</code>).</strong></p>
         <footer>
             <p><strong>Embrix O2X Platform Documentation</strong></p>
             <p>Version 3.1.9-SNAPSHOT • Last Updated: February 2026</p>

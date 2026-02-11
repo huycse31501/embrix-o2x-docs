@@ -314,7 +314,8 @@ CSS_TEMPLATE = """
         counter-reset: item;
     }
     
-    ol li::before {
+    /* Only number top-level items in ordered lists, not nested bullets */
+    ol > li::before {
         content: counter(item);
         counter-increment: item;
         position: absolute;
@@ -1176,8 +1177,8 @@ def main():
         ("docs/newcomer-4/GLOSSARY.md", "glossary.html", "📖 Glossary of Terms"),
     ]
     
-    # Output directory - docs/big-new-comer
-    output_dir = Path("docs/big-new-comer")
+    # Output directory - docs/newcomer (primary HTML docs location)
+    output_dir = Path("docs/newcomer")
     output_dir.mkdir(parents=True, exist_ok=True)
     
     converted_count = 0
@@ -1214,10 +1215,8 @@ Welcome to the **Embrix O2X Platform Knowledge Hub** - your comprehensive guide 
 
 ## Getting Started
 
-New to Embrix O2X? Start with these essential resources:
+New to Embrix O2X? Start with this:
 
-- [Quick Start Guide](quick-start.html) - Get up and running quickly
-- [Complete Newcomer's Guide Index](guide-index.html) - Your structured learning path
 - [Business Scenarios & Workflows](business-scenarios.html) - Real-world use cases and examples
 
 ---
@@ -1261,8 +1260,6 @@ Essential resources for developers:
 
 - [API Reference](api-reference.html) - Complete REST API documentation
 - [Frontend Development Guide](frontend-guide.html) - Frontend development best practices
-- [Quick Reference Guide](quick-reference.html) - Commands, snippets, and quick tips
-- [Contributing Guide](contributing.html) - How to contribute to the project
 
 ---
 
@@ -1275,19 +1272,19 @@ Get help when you need it:
 
 ---
 
-## Platform Information
-
-**Version:** 3.1.9-SNAPSHOT  
-**Last Updated:** February 2026  
-**Technology Stack:** Spring Boot, React, PostgreSQL, RabbitMQ, Redis  
-**Architecture:** Microservices, Multi-tenant, Event-driven
+## Key Features
 
 **Key Features:**
-- Multi-tenant SaaS platform
-- Comprehensive Order-to-Cash workflow
-- Real-time event processing
-- Advanced pricing and taxation engines
-- Self-service portal and admin interfaces
+- Multi-tenant SaaS platform  
+  See: [Complete System Overview](complete-system-overview.html), [Multi-Tenant Architecture](multi-tenant-architecture.html)
+- Comprehensive Order-to-Cash workflow  
+  See: [Business Scenarios & Workflows](business-scenarios.html)
+- Real-time event processing  
+  See: [Message Queues & Integration](part5-message-queues.html)
+- Advanced pricing and taxation engines  
+  See: [Technical Deep Dive](part2-technical-deep-dive.html)
+- Self-service portal and admin interfaces  
+  See: [Frontend & UI Architecture](frontend-ui-architecture.html)
 
 ---
 

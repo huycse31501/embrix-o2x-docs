@@ -310,7 +310,8 @@
         counter-reset: item;
     }
     
-    ol li::before {
+    /* Only number top-level items in ordered lists, not nested bullets */
+    ol > li::before {
         content: counter(item);
         counter-increment: item;
         position: absolute;
@@ -813,7 +814,7 @@
 </head>
 <body>
     <div class="container">
-        <div class="nav-header"><div><h1>Embrix O2X Documentation</h1><small>Navigate between guides</small></div><div class="nav-links"><a href="index.html">Home</a><a href="guide-index.html">Guide Index</a><a href="guide-index.html">Part 1-5</a><a href="quick-reference.html">Quick Ref</a><a href="complete-system-overview.html">Architecture</a><a href="api-reference.html">API Reference</a><a href="troubleshooting-guide.html">Troubleshooting</a></div></div>
+        <div class="nav-header"><div><h1>Embrix O2X Documentation</h1><small>Navigate between guides</small></div><div class="nav-links"><a href="index.html">Home</a><a href="guide-index.html">Guide Index</a><a href="guide-index.html">Part 1-5</a><a href="quick-start.html">Quick Start</a><a href="quick-reference.html">Quick Ref</a><a href="complete-system-overview.html">Architecture</a><a href="api-reference.html">API Reference</a><a href="troubleshooting-guide.html">Troubleshooting</a></div></div>
         
 <h1>Embrix O2X Knowledge Hub</h1>
 
@@ -823,7 +824,7 @@ Welcome to the <strong>Embrix O2X Platform Knowledge Hub</strong> - your compreh
 
 <h2>Getting Started</h2>
 
-New to Embrix O2X? Start with these essential resources:
+New to Embrix O2X? Start with this:
 <ul>
 <li><a href="business-scenarios.html">Business Scenarios & Workflows</a> - Real-world use cases and examples</li>
 </ul>
@@ -872,7 +873,6 @@ Essential resources for developers:
 <ul>
 <li><a href="api-reference.html">API Reference</a> - Complete REST API documentation</li>
 <li><a href="frontend-guide.html">Frontend Development Guide</a> - Frontend development best practices</li>
-<li><a href="quick-reference.html">Quick Reference Guide</a> - Commands, snippets, and quick tips</li>
 </ul>
 
 <hr>
@@ -881,29 +881,26 @@ Essential resources for developers:
 
 Get help when you need it:
 <ul>
+<li><a href="troubleshooting-guide.html">Troubleshooting Guide</a> - Common issues and solutions</li>
 <li><a href="glossary.html">Glossary of Terms</a> - Technical terminology and definitions</li>
 </ul>
 
 <hr>
 
-<h2>Platform Information</h2>
+<h2>Key Features</h2>
 
-<strong>Version:</strong> 3.1.9-SNAPSHOT  
-<strong>Last Updated:</strong> February 2026  
-<strong>Technology Stack:</strong> Spring Boot, React, PostgreSQL, RabbitMQ, Redis  
-<strong>Architecture:</strong> Microservices, Multi-tenant, Event-driven
-<div class="metadata-field"><strong>Key Platform Features:</strong></div>
+<div class="metadata-field"><strong>Key Features:</strong> </div>
 <ul>
-<li><a href="multi-tenant-architecture.html">Multi-tenant SaaS platform</a> - Deployment-level multi-tenancy with dedicated databases per tenant</li>
-<li><a href="business-scenarios-and-workflows.html">Comprehensive Order-to-Cash workflow</a> - Order entry through provisioning, usage, billing, invoicing, payment, and revenue recognition</li>
-<li><a href="part5-message-queues.html">Real-time event processing</a> - Message queues, async workflows, and real-time usage rating</li>
-<li><a href="complete-services-catalog.html">Advanced pricing and taxation engines</a> - quote-manager, pricing_sync, tax-engine, and tax-gateway</li>
-<li><a href="frontend-ui-architecture.html">Self-service portal and admin interfaces</a> - Selfcare UI, admin dashboards, and frontend architecture</li>
+<li>Multi-tenant SaaS platform  <br>See: <a href="complete-system-overview.html">Complete System Overview</a>, <a href="multi-tenant-architecture.html">Multi-Tenant Architecture</a></li>
+<li>Comprehensive Order-to-Cash workflow  <br>See: <a href="business-scenarios.html">Business Scenarios & Workflows</a></li>
+<li>Real-time event processing  <br>See: <a href="part5-message-queues.html">Message Queues & Integration</a></li>
+<li>Advanced pricing and taxation engines  <br>See: <a href="part2-technical-deep-dive.html">Technical Deep Dive</a></li>
+<li>Self-service portal and admin interfaces  <br>See: <a href="frontend-ui-architecture.html">Frontend & UI Architecture</a></li>
 </ul>
 
 <hr>
 
-Happy learning! Explore the documentation using the sections above.</p>
+Happy learning! Start your journey with the <a href="guide-index.html">Complete Newcomer's Guide Index</a>.</p>
         <footer>
             <p><strong>Embrix O2X Platform Documentation</strong></p>
             <p>Version 3.1.9-SNAPSHOT • Last Updated: February 2026</p>
