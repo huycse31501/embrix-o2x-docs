@@ -1114,6 +1114,15 @@ BillUnitService.create()
 
    Result: ✓ Account Created  ✓ Services Provisioned  ✓ Ready to Bill
 </code></pre>
+<h5>Database View: What Gets Stored in Scenario 1</h5>
+
+For this self-registration scenario, think about the data model in three layers:
+<ul>
+<li><strong>Customer & identity tables</strong><br><ul><li><code>account</code> – one row per customer account (company information and billing configuration).</li></ul><br><ul><li><code>address</code> – billing/service addresses linked to <code>account.id</code> via <code>account_id</code>.</li></ul><br><ul><li><code>user</code> – login credentials for the primary contact, linked back to <code>account_id</code>.</li></ul></li>
+<li><strong>Commercial configuration tables</strong><br><ul><li><code>product</code> – the UCaaS plan and any add‑ons the customer selected.</li></ul><br><ul><li><code>price_offer</code> – the specific price plan (e.g., $49/user/month, annual commit).</li></ul><br><ul><li><code>bundle</code> / related mapping tables – how user counts, voice minutes, and features are grouped into offers.</li></ul></li>
+<li><strong>Order, subscription, and billing tables</strong><br><ul><li><code>order</code> / <code>order_line</code> / <code>order_service</code> – what was ordered and in what quantities.</li></ul><br><ul><li><code>subscription</code> – long‑lived contract tying the account to the chosen product/price_offer.</li></ul><br><ul><li><code>bill_unit</code> – describes the billing cycle (e.g., monthly on the 1st) and first bill date.</li></ul><br><ul><li><code>invoice</code> / <code>charge</code> – if an initial invoice is generated, one <code>invoice</code> row plus multiple <code>charge</code> rows represent the first bill.</li></ul></li>
+</ul>
+When you see the GraphQL calls and service names in this scenario, you can mentally map them to these tables: the UI and API calls end up creating or updating rows in these entities so that later billing, usage, and collections flows have consistent data to work with.
 
 <hr>
 
@@ -1434,6 +1443,18 @@ BillUnitService.create()
 
 <hr>
 
+<h5>Database View: Usage & Transactions</h5>
+
+For this scenario, most of the information on the screen comes from three main areas of the data model:
+<ul>
+<li><strong>Balances and allowances</strong><br><ul><li><code>balance_unit</code> / related tables – store current monetary balance and grants for data/voice/SMS.</li></ul><br><ul><li><code>usage_quota</code> – configured limits (e.g., 10 GB data bundle, 1,000 SMS).</li></ul><br><ul><li><code>usage_accumulator</code> – running totals for the current billing cycle (e.g., total data used, international minutes).</li></ul></li>
+<li><strong>Transactions (money movements)</strong><br><ul><li><code>transaction_unit</code> – one row per financial event that changes balance:</li></ul><br><ul><li>Type <code>USAGE</code> for rated usage charges.</li></ul><br><ul><li>Type <code>RECURRING</code> for monthly subscription fees.</li></ul><br><ul><li>Type <code>TOP_UP</code> for recharges.</li></ul><br><ul><li>Type <code>ADJUSTMENT</code> for manual credits/debits.</li></ul><br><ul><li>These rows feed into <code>charge</code> and later into <code>invoice</code> when billing is run.</li></ul></li>
+<li><strong>Raw usage (CDRs)</strong><br><ul><li><code>usage_record</code> – one row per call/data/SMS event, linked to the account and subscription.</li></ul><br><ul><li><code>cdr_file</code> / <code>cdr_error</code> – track imported files and any bad records.</li></ul></li>
+</ul>
+So when the portal calls <code>getBalanceUnitByAccountId</code> and <code>getTransactionUnit</code>, it is really reading from <code>balance_unit</code>, <code>usage_accumulator</code>, and <code>transaction_unit</code>, which in turn reflect the underlying <code>usage_record</code> and billing runs.
+
+<hr>
+
 <h2>Order-to-Cash Complete Workflows</h2>
 
 <h3>Workflow 1: Subscription Order Creation to Revenue Recognition</h3>
@@ -1555,6 +1576,18 @@ BillUnitService.create()
 </tr>
 </tbody></table>
 <strong>Total</strong>: 12 months × $2,041.67 = $24,500.00
+
+<hr>
+
+<h5>Database View: Order-to-Cash to Revenue</h5>
+
+Across this Workflow 1, you can map each phase to specific tables:
+<ul>
+<li><strong>Order capture and provisioning</strong><br><ul><li><code>order</code>, <code>order_line</code>, <code>order_service</code> – capture the CRM order and individual services.</li></ul><br><ul><li><code>subscription</code> – the active service contract that billing uses.</li></ul><br><ul><li><code>price_offer</code>, <code>product</code> – define commercial terms used by rating and billing.</li></ul></li>
+<li><strong>Billing and AR</strong><br><ul><li><code>transaction_unit</code> – detailed rated charges (one per line item).</li></ul><br><ul><li><code>bill_unit</code> – groups <code>transaction_unit</code> rows into a billing run for a given period.</li></ul><br><ul><li><code>transaction_tax_data</code> – holds tax amounts per line based on tax-gateway results.</li></ul><br><ul><li><code>invoice</code> / <code>charge</code> – the customer-facing bill and its component line items.</li></ul></li>
+<li><strong>Revenue recognition</strong><br><ul><li><code>deferred_revenue</code> (or reference revenue journal equivalents) – stores the schedule of how much revenue remains to be recognized.</li></ul><br><ul><li><code>journal_entry</code> – accounting postings that move amounts from Deferred Revenue (2400) to Service Revenue (4000) month by month.</li></ul></li>
+</ul>
+At a high level: the <strong>order</strong> creates a <strong>subscription</strong>, billing transforms that into <strong>charges</strong> and an <strong>invoice</strong>, and revenue recognition then spreads that invoice amount over time using <strong>deferred_revenue</strong> and <strong>journal_entry</strong> so finance reports stay correct.
 
 <hr>
 

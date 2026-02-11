@@ -273,6 +273,28 @@ BillUnitService.create()
    Result: ✓ Account Created  ✓ Services Provisioned  ✓ Ready to Bill
 ```
 
+##### Database View: What Gets Stored in Scenario 1
+
+For this self-registration scenario, think about the data model in three layers:
+
+- **Customer & identity tables**
+  - `account` – one row per customer account (company information and billing configuration).
+  - `address` – billing/service addresses linked to `account.id` via `account_id`.
+  - `user` – login credentials for the primary contact, linked back to `account_id`.
+
+- **Commercial configuration tables**
+  - `product` – the UCaaS plan and any add‑ons the customer selected.
+  - `price_offer` – the specific price plan (e.g., $49/user/month, annual commit).
+  - `bundle` / related mapping tables – how user counts, voice minutes, and features are grouped into offers.
+
+- **Order, subscription, and billing tables**
+  - `order` / `order_line` / `order_service` – what was ordered and in what quantities.
+  - `subscription` – long‑lived contract tying the account to the chosen product/price_offer.
+  - `bill_unit` – describes the billing cycle (e.g., monthly on the 1st) and first bill date.
+  - `invoice` / `charge` – if an initial invoice is generated, one `invoice` row plus multiple `charge` rows represent the first bill.
+
+When you see the GraphQL calls and service names in this scenario, you can mentally map them to these tables: the UI and API calls end up creating or updating rows in these entities so that later billing, usage, and collections flows have consistent data to work with.
+
 ---
 
 ### Scenario 2: Customer Pays Invoice with Stored Payment Method
@@ -512,6 +534,31 @@ BillUnitService.create()
 
 ---
 
+##### Database View: Usage & Transactions
+
+For this scenario, most of the information on the screen comes from three main areas of the data model:
+
+- **Balances and allowances**
+  - `balance_unit` / related tables – store current monetary balance and grants for data/voice/SMS.
+  - `usage_quota` – configured limits (e.g., 10 GB data bundle, 1,000 SMS).
+  - `usage_accumulator` – running totals for the current billing cycle (e.g., total data used, international minutes).
+
+- **Transactions (money movements)**
+  - `transaction_unit` – one row per financial event that changes balance:
+    - Type `USAGE` for rated usage charges.
+    - Type `RECURRING` for monthly subscription fees.
+    - Type `TOP_UP` for recharges.
+    - Type `ADJUSTMENT` for manual credits/debits.
+  - These rows feed into `charge` and later into `invoice` when billing is run.
+
+- **Raw usage (CDRs)**
+  - `usage_record` – one row per call/data/SMS event, linked to the account and subscription.
+  - `cdr_file` / `cdr_error` – track imported files and any bad records.
+
+So when the portal calls `getBalanceUnitByAccountId` and `getTransactionUnit`, it is really reading from `balance_unit`, `usage_accumulator`, and `transaction_unit`, which in turn reflect the underlying `usage_record` and billing runs.
+
+---
+
 ## Order-to-Cash Complete Workflows
 
 ### Workflow 1: Subscription Order Creation to Revenue Recognition
@@ -684,6 +731,29 @@ BillUnitService.create()
 | Feb 2027 | 2027-02 | $2,041.67 | PENDING | Dr: 2400, Cr: 4000 |
 
 **Total**: 12 months × $2,041.67 = $24,500.00
+
+---
+
+##### Database View: Order-to-Cash to Revenue
+
+Across this Workflow 1, you can map each phase to specific tables:
+
+- **Order capture and provisioning**
+  - `order`, `order_line`, `order_service` – capture the CRM order and individual services.
+  - `subscription` – the active service contract that billing uses.
+  - `price_offer`, `product` – define commercial terms used by rating and billing.
+
+- **Billing and AR**
+  - `transaction_unit` – detailed rated charges (one per line item).
+  - `bill_unit` – groups `transaction_unit` rows into a billing run for a given period.
+  - `transaction_tax_data` – holds tax amounts per line based on tax-gateway results.
+  - `invoice` / `charge` – the customer-facing bill and its component line items.
+
+- **Revenue recognition**
+  - `deferred_revenue` (or reference revenue journal equivalents) – stores the schedule of how much revenue remains to be recognized.
+  - `journal_entry` – accounting postings that move amounts from Deferred Revenue (2400) to Service Revenue (4000) month by month.
+
+At a high level: the **order** creates a **subscription**, billing transforms that into **charges** and an **invoice**, and revenue recognition then spreads that invoice amount over time using **deferred_revenue** and **journal_entry** so finance reports stay correct.
 
 ---
 

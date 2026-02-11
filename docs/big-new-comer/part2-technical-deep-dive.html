@@ -310,7 +310,8 @@
         counter-reset: item;
     }
     
-    ol li::before {
+    /* Only number top-level items in ordered lists, not nested bullets */
+    ol > li::before {
         content: counter(item);
         counter-increment: item;
         position: absolute;
